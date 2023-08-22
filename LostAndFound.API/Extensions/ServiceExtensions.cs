@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LostAndFound.API.Filters;
 using LostAndFound.Infrastructure.Profiles;
+using Microsoft.EntityFrameworkCore;
+using LostAndFound.Infrastructure.Data;
 
 namespace LostAndFound.API.Extensions
 {
@@ -45,6 +47,7 @@ namespace LostAndFound.API.Extensions
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<LostAndFoundDbContext>(options => options.UseSqlServer(x => x.MigrationsAssembly("LostAndFound.API")));
         }
 
         public static void ConfigurePermissionAuthorization(this IServiceCollection services)

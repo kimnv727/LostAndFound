@@ -1,10 +1,11 @@
-﻿using LostAndFound.Core.Enums;
+﻿using LostAndFound.Core.Entities.Common;
+using LostAndFound.Core.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LostAndFound.Core.Entities
 {
-    public class User
+    public class User : ICreatedEntity
     {
         [Key]
         public Guid Id { get; set; }

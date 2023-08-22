@@ -13,6 +13,8 @@ using LostAndFound.API.Filters;
 using LostAndFound.Infrastructure.Profiles;
 using Microsoft.EntityFrameworkCore;
 using LostAndFound.Infrastructure.Data;
+using LostAndFound.Infrastructure.Repositories.Interfaces;
+using LostAndFound.Infrastructure.Repositories.Implementations;
 
 namespace LostAndFound.API.Extensions
 {
@@ -24,6 +26,7 @@ namespace LostAndFound.API.Extensions
 
         public static void AddRepositories(this IServiceCollection services)
         {
+            services.AddScoped<IUserRepository, UserRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

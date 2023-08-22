@@ -43,6 +43,8 @@ namespace LostAndFound.API
                                                              .Add(new JsonStringEnumConverter()))
                                                              .ConfigureNewtonsoftJson();
             services.ConfigureDbContext(Configuration);
+            services.ConfigureDistributedCaching(Configuration);
+            services.AddRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

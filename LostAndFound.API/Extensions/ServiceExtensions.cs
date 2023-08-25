@@ -9,12 +9,16 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LostAndFound.API.Authentication;
 using LostAndFound.API.Filters;
 using LostAndFound.Infrastructure.Profiles;
 using Microsoft.EntityFrameworkCore;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Repositories.Implementations;
+using LostAndFound.Infrastructure.Services.Interfaces;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
 
 namespace LostAndFound.API.Extensions
 {
@@ -22,6 +26,7 @@ namespace LostAndFound.API.Extensions
     {
         public static void AddServices(this IServiceCollection services)
         {
+            services.AddScoped<IFirebaseAuthService, FirebaseAuthService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

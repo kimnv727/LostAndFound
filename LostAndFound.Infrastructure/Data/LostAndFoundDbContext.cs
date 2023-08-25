@@ -28,6 +28,11 @@ namespace LostAndFound.Infrastructure.Data
 
         //User table
         public virtual DbSet<User> Users { get; set; }
+        //Role table
+        public virtual DbSet<Role> Roles { get; set; }
+        //Token table
+        public virtual DbSet<Token> Tokens { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -72,11 +72,11 @@ namespace LostAndFound.API.Extensions
                 c.SchemaGeneratorOptions.CustomTypeMappings.Add(typeof(IFormFile),
                     () => new OpenApiSchema() { Type = "file", Format = "binary" });
 
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v2", new OpenApiInfo
                 {
-                    Title = "GoPark",
+                    Title = "LostAndFound",
                     Version = "Beta 1",
-                    Description = $"GoPark API application",
+                    Description = $"LostAndFound API application",
                 });
                 c.UseInlineDefinitionsForEnums();
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -88,7 +88,7 @@ namespace LostAndFound.API.Extensions
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Add GoPark Bearer token here.",
+                    Description = "Add LostAndFound Bearer token here.",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer"
@@ -110,34 +110,6 @@ namespace LostAndFound.API.Extensions
                     }
                 });
             });
-        }
-
-        public static void ConfigureJWTAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["TokenGenerator:Issuer"],
-                    ValidAudience = configuration["TokenGenerator:Audience"],
-                    IssuerSigningKey = new
-                        SymmetricSecurityKey
-                        (Encoding.UTF8.GetBytes
-                            (configuration["TokenGenerator:TokenSecret"]))
-                };
-
-                //options.EventsType = typeof(JWTConfigureHubsAndCheckAccountActiveEvents);
-            });
-
-            //services.AddScoped<JWTConfigureHubsAndCheckAccountActiveEvents>();
         }
     }
 }

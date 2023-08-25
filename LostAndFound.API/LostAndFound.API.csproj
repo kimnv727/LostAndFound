@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <OutputType>WinExe</OutputType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +31,5 @@
   <ItemGroup>
     <ProjectReference Include="..\LostAndFound.Infrastructure\LostAndFound.Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>

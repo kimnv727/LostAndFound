@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Firebase.Auth;
@@ -24,6 +25,8 @@ using Google.Apis.Services;
 using LostAndFound.API.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LostAndFound.API
@@ -65,18 +68,18 @@ namespace LostAndFound.API
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.Authority = "https://securetoken.google.com/LostAndFound-Test";
+                options.Authority = Configuration["FirebaseJwt:Firebase:ValidIssuer"];
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "https://securetoken.google.com/LostAndFound-Test",
+                    ValidIssuer = Configuration["FirebaseJwt:Firebase:ValidIssuer"],
                     ValidateAudience = true,
-                    ValidAudience = "LostAndFound-Test",
-                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudience = Configuration["FirebaseJwt:Firebase:ValidAudience"],
+                    ValidateLifetime = true
                 };
             });
-
-            services.AddAuthentication();
+            
             services.AddAuthorization();
             services.AddSwaggerGen(c =>
             {
@@ -90,6 +93,7 @@ namespace LostAndFound.API
                                                              .ConfigureNewtonsoftJson();
             services.ConfigureDbContext(Configuration);
             services.ConfigureDistributedCaching(Configuration);
+            services.ConfigureSwagger();
             
         }
 
@@ -106,7 +110,7 @@ namespace LostAndFound.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -120,13 +124,6 @@ namespace LostAndFound.API
             });
 
             context.Database.Migrate();
-            
-            /*string firebaseFileName = "lostandfound-test-b0e12-firebase-adminsdk-8j53l-641398cc43.json";
-            string path = Path.Combine(Environment.CurrentDirectory, @"Data\", firebaseFileName);
-            FirebaseApp.Create(new AppOptions()
-            {
-                Credential = GoogleCredential.FromFile(path),
-            });*/
 
         }
     }

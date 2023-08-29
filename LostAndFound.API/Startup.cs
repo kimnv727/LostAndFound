@@ -1,5 +1,3 @@
-using LostAndFound.API.Extensions;
-using LostAndFound.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +26,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using LostAndFound.API.Extensions;
+using LostAndFound.Infrastructure.Data;
+using LostAndFound.Infrastructure.DTOs.Media;
 
 namespace LostAndFound.API
 {
@@ -43,6 +44,9 @@ namespace LostAndFound.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AwsCredentials awsCredentials = new AwsCredentials();
+            Configuration.Bind("AwsCredentials", awsCredentials);
+            services.AddSingleton(awsCredentials);
 
             services.AddControllers();
             // Configure Google Services
@@ -93,6 +97,8 @@ namespace LostAndFound.API
                                                              .ConfigureNewtonsoftJson();
             services.ConfigureDbContext(Configuration);
             services.ConfigureDistributedCaching(Configuration);
+            services.AddUOW();
+            services.ConfigureAutoMapper();
             services.ConfigureSwagger();
             
         }

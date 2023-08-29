@@ -33,6 +33,8 @@ namespace LostAndFound.Infrastructure.Data
         //Token table
         public virtual DbSet<Token> Tokens { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        //Media table
+        public virtual DbSet<Media> Medias { get; set; }
 
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

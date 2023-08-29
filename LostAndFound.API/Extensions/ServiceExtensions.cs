@@ -19,6 +19,8 @@ using LostAndFound.Infrastructure.Repositories.Implementations;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
+using LostAndFound.Infrastructure.Services.Implementations;
+using LostAndFound.Infrastructure.UnitOfWork;
 
 namespace LostAndFound.API.Extensions
 {
@@ -27,11 +29,15 @@ namespace LostAndFound.API.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IFirebaseAuthService, FirebaseAuthService>();
+            services.AddScoped<IMediaService, MediaService>();
+
         }
 
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMediaRepository, MediaRepository>();
+
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {
@@ -40,7 +46,7 @@ namespace LostAndFound.API.Extensions
 
         public static void AddUOW(this IServiceCollection services)
         {
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         public static void ConfigureDistributedCaching(this IServiceCollection services, IConfiguration configuration)

@@ -115,9 +115,13 @@ namespace LostAndFound.API
 
             app.UseHttpsRedirection();
 
+            app.ConfigureExceptionHandler();
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseTokenCheckMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

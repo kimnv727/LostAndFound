@@ -1,4 +1,6 @@
-﻿namespace LostAndFound.Core.Exceptions.Common
+﻿using LostAndFound.Core.Exceptions.common;
+
+namespace LostAndFound.Core.Exceptions.Common
 {
     public class EntityNotFoundException : HandledException
     {

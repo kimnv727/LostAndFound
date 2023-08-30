@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LostAndFound.API.Controllers
 {
-   [Route("auth")]
+    [Route("auth")]
     [ApiController]
     public class AuthenticateController : ControllerBase
     {

@@ -1,11 +1,12 @@
 ﻿using LostAndFound.Core.Entities.Common;
 using LostAndFound.Core.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LostAndFound.Core.Entities
 {
-    public class User : ICreatedEntity
+    public class User : ICreatedEntity, ITextSearchableEntity
     {
         [Key]
         public Guid Id { get; set; }
@@ -36,5 +37,13 @@ namespace LostAndFound.Core.Entities
         public bool IsActive { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        //public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights { get; }
+        public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights => new Dictionary<Func<string>, double>()
+        {
+            {() => FirstName, 8 },
+            {() => Email, 2 }
+        };
+        
+        public ICollection<Token> Tokens { get; set; }
     }
 }

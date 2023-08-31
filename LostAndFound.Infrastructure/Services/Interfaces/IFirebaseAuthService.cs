@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
+using LostAndFound.Infrastructure.DTOs.User;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
@@ -8,5 +9,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest);
         Task Logout();
+        Task<UserDetailAuthenticateReadDTO> Authenticate(Guid userId);
     }
 }

@@ -36,6 +36,21 @@ namespace LostAndFound.Infrastructure.Data
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Role>()
+                .Property(b => b.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Token>()
+                .HasOne(rt => rt.RefreshToken)
+                .WithOne(t => t.Token)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

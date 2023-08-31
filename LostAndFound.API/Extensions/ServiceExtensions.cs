@@ -30,7 +30,9 @@ namespace LostAndFound.API.Extensions
         {
             services.AddScoped<IFirebaseAuthService, FirebaseAuthService>();
             services.AddScoped<IMediaService, MediaService>();
-
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddScoped<IEmailSendingService, EmailSendingService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -78,7 +80,7 @@ namespace LostAndFound.API.Extensions
                 c.SchemaGeneratorOptions.CustomTypeMappings.Add(typeof(IFormFile),
                     () => new OpenApiSchema() { Type = "file", Format = "binary" });
 
-                c.SwaggerDoc("v2", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "LostAndFound",
                     Version = "Beta 1",

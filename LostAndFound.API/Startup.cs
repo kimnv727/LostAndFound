@@ -69,7 +69,10 @@ namespace LostAndFound.API
             services.AddSingleton(new FirebaseAuthClient(firebaseAuthConfig));
             services.AddServices();
             services.AddRepositories();
-
+            services.AddUOW();
+            services.ConfigureAutoMapper();
+            services.AddServiceFilters();
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = Configuration["FirebaseJwt:Firebase:ValidIssuer"];
@@ -83,12 +86,7 @@ namespace LostAndFound.API
                     ValidateLifetime = true
                 };
             });
-            
             services.AddAuthorization();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LostAndFound.API", Version = "v1" });
-            });
 
             services.AddControllers(opt => opt.ConfigureCacheProfiles())
                                   .AddJsonOptions(opt => opt

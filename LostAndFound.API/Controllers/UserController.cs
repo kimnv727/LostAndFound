@@ -31,7 +31,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [QueryResponseCache(typeof(UserQuery))]
-        //[PermissionAuthorize(new[] { PermissionType.PERM_VIEW_LIST_USER })]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAll([FromQuery] UserQuery query)
         {

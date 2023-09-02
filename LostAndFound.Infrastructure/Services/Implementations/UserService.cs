@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using LostAndFound.Core.Entities;
+using Firebase.Auth;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -9,6 +9,7 @@ using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
+using User = LostAndFound.Core.Entities.User;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -19,14 +20,17 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IEmailSendingService _emailSendingService;
+        private readonly FirebaseAuthClient _firebaseAuth;
 
-        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService)
+        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasherService, 
+            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
             _passwordHasherService = passwordHasherService;
             _emailSendingService = emailSendingService;
+            _firebaseAuth = firebaseAuth;
         }
 
         public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query)
@@ -66,12 +70,27 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EmailAlreadyUsedException();
             }
-            userWriteDTO.Password = _passwordHasherService.HashPassword(userWriteDTO.Password);
+            //Create User on Firebase
+            var userCredentials = await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(userWriteDTO.Email, userWriteDTO.Password);
+            if (userCredentials != null)
+            {
+                //Create on Firebase successfully
+                //Create User in DB
+                userWriteDTO.Password = _passwordHasherService.HashPassword(userWriteDTO.Password);
                 var user = _mapper.Map<User>(userWriteDTO);
+                //Get FirebaseUID before create new User (this only for Admin created account)
+                user.FirebaseUID = userCredentials.User.Uid;
                 await _userRepository.AddAsync(user);
                 await _unitOfWork.CommitAsync();
                 var userReadDTO = _mapper.Map<UserDetailsReadDTO>(user);
                 return userReadDTO;
+            }
+            else
+            {
+                //Fail to Create User on Firebase
+                //Placeholder Exception
+                return null;
+            }
         }
 
         //Update using updateDTO

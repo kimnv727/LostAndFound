@@ -41,7 +41,7 @@ namespace LostAndFound.API.Controllers
         }*/
 
         /// <summary>
-        /// Login with email and password
+        /// Login with email and password for Manager + Admin
         /// </summary>
         /// <returns>LoginResponseDTO</returns>
         [AllowAnonymous]

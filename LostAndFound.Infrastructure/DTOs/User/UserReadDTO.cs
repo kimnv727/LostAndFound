@@ -18,5 +18,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public string Email{ get; set; }
 
         public string Avatar{ get; set; }
+        
+        public string FirebaseUID { get; set; }
     }
 }

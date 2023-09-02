@@ -1,38 +1,83 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
+using FirebaseAdmin.Auth;
+using LostAndFound.Core.Exceptions.authenticate;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
+using LostAndFound.Infrastructure.UnitOfWork;
 
 namespace LostAndFound.API.Authentication
 {
     public class FirebaseAuthService : IFirebaseAuthService
     {
         private readonly FirebaseAuthClient _firebaseAuth;
-        public FirebaseAuthService(FirebaseAuthClient firebaseAuth)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
+        public FirebaseAuthService(FirebaseAuthClient firebaseAuth, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _firebaseAuth = firebaseAuth;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
-        
+        //TODO: Add Check for Login By Google (If not in DB then created, Otherwise make custom Claims (How?))
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
         {
-            var userCredentials = await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
-
-            if (userCredentials != null)
+            try
             {
-                var loginResponse = new LoginResponseDTO()
+                //Check in DB first, if not existed then Deny -> Query to get GUID and Role and add to Custom Claims
+                var user = await _userRepository.FindUserByEmail(loginRequest.Email);
+                if (user != null)
                 {
-                    AccessToken = userCredentials.User.Credential.IdToken,
-                    RefreshToken = userCredentials.User.Credential.RefreshToken
-                };
+                    var claims = new Dictionary<string, object>()
+                    {
+                        //Wont be able to do this for GoogleLogin? Maybe use reauthenticated with refreshToken immediately
+                        { "GUID", user.Id },
+                        //TODO: make dynamic later
+                        { "Role", "Manager"}
+                    };
+                    await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(user.FirebaseUID, claims);
+                
+                    var userCredentials =
+                        await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
+                
+                    if (userCredentials != null)
+                    {
+                        var loginResponse = new LoginResponseDTO()
+                        {
+                            AccessToken = userCredentials.User.Credential.IdToken,
+                            RefreshToken = userCredentials.User.Credential.RefreshToken
+                        };
 
-                return loginResponse;
+                        return loginResponse;
+                    }
+                    else
+                    {
+                        //TODO: Make custom Exception
+                        //Either Wrong Email or Password
+                        //PlaceHolderException
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    //User not yet existed
+                    //PlaceHolderException
+                    throw new UnauthorizedException();
+                }
             }
-            else
+            catch (Exception e)
             {
-                return null;
+                //Catch Wrong Email or Password 
+                //PlaceHolderException
+                throw new UnauthorizedException();
             }
         }
     

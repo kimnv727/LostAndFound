@@ -120,6 +120,7 @@ namespace LostAndFound.API
             app.UseAuthorization();
 
             app.UseTokenCheckMiddleware();
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
@@ -39,7 +41,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             
             if (Enum.IsDefined(query.Gender))
             {
-                users = users.Where(u => u.Gender == query.Gender);
+                if (query.Gender == UserQuery.GenderSearch.Male)
+                {
+                    users = users.Where(u => u.Gender == Gender.Male);
+                }
+                else if (query.Gender == UserQuery.GenderSearch.Female)
+                {
+                    users = users.Where(u => u.Gender == Gender.Female);
+                }
             }
             
             if (!string.IsNullOrWhiteSpace(query.Email))

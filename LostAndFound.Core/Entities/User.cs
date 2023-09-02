@@ -18,21 +18,21 @@ namespace LostAndFound.Core.Entities
         public string LastName { get; set; }
 
         [Required]
-        public string FullName { get; set; }
+        public string FullName => FirstName +" " + LastName;
 
         public Gender Gender { get; set; }
 
         public string? Avatar { get; set; }
 
+        [Required]
         public string? Email { get; set; }
 
         public string? Phone { get; set; }
 
         public string? Password { get; set; }
 
-        //TODO: Check to see if address for account is needed or not
-        //public Guid AddressId { get; set; }
-
+        public string? FirebaseUID { get; set; }
+        
         [Required]
         public bool IsActive { get; set; }
 

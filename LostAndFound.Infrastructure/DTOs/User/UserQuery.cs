@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Common;
 
@@ -11,7 +12,14 @@ namespace LostAndFound.Infrastructure.DTOs.User
 
         public string? FullName { get; set; }
         
-        public Gender Gender { get; set; }
+        public enum GenderSearch
+        {
+            All,
+            Male,
+            Female
+        }
+        [DefaultValue(GenderSearch.All)]
+        public GenderSearch Gender { get; set; }
 
         public string? Email{ get; set; }
 

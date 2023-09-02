@@ -12,10 +12,6 @@ namespace LostAndFound.Infrastructure.DTOs.User
         [StringLength(50, MinimumLength = 2)]
         public string LastName{ get; set; }
         
-        [Required]
-        [StringLength(12, MinimumLength = 6)]
-        [RegularExpression("^[0-9]{6,12}$", ErrorMessage = "Social Identity Number from 6 to 12 numbers.")]
-        public string Sin{ get; set; } //Social Identity Number
         public Gender Gender { get; set; }
         
         [Required]
@@ -24,13 +20,14 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public string Email{ get; set; }
         
         [Required]
-        [StringLength(100,ErrorMessage = "Password length must be within 8 - 100 characters",MinimumLength = 8)]
+        [StringLength(100,ErrorMessage = "Password length must be within 1 - 100 characters",MinimumLength = 1)]
         public string Password{ get; set; }
 
-        [Required]
+        //No Need phone number on create
+        /*[Required]
         [StringLength(10)]
         [RegularExpression("(\\+\\d{1,3}\\s?)?((\\(\\d{3}\\)\\s?)|(\\d{3})(\\s|-?))(\\d{3}(\\s|-?))(\\d{4})(\\s?(([E|e]xt[:|.|]?)|x|X)(\\s?\\d+))?", ErrorMessage = "Phone number must be of right format")] //10-digit phone number
-        public string PhoneNumber{ get; set; }
+        public string PhoneNumber{ get; set; }*/
 
         public string Avatar{ get; set; }
     }

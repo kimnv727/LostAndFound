@@ -1,6 +1,6 @@
-﻿using LostAndFound.Core.Exceptions.common;
+﻿using LostAndFound.Core.Exceptions.Common;
 
-namespace LostAndFound.Core.Exceptions.authenticate
+namespace LostAndFound.Core.Exceptions.Authenticate
 {
     public class UnauthorizedException : HandledException
     {

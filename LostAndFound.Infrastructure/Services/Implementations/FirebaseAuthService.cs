@@ -5,7 +5,7 @@ using AutoMapper;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using FirebaseAdmin.Auth;
-using LostAndFound.Core.Exceptions.authenticate;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;

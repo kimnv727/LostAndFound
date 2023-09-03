@@ -35,6 +35,9 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
+        //Violation report table
+        public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
+        public virtual DbSet<ViolationReport> ViolationReports { get; set; }
 
         //Item table
         public virtual DbSet<Item> Items { get; set; }
@@ -43,6 +46,8 @@ namespace LostAndFound.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
+
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)
                 .HasDefaultValue(true);

@@ -1,5 +1,5 @@
 ﻿using LostAndFound.API.ResponseWrapper;
-using LostAndFound.Core.Exceptions.common;
+using LostAndFound.Core.Exceptions.Common;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;

@@ -3,6 +3,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.ViolationReport;
 
 namespace LostAndFound.Infrastructure.Profiles
 {
@@ -31,6 +32,8 @@ namespace LostAndFound.Infrastructure.Profiles
             //CreateMap<Category, CategoryReadDTO>();
             //CreateMap<CategoryWriteDTO, Category>();
 
+            //Violation Report Mapping
+            CreateMap<ViolationReportWriteDTO, ViolationReport>();
         }
     }
 }

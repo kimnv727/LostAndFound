@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LostAndFound.Core.Exceptions.common
+namespace LostAndFound.Core.Exceptions.Common
 {
     public class ModelStateException : Exception
     {

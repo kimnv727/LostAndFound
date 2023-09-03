@@ -1,4 +1,4 @@
-﻿using LostAndFound.Core.Exceptions.common;
+﻿using LostAndFound.Core.Exceptions.Common;
 
 namespace LostAndFound.Core.Exceptions.Common
 {

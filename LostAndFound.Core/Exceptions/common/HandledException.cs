@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LostAndFound.Core.Exceptions.common
+namespace LostAndFound.Core.Exceptions.Common
 {
     public class HandledException : Exception
     {

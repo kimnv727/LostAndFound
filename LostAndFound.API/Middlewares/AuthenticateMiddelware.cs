@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Linq;
-using LostAndFound.Core.Exceptions.authenticate;
+using LostAndFound.Core.Exceptions.Authenticate;
 using System.Security.Claims;
 
 namespace LostAndFound.API.Middlewares

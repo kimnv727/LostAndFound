@@ -33,13 +33,15 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IEmailSendingService, EmailSendingService>();
+            services.AddScoped<IViolationReportService, ViolationReportService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMediaRepository, MediaRepository>();
-
+            services.AddScoped<IViolationReportRepository, ViolationReportRepository>();
+            services.AddScoped<IUserViolationReportRepository, UserViolationReportRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

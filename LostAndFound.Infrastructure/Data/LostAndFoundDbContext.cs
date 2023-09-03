@@ -36,6 +36,11 @@ namespace LostAndFound.Infrastructure.Data
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
 
+        //Item table
+        public virtual DbSet<Item> Items { get; set; }
+        //Category table
+        //public virtual DbSet<Category> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
@@ -51,6 +56,7 @@ namespace LostAndFound.Infrastructure.Data
                 .WithOne(t => t.Token)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

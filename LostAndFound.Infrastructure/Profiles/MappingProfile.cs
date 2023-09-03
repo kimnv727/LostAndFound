@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.User;
 
@@ -21,6 +22,15 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<User, UserDetailAuthenticateReadDTO>();
             CreateMap<UserUpdatePasswordDTO, User>();
             CreateMap<UserUpdateDTO, User>();
+
+            //Item Mapping
+            CreateMap<Item, ItemReadDTO>();
+            CreateMap<ItemWriteDTO, Item>();
+
+            //Category Mapping
+            //CreateMap<Category, CategoryReadDTO>();
+            //CreateMap<CategoryWriteDTO, Category>();
+
         }
     }
 }

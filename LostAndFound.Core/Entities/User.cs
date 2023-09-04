@@ -24,6 +24,8 @@ namespace LostAndFound.Core.Entities
 
         public string? Avatar { get; set; }
 
+        public Guid RoleId { get; set; }
+
         [Required]
         public string? Email { get; set; }
 
@@ -44,6 +46,8 @@ namespace LostAndFound.Core.Entities
             {() => Email, 2 }
         };
         
+        public virtual Role Role { get; set; }
+
         public ICollection<Token> Tokens { get; set; }
 
         public ICollection<UserMedia> UserMedias { get; set; }

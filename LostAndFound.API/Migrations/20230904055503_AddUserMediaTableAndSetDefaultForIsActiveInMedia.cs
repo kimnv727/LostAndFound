@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LostAndFound.API.Migrations
 {
-    public partial class AddUserMediaTableAndSetDefaultValueForIsActiveInMedia : Migration
+    public partial class AddUserMediaTableAndSetDefaultForIsActiveInMedia : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace LostAndFound.API.Migrations
                 oldNullable: true);
 
             migrationBuilder.CreateTable(
-                name: "UserMedia",
+                name: "UserMedias",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -26,15 +26,15 @@ namespace LostAndFound.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserMedia", x => new { x.UserId, x.MediaId });
+                    table.PrimaryKey("PK_UserMedias", x => new { x.UserId, x.MediaId });
                     table.ForeignKey(
-                        name: "FK_UserMedia_Medias_MediaId",
+                        name: "FK_UserMedias_Medias_MediaId",
                         column: x => x.MediaId,
                         principalTable: "Medias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserMedia_Users_UserId",
+                        name: "FK_UserMedias_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -42,15 +42,15 @@ namespace LostAndFound.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserMedia_MediaId",
-                table: "UserMedia",
+                name: "IX_UserMedias_MediaId",
+                table: "UserMedias",
                 column: "MediaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserMedia");
+                name: "UserMedias");
 
             migrationBuilder.AlterColumn<bool>(
                 name: "IsActive",

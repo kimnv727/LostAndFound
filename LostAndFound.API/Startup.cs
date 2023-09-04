@@ -29,6 +29,7 @@ using Microsoft.IdentityModel.Tokens;
 using LostAndFound.API.Extensions;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Media;
+using LostAndFound.Infrastructure.Extensions;
 
 namespace LostAndFound.API
 {
@@ -134,6 +135,7 @@ namespace LostAndFound.API
 
             context.Database.Migrate();
 
+            context.MapInitialData();
         }
     }
 }

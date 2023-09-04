@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LostAndFound.API.Migrations
 {
     [DbContext(typeof(LostAndFoundDbContext))]
-    [Migration("20230904020459_AddUserMediaTableAndSetDefaultValueForIsActiveInMedia")]
-    partial class AddUserMediaTableAndSetDefaultValueForIsActiveInMedia
+    [Migration("20230904060857_ConvertIDToIdOnRoleTokenRefreshTokenTableAndLinkRoleToUser")]
+    partial class ConvertIDToIdOnRoleTokenRefreshTokenTableAndLinkRoleToUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,23 +119,23 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.RefreshToken", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpiredAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TokenID")
+                    b.Property<Guid>("TokenId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("TokenID")
+                    b.HasIndex("TokenId")
                         .IsUnique();
 
                     b.ToTable("RefreshTokens");
@@ -143,7 +143,7 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Role", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -179,14 +179,14 @@ namespace LostAndFound.API.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Token", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -197,7 +197,7 @@ namespace LostAndFound.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserID");
 
@@ -245,7 +245,12 @@ namespace LostAndFound.API.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -262,7 +267,7 @@ namespace LostAndFound.API.Migrations
 
                     b.HasIndex("MediaId");
 
-                    b.ToTable("UserMedia");
+                    b.ToTable("UserMedias");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.UserViolationReport", b =>
@@ -316,7 +321,7 @@ namespace LostAndFound.API.Migrations
                 {
                     b.HasOne("LostAndFound.Core.Entities.Token", "Token")
                         .WithOne("RefreshToken")
-                        .HasForeignKey("LostAndFound.Core.Entities.RefreshToken", "TokenID")
+                        .HasForeignKey("LostAndFound.Core.Entities.RefreshToken", "TokenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -332,6 +337,17 @@ namespace LostAndFound.API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LostAndFound.Core.Entities.User", b =>
+                {
+                    b.HasOne("LostAndFound.Core.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.UserMedia", b =>
@@ -375,6 +391,11 @@ namespace LostAndFound.API.Migrations
             modelBuilder.Entity("LostAndFound.Core.Entities.Media", b =>
                 {
                     b.Navigation("UserMedias");
+                });
+
+            modelBuilder.Entity("LostAndFound.Core.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Token", b =>

@@ -1,6 +1,7 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Core.Entities.Common;
 using LostAndFound.Core.Extensions;
+using LostAndFound.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -35,6 +36,7 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
+        public virtual DbSet<UserMedia> UserMedias { get; set; }
         //Violation report table
         public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
         public virtual DbSet<ViolationReport> ViolationReports { get; set; }
@@ -64,6 +66,8 @@ namespace LostAndFound.Infrastructure.Data
                 .HasOne(rt => rt.RefreshToken)
                 .WithOne(t => t.Token)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.SaveEnumsAsString();
         }
 
 

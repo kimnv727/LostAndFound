@@ -14,7 +14,7 @@ namespace LostAndFound.Core.Entities
         }
 
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 2)]
@@ -33,6 +33,7 @@ namespace LostAndFound.Core.Entities
         public DateTime? DeletedDate { get; set; }
         public Guid? DeletedBy { get; set; }
 
+        public ICollection<User> Users { get; set; }
         //public ICollection<Authority> Authorities { get; set; }
         //public ICollection<Permission> Permissions { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using LostAndFound.Core.Entities.Common;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LostAndFound.Core.Entities
@@ -32,5 +33,6 @@ namespace LostAndFound.Core.Entities
 
         public Guid? DeletedBy { get; set; }
 
+        public ICollection<UserMedia> UserMedias { get; set; }
     }
 }

@@ -47,10 +47,14 @@ namespace LostAndFound.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
+            modelBuilder.Entity<UserMedia>().HasKey(um => new { um.UserId, um.MediaId });
 
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<Media>()
+                .Property(m => m.IsActive).HasDefaultValue(true);
 
             modelBuilder.Entity<User>()
                 .Property(u => u.IsActive)

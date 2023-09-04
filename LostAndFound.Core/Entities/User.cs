@@ -45,5 +45,7 @@ namespace LostAndFound.Core.Entities
         };
         
         public ICollection<Token> Tokens { get; set; }
+
+        public ICollection<UserMedia> UserMedias { get; set; }
     }
 }

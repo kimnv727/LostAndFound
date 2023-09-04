@@ -9,16 +9,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
     {
         private readonly EmailServiceConfigDTO _emailServiceConfigDto;
 
-        public EmailSendingService(EmailServiceConfigDTO emailServiceConfigDto = null)
+        public EmailSendingService(EmailServiceConfigDTO emailServiceConfigDTO = null)
         {
-            _emailServiceConfigDto = emailServiceConfigDto;
+            _emailServiceConfigDto = emailServiceConfigDTO;
         }
 
         public void SendMailToRegister(string receiverEmail, string password)
         {
             using (MailMessage mail = new MailMessage())
             {
-                mail.From = new MailAddress("tuantmse151155@fpt.edu.vn");
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
                 mail.Subject = "Register";
 
@@ -46,7 +46,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             using (MailMessage mail = new MailMessage())
             {
-                mail.From = new MailAddress("tuantmse151155@fpt.edu.vn");
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
                 mail.Subject = "Request Password Reset Completed";
 
@@ -74,7 +74,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             using (MailMessage mail = new MailMessage())
             {
-                mail.From = new MailAddress("tuantmse151155@fpt.edu.vn");
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
                 mail.Subject = "Password Has Been Successfully Changed";
 

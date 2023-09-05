@@ -10,7 +10,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         [ForeignKey("User")]
         [Key, Column(Order = 0)]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [ForeignKey("Report")]

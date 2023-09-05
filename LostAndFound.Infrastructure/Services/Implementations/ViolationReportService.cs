@@ -28,7 +28,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _userViolationReportRepository = userViolationReportRepository;
         }
 
-        public async Task CreateReportAsync(CreateReportDTO report, Guid userId)
+        public async Task CreateReportAsync(CreateReportDTO report, string userId)
         {
             var r = _mapper.Map<ViolationReport>(report.WriteDTO);
             r.Status = Core.Enums.ViolationStatus.PENDING;

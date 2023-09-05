@@ -10,6 +10,6 @@ namespace LostAndFound.Infrastructure.DTOs.ViolationReport
     {
         public ViolationReportWriteDTO WriteDTO { get; set; }
 
-        public Guid ReportedUserId { get; set; }
+        public string ReportedUserId { get; set; }
     }
 }

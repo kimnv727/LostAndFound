@@ -3,13 +3,15 @@ using LostAndFound.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LostAndFound.Core.Entities
 {
     public class User : ICreatedEntity, ITextSearchableEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        [Required]
+        public string Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -23,8 +25,9 @@ namespace LostAndFound.Core.Entities
         public Gender Gender { get; set; }
 
         public string? Avatar { get; set; }
-
-        public Guid RoleId { get; set; }
+        
+        [ForeignKey("Role")]
+        public int RoleId { get; set; }
 
         [Required]
         public string? Email { get; set; }
@@ -33,8 +36,6 @@ namespace LostAndFound.Core.Entities
 
         public string? Password { get; set; }
 
-        public string? FirebaseUID { get; set; }
-        
         [Required]
         public bool IsActive { get; set; }
 

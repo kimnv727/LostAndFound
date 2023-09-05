@@ -27,7 +27,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> CreateReport([FromBody] CreateReportDTO report)
         {
             await _violationReportService.CreateReportAsync(report, 
-                Guid.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value));
+                User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
             return ResponseFactory.Ok("Create report success");
         }

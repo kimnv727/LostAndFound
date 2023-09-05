@@ -12,10 +12,10 @@ namespace LostAndFound.Infrastructure.DTOs.User
         [StringLength(50, MinimumLength = 2)]
         public string LastName{ get; set; }
 
-        [Required]
+        /*[Required]
         [StringLength(12, MinimumLength = 6)]
         [RegularExpression("^[0-9]{6,12}$", ErrorMessage = "Social Identity Number from 6 to 12 numbers.")]
-        public string Sin{ get; set; } //Social Identity Number
+        public string Sin{ get; set; } //Social Identity Number*/
 
         public Gender Gender { get; set; }
         

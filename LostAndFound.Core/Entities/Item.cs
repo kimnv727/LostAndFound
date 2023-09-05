@@ -8,10 +8,10 @@ namespace LostAndFound.Core.Entities
     public class Item : IAuditedEntity, ISoftDeleteEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey("User")]
-        public Guid Found_User_Id { get; set; }
+        public string Found_User_Id { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -23,7 +23,7 @@ namespace LostAndFound.Core.Entities
         public string Found_Location { get; set; }
         
         [ForeignKey("Category")]
-        public Guid Category_Id { get; set; }
+        public int Category_Id { get; set; }
 
         public bool? IsActive { get; set; }
 

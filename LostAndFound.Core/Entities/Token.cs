@@ -11,8 +11,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         public string Value { get; set; }
         
-        public Guid UserID { get; set; }
-
+        public string UserId { get; set; }
         public virtual RefreshToken RefreshToken { get; set; }
         
         public virtual User User { get; set; }

@@ -48,7 +48,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetUser(Guid id)
+        public async Task<IActionResult> GetUser(string id)
         {
             var user = await _userService.GetUserAsync(id);
 
@@ -88,7 +88,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.CreatedAt(
                 (nameof(GetUser)), 
                     nameof(UserController), 
-                new { id = result.ID }, 
+                new { id = result.Id }, 
                 result);
         }
 
@@ -105,8 +105,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateUserPasswordAsync(UserUpdatePasswordDTO updatePasswordDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            Guid id = new Guid(stringId);
-            await _userService.UpdateUserPasswordAndSendEmailAsync(id, updatePasswordDTO);
+            await _userService.UpdateUserPasswordAndSendEmailAsync(stringId, updatePasswordDTO);
 
             return ResponseFactory.NoContent();
         }
@@ -122,7 +121,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ChangeUserIsActiveStatus(Guid id)
+        public async Task<IActionResult> ChangeUserIsActiveStatus(string id)
         {
             await _userService.ChangeUserStatusAsync(id);
 
@@ -142,8 +141,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateUserDetailsAsync( UserUpdateDTO updateDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            Guid id = new Guid(stringId);
-            await _userService.UpdateUserDetailsAsync(id, updateDTO);
+            await _userService.UpdateUserDetailsAsync(stringId, updateDTO);
 
             return ResponseFactory.NoContent();
         }
@@ -158,7 +156,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserDetailsAsync(Guid id, UserUpdateDTO updateDTO)
+        public async Task<IActionResult> UpdateUserDetailsAsync(string id, UserUpdateDTO updateDTO)
         {
             await _userService.UpdateUserDetailsAsync(id, updateDTO);
 

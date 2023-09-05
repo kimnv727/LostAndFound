@@ -12,7 +12,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IAddAsync<User>,
         IDelete<User>
     {
-        Task<User> FindUserByID(Guid id);
+        Task<User> FindUserByID(string id);
         Task<User> FindUserByEmail(string email);
         Task<bool> IsDuplicatedEmail(string email);
         Task<bool> IsDuplicatedPhoneNumber(string phoneNumber);

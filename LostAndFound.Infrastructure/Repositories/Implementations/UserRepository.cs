@@ -79,7 +79,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         }
 
 
-        public Task<User> FindUserByID(Guid id)
+        public Task<User> FindUserByID(string id)
         {
             return _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }

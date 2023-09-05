@@ -19,7 +19,6 @@ namespace LostAndFound.Infrastructure.Extensions
             {
                 Role admin = new Role
                 {
-                    Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857720"),
                     Name = "Admin",
                     Description = "Admin of the system. Capable of config system as well as manage Users.",
                     CreatedDate = DateTime.Now.ToVNTime()
@@ -33,10 +32,18 @@ namespace LostAndFound.Infrastructure.Extensions
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Roles.Add(manager);
+                
+                Role userRole = new Role
+                {
+                    Name = "User",
+                    Description = "User of the system. For normal usage of the system like posting post and items.",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Roles.Add(userRole);
 
                 User user = new User()
                 {
-                    Id = new Guid("9D2B0228-4D0D-4C23-8B49-01A698857709"),
+                    Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
                     Email = "abc123@fpt.edu.vn",
                     Password = "",
                     IsActive = true,
@@ -45,14 +52,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     LastName = "User",
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0909090909",
-                    Role = new Role
-                    {
-                        Name = "User",
-                        Description = "User of the system. For normal usage of the system like posting post and items.",
-                        CreatedDate = DateTime.Now.ToVNTime()
-
-                    },
-                    FirebaseUID = "IwZdGow330VpjeBFnrIm7T5H0262",
+                    RoleId = 3,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(user);

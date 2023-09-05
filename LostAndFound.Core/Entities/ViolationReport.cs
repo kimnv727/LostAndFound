@@ -19,7 +19,6 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         public DateTime CreatedDate { get; set; }
-
         public ViolationStatus Status { get; set; }
 
         public ViolationCategory Category { get; set; }

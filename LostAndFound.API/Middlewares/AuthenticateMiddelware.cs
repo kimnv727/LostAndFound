@@ -23,7 +23,7 @@ namespace LostAndFound.API.Middlewares
                 throw new UnauthorizedException();
 
             //TODO: Replace with token check function here
-            if (userId.Value != "IwZdGow330VpjeBFnrIm7T5H0262")
+            if (userId.Value != "FLtIEJvuMgfg58u4sXhzxPn9qr73")
                 throw new UnauthorizedException();
 
             await _next(context);

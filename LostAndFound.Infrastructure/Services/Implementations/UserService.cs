@@ -40,13 +40,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<UserDetailsReadDTO>.FromEnumerableWithMapping(users, query, _mapper);
         }
     
-        public async Task<UserDetailsReadDTO> GetUserAsync(Guid userID)
+        public async Task<UserDetailsReadDTO> GetUserAsync(string userId)
         {
-            var user = await _userRepository.FindUserByID(userID);
+            var user = await _userRepository.FindUserByID(userId);
 
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userID);
+                throw new EntityWithIDNotFoundException<User>(userId);
             }
 
             return _mapper.Map<UserDetailsReadDTO>(user);
@@ -71,30 +71,38 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EmailAlreadyUsedException();
             }
             //Create User on Firebase
-            var userCredentials = await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(userWriteDTO.Email, userWriteDTO.Password);
-            if (userCredentials != null)
+            try
             {
-                //Create on Firebase successfully
-                //Create User in DB
-                userWriteDTO.Password = _passwordHasherService.HashPassword(userWriteDTO.Password);
-                var user = _mapper.Map<User>(userWriteDTO);
-                //Get FirebaseUID before create new User (this only for Admin created account)
-                user.FirebaseUID = userCredentials.User.Uid;
-                await _userRepository.AddAsync(user);
-                await _unitOfWork.CommitAsync();
-                var userReadDTO = _mapper.Map<UserDetailsReadDTO>(user);
-                return userReadDTO;
+                var userCredentials = await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(userWriteDTO.Email, userWriteDTO.Password);
+                if (userCredentials != null)
+                {
+                    //Create on Firebase successfully
+                    //Create User in DB
+                    userWriteDTO.Password = _passwordHasherService.HashPassword(userWriteDTO.Password);
+                    var user = _mapper.Map<User>(userWriteDTO);
+                    //Get FirebaseUID before create new User (this only for Admin created account)
+                    user.Id = userCredentials.User.Uid;
+                    await _userRepository.AddAsync(user);
+                    await _unitOfWork.CommitAsync();
+                    var userReadDTO = _mapper.Map<UserDetailsReadDTO>(user);
+                    return userReadDTO;
+                }
+                else
+                {
+                    //Fail to Create User on Firebase
+                    //Placeholder Exception
+                    return null;
+                }
             }
-            else
+            catch (Exception e)
             {
-                //Fail to Create User on Firebase
-                //Placeholder Exception
-                return null;
+                //Email already existed on Firebase
+                throw new EmailAlreadyUsedException();
             }
         }
 
         //Update using updateDTO
-        public async Task<UserDetailsReadDTO> UpdateUserDetailsAsync(Guid id, UserUpdateDTO updateDTO)
+        public async Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string id, UserUpdateDTO updateDTO)
         {
             var user = await _userRepository.FindUserByID(id);
             if (user == null)
@@ -116,7 +124,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         }
         
         //Update using UpdateWriteDTO
-        public async Task<UserDetailsReadDTO> UpdateUserDetailsAsync(Guid id, UserWriteDTO writeDTO)
+        public async Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string id, UserWriteDTO writeDTO)
         {
             var user = await _userRepository.FindUserByID(id);
             if (user == null)
@@ -129,13 +137,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<UserDetailsReadDTO>(user);
         }
 
-        public async Task<UserDetailsReadDTO> UpdateUserPasswordAsync(Guid userID, UserUpdatePasswordDTO updatePasswordDTO)
+        public async Task<UserDetailsReadDTO> UpdateUserPasswordAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO)
         {
-            var user = await _userRepository.FindUserByID(userID);
+            var user = await _userRepository.FindUserByID(userId);
             
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userID);
+                throw new EntityWithIDNotFoundException<User>(userId);
             }
             else if (!_passwordHasherService.VerifyCorrectPassword(
                     updatePasswordDTO.oldPassword, //Old password 
@@ -153,13 +161,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<UserDetailsReadDTO>(user);
         }
 
-        public async Task<UserDetailsReadDTO> UpdateUserPasswordAndSendEmailAsync(Guid userID, UserUpdatePasswordDTO updatePasswordDTO)
+        public async Task<UserDetailsReadDTO> UpdateUserPasswordAndSendEmailAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO)
         {
-            var user = await _userRepository.FindUserByID(userID);
+            var user = await _userRepository.FindUserByID(userId);
 
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userID);
+                throw new EntityWithIDNotFoundException<User>(userId);
             }
             else if (!_passwordHasherService.VerifyCorrectPassword(
                     updatePasswordDTO.oldPassword, //Old password 
@@ -191,7 +199,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _emailSendingService.SendMailToRequestPasswordReset(user.Email, pass);
         }
 
-        public async Task ChangeUserStatusAsync(Guid id)
+        public async Task ChangeUserStatusAsync(string id)
         {
             var user = await _userRepository.FindUserByID(id);
             if (user == null)

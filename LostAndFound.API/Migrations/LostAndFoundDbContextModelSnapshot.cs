@@ -21,12 +21,13 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Item", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("Category_Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Category_Id")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -48,8 +49,8 @@ namespace LostAndFound.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Found_User_Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Found_User_Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
@@ -141,20 +142,12 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -171,9 +164,6 @@ namespace LostAndFound.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid?>("UpdateBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -188,8 +178,8 @@ namespace LostAndFound.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -197,16 +187,15 @@ namespace LostAndFound.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
@@ -216,9 +205,6 @@ namespace LostAndFound.API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirebaseUID")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -243,8 +229,8 @@ namespace LostAndFound.API.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -255,8 +241,8 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.UserMedia", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("MediaId")
                         .HasColumnType("uniqueidentifier");
@@ -270,8 +256,8 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.UserViolationReport", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ReportId")
                         .HasColumnType("int");
@@ -330,9 +316,7 @@ namespace LostAndFound.API.Migrations
                 {
                     b.HasOne("LostAndFound.Core.Entities.User", "User")
                         .WithMany("Tokens")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

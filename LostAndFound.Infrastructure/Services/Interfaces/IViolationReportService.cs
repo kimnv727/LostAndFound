@@ -10,6 +10,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IViolationReportService
     {
-        Task CreateReportAsync(CreateReportDTO report, Guid userId);
+        Task CreateReportAsync(CreateReportDTO report, string userId);
     }
 }

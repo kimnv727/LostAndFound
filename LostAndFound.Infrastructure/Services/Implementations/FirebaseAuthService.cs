@@ -32,22 +32,13 @@ namespace LostAndFound.API.Authentication
         {
             try
             {
-                //Check in DB first, if not existed then Deny -> Query to get GUID and Role and add to Custom Claims
+                //Check in DB first, if not existed then Deny
                 var user = await _userRepository.FindUserByEmail(loginRequest.Email);
                 if (user != null)
                 {
-                    var claims = new Dictionary<string, object>()
-                    {
-                        //Wont be able to do this for GoogleLogin? Maybe use reauthenticated with refreshToken immediately
-                        { "GUID", user.Id },
-                        //TODO: make dynamic later
-                        { "Role", "Manager"}
-                    };
-                    await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(user.FirebaseUID, claims);
-                
                     var userCredentials =
                         await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
-                
+                        
                     if (userCredentials != null)
                     {
                         var loginResponse = new LoginResponseDTO()
@@ -55,7 +46,7 @@ namespace LostAndFound.API.Authentication
                             AccessToken = userCredentials.User.Credential.IdToken,
                             RefreshToken = userCredentials.User.Credential.RefreshToken
                         };
-
+                        
                         return loginResponse;
                     }
                     else

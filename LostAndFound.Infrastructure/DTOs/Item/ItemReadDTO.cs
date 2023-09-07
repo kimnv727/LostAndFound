@@ -10,9 +10,9 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 {
     public class ItemReadDTO
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
-        public Guid Found_User_Id { get; set; }
+        public string Found_User_Id { get; set; }
 
         public string Name { get; set; }
 
@@ -20,7 +20,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public string Found_Location { get; set; }
 
-        public Guid Category_Id { get; set; }
+        public string Category_Id { get; set; }
 
         public bool? IsActive { get; set; }
 

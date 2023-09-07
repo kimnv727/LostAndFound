@@ -1,18 +1,18 @@
 ﻿using LostAndFound.Infrastructure.DTOs.Item;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IItemService
     {
-        Task UpdateItemStatus(Guid itemId);
-        /*Task<ItemReadDTO> UpdateItemDetail(Guid itemId, ItemUpdateWriteDTO itemUpdateWriteDTO);*/
-        Task DeleteItemAsync(Guid itemId);
-        Task<ItemReadDTO> FindItemById(Guid itemId);
+        Task UpdateItemStatusAsync(int itemId);
+        /*Task<ItemReadDTO> UpdateItemDetail(int itemId, ItemUpdateWriteDTO itemUpdateWriteDTO);*/
+        Task DeleteItemAsync(int itemId);
+        Task<ItemReadDTO> FindItemByIdAsync(int itemId);
+        Task<ItemReadDTO> FindItemNameAsync(String name);
         Task<DTOs.Common.PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQuery query);
+        Task<DTOs.Common.PaginatedResponse<ItemReadDTO>> QueryItemIgnoreStatusAsync(ItemQuery query);
+        Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemWriteDTO itemWriteDTO);
     }
 }

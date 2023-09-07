@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+.editorconfig
+LostAndFound.API/Properties/launchSettings.json
+.idea/.idea.LostAndFound/.idea/projectSettingsUpdater.xml
+.idea/.idea.LostAndFound/.idea/workspace.xml
+.idea/config/applicationhost.config
+.idea/.idea.LostAndFound/.idea/projectSettingsUpdater.xml

@@ -40,11 +40,16 @@ namespace LostAndFound.Infrastructure.Data
         //Violation report table
         public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
         public virtual DbSet<ViolationReport> ViolationReports { get; set; }
-
         //Item table
         public virtual DbSet<Item> Items { get; set; }
         //Category table
-        //public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        //Category Group table
+        public virtual DbSet<Category> CategoryGroups { get; set; }
+        //Location table
+        public virtual DbSet<Category> Locations { get; set; }
+        //Property
+        public virtual DbSet<Category> Properties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

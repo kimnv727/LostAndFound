@@ -44,7 +44,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
 
-            if (item.IsActive == true)
+            /*if (item.IsActive == true)
             {
                 _itemRepository.Delete(item);
             }
@@ -53,7 +53,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 item.IsActive = true;
                 item.DeletedDate = null;
                 item.DeletedDate = null;
-            }
+            }*/
             await _unitOfWork.CommitAsync();
 
         }

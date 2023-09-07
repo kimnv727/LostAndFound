@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
@@ -11,22 +12,24 @@ namespace LostAndFound.Core.Entities
         public int Id { get; set; }
 
         [ForeignKey("User")]
-        public string Found_User_Id { get; set; }
+        public string FoundUserId { get; set; }
 
+        [Required]
+        public int LocationId { get; set; }
+        
         [Required]
         public string Name { get; set; }
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        public string Found_Location { get; set; }
         
-        [ForeignKey("Category")]
-        public int Category_Id { get; set; }
+        public int CategoryId { get; set; }
 
-        public bool? IsActive { get; set; }
+        //Status = Found / Active / Returned / Closed
+        public ItemStatus ItemStatus { get; set; }
 
+        public DateTime FoundDate { get; set; }
+        
         public DateTime CreatedDate { get; set; }
 
         public Guid? CreatedBy { get; set; }
@@ -39,6 +42,9 @@ namespace LostAndFound.Core.Entities
 
         public Guid? DeletedBy { get; set; }
 
+        //Foreign key tables
+        public virtual User User { get; set; }
+        public virtual Location Location { get; set; }
 
     }
 }

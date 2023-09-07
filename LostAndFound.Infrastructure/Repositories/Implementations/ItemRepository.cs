@@ -28,7 +28,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false)
         {
-            IQueryable<Item> items = _context.Items.Where(i => i.IsActive == true).AsSplitQuery();
+            //IQueryable<Item> items = _context.Items.Where(i => i.IsActive == true).AsSplitQuery();
+            IQueryable<Item> items = _context.Items.AsSplitQuery();
 
             if (!trackChanges)
             {

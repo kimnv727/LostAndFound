@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LostAndFound.Infrastructure.DTOs.Item
+namespace LostAndFound.Infrastructure.DTOs.Category
 {
-    public class ItemWriteDTO
+    public class CategoryWriteDTO
     {
-
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public string FoundLocation { get; set; }
 
         public bool? IsActive { get; set; }
 

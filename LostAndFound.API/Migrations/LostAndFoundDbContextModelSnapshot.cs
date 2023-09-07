@@ -48,7 +48,36 @@ namespace LostAndFound.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("LostAndFound.Core.Entities.CategoryGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryGroups");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Item", b =>
@@ -142,7 +171,7 @@ namespace LostAndFound.API.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Media", b =>
@@ -221,7 +250,7 @@ namespace LostAndFound.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Property");
+                    b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.RefreshToken", b =>

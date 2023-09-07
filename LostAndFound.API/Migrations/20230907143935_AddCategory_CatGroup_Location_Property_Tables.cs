@@ -52,7 +52,7 @@ namespace LostAndFound.API.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -66,11 +66,28 @@ namespace LostAndFound.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Property",
+                name: "CategoryGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryGroups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Properties",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -84,11 +101,11 @@ namespace LostAndFound.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Property", x => x.Id);
+                    table.PrimaryKey("PK_Properties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -103,11 +120,11 @@ namespace LostAndFound.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Location_Property_PropertyId",
+                        name: "FK_Locations_Properties_PropertyId",
                         column: x => x.PropertyId,
-                        principalTable: "Property",
+                        principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -123,15 +140,15 @@ namespace LostAndFound.API.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Location_PropertyId",
-                table: "Location",
+                name: "IX_Locations_PropertyId",
+                table: "Locations",
                 column: "PropertyId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Items_Location_LocationId",
+                name: "FK_Items_Locations_LocationId",
                 table: "Items",
                 column: "LocationId",
-                principalTable: "Location",
+                principalTable: "Locations",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -147,7 +164,7 @@ namespace LostAndFound.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Items_Location_LocationId",
+                name: "FK_Items_Locations_LocationId",
                 table: "Items");
 
             migrationBuilder.DropForeignKey(
@@ -155,13 +172,16 @@ namespace LostAndFound.API.Migrations
                 table: "Items");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "CategoryGroups");
 
             migrationBuilder.DropTable(
-                name: "Property");
+                name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Properties");
 
             migrationBuilder.DropIndex(
                 name: "IX_Items_FoundUserId",

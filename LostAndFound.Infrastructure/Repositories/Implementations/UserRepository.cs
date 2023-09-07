@@ -19,7 +19,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public UserRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        
+
         public async Task<IEnumerable<User>> QueryAsync(UserQuery query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users.AsSplitQuery();
@@ -33,12 +33,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.Where(u => u.FirstName.ToLower().Contains(query.FirstName.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.LastName))
             {
                 users = users.Where(u => u.LastName.ToLower().Contains(query.LastName.ToLower()));
             }
-            
+
             if (Enum.IsDefined(query.Gender))
             {
                 if (query.Gender == UserQuery.GenderSearch.Male)
@@ -50,22 +50,22 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     users = users.Where(u => u.Gender == Gender.Female);
                 }
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.Email))
             {
                 users = users.Where(u => u.Email.ToLower().Contains(query.Email.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.PhoneNumber))
             {
                 users = users.Where(u => u.Phone.ToLower().Contains(query.PhoneNumber.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.Avatar))
             {
                 users = users.Where(u => u.Avatar.ToLower().Contains(query.Avatar.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 users = users.Where(p => p.FullName.ToLower().Contains(query.SearchText.ToLower()));
@@ -74,7 +74,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.OrderBy(query.OrderBy);
             }
-            
+
             return await Task.FromResult(users.ToList());
         }
 
@@ -91,7 +91,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<bool> IsDuplicatedEmail(string email)
         {
-            
+
             return await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower().Trim() == email.ToLower().Trim()) != null;
         }
 

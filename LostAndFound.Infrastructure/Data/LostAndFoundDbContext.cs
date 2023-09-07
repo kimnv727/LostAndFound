@@ -45,11 +45,11 @@ namespace LostAndFound.Infrastructure.Data
         //Category table
         public virtual DbSet<Category> Categories { get; set; }
         //Category Group table
-        public virtual DbSet<Category> CategoryGroups { get; set; }
+        public virtual DbSet<CategoryGroup> CategoryGroups { get; set; }
         //Location table
-        public virtual DbSet<Category> Locations { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
         //Property
-        public virtual DbSet<Category> Properties { get; set; }
+        public virtual DbSet<Property> Properties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

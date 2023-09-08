@@ -3,6 +3,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
 
 namespace LostAndFound.Infrastructure.Profiles
@@ -15,6 +16,11 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Media, MediaReadDTO>();
             CreateMap<Media, MediaDetailReadDTO>();
             CreateMap<MediaUpdateWriteDTO, Media>();
+            CreateMap<MediaWriteDTO, Media>();
+            
+            //User Media Mapping
+            CreateMap<UserMediaWriteDTO, UserMedia>();
+            CreateMap<UserMedia, UserMediaReadDTO>();
             
             //User Mapping
             CreateMap<User, UserReadDTO>();

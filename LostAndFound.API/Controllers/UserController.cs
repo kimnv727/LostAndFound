@@ -17,10 +17,12 @@ namespace LostAndFound.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IUserMediaService _userMediaService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IUserMediaService userMediaService)
         {
             _userService = userService;
+            _userMediaService = userMediaService;
         }
 
         ///<summary>
@@ -161,6 +163,24 @@ namespace LostAndFound.API.Controllers
             await _userService.UpdateUserDetailsAsync(id, updateDTO);
 
             return ResponseFactory.NoContent();
+        }
+
+        ///<summary>
+        /// Update user avatar (this function will also add avatar if user currently don't have one)
+        /// </summary>
+        /// <remarks>Update user's avatar</remarks>
+        /// <returns></returns>
+        [HttpPatch("media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateUserAvatarAsync(IFormFile avatar)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
+
+            return ResponseFactory.Ok(result);
         }
     }
 }

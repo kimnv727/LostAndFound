@@ -36,6 +36,8 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IEmailSendingService, EmailSendingService>();
             services.AddScoped<IViolationReportService, ViolationReportService>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentSerivce>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -46,6 +48,8 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IViolationReportRepository, ViolationReportRepository>();
             services.AddScoped<IUserViolationReportRepository, UserViolationReportRepository>();
             services.AddScoped<IItemRepository,ItemRepository>();
+            services.AddScoped<IPostRepository,PostRepository>();
+            services.AddScoped<ICommentRepository,CommentRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

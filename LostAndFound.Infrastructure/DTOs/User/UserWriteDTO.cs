@@ -23,12 +23,6 @@ namespace LostAndFound.Infrastructure.DTOs.User
         [StringLength(100,ErrorMessage = "Password length must be within 1 - 100 characters",MinimumLength = 1)]
         public string Password{ get; set; }
 
-        //No Need phone number on create
-        /*[Required]
-        [StringLength(10)]
-        [RegularExpression("(\\+\\d{1,3}\\s?)?((\\(\\d{3}\\)\\s?)|(\\d{3})(\\s|-?))(\\d{3}(\\s|-?))(\\d{4})(\\s?(([E|e]xt[:|.|]?)|x|X)(\\s?\\d+))?", ErrorMessage = "Phone number must be of right format")] //10-digit phone number
-        public string PhoneNumber{ get; set; }*/
-
         public string Avatar{ get; set; }
     }
 }

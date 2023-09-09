@@ -5,7 +5,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
 {
     public class UserDetailAuthenticateReadDTO
     {
-        public Guid ID { get; set; }
+        public string Id { get; set; }
 
         public string FirstName { get; set; }
 
@@ -17,7 +17,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
 
         public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
         public string Avatar { get; set; }
         

@@ -50,7 +50,11 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<Location> Locations { get; set; }
         //Property
         public virtual DbSet<Property> Properties { get; set; }
-
+        //Post
+        public virtual DbSet<Post> Posts { get; set; }
+        //Comment
+        public virtual DbSet<Comment> Comments { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });

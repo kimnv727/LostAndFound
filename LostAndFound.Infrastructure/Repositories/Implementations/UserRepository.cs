@@ -56,9 +56,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 users = users.Where(u => u.Email.ToLower().Contains(query.Email.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(query.PhoneNumber))
+            if (!string.IsNullOrWhiteSpace(query.Phone))
             {
-                users = users.Where(u => u.Phone.ToLower().Contains(query.PhoneNumber.ToLower()));
+                users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
             }
 
             if (!string.IsNullOrWhiteSpace(query.Avatar))

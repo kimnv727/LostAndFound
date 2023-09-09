@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
+using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
@@ -40,6 +42,18 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Violation Report Mapping
             CreateMap<ViolationReportWriteDTO, ViolationReport>();
+            
+            //Post Mapping
+            CreateMap<Post, PostReadDTO>();
+            CreateMap<Post, PostDetailReadDTO>();
+            CreateMap<PostWriteDTO, Post>();
+            CreateMap<PostUpdateDTO, Post>();
+            CreateMap<PostStatusUpdateDTO, Post>();
+            
+            //Comment Mapping
+            CreateMap<Comment, CommentReadDTO>();
+            CreateMap<CommentWriteDTO, Comment>();
+            CreateMap<CommentUpdateDTO, Comment>();
         }
     }
 }

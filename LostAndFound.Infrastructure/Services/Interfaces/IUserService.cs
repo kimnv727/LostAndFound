@@ -14,7 +14,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<UserDetailsReadDTO> CreateUserAsync(UserWriteDTO userWriteDTO);
         Task ChangeUserStatusAsync(string id);
         Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string userId, UserUpdateDTO updateDTO);
-        Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string Id, UserWriteDTO writeDTO);
+        //Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string Id, UserWriteDTO writeDTO);
         Task<UserDetailsReadDTO> UpdateUserPasswordAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO);
         Task<UserDetailsReadDTO> UpdateUserPasswordAndSendEmailAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO);
     }

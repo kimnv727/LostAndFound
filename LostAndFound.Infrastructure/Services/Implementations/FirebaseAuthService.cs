@@ -74,7 +74,7 @@ namespace LostAndFound.API.Authentication
     
         public async Task Logout() => _firebaseAuth.SignOut(); 
         
-        public async Task<UserDetailAuthenticateReadDTO> Authenticate(Guid userId)
+        public async Task<UserDetailAuthenticateReadDTO> Authenticate(string userId)
         {
             /*var user = await _userRepository.FindUserByID(userId);
             if(user == null)

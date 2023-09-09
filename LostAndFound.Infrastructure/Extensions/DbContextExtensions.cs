@@ -52,7 +52,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     LastName = "User",
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0909090909",
-                    RoleId = 3,
+                    RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(user);

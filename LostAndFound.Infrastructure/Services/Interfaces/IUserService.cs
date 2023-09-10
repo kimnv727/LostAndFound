@@ -8,6 +8,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IUserService
     {
         Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query);
+        Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusAsync(UserQuery query);
         Task<UserDetailsReadDTO> GetUserAsync(string userID);
         Task<UserDetailsReadDTO> GetUserByEmailAsync(string email);
         Task RequestResetPassword(UserRequestResetPasswordDTO userRequestResetPasswordDTO);

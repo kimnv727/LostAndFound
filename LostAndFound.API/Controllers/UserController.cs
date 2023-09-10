@@ -160,9 +160,9 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateUserDetailsAsync(string id, UserUpdateDTO updateDTO)
         {
-            await _userService.UpdateUserDetailsAsync(id, updateDTO);
+            var user = await _userService.UpdateUserDetailsAsync(id, updateDTO);
 
-            return ResponseFactory.NoContent();
+            return ResponseFactory.Ok(user);
         }
 
         ///<summary>

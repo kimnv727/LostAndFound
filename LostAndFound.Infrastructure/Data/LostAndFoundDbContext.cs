@@ -131,13 +131,13 @@ namespace LostAndFound.Infrastructure.Data
                 {
                     case EntityState.Added:
                         entry.CurrentValues["DeletedDate"] = null;
-                        entry.CurrentValues["DeletedBy"] = null;
+                        //entry.CurrentValues["DeletedBy"] = null;
                         break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;
                         entry.CurrentValues["IsActive"] = false;
                         entry.CurrentValues["DeletedDate"] = DateTime.Now.ToVNTime();
-                        entry.CurrentValues["DeletedBy"] = null;
+                        //entry.CurrentValues["DeletedBy"] = null;
                         break;
                 }
             }

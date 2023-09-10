@@ -2,7 +2,7 @@ using System;
 
 namespace LostAndFound.Infrastructure.DTOs.Comment
 {
-    public class CommentReadDTO
+    public class CommentDetailReadDTO
     {
         public int Id { get; set; }
         public string CommentUserId { get; set; }
@@ -11,5 +11,7 @@ namespace LostAndFound.Infrastructure.DTOs.Comment
         public string CommentPath { get; set; }
         public bool CommentStatus { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }

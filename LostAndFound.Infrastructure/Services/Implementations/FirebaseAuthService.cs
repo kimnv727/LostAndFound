@@ -27,7 +27,6 @@ namespace LostAndFound.API.Authentication
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
         }
-        //TODO: Add Check for Login By Google (If not in DB then created, Otherwise make custom Claims (How?))
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
         {
             try

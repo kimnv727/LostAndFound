@@ -3,7 +3,7 @@ using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.DTOs.Post
 {
-    public class PostDetailReadDTO
+    public class PostDetailWithCommentsReadDTO
     {
         public int Id { get; set; }
         public string PostUserId { get; set; }
@@ -12,5 +12,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
+        
+        //TODO: Add Read CommentDTO here
     }
 }

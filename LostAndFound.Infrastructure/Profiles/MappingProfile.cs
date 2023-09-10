@@ -46,14 +46,18 @@ namespace LostAndFound.Infrastructure.Profiles
             //Post Mapping
             CreateMap<Post, PostReadDTO>();
             CreateMap<Post, PostDetailReadDTO>();
+            CreateMap<Post, PostDetailWithCommentsReadDTO>();
             CreateMap<PostWriteDTO, Post>();
             CreateMap<PostUpdateDTO, Post>();
             CreateMap<PostStatusUpdateDTO, Post>();
             
             //Comment Mapping
             CreateMap<Comment, CommentReadDTO>();
+            CreateMap<Comment, CommentDetailReadDTO>();
+            CreateMap<Comment, CommentDetailWithReplyDetailReadDTO>();
             CreateMap<CommentWriteDTO, Comment>();
             CreateMap<CommentUpdateDTO, Comment>();
+
         }
     }
 }

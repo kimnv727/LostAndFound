@@ -4,7 +4,7 @@ namespace LostAndFound.Core.Enums
     {
         PENDING,
         ACTIVE,
-        DISABLE,
+        DELETED,
         CLOSED
     }
 }

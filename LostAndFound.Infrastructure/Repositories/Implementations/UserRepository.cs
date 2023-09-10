@@ -20,7 +20,65 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
         }
 
-        public async Task<IEnumerable<User>> QueryAsync(UserQuery query, bool trackChanges = false)
+        public async Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false)
+        {
+            IQueryable<User> users = _context.Users.Where(u => u.IsActive == true ).AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                users = users.AsNoTracking();
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.FirstName))
+            {
+                users = users.Where(u => u.FirstName.ToLower().Contains(query.FirstName.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.LastName))
+            {
+                users = users.Where(u => u.LastName.ToLower().Contains(query.LastName.ToLower()));
+            }
+
+            if (Enum.IsDefined(query.Gender))
+            {
+                if (query.Gender == UserQuery.GenderSearch.Male)
+                {
+                    users = users.Where(u => u.Gender == Gender.Male);
+                }
+                else if (query.Gender == UserQuery.GenderSearch.Female)
+                {
+                    users = users.Where(u => u.Gender == Gender.Female);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Email))
+            {
+                users = users.Where(u => u.Email.ToLower().Contains(query.Email.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Phone))
+            {
+                users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Avatar))
+            {
+                users = users.Where(u => u.Avatar.ToLower().Contains(query.Avatar.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchText))
+            {
+                users = users.Where(p => p.FullName.ToLower().Contains(query.SearchText.ToLower()));
+            }
+            else if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                users = users.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(users.ToList());
+        }
+
+        public async Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQuery query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users.AsSplitQuery();
 
@@ -77,7 +135,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(users.ToList());
         }
-
 
         public Task<User> FindUserByID(string id)
         {

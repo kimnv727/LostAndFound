@@ -1,55 +1,202 @@
 using System.Threading.Tasks;
+using AutoMapper;
+using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Common;
+using LostAndFound.Infrastructure.DTOs.Post;
+using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
+using LostAndFound.Infrastructure.UnitOfWork;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
     public class CommentSerivce : ICommentService
     {
-        public Task UpdateCommentStatusAsync(int commentId)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
+        private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
+        private readonly IPasswordHasherService _passwordHasherService;
+        private readonly IEmailSendingService _emailSendingService;
+
+        public CommentSerivce(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository, 
+            IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService)
         {
-            throw new System.NotImplementedException();
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
+            _postRepository = postRepository;
+            _commentRepository = commentRepository;
+            _passwordHasherService = passwordHasherService;
+            _emailSendingService = emailSendingService;
+        }
+        
+        public async Task UpdateCommentStatusAsync(int commentId)
+        {
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+
+            if (comment.CommentStatus == true)
+            {
+                comment.CommentStatus = false;
+            }
+            else
+            {
+                comment.CommentStatus = true;
+            }
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task DeleteCommentAsync(int commentId)
+        public async Task DeleteCommentAsync(int commentId)
         {
-            throw new System.NotImplementedException();
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+
+            _commentRepository.Delete(comment);
+            await _unitOfWork.CommitAsync();
         }
 
-        public Task<CommentReadDTO> GetCommentByIdAsync(int commentId)
+        public async Task<CommentDetailReadDTO> GetCommentByIdAsync(int commentId)
         {
-            throw new System.NotImplementedException();
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+
+            return _mapper.Map<CommentDetailReadDTO>(comment);
+        }
+        
+        public async Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId)
+        {
+            var comment = await _commentRepository.FindCommentWithReplyByIdAsync(commentId);
+
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+
+            return _mapper.Map<CommentDetailWithReplyDetailReadDTO>(comment);
         }
 
-        public Task<PaginatedResponse<CommentReadDTO>> GetAllChildCommentByCommentIdAsync(int commentId)
+        /*public async Task<PaginatedResponse<CommentReadDTO>> GetAllChildCommentByCommentIdAsync(int commentId)
         {
-            throw new System.NotImplementedException();
+            //Get Comment
+            var comment = await _commentRepository.FindCommentById(commentId);
+
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+            //Get Reply Comments
+            var replyComments = await _commentRepository.FindAllCommentsReplyToCommentId(commentId);
+            
+            return _mapper.Map<PaginatedResponse<CommentReadDTO>>(replyComments);
+        }*/
+
+        public async Task<PaginatedResponse<CommentReadDTO>> GetAllCommentByPostIdAsync(int postId)
+        {
+            //Get Post
+            var post = _postRepository.FindPostByIdAsync(postId);
+            if (post == null)
+            {
+                throw new EntityWithIDNotFoundException<Post>(postId);
+            }
+            //Get Comments
+            var comments = await _commentRepository.FindAllCommentsByPostIdAsync(postId);
+            
+            return _mapper.Map<PaginatedResponse<CommentReadDTO>>(comments);
         }
 
-        public Task<PaginatedResponse<CommentReadDTO>> GetAllCommentByPostIdAsync(int postId)
+        public async Task<PaginatedResponse<CommentReadDTO>> QueryCommentAsync(CommentQuery query)
         {
-            throw new System.NotImplementedException();
+            var comments = await _commentRepository.QueryCommentAsync(query);
+            
+            return PaginatedResponse<CommentReadDTO>.FromEnumerableWithMapping(comments, query, _mapper);
         }
 
-        public Task<PaginatedResponse<CommentReadDTO>> QueryCommentAsync(CommentQuery query)
+        public async Task<PaginatedResponse<CommentReadDTO>> QueryCommentIgnoreStatusAsync(CommentQuery query)
         {
-            throw new System.NotImplementedException();
+            var comments = await _commentRepository.QueryCommentIgnoreStatusAsync(query);
+            
+            return PaginatedResponse<CommentReadDTO>.FromEnumerableWithMapping(comments, query, _mapper);
         }
 
-        public Task<PaginatedResponse<CommentReadDTO>> QueryCommentIgnoreStatusAsync(CommentQuery query)
+        public async Task<CommentReadDTO> CreateCommentAsync(string userId, int postId, CommentWriteDTO commentWriteDTO)
         {
-            throw new System.NotImplementedException();
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            //Get Post
+            var post = _postRepository.FindPostByIdAsync(postId);
+            if (post == null)
+            {
+                throw new EntityWithIDNotFoundException<Post>(postId);
+            }
+            //Map Comment 
+            var comment = _mapper.Map<Comment>(commentWriteDTO);
+            comment.CommentStatus = true;
+            comment.PostId = postId;
+            comment.CommentUserId = userId;
+            //Create Comment
+            await _commentRepository.AddAsync(comment);
+            await _unitOfWork.CommitAsync();
+            var commentReadDTO = _mapper.Map<CommentReadDTO>(comment);
+            return commentReadDTO;
+        }
+        
+        public async Task<CommentReadDTO> ReplyToCommentAsync(string userId, int commentId, CommentWriteDTO commentWriteDTO)
+        {
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            //Get Comment
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+            //Map Reply Comment 
+            var replyComment = _mapper.Map<Comment>(commentWriteDTO);
+            replyComment.CommentStatus = true;
+            replyComment.PostId = comment.PostId;
+            replyComment.CommentUserId = userId;
+            replyComment.CommentPath = comment.CommentPath + "/" + comment.Id;
+            //Create Comment
+            await _commentRepository.AddAsync(comment);
+            await _unitOfWork.CommitAsync();
+            
+            var commentReadDTO = _mapper.Map<CommentReadDTO>(comment);
+            return commentReadDTO;
         }
 
-        public Task<CommentReadDTO> CreateCommentAsync(CommentWriteDTO commentWriteDTO)
+        public async Task<CommentReadDTO> UpdateCommentDetailsAsync(int commentId, CommentUpdateDTO commentUpdateDTO)
         {
-            throw new System.NotImplementedException();
-        }
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
 
-        public Task<CommentReadDTO> UpdateCommentDetailsAsync(int commentId, CommentUpdateDTO commentUpdateDTO)
-        {
-            throw new System.NotImplementedException();
+            _mapper.Map(commentUpdateDTO, comment);
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<CommentReadDTO>(comment);
         }
     }
 }

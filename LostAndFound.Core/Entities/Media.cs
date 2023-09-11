@@ -34,5 +34,7 @@ namespace LostAndFound.Core.Entities
         public string DeletedBy { get; set; }
 
         public ICollection<UserMedia> UserMedias { get; set; }
+        public ICollection<PostMedia> PostMedias { get; set; }
+        public ICollection<ItemMedia> ItemMedias { get; set; }
     }
 }

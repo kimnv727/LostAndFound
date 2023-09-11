@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Enums;
+using System.Collections.Generic;
 
 namespace LostAndFound.Core.Entities
 {
@@ -45,6 +46,8 @@ namespace LostAndFound.Core.Entities
         //Foreign key tables
         public virtual User User { get; set; }
         public virtual Location Location { get; set; }
+        public ICollection<ItemMedia> PostMedias { get; set; }
+
 
     }
 }

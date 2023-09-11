@@ -26,5 +26,6 @@ namespace LostAndFound.Core.Entities
         //Foreign key tables
         public virtual User User { get; set; }
         public ICollection<Comment> Comments { get; set; }
+        public ICollection<PostMedia> PostMedias { get; set; }
     }
 }

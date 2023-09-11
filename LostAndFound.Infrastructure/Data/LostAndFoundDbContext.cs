@@ -38,6 +38,8 @@ namespace LostAndFound.Infrastructure.Data
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
         public virtual DbSet<UserMedia> UserMedias { get; set; }
+        public virtual DbSet<PostMedia> PostMedias { get; set; }
+        public virtual DbSet<ItemMedia> ItemMedias { get; set; }
         //Violation report table
         public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
         public virtual DbSet<ViolationReport> ViolationReports { get; set; }
@@ -60,6 +62,9 @@ namespace LostAndFound.Infrastructure.Data
         {
             modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
             modelBuilder.Entity<UserMedia>().HasKey(um => new { um.UserId, um.MediaId });
+            modelBuilder.Entity<ItemMedia>().HasKey(im => new { im.ItemId, im.MediaId });
+            modelBuilder.Entity<PostMedia>().HasKey(pm => new { pm.PostId, pm.MediaId });
+
 
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)

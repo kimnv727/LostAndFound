@@ -20,17 +20,24 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<Comment> FindCommentByIdAsync(int id)
         {
+            return await _context.Comments.Where(c => c.DeletedDate == null).FirstOrDefaultAsync(c => c.Id == id);
+        }
+        
+        public async Task<Comment> FindCommentIgnoreStatusByIdAsync(int id)
+        {
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }
         
         public async Task<Comment> FindCommentWithReplyByIdAsync(int id)
         {
+            //Still get deleted one
             //TODO: Return reply
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Comment>> FindAllCommentsByPostIdAsync(int postId)
         {
+            //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
             comments = comments.Where(c => c.PostId == postId).OrderBy(c => c.CreatedDate);
@@ -40,29 +47,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Comment>> FindAllCommentsByUserIdAsync(string userId)
         {
+            //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
             comments = comments.Where(c => c.CommentUserId == userId).OrderBy(c => c.CreatedDate);
             
             return await Task.FromResult(comments.ToList());
         }
-        
-        /*public async Task<IEnumerable<Comment>> FindAllCommentsReplyToCommentId(int commentId)
-        {
-            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
-            
-            IQueryable<Comment> comments = _context.Comments;
 
-            comments = comments.Where(c => c.CommentPath.Trim().StartsWith(comment.CommentPath.Trim())).OrderBy(c => c.CreatedDate);
-            
-            return await Task.FromResult(comments.ToList());
-        }*/
-        
         public async Task<IEnumerable<Comment>> QueryCommentAsync(CommentQuery query, bool trackChanges = false)
         {
             //TODO: query comment by date?
-            IQueryable<Comment> comments = _context.Comments.Where(c => c.CommentStatus == true).AsSplitQuery();
-
+            IQueryable<Comment> comments = _context.Comments.Where(c => c.DeletedDate == null).AsSplitQuery();
+            //IQueryable<Comment> comments = _context.Comments.AsSplitQuery();
             if (!trackChanges)
             {
                 comments = comments.AsNoTracking();
@@ -73,7 +70,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 comments = comments.Where(c => c.CommentUserId == query.CommentUserId);
             }
             
-            if (query.PostId >= 0)
+            if (query.PostId > 0)
             {
                 comments = comments.Where(c => c.PostId == query.PostId);
             }
@@ -111,7 +108,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 comments = comments.Where(c => c.CommentUserId == query.CommentUserId);
             }
             
-            if (query.PostId >= 0)
+            if (query.PostId > 0)
             {
                 comments = comments.Where(c => c.PostId == query.PostId);
             }

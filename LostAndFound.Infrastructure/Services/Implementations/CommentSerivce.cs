@@ -33,24 +33,24 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _emailSendingService = emailSendingService;
         }
         
-        public async Task UpdateCommentStatusAsync(int commentId)
+        /*public async Task UpdateCommentStatusAsync(int commentId)
         {
-            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+            var comment = await _commentRepository.FindCommentIgnoreStatusByIdAsync(commentId);
             if (comment == null)
             {
                 throw new EntityWithIDNotFoundException<Comment>(commentId);
             }
 
-            if (comment.CommentStatus == true)
+            if (comment.IsActive == true)
             {
-                comment.CommentStatus = false;
+                comment.IsActive = false;
             }
             else
             {
-                comment.CommentStatus = true;
+                comment.IsActive = true;
             }
             await _unitOfWork.CommitAsync();
-        }
+        }*/
 
         public async Task DeleteCommentAsync(int commentId)
         {
@@ -77,6 +77,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CommentDetailReadDTO>(comment);
         }
         
+        public async Task<CommentDetailReadDTO> GetCommentIgnoreStatusByIdAsync(int commentId)
+        {
+            var comment = await _commentRepository.FindCommentIgnoreStatusByIdAsync(commentId);
+
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+
+            return _mapper.Map<CommentDetailReadDTO>(comment);
+        }
+        
         public async Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId)
         {
             var comment = await _commentRepository.FindCommentWithReplyByIdAsync(commentId);
@@ -89,25 +101,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CommentDetailWithReplyDetailReadDTO>(comment);
         }
 
-        /*public async Task<PaginatedResponse<CommentReadDTO>> GetAllChildCommentByCommentIdAsync(int commentId)
-        {
-            //Get Comment
-            var comment = await _commentRepository.FindCommentById(commentId);
-
-            if (comment == null)
-            {
-                throw new EntityWithIDNotFoundException<Comment>(commentId);
-            }
-            //Get Reply Comments
-            var replyComments = await _commentRepository.FindAllCommentsReplyToCommentId(commentId);
-            
-            return _mapper.Map<PaginatedResponse<CommentReadDTO>>(replyComments);
-        }*/
-
         public async Task<PaginatedResponse<CommentReadDTO>> GetAllCommentByPostIdAsync(int postId)
         {
             //Get Post
-            var post = _postRepository.FindPostByIdAsync(postId);
+            var post = await _postRepository.FindPostByIdAsync(postId);
             if (post == null)
             {
                 throw new EntityWithIDNotFoundException<Post>(postId);
@@ -148,7 +145,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             //Map Comment 
             var comment = _mapper.Map<Comment>(commentWriteDTO);
-            comment.CommentStatus = true;
+            comment.IsActive = true;
             comment.PostId = postId;
             comment.CommentUserId = userId;
             //Create Comment
@@ -174,15 +171,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             //Map Reply Comment 
             var replyComment = _mapper.Map<Comment>(commentWriteDTO);
-            replyComment.CommentStatus = true;
+            replyComment.IsActive = true;
             replyComment.PostId = comment.PostId;
             replyComment.CommentUserId = userId;
             replyComment.CommentPath = comment.CommentPath + "/" + comment.Id;
             //Create Comment
-            await _commentRepository.AddAsync(comment);
+            await _commentRepository.AddAsync(replyComment);
             await _unitOfWork.CommitAsync();
             
-            var commentReadDTO = _mapper.Map<CommentReadDTO>(comment);
+            var commentReadDTO = _mapper.Map<CommentReadDTO>(replyComment);
             return commentReadDTO;
         }
 

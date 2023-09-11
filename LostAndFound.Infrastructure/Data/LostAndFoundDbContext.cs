@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.Data
 {
@@ -85,6 +86,7 @@ namespace LostAndFound.Infrastructure.Data
             CreatedEntities();
             AuditEntities();
             SetSoftDeleteColumns();
+            SetPostSoftDeleteColumns();
             //await DispatchEvents<DomainEvent>();
             var result = await base.SaveChangesAsync(cancellationToken);
             //_ = DispatchEvents<IntegrationEvent>();
@@ -138,6 +140,28 @@ namespace LostAndFound.Infrastructure.Data
                         entry.CurrentValues["IsActive"] = false;
                         entry.CurrentValues["DeletedDate"] = DateTime.Now.ToVNTime();
                         //entry.CurrentValues["DeletedBy"] = null;
+                        break;
+                }
+            }
+        }
+        
+        private void SetPostSoftDeleteColumns()
+        {
+            var entriesDeleted = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is IPostSoftDeleteEntity);
+
+            foreach (var entry in entriesDeleted)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["DeletedDate"] = null;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["PostStatus"] = PostStatus.DELETED;
+                        entry.CurrentValues["DeletedDate"] = DateTime.Now.ToVNTime();
                         break;
                 }
             }

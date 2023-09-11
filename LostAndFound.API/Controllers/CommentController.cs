@@ -90,7 +90,7 @@ namespace LostAndFound.API.Controllers
         }
         
         ///<summary>
-        /// Get all comments
+        /// Get all comments ignore status
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -124,7 +124,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.CreatedAt(
                 (nameof(GetComment)), 
                 nameof(CommentController), 
-                new { id = result.Id }, 
+                new { commentId = result.Id }, 
                 result);
         }
         
@@ -147,7 +147,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.CreatedAt(
                 (nameof(GetComment)), 
                 nameof(CommentController), 
-                new { id = result.Id }, 
+                new { commentId = result.Id }, 
                 result);
         }
         
@@ -166,7 +166,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(comment);
         }
         
-        /// <summary>
+        /*/// <summary>
         /// Change comment's status
         /// </summary>
         /// <remarks></remarks>
@@ -182,7 +182,7 @@ namespace LostAndFound.API.Controllers
             await _commentService.UpdateCommentStatusAsync(commentId);
 
             return ResponseFactory.NoContent();
-        }
+        }*/
         
         /// <summary>
         /// Delete Comment (soft)

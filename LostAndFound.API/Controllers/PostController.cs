@@ -42,19 +42,19 @@ namespace LostAndFound.API.Controllers
         }
         
         /// <summary>
-        /// Get all posts by userId
+        /// Get all posts by userId (only Active)
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet("{userId}")]
+        [HttpGet("get-by-user/{userId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
         public async Task<IActionResult> GetAllPostsByUserId(string userId)
         {
             var result = await _postService.GetPostByUserIdAsync(userId);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         ///<summary>
@@ -79,8 +79,9 @@ namespace LostAndFound.API.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("get-with-status")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(PostQuery))]
+        [QueryResponseCache(typeof(PostQueryWithStatus))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostDetailReadDTO>))]
         public async Task<IActionResult> GetAllPostsWithStatus([FromQuery] PostQueryWithStatus query)
         {
@@ -107,7 +108,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.CreatedAt(
                 (nameof(GetPost)), 
                 nameof(PostController), 
-                new { id = result.Id }, 
+                new { postId = result.Id }, 
                 result);
         }
         
@@ -117,6 +118,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpPut("{postId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -135,13 +137,25 @@ namespace LostAndFound.API.Controllers
         [HttpPatch("status/{postId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdatePoststatus(int postId, PostStatus postStatus)
+        public async Task<IActionResult> UpdatePoststatus(int postId, PostStatusExcludeDelete postStatusExcludeDelete)
         {
+            var postStatus = PostStatus.PENDING;
+            switch (postStatusExcludeDelete)
+            {
+                case PostStatusExcludeDelete.ACTIVE:
+                    postStatus = PostStatus.ACTIVE;
+                    break;
+                case PostStatusExcludeDelete.CLOSED:
+                    postStatus = PostStatus.CLOSED;
+                    break;
+                default:
+                    break;
+            }
             await _postService.UpdatePostStatusAsync(postId, postStatus);
-
-            return ResponseFactory.NoContent();
+            var post = await _postService.GetPostByIdAsync(postId);
+            return ResponseFactory.Ok(post);
         }
         
         /// <summary>
@@ -150,6 +164,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpDelete("{postId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]

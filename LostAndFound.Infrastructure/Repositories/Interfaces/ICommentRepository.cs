@@ -13,6 +13,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IDelete<Comment>
     {
         Task<Comment> FindCommentByIdAsync(int id);
+        Task<Comment> FindCommentIgnoreStatusByIdAsync(int id);
         Task<Comment> FindCommentWithReplyByIdAsync(int id);
         Task<IEnumerable<Comment>> FindAllCommentsByPostIdAsync(int postId);
         Task<IEnumerable<Comment>> FindAllCommentsByUserIdAsync(string userId);

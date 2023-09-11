@@ -11,6 +11,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string PostContent { get; set; }
         
         //TODO: Query By CreatedDate?
+        public string SearchText { get; set; }
         public string OrderBy { get; set; } = "CreatedDate Desc";
     }
 }

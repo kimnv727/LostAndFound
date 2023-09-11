@@ -12,7 +12,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task UpdatePostStatusAsync(int postId, PostStatus postStatus);
         Task DeletePostAsync(int postId);
         Task<PostDetailWithCommentsReadDTO> GetPostByIdAsync(int postId);
-        Task<PaginatedResponse<PostReadDTO>> GetPostByUserIdAsync(string userId);
+        Task<IEnumerable<PostReadDTO>> GetPostByUserIdAsync(string userId);
         Task<PaginatedResponse<PostReadDTO>> QueryPostAsync(PostQuery query);
         Task<PaginatedResponse<PostDetailReadDTO>> QueryPostWithStatusAsync(PostQueryWithStatus query);
         Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO);

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Post;
@@ -71,7 +73,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<PostDetailWithCommentsReadDTO>(post);
         }
         
-        public async Task<PaginatedResponse<PostReadDTO>> GetPostByUserIdAsync(string userId)
+        public async Task<IEnumerable<PostReadDTO>> GetPostByUserIdAsync(string userId)
         {
             //Get User
             var user = await _userRepository.FindUserByID(userId);

@@ -21,18 +21,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public Task<Post> FindPostByIdAsync(int id)
         {
-            return _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            return _context.Posts.Where(p => p.PostStatus != PostStatus.DELETED).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public Task<Post> FindPostIncludeDetailsAsync(int id)
         {
             //TODO: Also return comments here
-            return _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            return _context.Posts.Where(p => p.PostStatus != PostStatus.DELETED).FirstOrDefaultAsync(p => p.Id == id);
         }
         
         public async Task<IEnumerable<Post>> FindAllPostsByUserIdAsync(string userId)
         {
-            IQueryable<Post> posts = _context.Posts;
+            IQueryable<Post> posts = _context.Posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
 
             posts = posts.Where(p => p.PostUserId == userId);
             
@@ -63,6 +63,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
+            if (!string.IsNullOrWhiteSpace(query.SearchText))
+            {
+                posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
+            }
+            
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
                 posts = posts.OrderBy(query.OrderBy);
@@ -97,9 +102,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (Enum.IsDefined(query.PostStatus))
             {
-                if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.ACTIVE)
+                if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.PENDING)
                 {
-                    posts = posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
+                    posts = posts.Where(p => p.PostStatus == PostStatus.PENDING);
                 }
                 else if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.CLOSED)
                 {
@@ -109,10 +114,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     posts = posts.Where(p => p.PostStatus == PostStatus.DELETED);
                 }
-                else if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.PENDING)
+                else if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.ACTIVE)
                 {
-                    posts = posts.Where(p => p.PostStatus == PostStatus.PENDING);
+                    posts = posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
                 }
+            }
+            
+            if (!string.IsNullOrWhiteSpace(query.SearchText))
+            {
+                posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
             }
 
             if (!string.IsNullOrWhiteSpace(query.OrderBy))

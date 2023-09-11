@@ -7,7 +7,7 @@ using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Post : IAuditedEntity, ISoftDeleteEntity
+    public class Post : IAuditedEntity, IPostSoftDeleteEntity
     {
         [Key]
         public int Id { get; set; }

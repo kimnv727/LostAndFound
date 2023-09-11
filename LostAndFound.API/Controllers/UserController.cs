@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LostAndFound.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

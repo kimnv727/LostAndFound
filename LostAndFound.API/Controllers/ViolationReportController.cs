@@ -1,8 +1,9 @@
 ﻿using LostAndFound.API.ResponseWrapper;
-using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -23,13 +24,57 @@ namespace LostAndFound.API.Controllers
             _violationReportService = violationReportService;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateReport([FromBody] CreateReportDTO report)
+        ///<summary>
+        /// Create new violation report
+        /// </summary>
+        /// <param name="createDTO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ViolationReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiBadRequestResponse))]
+        public async Task<IActionResult> CreateReport([FromBody] CreateReportDTO createDTO)
         {
-            await _violationReportService.CreateReportAsync(report, 
+            var result = await _violationReportService.CreateReportAsync(createDTO, 
                 User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-            return ResponseFactory.Ok("Create report success");
+            return ResponseFactory.CreatedAt(nameof(GetReport)
+                , nameof(ViolationReportController), new { id = result.Id }
+                , result);
+        }
+
+        ///<summary>
+        /// Get all violation reports
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("list")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<ViolationReportReadDTO>))]
+        public async Task<IActionResult> GetReportList
+            ([FromQuery] ViolationReportQuery query)
+        {
+            var result = await _violationReportService.QueryViolationReport(query);
+
+            return ResponseFactory.PaginatedOk(result);
+        }
+
+        ///<summary>
+        /// Get violation report's detail by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("detail/{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ViolationReportReadDTO>))]
+        public async Task<IActionResult> GetReport(int id)
+        {
+            var result = await _violationReportService.GetReportById(id);
+
+            return ResponseFactory.Ok(result);
         }
     }
 }

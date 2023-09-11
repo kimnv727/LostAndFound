@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using LostAndFound.Core.Exceptions.Authenticate;
 using System.Security.Claims;
+using System;
+using LostAndFound.Infrastructure.Services.Interfaces;
 
 namespace LostAndFound.API.Middlewares
 {
@@ -15,15 +17,14 @@ namespace LostAndFound.API.Middlewares
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, IUserService service)
         {
             var userId = context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
+            
             if (userId == null)
                 throw new UnauthorizedException();
 
-            //TODO: Replace with token check function here
-            if (userId.Value != "FLtIEJvuMgfg58u4sXhzxPn9qr73")
+            if (!(await service.CheckUserExisted(userId.Value)))
                 throw new UnauthorizedException();
 
             await _next(context);

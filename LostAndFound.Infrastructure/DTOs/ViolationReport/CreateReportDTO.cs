@@ -8,7 +8,7 @@ namespace LostAndFound.Infrastructure.DTOs.ViolationReport
 {
     public class CreateReportDTO
     {
-        public ViolationReportWriteDTO WriteDTO { get; set; }
+        public ViolationReportWriteDTO ViolationReport { get; set; }
 
         public string ReportedUserId { get; set; }
     }

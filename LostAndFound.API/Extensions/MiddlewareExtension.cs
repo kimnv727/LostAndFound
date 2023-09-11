@@ -1,5 +1,6 @@
 ﻿using LostAndFound.API.Middlewares;
 using Microsoft.AspNetCore.Builder;
+using System.Net.Http;
 
 namespace LostAndFound.API.Extensions
 {
@@ -12,8 +13,9 @@ namespace LostAndFound.API.Extensions
 
         public static void UseTokenCheckMiddleware(this IApplicationBuilder app)
         {
-            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/auth") 
-                        || context.Request.Path.StartsWithSegments("/auth/logout"),
+            app.UseWhen(context => (!context.Request.Path.StartsWithSegments("/auth"))
+                        || context.Request.Path.StartsWithSegments("/auth/logout")
+                        ,
                 appBuilder =>
                 {
                     appBuilder.UseMiddleware<AuthenticateMiddelware>();

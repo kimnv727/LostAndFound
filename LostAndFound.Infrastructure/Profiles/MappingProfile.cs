@@ -31,6 +31,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<User, UserDetailAuthenticateReadDTO>();
             CreateMap<UserUpdatePasswordDTO, User>();
             CreateMap<UserUpdateDTO, User>();
+            CreateMap<User, UserBriefDetailDTO>();
 
             //Item Mapping
             CreateMap<Item, ItemReadDTO>();
@@ -42,6 +43,8 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Violation Report Mapping
             CreateMap<ViolationReportWriteDTO, ViolationReport>();
+            CreateMap<ViolationReport, ViolationReportReadDTO>();
+            CreateMap<UserViolationReport, UserViolationReportDetailDTO>();
             
             //Post Mapping
             CreateMap<Post, PostReadDTO>();

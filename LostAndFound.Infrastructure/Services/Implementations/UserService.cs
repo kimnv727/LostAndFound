@@ -229,5 +229,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task<bool> CheckUserExisted(string userId)
+        {
+            var user = await _userRepository.FindUserByID(userId);
+
+            return user != null ? true : false;
+        }
     }
 }

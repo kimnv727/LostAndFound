@@ -5,6 +5,7 @@ using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
@@ -14,14 +15,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
         }
 
-        public async Task<PostMedia> FindPostMediaIncludeMediaAsync(int postId)
+        public async Task<IEnumerable<PostMedia>> FindPostMediaIncludeMediaAsync(int postId)
         {
             return await _context.PostMedias
-                .Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null)
-                .Include(um => um.Post)
-                .Include(um => um.Media)
-                .FirstOrDefaultAsync(um => um.PostId == postId);
-                    
+                .Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null)
+                .Include(pm => pm.Post)
+                .Include(pm => pm.Media)
+                .Where(pm => pm.PostId == postId)
+                .ToListAsync();   
         }
 
     }

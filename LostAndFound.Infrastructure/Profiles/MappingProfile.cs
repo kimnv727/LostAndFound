@@ -4,6 +4,7 @@ using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.Post;
+using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
@@ -19,7 +20,10 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Media, MediaDetailReadDTO>();
             CreateMap<MediaUpdateWriteDTO, Media>();
             CreateMap<MediaWriteDTO, Media>();
-            
+
+            //Post Media
+            CreateMap<PostMedia, PostMediaReadDTO>();
+
             //User Media Mapping
             CreateMap<UserMediaWriteDTO, UserMedia>();
             CreateMap<UserMedia, UserMediaReadDTO>();

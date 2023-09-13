@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
@@ -6,7 +7,7 @@ using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Post;
-using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,12 +20,14 @@ namespace LostAndFound.API.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
+        private readonly IPostMediaService _postMediaService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IPostMediaService postMediaService)
         {
             _postService = postService;
+            _postMediaService = postMediaService;
         }
-        
+
         /// <summary>
         /// Get post's details by id
         /// </summary>
@@ -171,6 +174,58 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> DeletePost([Required] int postId)
         {
             await _postService.DeletePostAsync(postId);
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Get all Post's Medias
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("{postId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostMediaReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllPostMedia([Required] int postId)
+        {
+            return ResponseFactory.Ok(await _postMediaService.GetPostMedias(postId));
+        }
+
+        /// <summary>
+        /// Upload Post's media files
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        [HttpPost("{postId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostMediaReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CreatePostMedias([Required] int postId, [Required] IFormFile[] files)
+        {
+            var postMedias = await _postMediaService.UploadPostMedias(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, postId, files);
+            return ResponseFactory.CreatedAt(nameof(GetAllPostMedia), 
+                                            nameof(PostController), 
+                                            new { postId = postId }, 
+                                            postMedias);
+        }
+
+        /// <summary>
+        /// Delete Post's media file (soft)
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="mediaId"></param>
+        /// <returns></returns>
+        [HttpDelete("{postId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> DeleteMedia([Required] int postId, [Required] Guid mediaId)
+        {
+            await _postMediaService.DeletePostMedia(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, postId, mediaId);
             return ResponseFactory.NoContent();
         }
     }

@@ -117,6 +117,7 @@ namespace LostAndFound.API
             app.ConfigureExceptionHandler();
 
             app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseTokenCheckMiddleware();

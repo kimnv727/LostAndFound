@@ -1,5 +1,6 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.Repositories.Interfaces.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
@@ -8,6 +9,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IAddAsync<PostMedia>,
         IGetAllAsync<PostMedia>
     {
-        Task<PostMedia> FindPostMediaIncludeMediaAsync(int postId);
+        Task<IEnumerable<PostMedia>> FindPostMediaIncludeMediaAsync(int postId);
     }
 }

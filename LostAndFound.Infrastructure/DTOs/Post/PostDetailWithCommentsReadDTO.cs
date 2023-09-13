@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.PostMedia;
 
 namespace LostAndFound.Infrastructure.DTOs.Post
 {
@@ -12,6 +14,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<PostMediaReadDTO> PostMedias { get; set; }
         
         //TODO: Add Read CommentDTO here
     }

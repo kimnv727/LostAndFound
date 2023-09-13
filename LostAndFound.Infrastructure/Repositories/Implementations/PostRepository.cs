@@ -21,13 +21,21 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public Task<Post> FindPostByIdAsync(int id)
         {
-            return _context.Posts.Where(p => p.PostStatus != PostStatus.DELETED).FirstOrDefaultAsync(p => p.Id == id);
+            return _context.Posts
+                .Where(p => p.PostStatus != PostStatus.DELETED)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public Task<Post> FindPostIncludeDetailsAsync(int id)
         {
             //TODO: Also return comments here
-            return _context.Posts.Where(p => p.PostStatus != PostStatus.DELETED).FirstOrDefaultAsync(p => p.Id == id);
+            return _context.Posts
+                .Where(p => p.PostStatus != PostStatus.DELETED)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
         
         public async Task<IEnumerable<Post>> FindAllPostsByUserIdAsync(string userId)

@@ -1,6 +1,7 @@
 ﻿using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Implementations;
@@ -11,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LostAndFound.API.Controllers
@@ -20,10 +23,12 @@ namespace LostAndFound.API.Controllers
     public class ItemController : Controller
     {
         private readonly IItemService _itemService;
+        private readonly IItemMediaService _itemMediaService;
 
-        public ItemController(IItemService itemService)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService)
         {
             _itemService = itemService;
+            _itemMediaService = itemMediaService;
         }
 
         /// <summary>
@@ -109,6 +114,58 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> DeleteItem([Required] int id)
         {
             await _itemService.DeleteItemAsync(id);
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Get all Item's Medias
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpGet("{itemId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemMediaReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllItemMedia([Required] int itemId)
+        {
+            return ResponseFactory.Ok(await _itemMediaService.GetItemMedias(itemId));
+        }
+
+        /// <summary>
+        /// Upload Item's media files
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        [HttpPost("{itemId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemMediaReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CreatePostMedias([Required] int itemId, [Required] IFormFile[] files)
+        {
+            var itemMedias = await _itemMediaService.UploadItemMedias(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, itemId, files);
+            return ResponseFactory.CreatedAt(nameof(GetAllItemMedia),
+                                            nameof(ItemController),
+                                            new { itemId = itemId },
+                                            itemMedias);
+        }
+
+        /// <summary>
+        /// Delete Item's media file (soft)
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="mediaId"></param>
+        /// <returns></returns>
+        [HttpDelete("{itemId}/media")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> DeleteMedia([Required] int itemId, [Required] Guid mediaId)
+        {
+            await _itemMediaService.DeleteItemMedia(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, itemId, mediaId);
             return ResponseFactory.NoContent();
         }
     }

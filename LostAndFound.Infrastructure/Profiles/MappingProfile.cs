@@ -2,6 +2,7 @@
 using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
@@ -23,6 +24,9 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Post Media
             CreateMap<PostMedia, PostMediaReadDTO>();
+
+            //Item Media
+            CreateMap<ItemMedia, ItemMediaReadDTO>();
 
             //User Media Mapping
             CreateMap<UserMediaWriteDTO, UserMedia>();

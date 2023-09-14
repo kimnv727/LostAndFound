@@ -21,5 +21,44 @@ namespace LostAndFound.API.Extensions
                     appBuilder.UseMiddleware<AuthenticateMiddelware>();
                 });
         }
+
+        public static void UseCheckPostAuthorMiddleware(this IApplicationBuilder app)
+        {
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api/posts")
+                        && !context.Request.Method.Equals("PATCH")
+                        && !context.Request.Method.Equals("GET")
+                        && !context.Request.Method.Equals("POST")
+                        ,
+                appBuilder =>
+                {
+                    appBuilder.UseMiddleware<CheckPostAuthorMiddleware>();
+                });
+        }
+
+        public static void UseCheckItemFounderMiddleware(this IApplicationBuilder app)
+        {
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api/items")
+                        && !context.Request.Method.Equals("GET")
+                        && !context.Request.Method.Equals("PATCH")
+                        && !context.Request.Method.Equals("POST")
+                        ,
+            appBuilder =>
+            {
+                appBuilder.UseMiddleware<CheckItemFounderMiddleware>();
+            });
+        }
+
+        public static void UseCheckCommentAuthorMiddleware(this IApplicationBuilder app)
+        {
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api/comments")
+                        && !context.Request.Method.Equals("GET")
+                        && !context.Request.Method.Equals("PATCH")
+                        && !context.Request.Method.Equals("POST")
+                        ,
+            appBuilder =>
+            {
+                appBuilder.UseMiddleware<CheckCommentAuthorMiddleware>();
+            });
+        }
     }
 }

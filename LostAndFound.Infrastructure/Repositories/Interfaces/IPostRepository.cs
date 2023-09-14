@@ -17,5 +17,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<Post> FindPostIncludeDetailsAsync(int id);
         Task<IEnumerable<Post>> QueryPostAsync(PostQuery query, bool trackChanges = false);
         Task<IEnumerable<Post>> QueryPostWithStatusAsync(PostQueryWithStatus query, bool trackChanges = false);
+        Task<Post> FindPostByIdAndUserId(int id, string userId);
+
     }
 }

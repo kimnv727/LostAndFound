@@ -64,13 +64,13 @@ namespace LostAndFound.API.Controllers
         /// Get Item By Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("id/{id}")]
+        [HttpGet("id/{itemId}")]
         [QueryResponseCache(typeof(ItemQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<MediaReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetItemByID([Required] int id)
+        public async Task<IActionResult> GetItemByID([Required] int itemId)
         {
-            var item = await _itemService.FindItemByIdAsync(id);
+            var item = await _itemService.FindItemByIdAsync(itemId);
 
             return ResponseFactory.Ok(item);
         }
@@ -93,14 +93,14 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Update Item status
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPatch("change-status/{id}")]
+        [HttpPatch("change-status/{itemId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateItemStatus([Required] int id)
+        public async Task<IActionResult> UpdateItemStatus([Required] int itemId)
         {
-            await _itemService.UpdateItemStatusAsync(id);
+            await _itemService.UpdateItemStatusAsync(itemId);
             return ResponseFactory.NoContent();
         }
 
@@ -108,12 +108,12 @@ namespace LostAndFound.API.Controllers
         /// Soft delete an item
         /// </summary>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("{itemId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> DeleteItem([Required] int id)
+        public async Task<IActionResult> DeleteItem([Required] int itemId)
         {
-            await _itemService.DeleteItemAsync(id);
+            await _itemService.DeleteItemAsync(itemId);
             return ResponseFactory.NoContent();
         }
 
@@ -123,7 +123,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="itemId"></param>
         /// <returns></returns>
         [HttpGet("{itemId}/media")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemMediaReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]

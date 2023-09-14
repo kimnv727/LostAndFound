@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LostAndFound.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/posts")]
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -204,7 +204,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("{postId}/media")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostMediaReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]

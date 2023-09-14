@@ -195,5 +195,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             return _mapper.Map<CommentReadDTO>(comment);
         }
+
+        public async Task<bool> CheckCommentAuthorAsync(int commentId, string userId)
+        {
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+
+            if (comment == null)
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+
+            return comment.CommentUserId == userId ? true : false;
+        }
     }
 }

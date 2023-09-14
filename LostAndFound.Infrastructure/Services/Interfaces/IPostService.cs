@@ -17,6 +17,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<PaginatedResponse<PostDetailReadDTO>> QueryPostWithStatusAsync(PostQueryWithStatus query);
         Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO);
         Task<PostDetailReadDTO> UpdatePostDetailsAsync(int postId, PostUpdateDTO postUpdateDTO);
-        
+        Task<bool> CheckPostAuthorAsync(int postId, string userId);
     }
 }

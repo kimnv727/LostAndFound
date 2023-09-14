@@ -132,5 +132,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             return _mapper.Map<PostDetailReadDTO>(post);
         }
+
+        public async Task<bool> CheckPostAuthorAsync(int postId, string userId)
+        {
+            var post = await _postRepository.FindPostByIdAndUserId(postId, userId);
+
+            if (post == null)
+                throw new EntityWithIDNotFoundException<Post>(postId);
+
+            return post != null ? true : false;
+        }
     }
 }

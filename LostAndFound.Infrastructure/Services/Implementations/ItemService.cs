@@ -107,5 +107,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             return _mapper.Map<ItemReadDTO>(item);
         }
+
+        public async Task<bool> CheckItemFounderAsync(int itemId, string userId)
+        {
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+
+            if (item == null)
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+
+            return item.FoundUserId == userId ? true : false;
+        }
     }
 }

@@ -160,5 +160,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(posts.ToList());
         }
+
+        public async Task<Post> FindPostByIdAndUserId(int id, string userId)
+        {
+            return await _context.Posts
+                .SingleOrDefaultAsync(p => p.Id == id && p.PostUserId == userId);
+        }
     }
 }

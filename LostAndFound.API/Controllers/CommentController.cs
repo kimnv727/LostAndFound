@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LostAndFound.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/comments")]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;

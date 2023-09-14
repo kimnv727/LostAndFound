@@ -18,6 +18,5 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO);
         Task<PostDetailReadDTO> UpdatePostDetailsAsync(int postId, PostUpdateDTO postUpdateDTO);
         
-        //TODO: GetPost include all comment
     }
 }

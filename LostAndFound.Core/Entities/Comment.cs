@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Entities.Common;
@@ -25,5 +26,6 @@ namespace LostAndFound.Core.Entities
         //Foreign key tables
         public virtual User User { get; set; }
         public virtual Post Post { get; set; }
+        public ICollection<CommentFlag> CommentFlags { get; set; }
     }
 }

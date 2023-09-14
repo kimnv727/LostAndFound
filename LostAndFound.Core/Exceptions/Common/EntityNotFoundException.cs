@@ -8,6 +8,14 @@ namespace LostAndFound.Core.Exceptions.Common
         {
         }
     }
+    
+    public class EntityNotFoundException<T> : EntityNotFoundException
+    {
+        public EntityNotFoundException() : base(
+            $"{typeof(T).Name} could not be found")
+        {
+        }
+    }
 
     public class EntityWithIDNotFoundException<T> : EntityNotFoundException
     {

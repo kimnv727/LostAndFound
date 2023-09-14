@@ -9,6 +9,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest);
         Task Logout();
-        Task<UserDetailAuthenticateReadDTO> Authenticate(string userId);
+        Task<UserDetailAuthenticateReadDTO> Authenticate(string token, string refreshToken);
     }
 }

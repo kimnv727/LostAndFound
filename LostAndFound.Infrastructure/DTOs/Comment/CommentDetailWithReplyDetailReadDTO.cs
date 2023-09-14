@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LostAndFound.Infrastructure.DTOs.Comment
 {
@@ -11,8 +12,7 @@ namespace LostAndFound.Infrastructure.DTOs.Comment
         public string CommentPath { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
-        
-        //TODO: Read comment Reply too
+        public ICollection<CommentReadDTO> Comments { get; set; }
 
     }
 }

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Infrastructure.DTOs.Post;
+using LostAndFound.Infrastructure.DTOs.PostBookmark;
+using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -21,11 +24,16 @@ namespace LostAndFound.API.Controllers
     {
         private readonly IPostService _postService;
         private readonly IPostMediaService _postMediaService;
+        private readonly IPostBookmarkService _postBookmarkService;
+        private readonly IPostFlagService _postFlagService;
 
-        public PostController(IPostService postService, IPostMediaService postMediaService)
+        public PostController(IPostService postService, IPostMediaService postMediaService,
+            IPostBookmarkService postBookmarkService, IPostFlagService postFlagService)
         {
             _postService = postService;
             _postMediaService = postMediaService;
+            _postBookmarkService = postBookmarkService;
+            _postFlagService = postFlagService;
         }
 
         /// <summary>
@@ -127,6 +135,13 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdatePost(int postId, PostUpdateDTO postUpdateWriteDTO)
         {
+            //check Authorization 
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var postCheck = await _postService.GetPostByIdAsync(postId);
+            if (stringId != postCheck.PostUserId)
+            {
+                throw new UnauthorizedException();
+            }
             var post = await _postService.UpdatePostDetailsAsync(postId, postUpdateWriteDTO);
             return ResponseFactory.Ok(post);
         }
@@ -173,6 +188,12 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> DeletePost([Required] int postId)
         {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var postCheck = await _postService.GetPostByIdAsync(postId);
+            if (stringId != postCheck.PostUserId)
+            {
+                throw new UnauthorizedException();
+            }
             await _postService.DeletePostAsync(postId);
             return ResponseFactory.NoContent();
         }
@@ -227,6 +248,138 @@ namespace LostAndFound.API.Controllers
         {
             await _postMediaService.DeletePostMedia(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, postId, mediaId);
             return ResponseFactory.NoContent();
+        }
+        
+        /// <summary>
+        /// Get total number of Post Bookmark of a Post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("count-post-bookmark/{postId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CountPostBookmarkOfAPost(int postId)
+        {
+            return ResponseFactory.Ok(await _postBookmarkService.CountPostBookmarkAsync(postId));
+        }
+        
+        /// <summary>
+        /// Get Post Bookmark Detail
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("get-post-bookmark")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostBookmarkReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetPostBookmark(string userId, int postId)
+        {
+            var postBookmark = await _postBookmarkService.GetPostBookmark(userId, postId);
+
+            return ResponseFactory.Ok(postBookmark);
+        }
+        
+        /// <summary>
+        /// Get all own PostBookmarks
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-own-post-bookmark")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllOwnPostBookmark()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _postBookmarkService.GetOwnPostBookmarkeds(stringId));
+        }
+        
+        /// <summary>
+        /// Bookmark A Post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpPost("bookmark-a-post/{postId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostBookmarkReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> BookmarkAPost(int postId)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var postBookmark = await _postBookmarkService.BookmarkAPost(stringId, postId);
+            
+            return ResponseFactory.CreatedAt(nameof(GetPostBookmark), 
+                nameof(PostController), 
+                new { userId = postBookmark.UserId, postId = postBookmark.Post.Id }, 
+                postBookmark);
+        }
+        
+        /// <summary>
+        /// Get total number of Post Flag of a Post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("count-post-flag/{postId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CountPostFlagOfAPost(int postId)
+        {
+            return ResponseFactory.Ok(await _postFlagService.CountPostFlagAsync(postId));
+        }
+        
+        /// <summary>
+        /// Get Post Flag Detail
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("get-post-flag")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostFlagReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetPostFlag(string userId, int postId)
+        {
+            var postFlag = await _postFlagService.GetPostFlag(userId, postId);
+
+            return ResponseFactory.Ok(postFlag);
+        }
+        
+        /// <summary>
+        /// Get all own PostFlags
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-own-post-flag")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllOwnPostFlag()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _postFlagService.GetOwnPostFlags(stringId));
+        }
+        
+        /// <summary>
+        /// Flag A Post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpPost("flag-a-post/{postId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostFlagReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> FlagAPost(int postId, PostFlagReason reason)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var postFlag = await _postFlagService.FlagAPost(stringId, postId, reason);
+            
+            return ResponseFactory.CreatedAt(nameof(GetPostFlag), 
+                nameof(PostController), 
+                new { userId = postFlag.UserId, postId = postFlag.Post.Id }, 
+                postFlag);
         }
     }
 }

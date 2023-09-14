@@ -4,7 +4,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
+using LostAndFound.Core.Enums;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Infrastructure.DTOs.Comment;
+using LostAndFound.Infrastructure.DTOs.CommentFlag;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Services.Interfaces;
@@ -19,10 +22,12 @@ namespace LostAndFound.API.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
+        private readonly ICommentFlagService _commentFlagService;
 
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, ICommentFlagService commentFlagService)
         {
             _commentService = commentService;
+            _commentFlagService = commentFlagService;
         }
         
         /// <summary>
@@ -40,23 +45,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(comment);
         }
-        
-        /// <summary>
-        /// Get comment's details with reply by id
-        /// </summary>
-        /// <param name="commentId"></param>
-        /// <returns></returns>
-        [HttpGet("get-with-reply/{commentId}")]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentDetailWithReplyDetailReadDTO>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetCommentWithReply(int commentId)
-        {
-            var comment = await _commentService.GetCommentWithReplyByIdAsync(commentId);
 
-            return ResponseFactory.Ok(comment);
-        }
-        
         /// <summary>
         /// Get all comment by postId
         /// </summary>
@@ -162,28 +151,16 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateComment(int commentId, CommentUpdateDTO commentUpdateWriteDTO)
         {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var commentCheck = await _commentService.GetCommentByIdAsync(commentId);
+            if (stringId != commentCheck.CommentUserId)
+            {
+                throw new UnauthorizedException();
+            }
             var comment = await _commentService.UpdateCommentDetailsAsync(commentId, commentUpdateWriteDTO);
             return ResponseFactory.Ok(comment);
         }
-        
-        /*/// <summary>
-        /// Change comment's status
-        /// </summary>
-        /// <remarks></remarks>
-        /// <param name="commentId"></param>
-        /// <returns></returns>
-        [HttpPatch("{commentId}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ChangeCommentStatus(int commentId)
-        {
-            await _commentService.UpdateCommentStatusAsync(commentId);
 
-            return ResponseFactory.NoContent();
-        }*/
-        
         /// <summary>
         /// Delete Comment (soft)
         /// </summary>
@@ -195,8 +172,80 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> DeleteComment([Required] int commentId)
         {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var commentCheck = await _commentService.GetCommentByIdAsync(commentId);
+            if (stringId != commentCheck.CommentUserId)
+            {
+                throw new UnauthorizedException();
+            }
             await _commentService.DeleteCommentAsync(commentId);
             return ResponseFactory.NoContent();
+        }
+        
+        /// <summary>
+        /// Get total number of Comment Flag of a Comment
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <returns></returns>
+        [HttpGet("count-comment-flag/{commentId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CountCommentFlagOfAPost(int commentId)
+        {
+            return ResponseFactory.Ok(await _commentFlagService.CountCommentFlagAsync(commentId));
+        }
+        
+        /// <summary>
+        /// Get Comment Flag Detail
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="commentId"></param>
+        /// <returns></returns>
+        [HttpGet("get-comment-flag")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentFlagReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetCommentFlag(string userId, int commentId)
+        {
+            var commentFlag = await _commentFlagService.GetCommentFlag(userId, commentId);
+
+            return ResponseFactory.Ok(commentFlag);
+        }
+        
+        /// <summary>
+        /// Get all own CommentFlags
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-own-comment-flag")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllOwnCommentFlag()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _commentFlagService.GetOwnCommentFlags(stringId));
+        }
+        
+        /// <summary>
+        /// Flag A Comment
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <returns></returns>
+        [HttpPost("flag-a-comment/{commentId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentFlagReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> FlagAComment(int commentId, CommentFlagReason reason)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var commentFlag = await _commentFlagService.FlagAComment(stringId, commentId, reason);
+            
+            return ResponseFactory.CreatedAt(nameof(GetCommentFlag), 
+                nameof(CommentController), 
+                new { userId = commentFlag.UserId, commentId = commentFlag.Comment.Id }, 
+                commentFlag);
         }
     }
 }

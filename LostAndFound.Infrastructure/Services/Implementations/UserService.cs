@@ -80,7 +80,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Create User on Firebase
             try
             {
-                //TODO:Check ìf email existed on Firebase here
+                //Check ìf email existed on Firebase here
+                var result = await _firebaseAuth.FetchSignInMethodsForEmailAsync(userWriteDTO.Email);
+                if (result.UserExists)
+                {
+                    throw new EmailAlreadyUsedException();
+                } 
+                //Create User on Firebase
                 var userCredentials = await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(userWriteDTO.Email, userWriteDTO.Password);
                 if (userCredentials != null)
                 {
@@ -101,15 +107,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 else
                 {
                     //Fail to Create User on Firebase
-                    //TODO: Placeholder Exception
-                    return null;
+                    throw new FailToCreateUserException();
                 }
             }
             catch (Exception e)
             {
                 //Email already existed on Firebase
-                //throw new EmailAlreadyUsedException();
-                throw new Exception();
+                throw new EmailAlreadyUsedException();
             }
         }
 
@@ -134,20 +138,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             return _mapper.Map<UserDetailsReadDTO>(user);
         }
-        
-        /*//Update using UpdateWriteDTO
-        public async Task<UserDetailsReadDTO> UpdateUserDetailsAsync(string id, UserWriteDTO writeDTO)
-        {
-            var user = await _userRepository.FindUserByID(id);
-            if (user == null)
-            {
-                throw new EntityWithIDNotFoundException<User>(id);
-            }
-            
-            _mapper.Map(writeDTO, user);
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<UserDetailsReadDTO>(user);
-        }*/
 
         public async Task<UserDetailsReadDTO> UpdateUserPasswordAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO)
         {

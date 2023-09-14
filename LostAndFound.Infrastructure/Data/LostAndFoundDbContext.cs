@@ -57,6 +57,12 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<Post> Posts { get; set; }
         //Comment
         public virtual DbSet<Comment> Comments { get; set; }
+        //Post Bookmark
+        public virtual DbSet<PostBookmark> PostBookmarks { get; set; }
+        //Post Flag
+        public virtual DbSet<PostFlag> PostFlags { get; set; }
+        //Comment Flag
+        public virtual DbSet<CommentFlag> CommentFlags { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +70,9 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<UserMedia>().HasKey(um => new { um.UserId, um.MediaId });
             modelBuilder.Entity<ItemMedia>().HasKey(im => new { im.ItemId, im.MediaId });
             modelBuilder.Entity<PostMedia>().HasKey(pm => new { pm.PostId, pm.MediaId });
+            modelBuilder.Entity<PostBookmark>().HasKey(pb => new { pb.PostId, pb.UserId });
+            modelBuilder.Entity<PostFlag>().HasKey(pl => new { pl.PostId, pl.UserId });
+            modelBuilder.Entity<CommentFlag>().HasKey(cf => new { cf.CommentId, cf.UserId });
 
 
             modelBuilder.Entity<Role>()

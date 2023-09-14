@@ -22,7 +22,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false)
         {
-            IQueryable<User> users = _context.Users.Where(u => u.IsActive == true ).AsSplitQuery();
+            IQueryable<User> users = _context.Users.Include(u => u.Role).Where(u => u.IsActive == true ).AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -80,7 +80,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQuery query, bool trackChanges = false)
         {
-            IQueryable<User> users = _context.Users.AsSplitQuery();
+            IQueryable<User> users = _context.Users.Include(u => u.Role).AsSplitQuery();
 
             if (!trackChanges)
             {

@@ -10,7 +10,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task DeleteCommentAsync(int commentId);
         Task<CommentDetailReadDTO> GetCommentByIdAsync(int commentId);
         Task<CommentDetailReadDTO> GetCommentIgnoreStatusByIdAsync(int commentId);
-        Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId);
+        //Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId);
         Task<PaginatedResponse<CommentReadDTO>> GetAllCommentByPostIdAsync(int postId);
         Task<PaginatedResponse<CommentReadDTO>> QueryCommentAsync(CommentQuery query);
         Task<PaginatedResponse<CommentReadDTO>> QueryCommentIgnoreStatusAsync(CommentQuery query);

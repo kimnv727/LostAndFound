@@ -46,7 +46,7 @@ namespace LostAndFound.Core.Entities
         //Foreign key tables
         public virtual User User { get; set; }
         public virtual Location Location { get; set; }
-        public ICollection<ItemMedia> PostMedias { get; set; }
+        public ICollection<ItemMedia> ItemMedias { get; set; }
 
 
     }

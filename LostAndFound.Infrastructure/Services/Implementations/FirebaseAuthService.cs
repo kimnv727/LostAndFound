@@ -6,6 +6,7 @@ using Firebase.Auth;
 using Firebase.Auth.Providers;
 using FirebaseAdmin.Auth;
 using LostAndFound.Core.Exceptions.Authenticate;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
@@ -50,37 +51,38 @@ namespace LostAndFound.API.Authentication
                     }
                     else
                     {
-                        //TODO: Make custom Exception
                         //Either Wrong Email or Password
-                        //PlaceHolderException
-                        throw new Exception();
+                        throw new WrongCredentialsException();
                     }
                 }
                 else
                 {
                     //User not yet existed
-                    //PlaceHolderException
-                    throw new UnauthorizedException();
+                    throw new WrongCredentialsException();
                 }
             }
             catch (Exception e)
             {
                 //Catch Wrong Email or Password 
-                //PlaceHolderException
-                throw new UnauthorizedException();
+                throw new WrongCredentialsException();
             }
         }
     
         public async Task Logout() => _firebaseAuth.SignOut(); 
         
-        public async Task<UserDetailAuthenticateReadDTO> Authenticate(string userId)
+        public async Task<UserDetailAuthenticateReadDTO> Authenticate(string token, string refreshToken)
         {
-            /*var user = await _userRepository.FindUserByID(userId);
-            if(user == null)
-            {
-                throw new UnauthorizedException();
-            }
-            return _mapper.Map<UserDetailAuthenticateReadDTO>(user);*/
+            //TODO: Is Password needed?
+            //First
+            //Check if user existed in DB -> If not then create (For GoogleLogin user)
+            //Decode Token -> Get Info
+            FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance
+                .VerifyIdTokenAsync(token);
+            
+            //Create User
+
+            //Second
+            //TODO: To Store Token in DB?
 
             return null;
         }

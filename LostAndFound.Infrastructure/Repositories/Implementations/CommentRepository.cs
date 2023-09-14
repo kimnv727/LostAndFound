@@ -28,12 +28,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }
         
-        public async Task<Comment> FindCommentWithReplyByIdAsync(int id)
+        /*public async Task<Comment> FindCommentWithReplyByIdAsync(int id)
         {
             //Still get deleted one
-            //TODO: Return reply
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
-        }
+        }*/
 
         public async Task<IEnumerable<Comment>> FindAllCommentsByPostIdAsync(int postId)
         {
@@ -57,9 +56,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Comment>> QueryCommentAsync(CommentQuery query, bool trackChanges = false)
         {
-            //TODO: query comment by date?
             IQueryable<Comment> comments = _context.Comments.Where(c => c.DeletedDate == null).AsSplitQuery();
-            //IQueryable<Comment> comments = _context.Comments.AsSplitQuery();
             if (!trackChanges)
             {
                 comments = comments.AsNoTracking();
@@ -82,9 +79,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             
             if (!string.IsNullOrWhiteSpace(query.CommentPath))
             {
-                comments = comments.Where(c => c.CommentPath.Trim().StartsWith(query.CommentPath.Trim()));
+                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
             }
 
+            if (query.FromDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate >= query.FromDate);
+            }
+            
+            if (query.ToDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate <= query.ToDate);
+            }
+            
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
                 comments = comments.OrderBy(query.OrderBy);
@@ -95,7 +102,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Comment>> QueryCommentIgnoreStatusAsync(CommentQuery query, bool trackChanges = false)
         {
-            //TODO: query comment by date?
             IQueryable<Comment> comments = _context.Comments.AsSplitQuery();
 
             if (!trackChanges)
@@ -120,7 +126,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             
             if (!string.IsNullOrWhiteSpace(query.CommentPath))
             {
-                comments = comments.Where(c => c.CommentPath.Trim().StartsWith(query.CommentPath.Trim()));
+                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
+            }
+            
+            if (query.FromDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate >= query.FromDate);
+            }
+            
+            if (query.ToDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate <= query.ToDate);
             }
 
             if (!string.IsNullOrWhiteSpace(query.OrderBy))

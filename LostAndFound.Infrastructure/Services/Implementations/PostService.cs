@@ -63,7 +63,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task<PostDetailWithCommentsReadDTO> GetPostByIdAsync(int postId)
         {
-            var post = await _postRepository.FindPostByIdAsync(postId);
+            var post = await _postRepository.FindPostIncludeDetailsAsync(postId);
 
             if (post == null)
             {

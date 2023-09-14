@@ -89,7 +89,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CommentDetailReadDTO>(comment);
         }
         
-        public async Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId)
+        /*public async Task<CommentDetailWithReplyDetailReadDTO> GetCommentWithReplyByIdAsync(int commentId)
         {
             var comment = await _commentRepository.FindCommentWithReplyByIdAsync(commentId);
 
@@ -99,7 +99,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             return _mapper.Map<CommentDetailWithReplyDetailReadDTO>(comment);
-        }
+        }*/
 
         public async Task<PaginatedResponse<CommentReadDTO>> GetAllCommentByPostIdAsync(int postId)
         {

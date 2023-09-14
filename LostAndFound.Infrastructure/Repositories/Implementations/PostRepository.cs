@@ -30,9 +30,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public Task<Post> FindPostIncludeDetailsAsync(int id)
         {
-            //TODO: Also return comments here
             return _context.Posts
                 .Where(p => p.PostStatus != PostStatus.DELETED)
+                .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -71,6 +71,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
+            if (query.FromDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate >= query.FromDate);
+            }
+            
+            if (query.ToDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate <= query.ToDate);
+            }
+            
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
@@ -126,6 +136,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     posts = posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
                 }
+            }
+            
+            if (query.FromDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate >= query.FromDate);
+            }
+            
+            if (query.ToDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate <= query.ToDate);
             }
             
             if (!string.IsNullOrWhiteSpace(query.SearchText))

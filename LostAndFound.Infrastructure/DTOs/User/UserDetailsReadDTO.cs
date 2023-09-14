@@ -1,5 +1,6 @@
 using System;
 using LostAndFound.Core.Enums;
+using Newtonsoft.Json;
 
 namespace LostAndFound.Infrastructure.DTOs.User
 {
@@ -21,8 +22,8 @@ namespace LostAndFound.Infrastructure.DTOs.User
 
         public string Avatar{ get; set; }
         
-        //TODO: show Role name here
-        public int RoleId { get; set; } 
+        [JsonProperty("role")]
+        public string RoleName {get; set; }
         
         public DateTime CreatedDate{ get; set; }
     }

@@ -27,5 +27,7 @@ namespace LostAndFound.Core.Entities
         public virtual User User { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<PostMedia> PostMedias { get; set; }
+        public ICollection<PostBookmark> PostBookmarks { get; set; }
+        public ICollection<PostFlag> PostFlags { get; set; }
     }
 }

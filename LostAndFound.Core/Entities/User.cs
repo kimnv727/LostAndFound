@@ -52,5 +52,8 @@ namespace LostAndFound.Core.Entities
         public ICollection<Token> Tokens { get; set; }
 
         public ICollection<UserMedia> UserMedias { get; set; }
+        public ICollection<PostBookmark> PostBookmarks { get; set; }
+        public ICollection<PostFlag> PostFlags { get; set; }
+        public ICollection<CommentFlag> CommentFlags { get; set; }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Comment;
+using LostAndFound.Infrastructure.DTOs.CommentFlag;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.Post;
+using LostAndFound.Infrastructure.DTOs.PostBookmark;
+using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
@@ -68,6 +71,15 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Comment, CommentDetailWithReplyDetailReadDTO>();
             CreateMap<CommentWriteDTO, Comment>();
             CreateMap<CommentUpdateDTO, Comment>();
+            
+            //PostBookmark Mapping
+            CreateMap<PostBookmark, PostBookmarkReadDTO>();
+            
+            //PostFlag Mapping
+            CreateMap<PostFlag, PostFlagReadDTO>();
+            
+            //CommentFlag Mapping
+            CreateMap<CommentFlag, CommentFlagReadDTO>();
 
         }
     }

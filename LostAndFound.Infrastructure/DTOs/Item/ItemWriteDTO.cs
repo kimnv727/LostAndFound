@@ -14,8 +14,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public string Description { get; set; }
 
         public string FoundLocation { get; set; }
-
-        public bool? IsActive { get; set; }
+        
 
     }
 }

@@ -121,6 +121,24 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(item);
         }
  
+        ///<summary>
+        /// Create new item
+        /// </summary>
+        /// <param name="writeDTO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ItemReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        public async Task<IActionResult> CreatePost(ItemWriteDTO writeDTO)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _itemService.CreateItemAsync(stringId, writeDTO);
+
+            return ResponseFactory.Ok(result);
+        }
+        
         /// <summary>
         /// Soft delete an item
         /// </summary>

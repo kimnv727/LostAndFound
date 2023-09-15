@@ -18,6 +18,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<bool> CheckItemFounderAsync(int itemId, string userId);
 
         Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO);
+        public Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO);
 
     }
 }

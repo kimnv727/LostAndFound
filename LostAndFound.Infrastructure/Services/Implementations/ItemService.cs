@@ -7,6 +7,7 @@ using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
 using System.Threading.Tasks;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -15,12 +16,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IItemRepository _itemRepository;
-
-        public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository)
+        private readonly IUserRepository _userRepository;
+        public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _itemRepository = itemRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQuery query)
@@ -60,6 +62,24 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 item.DeletedDate = null;
             }*/
             await _unitOfWork.CommitAsync();
+
+        }
+
+        public async Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO)
+        {
+            //Check if user exist
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            
+            var item = _mapper.Map<Item>(itemWriteDTO);
+            item.FoundUserId = user.Id;
+            item.ItemStatus = ItemStatus.PENDING;
+            await _unitOfWork.CommitAsync();
+            await _itemRepository.AddAsync(item);
+            return _mapper.Map<ItemReadDTO>(item);
 
         }
 

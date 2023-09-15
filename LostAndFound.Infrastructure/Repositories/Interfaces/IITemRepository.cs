@@ -10,7 +10,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IGetAllAsync<Item>,
         IDelete<Item>,
         IUpdate<Item>,
-        IFindAsync<Item>
+        IFindAsync<Item>,
+        IAddAsync<Item>
     {
         
         Task<Item> FindItemByIdAsync(int ItemId);

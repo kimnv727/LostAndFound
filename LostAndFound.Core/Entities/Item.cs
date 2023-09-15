@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Item : IAuditedEntity, ISoftDeleteEntity
+    public class Item 
     {
         [Key]
         public int Id { get; set; }
@@ -26,28 +26,18 @@ namespace LostAndFound.Core.Entities
         
         public int CategoryId { get; set; }
 
-        //Status = Found / Active / Returned / Closed
+        //Status = Pending / Active / Returned / Closed
         public ItemStatus ItemStatus { get; set; }
 
         public DateTime FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
 
-        public Guid? CreatedBy { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
-        public Guid? UpdatedBy { get; set; }
-
-        public DateTime? DeletedDate { get; set; }
-
-        public Guid? DeletedBy { get; set; }
 
         //Foreign key tables
         public virtual User User { get; set; }
         public virtual Location Location { get; set; }
         public ICollection<ItemMedia> ItemMedias { get; set; }
-
-
+        
     }
 }

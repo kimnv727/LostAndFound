@@ -5,6 +5,7 @@ namespace LostAndFound.Core.Enums
         PENDING,
         ACTIVE,
         DELETED,
-        CLOSED
+        CLOSED,
+        REJECTED
     }
 }

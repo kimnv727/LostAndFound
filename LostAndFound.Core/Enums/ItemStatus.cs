@@ -2,16 +2,18 @@ namespace LostAndFound.Core.Enums
 {
     public enum ItemStatus
     {
-        FOUND,
+        PENDING,
         ACTIVE,
         RETURNED,
-        CLOSED
+        CLOSED,
+        REJECTED
         /*
          *  
-            found: có người lụm đồ & report lại
+            pending: item chờ admin duyệt
             active: chờ người claim hoặc báo tìm đc
             returned: đã có claim & trả lại
             closed: ko ai nhận & hết thời gian giữ
+            rejected: admin không approve post
          * 
          */
     }

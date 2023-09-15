@@ -37,7 +37,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 locations = locations.AsNoTracking();
             }
             
-
             return await Task.FromResult(locations.ToList());
         }
     }

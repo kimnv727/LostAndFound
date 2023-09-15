@@ -69,6 +69,23 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(location);
         }
         
+        ///<summary>
+        /// Create new location
+        /// </summary>
+        /// <param name="writeDTO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<LocationReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        public async Task<IActionResult> CreatePost(LocationWriteDTO writeDTO)
+        {
+            var result = await _locationService.CreateItemAsync(writeDTO);
+
+            return ResponseFactory.Ok(result);
+        }
+        
         /// <summary>
         /// Soft delete a location
         /// </summary>

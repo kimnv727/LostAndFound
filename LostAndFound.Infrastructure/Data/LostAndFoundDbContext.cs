@@ -83,6 +83,10 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)
                 .HasDefaultValue(true);
+            
+            modelBuilder.Entity<Location>()
+                .Property(l => l.IsActive)
+                .HasDefaultValue(true);
 
             modelBuilder.Entity<Media>()
                 .Property(m => m.IsActive).HasDefaultValue(true);

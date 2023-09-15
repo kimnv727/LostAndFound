@@ -10,6 +10,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task DeleteLocationAsync(int LocationId);
         public Task<LocationReadDTO> FindLocationByIdAsync(int LocationId);
         public Task<LocationReadDTO> UpdateLocationDetailsAsync(int LocationId, LocationWriteDTO LocationWriteDTO);
-        
+        public Task<LocationReadDTO> CreateItemAsync(LocationWriteDTO locationWriteDTO);
     }
 }

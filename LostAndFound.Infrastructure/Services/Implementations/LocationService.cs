@@ -3,6 +3,7 @@ using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Common;
+using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.Repositories.Implementations;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
@@ -40,6 +41,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             
             return _mapper.Map<LocationReadDTO>(Location);
+        }
+        
+        public async Task<LocationReadDTO> CreateItemAsync(LocationWriteDTO locationWriteDTO)
+        {
+            var location = _mapper.Map<Location>(locationWriteDTO);
+            await _locationRepository.AddAsync(location);
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<LocationReadDTO>(location);
+
         }
         
         public async Task DeleteLocationAsync(int LocationId)

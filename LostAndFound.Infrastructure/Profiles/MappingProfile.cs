@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.Category;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.CommentFlag;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
+using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.PostBookmark;
@@ -47,10 +49,11 @@ namespace LostAndFound.Infrastructure.Profiles
             //Item Mapping
             CreateMap<Item, ItemReadDTO>();
             CreateMap<ItemWriteDTO, Item>();
+            CreateMap<ItemUpdateDTO, Item>();
 
             //Category Mapping
-            //CreateMap<Category, CategoryReadDTO>();
-            //CreateMap<CategoryWriteDTO, Category>();
+            CreateMap<Category, CategoryReadDTO>();
+            CreateMap<CategoryWriteDTO, Category>();
 
             //Violation Report Mapping
             CreateMap<ViolationReportWriteDTO, ViolationReport>();
@@ -80,7 +83,12 @@ namespace LostAndFound.Infrastructure.Profiles
             
             //CommentFlag Mapping
             CreateMap<CommentFlag, CommentFlagReadDTO>();
-
+            
+            //Location Mapping
+            CreateMap<Location, LocationReadDTO>();
+            CreateMap<LocationWriteDTO, Location>();
+            
+            
         }
     }
 }

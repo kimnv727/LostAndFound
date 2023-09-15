@@ -13,7 +13,11 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<ItemReadDTO> FindItemNameAsync(String name);
         Task<DTOs.Common.PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQuery query);
         Task<DTOs.Common.PaginatedResponse<ItemReadDTO>> QueryItemIgnoreStatusAsync(ItemQuery query);
+
         Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemWriteDTO itemWriteDTO);
         Task<bool> CheckItemFounderAsync(int itemId, string userId);
+
+        Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO);
+
     }
 }

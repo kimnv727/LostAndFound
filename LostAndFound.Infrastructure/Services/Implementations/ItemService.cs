@@ -35,6 +35,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
 
+        public Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemWriteDTO itemWriteDTO)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task UpdateItemStatusAsync(int itemId)
         {
             var item = await _itemRepository.FindItemByIdAsync(itemId);
@@ -82,7 +87,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ItemReadDTO>(item);
         }
 
-        public async Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemWriteDTO itemWriteDTO)
+        public async Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO)
         {
             var item = await _itemRepository.FindItemByIdAsync(itemId);
             if (item == null)
@@ -90,7 +95,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
 
-            _mapper.Map(itemWriteDTO, item);
+            _mapper.Map(itemUpdateDTO, item);
             await _unitOfWork.CommitAsync();
             return _mapper.Map<ItemReadDTO>(item);
         }

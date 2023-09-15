@@ -103,7 +103,24 @@ namespace LostAndFound.API.Controllers
             await _itemService.UpdateItemStatusAsync(itemId);
             return ResponseFactory.NoContent();
         }
+        
+        ///<summary>
+        /// Update item information
+        /// </summary>
+        /// <remarks>Update Item's information</remarks>
+        /// <returns></returns>
+        [HttpPut("{itemId:int}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO updateDTO)
+        {
+            var item = await _itemService.UpdateItemDetailsAsync(itemId, updateDTO);
 
+            return ResponseFactory.Ok(item);
+        }
+ 
         /// <summary>
         /// Soft delete an item
         /// </summary>

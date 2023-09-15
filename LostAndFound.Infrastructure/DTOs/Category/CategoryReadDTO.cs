@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.Category
 {
-    public class CategoryReadDTO
+    public class CategoryReadDTO 
     {
         public Guid Id { get; set; }
 

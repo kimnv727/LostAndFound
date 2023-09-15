@@ -51,18 +51,22 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<CategoryGroup> CategoryGroups { get; set; }
         //Location table
         public virtual DbSet<Location> Locations { get; set; }
-        //Property
+        //Property table
         public virtual DbSet<Property> Properties { get; set; }
-        //Post
+        //Post table
         public virtual DbSet<Post> Posts { get; set; }
-        //Comment
+        //Comment table
         public virtual DbSet<Comment> Comments { get; set; }
-        //Post Bookmark
+        //Post Bookmark table
         public virtual DbSet<PostBookmark> PostBookmarks { get; set; }
-        //Post Flag
+        //Post Flag table
         public virtual DbSet<PostFlag> PostFlags { get; set; }
-        //Comment Flag
+        //Comment Flag table
         public virtual DbSet<CommentFlag> CommentFlags { get; set; }
+        //Item Bookmark table
+        public virtual DbSet<ItemBookmark> ItemBookMarks { get; set; }
+        //Item Flag table
+        public virtual DbSet<ItemFlag> ItemFlags { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,8 +77,9 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<PostBookmark>().HasKey(pb => new { pb.PostId, pb.UserId });
             modelBuilder.Entity<PostFlag>().HasKey(pl => new { pl.PostId, pl.UserId });
             modelBuilder.Entity<CommentFlag>().HasKey(cf => new { cf.CommentId, cf.UserId });
-
-
+            modelBuilder.Entity<ItemFlag>().HasKey(itf => new { itf.ItemId, itf.UserId });
+            modelBuilder.Entity<ItemBookmark>().HasKey(ib => new { ib.ItemId, ib.UserId });
+            
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)
                 .HasDefaultValue(true);

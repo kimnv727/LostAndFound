@@ -19,7 +19,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         public int Floor { get; set; }
         
-        //nchar?
+        
         [Required]
         public bool? IsActive { get; set; }
         
@@ -27,7 +27,7 @@ namespace LostAndFound.Core.Entities
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         
-        //Foreign key tables
+        
         public virtual Property Property { get; set; }  
     }
 }

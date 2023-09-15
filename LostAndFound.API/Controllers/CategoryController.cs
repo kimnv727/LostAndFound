@@ -1,11 +1,11 @@
 ﻿using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
-using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LostAndFound.Infrastructure.DTOs.Category;
 
 namespace LostAndFound.API.Controllers
 {
@@ -13,23 +13,25 @@ namespace LostAndFound.API.Controllers
     [ApiController]
     public class CategoryController : Controller
     {
-        //private readonly ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
 
-        /*public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService)
         {
-            //_categoryService = categoryService
-        }*/
+            _categoryService = categoryService;
+        }
 
         /// <summary>
         /// Query Categories with pagination
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [QueryResponseCache(typeof(ItemQuery))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
-        public async Task<IActionResult> Query([FromQuery] ItemQuery query)
+        [QueryResponseCache(typeof(CategoryQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryQuery>>))]
+        public async Task<IActionResult> Query([FromQuery] CategoryQuery query)
         {
-            return null;
+            var paginatedCategoryDTO = await _categoryService.QueryCategoryAsync(query);
+
+            return ResponseFactory.PaginatedOk(paginatedCategoryDTO);
         }
 
         

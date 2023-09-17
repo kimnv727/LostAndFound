@@ -47,7 +47,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(currentAvatar != null)
             {
                 currentAvatar.Media.IsActive = false;
-                currentAvatar.Media.DeletedBy = user.Id;
                 currentAvatar.Media.DeletedDate = DateTime.Now.ToVNTime();
                 await _unitOfWork.CommitAsync();
             }
@@ -63,7 +62,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     Name = file.FileName,
                     Description = "Avatar of " + user.Email,
                     URL = result.Url,
-                    CreatedBy = user.Id
                 }
             };
 

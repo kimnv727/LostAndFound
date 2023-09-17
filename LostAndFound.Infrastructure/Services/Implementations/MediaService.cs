@@ -142,7 +142,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 media.IsActive = true;
                 media.DeletedDate = null;
-                media.DeletedBy = null;
             }
             await _unitOfWork.CommitAsync();
         }

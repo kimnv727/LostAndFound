@@ -9,7 +9,7 @@ using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
-    public class CategoryGroup : IAuditedEntity, ISoftDeleteEntity
+    public class CategoryGroup 
     {
 
         [Key]
@@ -20,12 +20,6 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         public string Description { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
-        public DateTime? DeletedDate { get; set; }
 
     }
 }

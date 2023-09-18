@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Category : IAuditedEntity, ISoftDeleteEntity
+    public class Category 
     {
         [Key]
         public int Id { get; set; }
@@ -22,11 +22,5 @@ namespace LostAndFound.Core.Entities
 
         [ForeignKey("CategoryGroup")]
         public int CategoryGroupId { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
-        public DateTime? DeletedDate { get; set; }
     }
 }

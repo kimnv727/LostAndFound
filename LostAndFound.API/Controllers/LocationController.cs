@@ -52,6 +52,20 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(location);
         }
         
+        /// <summary>
+        /// Get Location by name
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("name/{locationName}")]
+        [QueryResponseCache(typeof(LocationQuery))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetLocationByName([Required] string locationName)
+        {
+            var item = await _locationService.FindLocationByNameAsync(locationName);
+
+            return ResponseFactory.Ok(item);
+        }
+        
         ///<summary>
         /// Update location information
         /// </summary>

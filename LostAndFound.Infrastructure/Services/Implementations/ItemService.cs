@@ -77,8 +77,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var item = _mapper.Map<Item>(itemWriteDTO);
             item.FoundUserId = user.Id;
             item.ItemStatus = ItemStatus.PENDING;
-            await _unitOfWork.CommitAsync();
             await _itemRepository.AddAsync(item);
+            await _unitOfWork.CommitAsync();
             return _mapper.Map<ItemReadDTO>(item);
 
         }

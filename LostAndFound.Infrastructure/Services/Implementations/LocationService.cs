@@ -43,6 +43,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<LocationReadDTO>(Location);
         }
         
+        public async Task<LocationReadDTO> FindLocationByNameAsync(string locationName)
+        {
+            var Location = await _locationRepository.FindLocationByNameAsync(locationName);
+
+            if (Location == null)
+            {
+                throw new EntityWithAttributeNotFoundException<Location>("Location name ", locationName);
+            }
+            
+            return _mapper.Map<LocationReadDTO>(Location);
+        }
+        
         public async Task<LocationReadDTO> CreateItemAsync(LocationWriteDTO locationWriteDTO)
         {
             var location = _mapper.Map<Location>(locationWriteDTO);

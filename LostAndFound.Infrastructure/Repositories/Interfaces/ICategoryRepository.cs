@@ -10,12 +10,15 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IGetAllAsync<Category>,
         IDelete<Category>,
         IUpdate<Category>,
-        IFindAsync<Category>
+        IFindAsync<Category>,
+        IAddAsync<Category>
     {
-        public Task<Category> FindCategoryByIdAsync(int CategoryId);
+        public Task<Category> FindCategoryByIdAsync(int categoryId);
         
-        public Task<Category> FindCategoryByNameAsync(string Name);
+        public Task<Category> FindCategoryByNameAsync(string categoryName);
 
         public Task<IEnumerable<Category>> QueryCategoriesAsync(CategoryQuery query, bool trackChanges = false);
+
+        public Task<Category> GetCategoryWithCategoryGroup(int categoryId);
     }
 }

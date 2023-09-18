@@ -11,6 +11,8 @@ namespace LostAndFound.Infrastructure.DTOs.Item
     public class ItemQuery : PaginatedQuery
     {
 
+        public int Id { get; set; }
+        
         public string FoundUserId { get; set; }
         
         public int LocationId { get; set; }

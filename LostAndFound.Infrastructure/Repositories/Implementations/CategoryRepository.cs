@@ -15,9 +15,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public CategoryRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        public Task<Category> FindCategoryByIdAsync(int CategoryId)
+        public Task<Category> FindCategoryByIdAsync(int categoryId)
         {
-            return _context.Categories.FirstOrDefaultAsync(i => i.Id == CategoryId);
+            return _context.Categories.FirstOrDefaultAsync(i => i.Id == categoryId);
+        }
+        
+        public Task<Category> FindCategoryByNameAsync(string categoryName)
+        {
+            return _context.Categories.FirstOrDefaultAsync
+                (i => i.Name.ToLower().Contains(categoryName.ToLower()));
         }
         
         public Task<Category> GetCategoryWithCategoryGroup(int categoryId)
@@ -26,14 +32,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(c => c.CategoryGroupId) 
                 .FirstOrDefaultAsync(c => c.Id == categoryId);
         }
-
-
-        public Task<Category> FindCategoryByNameAsync(string Name)
-        {
-            return _context.Categories.FirstOrDefaultAsync
-                (i => i.Name.ToLower().Contains(Name.ToLower()));
-        }
-
+        
         public async Task<IEnumerable<Category>> QueryCategoriesAsync(CategoryQuery query, bool trackChanges = false)
         {
             
@@ -61,27 +60,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             }
 
             return await Task.FromResult(categories.ToList());
-        }
-
-        public async Task<IEnumerable<Category>> QueryCategoryIgnoreStatusAsync(CategoryQuery query, bool trackChanges = false)
-        {
-            IQueryable<Category> Categories = _context.Categories.AsSplitQuery();
-
-            if (!trackChanges)
-            {
-                Categories = Categories.AsNoTracking();
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.Name))
-            {
-                Categories = Categories.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
-            }
-            if (!string.IsNullOrWhiteSpace(query.Description))
-            {
-                Categories = Categories.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
-            }
-
-            return await Task.FromResult(Categories.ToList());
         }
     }
 }

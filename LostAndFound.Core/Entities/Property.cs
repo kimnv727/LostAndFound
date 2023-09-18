@@ -5,7 +5,7 @@ using LostAndFound.Core.Entities.Common;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Property : IAuditedEntity, ISoftDeleteEntity
+    public class Property
     {
         [Key]
         public int Id { get; set; }
@@ -19,8 +19,5 @@ namespace LostAndFound.Core.Entities
         [Required]
         public bool? IsActive { get; set; }
         
-        public DateTime CreatedDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
-        public DateTime? DeletedDate { get; set; }
     }
 }

@@ -47,7 +47,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Query Items ignoring IsActive status with pagination
+        /// Query Items by Item status with pagination
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
@@ -76,7 +76,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Find Item by name
+        /// Get Item by name
         /// </summary>
         /// <returns></returns>
         [HttpGet("name/{name}")]

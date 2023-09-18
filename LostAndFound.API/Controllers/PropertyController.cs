@@ -13,12 +13,12 @@ namespace LostAndFound.API.Controllers
     [ApiController]
     public class PropertyController : Controller
     {
-        //private readonly ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
 
-        /*public CategoryController(ICategoryService categoryService)
+        public PropertyController(ICategoryService categoryService)
         {
             //_categoryService = categoryService
-        }*/
+        }
 
         /// <summary>
         /// Query Properties

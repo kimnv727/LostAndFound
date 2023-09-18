@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.Category;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Category;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
@@ -17,12 +19,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICategoryRepository _categoryRepository;
-        
-        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+        private readonly IUserRepository _userRepository;
+
+        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork, ICategoryRepository categoryRepository, IUserRepository userRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<PaginatedResponse<CategoryReadDTO>> QueryCategoryAsync(CategoryQuery query)
@@ -41,6 +45,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Category>(categoryId);
             }
             
+            return _mapper.Map<CategoryReadDTO>(category);
+        }
+
+        public async Task<CategoryReadDTO> FindCategoryByNameAsync(string categoryName)
+        {
+            var category = await _categoryRepository.FindCategoryByNameAsync(categoryName);
+
+            if (category == null)
+            {
+                throw new EntityWithAttributeNotFoundException<Category>("name ", categoryName);
+            }
+
             return _mapper.Map<CategoryReadDTO>(category);
         }
         
@@ -67,6 +83,29 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             _mapper.Map(categoryWriteDTO, category);
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<CategoryReadDTO>(category);
+        }
+
+        public async Task<CategoryReadDTO> CreateCategoryAsync(string userId, CategoryWriteDTO categoryWriteDTO)
+        {
+            //Check if user exist
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            
+            //Check name
+            var category = await _categoryRepository.FindCategoryByNameAsync(categoryWriteDTO.Name);
+
+            if (category != null)
+            {
+                throw new CategoryNameAlreadyUsedException();
+            }
+
+            category = _mapper.Map<Category>(categoryWriteDTO);
+            await _categoryRepository.AddAsync(category);
             await _unitOfWork.CommitAsync();
             return _mapper.Map<CategoryReadDTO>(category);
         }

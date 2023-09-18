@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Category;
+using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.CommentFlag;
 using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.ItemBookmark;
+using LostAndFound.Infrastructure.DTOs.ItemFlag;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.Media;
@@ -11,6 +14,7 @@ using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.PostBookmark;
 using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
+using LostAndFound.Infrastructure.DTOs.Property;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
@@ -54,6 +58,14 @@ namespace LostAndFound.Infrastructure.Profiles
             //Category Mapping
             CreateMap<Category, CategoryReadDTO>();
             CreateMap<CategoryWriteDTO, Category>();
+            
+            //Category Group Mapping
+            CreateMap<CategoryGroup, CategoryGroupReadDTO>();
+            CreateMap<CategoryGroupWriteDTO, CategoryGroup>();
+            
+            //Property Mapping
+            CreateMap<Property, PropertyReadDTO>();
+            CreateMap<PropertyWriteDTO, Property>();
 
             //Violation Report Mapping
             CreateMap<ViolationReportWriteDTO, ViolationReport>();
@@ -80,6 +92,12 @@ namespace LostAndFound.Infrastructure.Profiles
             
             //PostFlag Mapping
             CreateMap<PostFlag, PostFlagReadDTO>();
+            
+            //ItemFlag Mapping
+            CreateMap<ItemFlag, ItemFlagReadDTO>();
+            
+            //ItemBookmark Mapping
+            CreateMap<ItemBookmark, ItemBookmarkReadDTO>();
             
             //CommentFlag Mapping
             CreateMap<CommentFlag, CommentFlagReadDTO>();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LostAndFound.API.Filters;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
+using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,20 +26,26 @@ namespace LostAndFound.API.Controllers
             _authService = authService;
         }
 
-        /*/// <summary>
+        /// <summary>
         /// Authenticate
         /// </summary>
+        /// /// <remarks></remarks>
+        /// <param name="uid"></param>
+        /// <param name="email"></param>
+        /// <param name="name"></param>
+        /// <param name="avatar"></param>
+        ///  <param name="phone"></param>
         /// <returns>UserDetailsReadDTO</returns>
         [HttpGet("authenticate")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Authenticate()
+        public async Task<IActionResult> Authenticate(string uid, string email, string name, string avatar, string phone)
         {
-            return ResponseFactory.Ok(await _authService.Authenticate(
-                new Guid(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value))
-            );
-        }*/
+            var result = await _authService.Authenticate(uid, email, name, avatar, phone);
+
+            return ResponseFactory.Ok(result);
+        }
 
         /// <summary>
         /// Login with email and password for Manager + Admin

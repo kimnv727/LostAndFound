@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Firebase.Auth;
-using Firebase.Auth.Providers;
 using FirebaseAdmin.Auth;
-using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.User;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
+using User = LostAndFound.Core.Entities.User;
 
 namespace LostAndFound.API.Authentication
 {
@@ -70,21 +69,38 @@ namespace LostAndFound.API.Authentication
     
         public async Task Logout() => _firebaseAuth.SignOut(); 
         
-        public async Task<UserDetailAuthenticateReadDTO> Authenticate(string token, string refreshToken)
+        public async Task<UserDetailAuthenticateReadDTO> Authenticate(string uid, string email, string name,
+            string avatar, string phone)
         {
-            //TODO: Is Password needed?
-            //First
             //Check if user existed in DB -> If not then create (For GoogleLogin user)
-            //Decode Token -> Get Info
-            FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance
-                .VerifyIdTokenAsync(token);
-            
-            //Create User
-
-            //Second
-            //TODO: To Store Token in DB?
-
-            return null;
+            var user = await _userRepository.FindUserByID(uid);
+            if (user != null)
+            {
+                return _mapper.Map<UserDetailAuthenticateReadDTO>(user);
+            }
+            else
+            {
+                //create User
+                var newUser = new User()
+                {
+                    Id = uid,
+                    Email = email,
+                    Password = "",
+                    IsActive = true,
+                    Avatar = avatar,
+                    FirstName = name,
+                    LastName = " ",
+                    //default to male
+                    Gender = Core.Enums.Gender.Male,
+                    Phone = phone,
+                    //User role
+                    RoleId = 3,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                await _userRepository.AddAsync(newUser);
+                await _unitOfWork.CommitAsync();
+                return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
+            }
         }
     }
 }

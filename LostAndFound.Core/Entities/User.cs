@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LostAndFound.Core.Entities
 {
-    public class User : ICreatedEntity, ITextSearchableEntity
+    public class User : IAuditedEntity, ISoftDeleteEntity
     {
         [Key]
         [Required]
@@ -40,6 +40,8 @@ namespace LostAndFound.Core.Entities
         public bool IsActive { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
         //public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights { get; }
         public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights => new Dictionary<Func<string>, double>()
         {
@@ -55,6 +57,5 @@ namespace LostAndFound.Core.Entities
         public ICollection<PostBookmark> PostBookmarks { get; set; }
         public ICollection<PostFlag> PostFlags { get; set; }
         public ICollection<CommentFlag> CommentFlags { get; set; }
-        //TODO: Add deletedate
     }
 }

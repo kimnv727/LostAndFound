@@ -25,7 +25,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Query Categories with pagination
+        /// Query categories with pagination
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -42,12 +42,12 @@ namespace LostAndFound.API.Controllers
         /// Get Category By Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("id/{CategoryId}")]
+        [HttpGet("id/{categoryId}")]
         [QueryResponseCache(typeof(CategoryQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> FindCategoryById([Required] int CategoryId)
+        public async Task<IActionResult> FindCategoryById([Required] int categoryId)
         {
-            var category = await _categoryService.FindCategoryByIdAsync(CategoryId);
+            var category = await _categoryService.FindCategoryByIdAsync(categoryId);
 
             return ResponseFactory.Ok(category);
         }
@@ -56,12 +56,12 @@ namespace LostAndFound.API.Controllers
         /// Get Category by name
         /// </summary>
         /// <returns></returns>
-        [HttpGet("name/{name}")]
+        [HttpGet("name/{categoryName}")]
         [QueryResponseCache(typeof(CategoryQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> FindCategoryByName([Required] string name)
+        public async Task<IActionResult> FindCategoryByName([Required] string categoryName)
         {
-            var category = await _categoryService.FindCategoryByNameAsync(name);
+            var category = await _categoryService.FindCategoryByNameAsync(categoryName);
 
             return ResponseFactory.Ok(category);
         }
@@ -81,6 +81,36 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _categoryService.CreateCategoryAsync(stringId, writeDTO);
             return ResponseFactory.Ok(result);
+        }
+        
+        ///<summary>
+        /// Update category information
+        /// </summary>
+        /// <remarks>Update category's information</remarks>
+        /// <returns></returns>
+        [HttpPut("{categoryId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateCategoryDetailsAsync(int categoryId, CategoryWriteDTO writeDTO)
+        {
+            
+            var category = await _categoryService.UpdateCategoryAsync(categoryId, writeDTO);
+            return ResponseFactory.Ok(category);
+        }
+        
+        /// <summary>
+        /// Delete a category
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> DeleteItem([Required] int categoryId)
+        {
+            await _categoryService.DeleteCategoryAsync(categoryId);
+            return ResponseFactory.NoContent();
         }
     }
 }

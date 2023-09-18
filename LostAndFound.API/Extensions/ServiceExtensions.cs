@@ -45,6 +45,10 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<ICommentFlagService, CommentFlagService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<ICategoryGroupService, CategoryGroupService>();
+            services.AddScoped<IItemFlagService, ItemFlagService>();
+            services.AddScoped<IItemBookmarkService, ItemBookmarkService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -64,6 +68,10 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<ICommentFlagRepository, CommentFlagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<ICategoryGroupRepository, CategoryGroupRepository>();
+            services.AddScoped<IItemFlagRepository, ItemFlagRepository>();
+            services.AddScoped<IItemBookmarkRepository, ItemBookmarkRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

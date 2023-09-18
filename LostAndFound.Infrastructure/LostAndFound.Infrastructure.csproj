@@ -33,8 +33,4 @@
     <ProjectReference Include="..\LostAndFound.Core\LostAndFound.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Property\" />
-  </ItemGroup>
-
 </Project>

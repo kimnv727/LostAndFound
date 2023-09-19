@@ -66,7 +66,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map <ItemFlagReadDTO>(itemFlag);
         }
 
-        public async Task<IEnumerable<ItemFlagReadDTO>> GetOwnItemFlags(string userId)
+        public async Task<IEnumerable<ItemReadDTO>> GetOwnItemFlags(string userId)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -75,7 +75,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             var result = await _itemFlagRepository.FindItemFlagsByUserIdAsync(userId);
-            return _mapper.Map<List<ItemFlagReadDTO>>(result.ToList());
+            return _mapper.Map<List<ItemReadDTO>>(result.ToList());
         }
 
         public async Task<ItemFlagReadDTO> FlagAnItem(string userId, int itemId, ItemFlagReason reason)

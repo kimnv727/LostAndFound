@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
-using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemBookmark;
@@ -66,7 +64,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map <ItemBookmarkReadDTO>(itemFlag);
         }
 
-        public async Task<IEnumerable<ItemBookmarkReadDTO>> GetOwnItemBookmarks(string userId)
+        public async Task<IEnumerable<ItemReadDTO>> GetOwnItemBookmarks(string userId)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -75,7 +73,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             var result = await _itemBookmarkRepository.FindItemBookmarksByUserIdAsync(userId);
-            return _mapper.Map<List<ItemBookmarkReadDTO>>(result.ToList());
+            return _mapper.Map<List<ItemReadDTO>>(result.ToList());
         }
 
         public async Task<ItemBookmarkReadDTO> BookmarkAnItem(string userId, int itemId)

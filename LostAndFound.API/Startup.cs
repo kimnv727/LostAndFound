@@ -49,6 +49,7 @@ namespace LostAndFound.API
             Configuration.Bind("AwsCredentials", awsCredentials);
             services.AddSingleton(awsCredentials);
 
+            services.AddCors();
             services.AddControllers();
             // Configure Google Services
             FirebaseApp.Create(new AppOptions()
@@ -118,6 +119,12 @@ namespace LostAndFound.API
 
             app.UseRouting();
 
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials());
+
             app.UseAuthentication();
 
             app.UseTokenCheckMiddleware();
@@ -135,11 +142,6 @@ namespace LostAndFound.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-            
-            app.UseCors(options =>
-            {
-                options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
             });
 
             context.Database.Migrate();

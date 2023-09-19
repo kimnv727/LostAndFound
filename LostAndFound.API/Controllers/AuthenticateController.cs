@@ -36,8 +36,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="avatar"></param>
         ///  <param name="phone"></param>
         /// <returns>UserDetailsReadDTO</returns>
-        [HttpGet("authenticate")]
-        [Authorize]
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         public async Task<IActionResult> Authenticate(string uid, string email, string name, string avatar, string phone)

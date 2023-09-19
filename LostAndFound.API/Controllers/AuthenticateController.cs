@@ -29,20 +29,15 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Authenticate
         /// </summary>
-        /// /// <remarks></remarks>
-        /// <param name="uid"></param>
-        /// <param name="email"></param>
-        /// <param name="name"></param>
-        /// <param name="avatar"></param>
-        ///  <param name="phone"></param>
         /// <returns>UserDetailsReadDTO</returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Authenticate(string uid, string email, string name, string avatar, string phone)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateDTO authenticateRequest)
         {
-            var result = await _authService.Authenticate(uid, email, name, avatar, phone);
+            var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
+                authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
 
             return ResponseFactory.Ok(result);
         }

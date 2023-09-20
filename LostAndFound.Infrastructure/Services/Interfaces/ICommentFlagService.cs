@@ -8,9 +8,9 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface ICommentFlagService
     {
-        public Task<int> CountCommentFlagAsync(int commentId);
-        public Task<CommentFlagReadDTO> GetCommentFlag(string userId, int commentId);
-        public Task<IEnumerable<CommentReadDTO>> GetOwnCommentFlags(string userId);
-        public Task<CommentFlagReadDTO> FlagAComment(string userId, int commentId, CommentFlagReason reason);
+        Task<int> CountCommentFlagAsync(int commentId);
+        Task<CommentFlagReadDTO> GetCommentFlag(string userId, int commentId);
+        Task<IEnumerable<CommentReadDTO>> GetOwnCommentFlags(string userId);
+        Task<CommentFlagReadDTO> FlagAComment(string userId, int commentId, CommentFlagReason reason);
     }
 }

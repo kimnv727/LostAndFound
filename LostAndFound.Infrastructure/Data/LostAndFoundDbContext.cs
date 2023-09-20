@@ -67,6 +67,10 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<ItemBookmark> ItemBookMarks { get; set; }
         //Item Flag table
         public virtual DbSet<ItemFlag> ItemFlags { get; set; }
+        //Notification table
+        public virtual DbSet<Notification> Notifications { get; set; }
+        //UserDevice table
+        public virtual DbSet<UserDevice> UserDevices { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -112,6 +116,10 @@ namespace LostAndFound.Infrastructure.Data
                 .WithOne(t => t.Token)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Notification>()
+                .Property(n => n.IsRead)
+                .HasDefaultValue(false);
+            
             modelBuilder.SaveEnumsAsString();
         }
 

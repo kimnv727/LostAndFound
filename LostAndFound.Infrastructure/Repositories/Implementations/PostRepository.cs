@@ -19,18 +19,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
         }
         
-        public Task<Post> FindPostByIdAsync(int id)
+        public async Task<Post> FindPostByIdAsync(int id)
         {
-            return _context.Posts
+            return await _context.Posts
                 .Where(p => p.PostStatus != PostStatus.DELETED)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<Post> FindPostIncludeDetailsAsync(int id)
+        public async Task<Post> FindPostIncludeDetailsAsync(int id)
         {
-            return _context.Posts
+            return await _context.Posts
                 .Where(p => p.PostStatus != PostStatus.DELETED)
                 .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))

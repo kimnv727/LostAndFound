@@ -10,12 +10,14 @@ using LostAndFound.Infrastructure.DTOs.ItemFlag;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.Media;
+using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.PostBookmark;
 using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.Property;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.UserDevice;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.DTOs.ViolationReport;
 
@@ -106,7 +108,13 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Location, LocationReadDTO>();
             CreateMap<LocationWriteDTO, Location>();
             
+            //Notification Mapping
+            CreateMap<Notification, NotificationReadDTO>();
+            CreateMap<NotificationWriteDTO, Notification>();
             
+            //UserDevice Mapping
+            CreateMap<UserDevice, UserDeviceReadDTO>();
+            CreateMap<UserDeviceWriteDTO, UserDevice>();
         }
     }
 }

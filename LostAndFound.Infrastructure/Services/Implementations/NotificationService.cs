@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
@@ -26,6 +27,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _unitOfWork = unitOfWork;
             _notificationRepository = notificationRepository;
             _userRepository = userRepository;
+        }
+        
+        public async Task<NotificationReadDTO> GetNotification(int notificationId)
+        {
+            var noti = await _notificationRepository.FindNotificationByIdAsync(notificationId);
+
+            if (noti == null)
+            {
+                throw new EntityWithIDNotFoundException<Notification>(notificationId);
+            }
+
+            return _mapper.Map<NotificationReadDTO>(noti);
         }
         
         public async Task<NotificationReadDTO> CreateNotification(NotificationWriteDTO notificationWriteDTO, string userId)
@@ -60,7 +73,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return result;
         }
         
-        public async Task<IEnumerable<NotificationReadDTO>> GetUnreadNotificationsOfUser(string userId)
+        public async Task<PaginatedResponse<NotificationReadDTO>> GetUnreadNotificationsOfUser(string userId)
         {
             //check User exist
             var user = await _userRepository.FindUserByID(userId);
@@ -71,10 +84,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Get Unread Notification
             var result = await _notificationRepository.FindUnreadNotificationsOfUserAsync(userId);
 
-            return _mapper.Map<List<NotificationReadDTO>>(result.ToList());
+            return _mapper.Map<PaginatedResponse<NotificationReadDTO>>(result.ToList());
         }
         
-        public async Task<IEnumerable<NotificationReadDTO>> GetAllNotificationsOfUser(string userId)
+        public async Task<PaginatedResponse<NotificationReadDTO>> GetAllNotificationsOfUser(string userId)
         {
             //check User exist
             var user = await _userRepository.FindUserByID(userId);
@@ -85,7 +98,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Get Unread Notification
             var result = await _notificationRepository.FindAllNotificationsOfUserAsync(userId);
 
-            return _mapper.Map<List<NotificationReadDTO>>(result.ToList());
+            return _mapper.Map<PaginatedResponse<NotificationReadDTO>>(result.ToList());
         }
         
         public async Task MarkAsRead(int id)

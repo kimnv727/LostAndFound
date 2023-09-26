@@ -17,31 +17,46 @@ namespace LostAndFound.API.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        //private readonly IAuthenService _authService;
-        //private readonly IUserService _userService;
         private readonly IFirebaseAuthService _authService;
-
-        public AuthenticateController(IFirebaseAuthService authService)
+        private readonly IUserService _userService;
+        //TODO: get and store device token
+        public AuthenticateController(IFirebaseAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         /// <summary>
         /// Authenticate
         /// </summary>
         /// <returns>UserDetailsReadDTO</returns>
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticateDTO authenticateRequest)
+        public async Task<IActionResult> Authenticate()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userService.GetUserAsync(stringId);
+            return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// Google Login Authenticate
+        /// </summary>
+        /// <returns>UserDetailsReadDTO</returns>
+        [AllowAnonymous]
+        [HttpPost("googleLoginAuthenticate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest)
         {
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
                 authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
 
             return ResponseFactory.Ok(result);
         }
-
+        
         /// <summary>
         /// Login with email and password for Manager + Admin
         /// </summary>

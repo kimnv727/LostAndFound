@@ -39,7 +39,6 @@ namespace LostAndFound.API.Extensions.FirebaseCloudMessaging
             }
             catch (Exception e)
             {
-                //TODO: custom exception?
                 throw new Exception(e.Message);
             }
         }

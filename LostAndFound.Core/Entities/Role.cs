@@ -30,5 +30,6 @@ namespace LostAndFound.Core.Entities
         public DateTime? UpdatedDate { get; set; }
 
         public ICollection<User> Users { get; set; }
+        //TODO: Add 1 new role Storage Manager
     }
 }

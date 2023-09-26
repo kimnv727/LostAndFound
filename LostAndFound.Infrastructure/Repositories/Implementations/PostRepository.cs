@@ -18,7 +18,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public PostRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        
+        //TODO: should we make item closed to outdated appear on top?
         public async Task<Post> FindPostByIdAsync(int id)
         {
             return await _context.Posts

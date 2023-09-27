@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
@@ -34,6 +36,20 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 categoryGroups = categoryGroups.Where(cg => cg.Description.ToLower().Contains(query.Description.ToLower()));
             }
 
+            if (Enum.IsDefined(query.Value))
+            {
+                switch (query.Value)
+                {
+                    case ItemValue.High:
+                        categoryGroups = categoryGroups.Where(cg => cg.Value == ItemValue.High);
+                        break;
+                    case ItemValue.Low:
+                        categoryGroups = categoryGroups.Where(cg => cg.Value == ItemValue.Low);
+                        break;
+                }
+            }
+            
+                
             return await Task.FromResult(categoryGroups.ToList());
         }
 

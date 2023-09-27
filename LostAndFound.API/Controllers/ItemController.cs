@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.ItemFlag;
 
@@ -28,13 +29,15 @@ namespace LostAndFound.API.Controllers
         private readonly IItemMediaService _itemMediaService;
         private readonly IItemFlagService _itemFlagService;
         private readonly IItemBookmarkService _itemBookmarkService;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
             _itemFlagService = itemFlagService;
             _itemBookmarkService = itemBookmarkService;
+            _categoryRepository = categoryRepository;
         }
 
         /// <summary>

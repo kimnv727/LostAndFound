@@ -15,8 +15,9 @@ namespace LostAndFound.Core.Entities
         public string Description { get; set; }
         
         //TODO: wait Kim change Category and Item crud for this
-        /*[Required]
-        public ItemValue Value { get; set; }*/
+        
+        [Required]
+        public ItemValue Value { get; set; }
 
     }
 }

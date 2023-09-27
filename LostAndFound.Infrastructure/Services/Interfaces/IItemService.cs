@@ -1,6 +1,7 @@
 ﻿using LostAndFound.Infrastructure.DTOs.Item;
 using System;
 using System.Threading.Tasks;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
@@ -19,6 +20,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 
         Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO);
         public Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO);
+        public Task<ItemReadDTO> CreateItemAsync(ItemValue itemValue, string categoryName, string userId, ItemWriteDTO itemWriteDTO);
 
     }
 }

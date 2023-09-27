@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.CategoryGroup;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -49,6 +50,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (user == null)
             {
                 throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            
+            //Check duplicate name
+            var category = await _categoryGroupRepository.FindCategoryGroupByNameAsync(categoryGroupWriteDTO.Name);
+            if (category != null)
+            {
+                throw new CategoryGroupNameAlreadyUsedException();
             }
 
             var categoryGroup = _mapper.Map<CategoryGroup>(categoryGroupWriteDTO);

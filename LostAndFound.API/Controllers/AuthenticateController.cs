@@ -6,6 +6,7 @@ using LostAndFound.API.Filters;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.UserDevice;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,41 +20,72 @@ namespace LostAndFound.API.Controllers
     {
         private readonly IFirebaseAuthService _authService;
         private readonly IUserService _userService;
-        //TODO: get and store device token
-        public AuthenticateController(IFirebaseAuthService authService, IUserService userService)
+        private readonly IUserDeviceService _userDeviceService;
+
+        public AuthenticateController(IFirebaseAuthService authService, IUserService userService, IUserDeviceService userDeviceService)
         {
             _authService = authService;
             _userService = userService;
+            _userDeviceService = userDeviceService;
         }
 
         /// <summary>
         /// Authenticate
         /// </summary>
+        /// <param name="userDeviceToken"></param>
         /// <returns>UserDetailsReadDTO</returns>
         [Authorize]
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Authenticate()
+        public async Task<IActionResult> Authenticate(string userDeviceToken)
         {
+            //check user existed and return role
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.GetUserAsync(stringId);
+            
+            //check user device existed -> if not create new
+            var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(userDeviceToken);
+            if (userDevice != null)
+            {
+                var userDeviceWriteDTO = new UserDeviceWriteDTO
+                {
+                    Token = userDeviceToken,
+                    UserId = stringId
+                };
+                await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
+            }
+            
             return ResponseFactory.Ok(result);
         }
 
         /// <summary>
         /// Google Login Authenticate
         /// </summary>
+        /// <param name="userDeviceToken"></param>
         /// <returns>UserDetailsReadDTO</returns>
         [AllowAnonymous]
         [HttpPost("googleLoginAuthenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest)
+        public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest, string userDeviceToken)
         {
+            //create new User for Google Login
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
                 authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
 
+            //check user device existed -> if not create new
+            var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(userDeviceToken);
+            if (userDevice != null)
+            {
+                var userDeviceWriteDTO = new UserDeviceWriteDTO
+                {
+                    Token = userDeviceToken,
+                    UserId = authenticateRequest.Uid
+                };
+                await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
+            }
+            
             return ResponseFactory.Ok(result);
         }
         
@@ -70,21 +102,6 @@ namespace LostAndFound.API.Controllers
             var result = await _authService.Login(loginRequest);
             return ResponseFactory.Ok(result);
         }
-        
-        /*/// <summary>
-        /// Login refresh token
-        /// </summary>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost("refresh")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<LoginRequestDTO>))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Refresh([FromBody] string refreshTokenValue)
-        {
-            var result = await _authService.LoginWithRefreshToken(refreshTokenValue);
-
-            return ResponseFactory.Ok(result);
-        }*/
 
         /// <summary>
         /// Logout

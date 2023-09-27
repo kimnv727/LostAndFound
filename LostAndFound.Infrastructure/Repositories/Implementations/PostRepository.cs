@@ -23,6 +23,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Posts
                 .Where(p => p.PostStatus != PostStatus.DELETED)
+                .Include(p => p.Category)
+                .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -32,6 +34,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Posts
                 .Where(p => p.PostStatus != PostStatus.DELETED)
+                .Include(p => p.Category)
+                .Include(p => p.Location)
                 .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -40,7 +44,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Post>> FindAllPostsByUserIdAsync(string userId)
         {
-            IQueryable<Post> posts = _context.Posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
+            IQueryable<Post> posts = _context.Posts
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .Where(p => p.PostStatus == PostStatus.ACTIVE);
 
             posts = posts.Where(p => p.PostUserId == userId);
             
@@ -49,7 +56,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Post>> QueryPostAsync(PostQuery query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts.Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
+            IQueryable<Post> posts = _context.Posts
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -69,6 +79,21 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(query.PostContent))
             {
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
+            }
+
+            if (query.PostCategoryGroupId > 0)
+            {
+                posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
+            }
+            
+            if (query.PostCategoryId > 0)
+            {
+                posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
+            }
+            
+            if (query.PostLocationId > 0)
+            {
+                posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
             }
 
             if (query.FromDate != null)
@@ -96,7 +121,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Post>> QueryPostWithStatusAsync(PostQueryWithStatus query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts.AsSplitQuery();
+            IQueryable<Post> posts = _context.Posts
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -118,6 +146,21 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
+            if (query.PostCategoryGroupId > 0)
+            {
+                posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
+            }
+            
+            if (query.PostCategoryId > 0)
+            {
+                posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
+            }
+            
+            if (query.PostLocationId > 0)
+            {
+                posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
+            }
+            
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.PENDING)

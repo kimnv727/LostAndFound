@@ -16,6 +16,5 @@ namespace LostAndFound.Core.Entities
 
         [ForeignKey("CategoryGroup")]
         public int CategoryGroupId { get; set; }
-        //TODO: add field to show low or high value
     }
 }

@@ -17,6 +17,10 @@ namespace LostAndFound.Core.Entities
         public string Title { get; set; }
         [Required]
         public string PostContent { get; set; }
+        [ForeignKey("Location")]
+        public int PostLocationId { get; set; }
+        [ForeignKey("Category")]
+        public int PostCategoryId { get; set; }
         
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -25,6 +29,8 @@ namespace LostAndFound.Core.Entities
 
         //Foreign key tables
         public virtual User User { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Category Category { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<PostMedia> PostMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }

@@ -11,7 +11,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string PostUserId { get; set; }
         public string Title { get; set; }
         public string PostContent { get; set; }
-        
+        public string PostLocationLocationName { get; set; }
+        public string PostCategoryName { get; set; }
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
 

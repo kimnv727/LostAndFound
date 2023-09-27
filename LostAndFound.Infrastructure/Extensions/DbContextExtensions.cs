@@ -33,6 +33,14 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Roles.Add(manager);
                 
+                Role managerStorage = new Role
+                {
+                    Name = "Storage Manager",
+                    Description = "Storage Manager of the system. Managing data related to posts, items, users and also managing system's storage in the system.",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Roles.Add(manager);
+                
                 Role userRole = new Role
                 {
                     Name = "User",

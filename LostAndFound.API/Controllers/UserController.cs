@@ -18,7 +18,7 @@ namespace LostAndFound.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserMediaService _userMediaService;
-        //TODO: add Student/LecturerCode field
+        //TODO: add Student/LecturerCode field - wait for meeting
         public UserController(IUserService userService, IUserMediaService userMediaService)
         {
             _userService = userService;

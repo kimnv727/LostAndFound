@@ -153,26 +153,40 @@ namespace LostAndFound.API.Controllers
         /// <param name="pushNotification"></param>
         /// <returns></returns>
         [HttpPost("push")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<ActionResult> PushNotification(PushNotification notification)
+        public async Task<ActionResult> PushNotification(PushNotification notification, string userId)
         {
-            //string? uid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //TODO: Test this shit
-            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (!string.IsNullOrWhiteSpace(stringId))
+            //string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (!string.IsNullOrWhiteSpace(userId))
             {
-                var user = await _userService.GetUserAsync(stringId);
+                var user = await _userService.GetUserAsync(userId);
                 if (user != null)
                 {
                    switch (notification.NotificationType)
                     {
                         case NotificationType.Chat:
                             await NotificationExtensions
-                                    .NotifyChatToUser(_userDeviceService, notification.UserId, notification.Title, notification.Content);
+                                    .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
                                 return Ok();
+                        case NotificationType.OwnItemClaim:
+                            await NotificationExtensions
+                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                            return Ok();
+                        case NotificationType.PostGotReplied:
+                            await NotificationExtensions
+                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                            return Ok();
+                        case NotificationType.CommentGotReplied:
+                            await NotificationExtensions
+                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                            return Ok();
+                        case NotificationType.GiveawayResult:
+                            await NotificationExtensions
+                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                            return Ok();
                         default:
                         return BadRequest();
                     }

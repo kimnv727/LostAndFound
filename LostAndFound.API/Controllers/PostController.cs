@@ -26,7 +26,7 @@ namespace LostAndFound.API.Controllers
         private readonly IPostMediaService _postMediaService;
         private readonly IPostBookmarkService _postBookmarkService;
         private readonly IPostFlagService _postFlagService;
-        //TODO: add location + category to all Post stuff
+        //TODO: test after add location + category to all Post stuff
         public PostController(IPostService postService, IPostMediaService postMediaService,
             IPostBookmarkService postBookmarkService, IPostFlagService postFlagService)
         {

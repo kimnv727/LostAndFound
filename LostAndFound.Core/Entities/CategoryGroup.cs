@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
@@ -12,6 +13,10 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         public string Description { get; set; }
+        
+        //TODO: wait Kim change Category and Item crud for this
+        /*[Required]
+        public ItemValue Value { get; set; }*/
 
     }
 }

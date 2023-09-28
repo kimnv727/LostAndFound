@@ -35,14 +35,15 @@ namespace LostAndFound.Core.Entities
         public string? Phone { get; set; }
 
         public string? Password { get; set; }
-
+        public string? SchoolId { get; set; }
+        [ForeignKey("Property")]
+        public int PropertyId { get; set; }
         [Required]
         public bool IsActive { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
-        //public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights { get; }
         public IReadOnlyDictionary<Func<string>, double> SearchTextsWithWeights => new Dictionary<Func<string>, double>()
         {
             {() => FirstName, 8 },
@@ -50,7 +51,7 @@ namespace LostAndFound.Core.Entities
         };
         
         public virtual Role Role { get; set; }
-
+        public virtual Property Property { get; set; }
         public ICollection<Token> Tokens { get; set; }
 
         public ICollection<UserMedia> UserMedias { get; set; }

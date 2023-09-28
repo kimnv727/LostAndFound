@@ -42,16 +42,14 @@ namespace LostAndFound.API.Migrations
                 table: "Posts",
                 column: "PostCategoryId",
                 principalTable: "Categories",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Posts_Locations_PostLocationId",
                 table: "Posts",
                 column: "PostLocationId",
                 principalTable: "Locations",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

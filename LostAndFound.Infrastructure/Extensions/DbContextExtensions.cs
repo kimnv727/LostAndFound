@@ -39,7 +39,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Description = "Storage Manager of the system. Managing data related to posts, items, users and also managing system's storage in the system.",
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
-                context.Roles.Add(manager);
+                context.Roles.Add(managerStorage);
                 
                 Role userRole = new Role
                 {
@@ -49,6 +49,13 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Roles.Add(userRole);
 
+                Property property = new Property
+                {
+                    PropertyName = "FPT HCM Campus",
+                    Address = "FPT HCM Campus"
+                };
+                context.Properties.Add(property);
+                
                 User adminUser = new User()
                 {
                     Id = "n8pJOw1SeoXexNsGwGCDq9GQ8SV2",
@@ -60,6 +67,8 @@ namespace LostAndFound.Infrastructure.Extensions
                     LastName = "Admin",
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0101010101",
+                    SchoolId = "ADMIN",
+                    PropertyId = 1,
                     RoleId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -77,7 +86,9 @@ namespace LostAndFound.Infrastructure.Extensions
                     LastName = "User",
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0808080808",
-                    RoleId = 3,
+                    SchoolId = "SE111111",
+                    PropertyId = 1,
+                    RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(user);
@@ -94,10 +105,31 @@ namespace LostAndFound.Infrastructure.Extensions
                     LastName = "Manager",
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0909090909",
+                    SchoolId = "MANAGER",
+                    PropertyId = 1,
                     RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(managerUser);
+                context.SaveChanges();
+                
+                User storageManagerUser = new User()
+                {
+                    Id = "UXFjz04VvING1SxKxcfIZQQhVCo1",
+                    Email = "def123@fpt.edu.vn",
+                    Password = "",
+                    IsActive = true,
+                    Avatar = "Avatar.png",
+                    FirstName = "Test",
+                    LastName = "Storage Manager",
+                    Gender = Core.Enums.Gender.Male,
+                    Phone = "0909090909",
+                    SchoolId = "MANAGER",
+                    PropertyId = 1,
+                    RoleId = 3,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Users.Add(storageManagerUser);
                 context.SaveChanges();
             }
 

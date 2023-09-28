@@ -18,9 +18,9 @@ namespace LostAndFound.Core.Entities
         [Required]
         public string PostContent { get; set; }
         [ForeignKey("Location")]
-        public int PostLocationId { get; set; }
+        public int? PostLocationId { get; set; }
         [ForeignKey("Category")]
-        public int PostCategoryId { get; set; }
+        public int? PostCategoryId { get; set; }
         
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }

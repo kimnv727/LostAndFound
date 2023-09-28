@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Firebase.Auth;
 using FirebaseAdmin.Auth;
+using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
@@ -20,12 +21,14 @@ namespace LostAndFound.API.Authentication
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
-        public FirebaseAuthService(FirebaseAuthClient firebaseAuth, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository)
+        private readonly IUserMediaRepository _userMediaRepository;
+        public FirebaseAuthService(FirebaseAuthClient firebaseAuth, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IUserMediaRepository userMediaRepository)
         {
             _firebaseAuth = firebaseAuth;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
+            _userMediaRepository = userMediaRepository;
         }
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest)
         {
@@ -99,6 +102,20 @@ namespace LostAndFound.API.Authentication
                 };
                 await _userRepository.AddAsync(newUser);
                 await _unitOfWork.CommitAsync();
+
+                UserMedia userMedia = new UserMedia()
+                {
+                    UserId = uid,
+                    Media = new Media()
+                    {
+                        Name = "GoogleAvatar",
+                        Description = "Avatar of " + user.Email,
+                        URL = avatar,
+                    }
+                };
+                await _userMediaRepository.AddAsync(userMedia);
+                await _unitOfWork.CommitAsync();
+
                 return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
             }
         }

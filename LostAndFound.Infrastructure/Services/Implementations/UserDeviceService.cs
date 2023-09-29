@@ -46,10 +46,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         public async Task<UserDeviceReadDTO> GetUserDeviceByTokenAsync(string fcmToken)
         {
             var userDevice = await _userDeviceRepository.FindUserDeviceByTokenAsync(fcmToken);
-
+            //Do not throw error even when null
             if (userDevice == null)
             {
-                throw new EntityNotFoundException<UserDevice>();
+                return null;
+                //throw new EntityNotFoundException<UserDevice>();
             }
 
             return _mapper.Map<UserDeviceReadDTO>(userDevice);

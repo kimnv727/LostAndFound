@@ -47,7 +47,7 @@ namespace LostAndFound.API.Controllers
             
             //check user device existed -> if not create new
             var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(userDeviceToken);
-            if (userDevice != null)
+            if (userDevice == null)
             {
                 var userDeviceWriteDTO = new UserDeviceWriteDTO
                 {
@@ -77,7 +77,7 @@ namespace LostAndFound.API.Controllers
 
             //check user device existed -> if not create new
             var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(authenticateRequest.DeviceToken);
-            if (userDevice != null)
+            if (userDevice == null)
             {
                 var userDeviceWriteDTO = new UserDeviceWriteDTO
                 {

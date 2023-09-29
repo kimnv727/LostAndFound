@@ -151,18 +151,18 @@ namespace LostAndFound.API.Controllers
         /// Push notification
         /// </summary>
         /// <param name="pushNotification"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost("push")]
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<ActionResult> PushNotification(PushNotification notification, string userId)
+        public async Task<ActionResult> PushNotification(PushNotification notification)
         {
             //string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (!string.IsNullOrWhiteSpace(userId))
+            if (!string.IsNullOrWhiteSpace(notification.UserId))
             {
-                var user = await _userService.GetUserAsync(userId);
+                var user = await _userService.GetUserAsync(notification.UserId);
                 if (user != null)
                 {
                    switch (notification.NotificationType)

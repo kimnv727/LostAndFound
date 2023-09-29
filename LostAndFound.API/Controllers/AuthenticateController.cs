@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace LostAndFound.API.Controllers
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> Authenticate(string userDeviceToken)
+        public async Task<IActionResult> Authenticate([Required] string userDeviceToken)
         {
             //check user existed and return role
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
@@ -68,19 +69,19 @@ namespace LostAndFound.API.Controllers
         [HttpPost("googleLoginAuthenticate")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailAuthenticateReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest, string userDeviceToken)
+        public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest)
         {
             //create new User for Google Login
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
                 authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
 
             //check user device existed -> if not create new
-            var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(userDeviceToken);
+            var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(authenticateRequest.DeviceToken);
             if (userDevice != null)
             {
                 var userDeviceWriteDTO = new UserDeviceWriteDTO
                 {
-                    Token = userDeviceToken,
+                    Token = authenticateRequest.DeviceToken,
                     UserId = authenticateRequest.Uid
                 };
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);

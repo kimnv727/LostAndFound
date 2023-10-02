@@ -4,6 +4,8 @@ using LostAndFound.Infrastructure.DTOs.Category;
 using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.CommentFlag;
+using LostAndFound.Infrastructure.DTOs.Giveaway;
+using LostAndFound.Infrastructure.DTOs.GiveawayParticipant;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemBookmark;
 using LostAndFound.Infrastructure.DTOs.ItemFlag;
@@ -115,6 +117,15 @@ namespace LostAndFound.Infrastructure.Profiles
             //UserDevice Mapping
             CreateMap<UserDevice, UserDeviceReadDTO>();
             CreateMap<UserDeviceWriteDTO, UserDevice>();
+            
+            //Giveaway
+            CreateMap<Giveaway, GiveawayReadDTO>();
+            CreateMap<Giveaway, GiveawayDetailWithParticipantsReadDTO>();
+            CreateMap<GiveawayWriteDTO, Giveaway>();
+            CreateMap<GiveawayUpdateDTO, Giveaway>();
+            
+            //GiveawayParticipant
+            CreateMap<GiveawayParticipant, GiveawayParticipantReadDTO>();
         }
     }
 }

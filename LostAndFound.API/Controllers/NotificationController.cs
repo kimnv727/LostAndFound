@@ -154,6 +154,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost("push")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]

@@ -52,6 +52,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("get-by-post/{postId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
@@ -68,6 +70,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
@@ -84,6 +87,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("get-ignore-status")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
@@ -146,6 +150,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="commentId"></param>
         /// <returns></returns>
         [HttpPut("{commentId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -167,6 +173,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="commentId"></param>
         /// <returns></returns>
         [HttpDelete("{commentId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -189,6 +197,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("count-comment-flag/{commentId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountCommentFlagOfAPost(int commentId)
         {
@@ -202,6 +211,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="commentId"></param>
         /// <returns></returns>
         [HttpGet("get-comment-flag")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -218,6 +228,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("get-own-comment-flag")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -234,6 +245,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPost("flag-a-comment/{commentId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]

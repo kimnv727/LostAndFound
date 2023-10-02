@@ -71,7 +71,10 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<Notification> Notifications { get; set; }
         //UserDevice table
         public virtual DbSet<UserDevice> UserDevices { get; set; }
-        
+        //Giveaway table
+        public virtual DbSet<Giveaway> Giveaways { get; set; }
+        //GiveawayParticipant table
+        public virtual DbSet<GiveawayParticipant> GiveawayParticipants { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
@@ -83,6 +86,7 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<CommentFlag>().HasKey(cf => new { cf.CommentId, cf.UserId });
             modelBuilder.Entity<ItemFlag>().HasKey(itf => new { itf.ItemId, itf.UserId });
             modelBuilder.Entity<ItemBookmark>().HasKey(ib => new { ib.ItemId, ib.UserId });
+            modelBuilder.Entity<GiveawayParticipant>().HasKey(gp => new { gp.GiveawayId, gp.UserId });
             
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)

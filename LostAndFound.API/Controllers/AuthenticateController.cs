@@ -22,7 +22,7 @@ namespace LostAndFound.API.Controllers
         private readonly IFirebaseAuthService _authService;
         private readonly IUserService _userService;
         private readonly IUserDeviceService _userDeviceService;
-
+        //TODO: check soft deleted users wont be able to login
         public AuthenticateController(IFirebaseAuthService authService, IUserService userService, IUserDeviceService userDeviceService)
         {
             _authService = authService;

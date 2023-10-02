@@ -114,7 +114,7 @@ namespace LostAndFound.API.Authentication
                     Media = new Media()
                     {
                         Name = "GoogleAvatar",
-                        Description = "Avatar of " + user.Email,
+                        Description = "Avatar of " + email,
                         URL = avatar,
                     }
                 };

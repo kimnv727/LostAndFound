@@ -26,7 +26,7 @@ namespace LostAndFound.API.Controllers
         private readonly IPostMediaService _postMediaService;
         private readonly IPostBookmarkService _postBookmarkService;
         private readonly IPostFlagService _postFlagService;
-        //TODO: test after add location + category to all Post stuff
+
         public PostController(IPostService postService, IPostMediaService postMediaService,
             IPostBookmarkService postBookmarkService, IPostFlagService postFlagService)
         {
@@ -42,6 +42,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("{postId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostDetailWithCommentsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -58,7 +59,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet("get-by-user/{userId}")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
         public async Task<IActionResult> GetAllPostsByUserId(string userId)
@@ -74,6 +76,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [QueryResponseCache(typeof(PostQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostReadDTO>))]
@@ -89,7 +92,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet("get-with-status")]
+        [HttpGet("query-with-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [QueryResponseCache(typeof(PostQueryWithStatus))]
@@ -130,6 +133,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPut("{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -183,6 +187,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpDelete("{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -204,7 +209,8 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("{postId}/media")]
-        //[Authorize]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostMediaReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -221,6 +227,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPost("{postId}/media")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostMediaReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -241,6 +248,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpDelete("{postId}/media")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -257,6 +265,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("count-post-bookmark/{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountPostBookmarkOfAPost(int postId)
         {
@@ -270,6 +279,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("get-post-bookmark")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostBookmarkReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -286,6 +296,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("get-own-post-bookmark")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -302,6 +313,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPost("bookmark-a-post/{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostBookmarkReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -323,6 +335,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("count-post-flag/{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountPostFlagOfAPost(int postId)
         {
@@ -336,6 +349,7 @@ namespace LostAndFound.API.Controllers
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("get-post-flag")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -352,6 +366,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("get-own-post-flag")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostReadDTO[]>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -368,6 +383,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPost("flag-a-post/{postId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]

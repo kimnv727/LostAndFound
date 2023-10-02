@@ -5,6 +5,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
 {
     public class UserReadDTO
     {
+        //TODO: Add StudentCode and Property into UserRead
         public string Id { get; set; }
         
         public string FirstName{ get; set; }

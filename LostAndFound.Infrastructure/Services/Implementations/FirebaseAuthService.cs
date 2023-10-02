@@ -98,6 +98,11 @@ namespace LostAndFound.API.Authentication
                     Phone = phone,
                     //User role
                     RoleId = 3,
+                    //User School Id
+                    SchoolId = "",
+                    //ProperId - default 1
+                    //TODO: make dynamic later
+                    PropertyId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 await _userRepository.AddAsync(newUser);

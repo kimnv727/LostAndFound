@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
+using LostAndFound.Infrastructure.DTOs.User;
 
 namespace LostAndFound.Infrastructure.DTOs.Post
 {
@@ -15,7 +16,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string CategoryName { get; set; }
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public UserReadDTO User { get; set; }
         public ICollection<PostMediaReadDTO> PostMedias { get; set; }
     }
 }

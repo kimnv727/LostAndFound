@@ -1,4 +1,5 @@
 using System;
+using LostAndFound.Infrastructure.DTOs.User;
 
 namespace LostAndFound.Infrastructure.DTOs.Post
 {
@@ -11,5 +12,6 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string LocationLocationName { get; set; }
         public string CategoryName { get; set; }
         public DateTime CreatedDate { get; set; }
+        public UserReadDTO User { get; set; }
     }
 }

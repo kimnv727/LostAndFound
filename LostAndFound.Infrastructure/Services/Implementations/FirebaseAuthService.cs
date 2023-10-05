@@ -1,4 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Firebase.Auth;
@@ -11,6 +15,7 @@ using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
+using Newtonsoft.Json.Linq;
 using User = LostAndFound.Core.Entities.User;
 
 namespace LostAndFound.API.Authentication
@@ -122,6 +127,38 @@ namespace LostAndFound.API.Authentication
                 await _unitOfWork.CommitAsync();
 
                 return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
+            }
+        }
+
+        public async Task<string> GetAccessTokenWithRefreshToken(string refreshToken)
+        {
+            string baseUrl = "https://securetoken.googleapis.com/v1/token?key=";
+            string key = "AIzaSyDj7Wa-uQkY9jO4NQP5s6MwvQJMO_b2PkA";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders
+                    .Accept
+                    .Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                
+                var request = new HttpRequestMessage
+                {
+                    Method = new HttpMethod("POST"),
+                    RequestUri = new Uri(baseUrl + key),
+                };
+
+                request.Content = JsonContent.Create(new { grant_type = "refresh_token", refresh_token = refreshToken });
+                
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    JObject jObj = JObject.Parse(result);
+                    
+                    return jObj["id_token"].ToString();
+                }
+
+                return null;
             }
         }
     }

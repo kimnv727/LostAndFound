@@ -11,5 +11,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task Logout();
         Task<UserDetailAuthenticateReadDTO> Authenticate(string uid, string email, string name,
                                                     string avatar, string phone);
+
+        Task<string> GetAccessTokenWithRefreshToken(string refreshToken);
     }
 }

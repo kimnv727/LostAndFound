@@ -17,19 +17,34 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public Task<Item> FindItemByIdAsync(int ItemId)
         {
-            return _context.Items.FirstOrDefaultAsync(i => i.Id == ItemId);
+            return _context.Items
+                .Include(i => i.Category)
+                .Include(i => i.Location)
+                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .FirstOrDefaultAsync(i => i.Id == ItemId);
         }
 
         public Task<Item> FindItemByNameAsync(string Name)
         {
-            return _context.Items.FirstOrDefaultAsync
+            return _context.Items
+                .Include(i => i.Category)
+                .Include(i => i.Location)
+                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .FirstOrDefaultAsync
                 (i => i.Name.ToLower().Contains(Name.ToLower()));
         }
 
         public async Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false)
         {
             //IQueryable<Item> items = _context.Items.Where(i => i.IsActive == true).AsSplitQuery();
-            IQueryable<Item> items = _context.Items.AsSplitQuery();
+            IQueryable<Item> items = _context.Items
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -50,7 +65,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> QueryItemIgnoreStatusAsync(ItemQuery query, bool trackChanges = false)
         {
-            IQueryable<Item> items = _context.Items.AsSplitQuery();
+            IQueryable<Item> items = _context.Items
+                                .Include(i => i.Category)
+                                .Include(i => i.Location)
+                                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                                .ThenInclude(im => im.Media)
+                                .AsSplitQuery();
 
             if (!trackChanges)
             {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using LostAndFound.Core.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
@@ -15,10 +12,13 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public string Description { get; set; }
 
         public string FoundLocation { get; set; }
+
+        public int CategoryId { get; set; }
         
-        /*public int CategoryId { get; set; }
-        
-        public ItemStatus ItemStatus { get; set; }*/
+        public int LocationId { get; set; }
+
+        [Required]
+        public IFormFile[] Medias { get; set; }
         
     }
 }

@@ -114,7 +114,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<PostDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreatePost(PostWriteDTO writeDTO)
+        public async Task<IActionResult> CreatePost([FromForm]PostWriteDTO writeDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _postService.CreatePostAsync(stringId, writeDTO);

@@ -21,12 +21,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
+        private readonly IPostMediaRepository _postMediaRepository;
+        private readonly IPostMediaService _postMediaService;
         private readonly ICommentRepository _commentRepository;
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IEmailSendingService _emailSendingService;
 
-        public PostService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository, 
-            IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService)
+        public PostService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository,
+            IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService, IPostMediaRepository postMediaRepository, IPostMediaService postMediaService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -35,8 +37,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _commentRepository = commentRepository;
             _passwordHasherService = passwordHasherService;
             _emailSendingService = emailSendingService;
+            _postMediaRepository = postMediaRepository;
+            _postMediaService = postMediaService;
         }
-        
+
         public async Task UpdatePostStatusAsync(int postId, PostStatus postStatus)
         {
             var post = await _postRepository.FindPostByIdAsync(postId);
@@ -116,6 +120,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Add Post
             await _postRepository.AddAsync(post);
             await _unitOfWork.CommitAsync();
+
+            //AddMedia
+            await _postMediaService.UploadPostMedias(userId, post.Id, postWriteDTO.Medias);
+            await _unitOfWork.CommitAsync();
+
             var postReadDTO = _mapper.Map<PostDetailReadDTO>(post);
             return postReadDTO;
         }

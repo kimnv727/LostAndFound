@@ -119,15 +119,15 @@ namespace LostAndFound.API.Controllers
         }
         
         /// <summary>
-        /// Get AccessToken with RefreshToken
+        /// Login with Refresh Token
         /// </summary>
-        /// <param name="refresh_token"></param>
+        /// <param name="refreshToken"></param>
         /// <returns></returns>
-        [HttpGet("{refresh_token}")]
+        [HttpPost("refresh")]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetAccessTokenWithRefreshToken(string refresh_token)
+        public async Task<IActionResult> GetAccessTokenWithRefreshToken([Required]string refreshToken)
         {
-            return ResponseFactory.Ok(await _authService.GetAccessTokenWithRefreshToken(refresh_token));
+            return ResponseFactory.Ok(await _authService.GetAccessTokenWithRefreshToken(refreshToken));
         }
     }
 }

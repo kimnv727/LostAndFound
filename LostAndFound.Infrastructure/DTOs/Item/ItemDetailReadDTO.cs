@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using Newtonsoft.Json;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
-    public class ItemReadDTO
+    public class ItemDetailReadDTO
     {
 
         public int Id { get; set; }
         
         public string FoundUserId { get; set; }
         
-        //public int LocationId { get; set; }
+        public int LocationId { get; set; }
         
         public string Name { get; set; }
         
@@ -19,6 +21,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         [JsonProperty(PropertyName = "LocationName")]
         public string LocationLocationName { get; set; }
+
         public string CategoryName { get; set; }
 
         //Status = Pending / Active / Returned / Closed / Rejected
@@ -27,5 +30,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public DateTime? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<ItemMediaReadDTO> ItemMedias { get; set; }
     }
 }

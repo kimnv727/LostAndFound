@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Item 
+    public class Item : ICreatedEntity
     {
         [Key]
         public int Id { get; set; }
@@ -29,7 +29,7 @@ namespace LostAndFound.Core.Entities
         //Status = Pending / Active / Returned / Closed
         public ItemStatus ItemStatus { get; set; }
 
-        public DateTime FoundDate { get; set; }
+        public DateTime? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
 

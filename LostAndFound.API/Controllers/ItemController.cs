@@ -74,8 +74,8 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{itemId}")]
-        [QueryResponseCache(typeof(ItemQuery))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<MediaReadDTO>))]
+        //[QueryResponseCache(typeof(ItemQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindItemById([Required] int itemId)
         {
@@ -142,7 +142,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ItemReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreateItem(ItemWriteDTO writeDTO)
+        public async Task<IActionResult> CreateItem([FromForm]ItemWriteDTO writeDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _itemService.CreateItemAsync(stringId, writeDTO);

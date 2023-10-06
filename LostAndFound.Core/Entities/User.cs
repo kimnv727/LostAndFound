@@ -22,7 +22,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         public string FullName => FirstName +" " + LastName;
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         public string? Avatar { get; set; }
         
@@ -36,11 +36,10 @@ namespace LostAndFound.Core.Entities
 
         public string? Password { get; set; }
         public string? SchoolId { get; set; }
-        [ForeignKey("Property")]
-        public int PropertyId { get; set; }
+        public Campus? Campus { get; set; }
         [Required]
         public bool IsActive { get; set; }
-
+        public UserVerifyStatus VerifyStatus { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
@@ -51,7 +50,6 @@ namespace LostAndFound.Core.Entities
         };
         
         public virtual Role Role { get; set; }
-        public virtual Property Property { get; set; }
         public ICollection<Token> Tokens { get; set; }
         public ICollection<UserMedia> UserMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }

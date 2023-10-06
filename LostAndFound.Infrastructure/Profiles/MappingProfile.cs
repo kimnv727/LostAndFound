@@ -53,6 +53,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<UserUpdatePasswordDTO, User>();
             CreateMap<UserUpdateDTO, User>();
             CreateMap<User, UserBriefDetailDTO>();
+            CreateMap<UserVerifyStatusUpdateDTO, User>();
 
             //Item Mapping
             CreateMap<Item, ItemReadDTO>();

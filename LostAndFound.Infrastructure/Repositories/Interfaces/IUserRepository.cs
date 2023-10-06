@@ -18,7 +18,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<bool> IsDuplicatedEmail(string email);
         Task<bool> IsDuplicatedPhoneNumber(string phoneNumber);
         Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false);
-        Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQuery query, bool trackChanges = false);
-        
+        Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQueryIgnoreStatus query, bool trackChanges = false);
     }
 }

@@ -25,6 +25,14 @@ namespace LostAndFound.Infrastructure.DTOs.User
         [JsonProperty("role")]
         public string RoleName {get; set; }
         
+        public string SchoolId { get; set; }
+        
+        public Campus Campus { get; set; }
+        
+        public bool IsActive { get; set; }
+        
+        public UserVerifyStatus VerifyStatus { get; set; }
+        
         public DateTime CreatedDate{ get; set; }
     }
 }

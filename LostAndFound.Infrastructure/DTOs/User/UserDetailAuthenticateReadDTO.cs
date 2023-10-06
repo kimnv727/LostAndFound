@@ -20,6 +20,10 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public string Phone { get; set; }
 
         public string Avatar { get; set; }
+
+        public bool IsActive { get; set; }
+        
+        public UserVerifyStatus VerifyStatus { get; set; }
         
     }
 }

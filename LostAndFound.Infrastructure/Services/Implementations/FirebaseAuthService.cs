@@ -8,6 +8,7 @@ using AutoMapper;
 using Firebase.Auth;
 using FirebaseAdmin.Auth;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
@@ -75,7 +76,10 @@ namespace LostAndFound.API.Authentication
             }
         }
     
-        public async Task Logout() => _firebaseAuth.SignOut(); 
+        public async Task Logout(string uid){
+            _firebaseAuth.SignOut();
+            await FirebaseAuth.DefaultInstance.RevokeRefreshTokensAsync(uid);
+        }
         
         public async Task<UserDetailAuthenticateReadDTO> Authenticate(string uid, string email, string name,
             string avatar, string phone)
@@ -88,45 +92,89 @@ namespace LostAndFound.API.Authentication
             }
             else
             {
-                //create User
-                var newUser = new User()
+                //check email
+                if (email.Contains("fpt.edu.vn") || email.Contains("fe.edu.vn"))
                 {
-                    Id = uid,
-                    Email = email,
-                    Password = "",
-                    IsActive = true,
-                    Avatar = avatar,
-                    FirstName = name,
-                    LastName = " ",
-                    //default to male
-                    Gender = Core.Enums.Gender.Male,
-                    Phone = phone,
-                    //User role
-                    RoleId = 3,
-                    //User School Id
-                    SchoolId = "",
-                    //ProperId - default 1
-                    //TODO: make dynamic later
-                    PropertyId = 1,
-                    CreatedDate = DateTime.Now.ToVNTime()
-                };
-                await _userRepository.AddAsync(newUser);
-                await _unitOfWork.CommitAsync();
-
-                UserMedia userMedia = new UserMedia()
-                {
-                    UserId = uid,
-                    Media = new Media()
+                    //create verified User
+                    var newUser = new User()
                     {
-                        Name = "GoogleAvatar",
-                        Description = "Avatar of " + email,
-                        URL = avatar,
-                    }
-                };
-                await _userMediaRepository.AddAsync(userMedia);
-                await _unitOfWork.CommitAsync();
+                        Id = uid,
+                        Email = email,
+                        Password = "",
+                        IsActive = true,
+                        Avatar = avatar,
+                        FirstName = name,
+                        LastName = " ",
+                        Gender = null,
+                        Phone = phone,
+                        //User role
+                        RoleId = 3,
+                        //User School Id
+                        SchoolId = "",
+                        Campus = null,
+                        VerifyStatus = UserVerifyStatus.VERIFIED,
+                        CreatedDate = DateTime.Now.ToVNTime()
+                    };
+                    
+                    await _userRepository.AddAsync(newUser);
+                    await _unitOfWork.CommitAsync();
+                    
+                    UserMedia userMedia = new UserMedia()
+                    {
+                        UserId = uid,
+                        Media = new Media()
+                        {
+                            Name = "GoogleAvatar",
+                            Description = "Avatar of " + email,
+                            URL = avatar,
+                        }
+                    };
+                    await _userMediaRepository.AddAsync(userMedia);
+                    await _unitOfWork.CommitAsync();
 
-                return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
+                    return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
+                }
+                else
+                {
+                    //create unverified User
+                    var newUser = new User()
+                    {
+                        Id = uid,
+                        Email = email,
+                        Password = "",
+                        IsActive = true,
+                        Avatar = avatar,
+                        FirstName = name,
+                        LastName = " ",
+                        Gender = null,
+                        Phone = phone,
+                        //User role
+                        RoleId = 3,
+                        //User School Id
+                        SchoolId = "",
+                        Campus = null,
+                        VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
+                        CreatedDate = DateTime.Now.ToVNTime()
+                    };
+                    
+                    await _userRepository.AddAsync(newUser);
+                    await _unitOfWork.CommitAsync();
+                    
+                    UserMedia userMedia = new UserMedia()
+                    {
+                        UserId = uid,
+                        Media = new Media()
+                        {
+                            Name = "GoogleAvatar",
+                            Description = "Avatar of " + email,
+                            URL = avatar,
+                        }
+                    };
+                    await _userMediaRepository.AddAsync(userMedia);
+                    await _unitOfWork.CommitAsync();
+
+                    return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
+                }
             }
         }
 

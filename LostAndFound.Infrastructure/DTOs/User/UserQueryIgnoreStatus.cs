@@ -1,10 +1,9 @@
 using System.ComponentModel;
-using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Common;
 
 namespace LostAndFound.Infrastructure.DTOs.User
 {
-    public class UserQuery : PaginatedQuery, ISearchTextQuery, IOrderedQuery 
+    public class UserQueryIgnoreStatus : PaginatedQuery, ISearchTextQuery, IOrderedQuery 
     {
         public string? FirstName{ get; set; }
         
@@ -28,6 +27,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         //public string? Avatar{ get; set; }
 
         public string? SchoolId { get; set; }
+        
         public enum CampusSearch
         {
             All,
@@ -37,6 +37,26 @@ namespace LostAndFound.Infrastructure.DTOs.User
         }
         [DefaultValue(CampusSearch.All)]
         public CampusSearch Campus { get; set; }
+        
+        public enum UserVerifyStatusSearch
+        {
+            All,
+            NOT_VERIFIED,
+            WAITING_VERIFIED,
+            VERIFIED
+        }
+        [DefaultValue(UserVerifyStatusSearch.All)]
+        public UserVerifyStatusSearch UserVerifyStatus { get; set; }
+        
+        public enum UserStatusSearch
+        {
+            All,
+            ACTIVE,
+            INACTIVE
+        }
+        [DefaultValue(UserStatusSearch.All)]
+        public UserStatusSearch UserStatus { get; set; }
+        
         public string SearchText { get; set; }
 
         public string OrderBy { get; set; } = "Email ASC";

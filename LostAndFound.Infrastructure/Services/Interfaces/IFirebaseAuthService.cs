@@ -8,7 +8,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IFirebaseAuthService
     {
         Task<LoginResponseDTO> Login(LoginRequestDTO loginRequest);
-        Task Logout();
+        Task Logout(string uid);
         Task<UserDetailAuthenticateReadDTO> Authenticate(string uid, string email, string name,
                                                     string avatar, string phone);
 

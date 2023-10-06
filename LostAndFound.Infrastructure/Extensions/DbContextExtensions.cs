@@ -68,7 +68,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0101010101",
                     SchoolId = "ADMIN",
-                    PropertyId = 1,
+                    Campus = Campus.HO_CHI_MINH_CAMPUS,
                     RoleId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -87,7 +87,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0808080808",
                     SchoolId = "SE111111",
-                    PropertyId = 1,
+                    Campus = Campus.HO_CHI_MINH_CAMPUS,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -106,7 +106,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    PropertyId = 1,
+                    Campus = Campus.HO_CHI_MINH_CAMPUS,
                     RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -125,7 +125,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Gender = Core.Enums.Gender.Male,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    PropertyId = 1,
+                    Campus = Campus.HO_CHI_MINH_CAMPUS,
                     RoleId = 3,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };

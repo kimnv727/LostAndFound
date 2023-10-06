@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Firebase.Auth;
+using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -40,7 +41,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<UserDetailsReadDTO>.FromEnumerableWithMapping(users, query, _mapper);
         }
         
-        public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusAsync(UserQuery query)
+        public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusAsync(UserQueryIgnoreStatus query)
         {
             var users = await _userRepository.QueryUserIgnoreStatusAsync(query);
             
@@ -99,6 +100,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     //TODO: Role default to Manager or let Admin choose?
                     //Default to 2 (Manager)
                     user.RoleId = 2;
+                    user.VerifyStatus = UserVerifyStatus.VERIFIED;
                     await _userRepository.AddAsync(user);
                     await _unitOfWork.CommitAsync();
                     var userReadDTO = _mapper.Map<UserDetailsReadDTO>(user);
@@ -201,7 +203,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _emailSendingService.SendMailToRequestPasswordReset(user.Email, pass);
         }
 
-        public async Task ChangeUserStatusAsync(string id)
+        public async Task<UserDetailsReadDTO> ChangeUserStatusAsync(string id)
         {
             var user = await _userRepository.FindUserByID(id);
             if (user == null)
@@ -218,6 +220,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 user.IsActive = true;
             }
             await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<UserDetailsReadDTO>(user);
         }
 
         public async Task<bool> CheckUserExisted(string userId)
@@ -225,6 +229,20 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var user = await _userRepository.FindUserByID(userId);
 
             return user != null ? true : false;
+        }
+        
+        public async Task<UserDetailsReadDTO> ChangeUserVerifyStatusAsync(UserVerifyStatusUpdateDTO updateDto)
+        {
+            var user = await _userRepository.FindUserByID(updateDto.UserId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(updateDto.UserId);
+            }
+
+            user.VerifyStatus = updateDto.VerifyStatus;
+            await _unitOfWork.CommitAsync();
+            
+            return _mapper.Map<UserDetailsReadDTO>(user);
         }
     }
 }

@@ -71,6 +71,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         public async Task<IActionResult> GoogleLoginAuthenticate([FromBody] AuthenticateDTO authenticateRequest)
         {
+            //TODO: if pass Campus here then create new user with campus in it
             //create new User for Google Login
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
                 authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
@@ -113,8 +114,8 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         public async Task<IActionResult> Logout([FromBody] LogoutRequestDTO logoutRequest)
         {
-            await _authService.Logout();
-
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            await _authService.Logout(stringId);
             return ResponseFactory.NoContent();
         }
         
@@ -128,6 +129,18 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAccessTokenWithRefreshToken([Required]string refreshToken)
         {
             return ResponseFactory.Ok(await _authService.GetAccessTokenWithRefreshToken(refreshToken));
+        }
+        
+        /// <summary>
+        /// Check User by Email (call this to check before call LoginWithCredential in Web/Flutter)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpPost("email")]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CheckUserByEmail([Required]string email)
+        {
+            return ResponseFactory.Ok(await _userService.GetUserByEmailAsync(email));
         }
     }
 }

@@ -12,14 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LostAndFound.API.Controllers
 {
+    //TODO: add check Campus when login with email and password -> still have campus when login -> if new then use it to create new User -> If not then use it to check
+    //TODO: also add propertyId when create new manager
+    //TODO: also trim SchoolId to add when create
+    //TODO: add check cho isActive/Campus -> add into Autheticate (check inside here)
     [ApiController]
     [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IUserMediaService _userMediaService;
-        //TODO: add Student/LecturerCode field + propertyId - wait for meeting
-        //TODO: add default Category/Group/Property/Location
         public UserController(IUserService userService, IUserMediaService userMediaService)
         {
             _userService = userService;
@@ -39,6 +41,23 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] UserQuery query)
         {
             var userPaginatedDto = await _userService.GetAllUsersAsync(query);
+
+            return ResponseFactory.PaginatedOk(userPaginatedDto);
+        }
+        
+        ///<summary>
+        /// Get all users ignore status
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("get-ignore-status")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [QueryResponseCache(typeof(UserQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
+        public async Task<IActionResult> GetAllIgnoreStatus([FromQuery] UserQueryIgnoreStatus query)
+        {
+            var userPaginatedDto = await _userService.GetAllUsersIgnoreStatusAsync(query);
 
             return ResponseFactory.PaginatedOk(userPaginatedDto);
         }
@@ -125,13 +144,13 @@ namespace LostAndFound.API.Controllers
         [HttpPatch("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ChangeUserIsActiveStatus(string id)
         {
-            await _userService.ChangeUserStatusAsync(id);
+            var result = await _userService.ChangeUserStatusAsync(id);
 
-            return ResponseFactory.NoContent();
+            return ResponseFactory.Ok(result);
         }
         
         ///<summary>
@@ -183,6 +202,23 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
+
+            return ResponseFactory.Ok(result);
+        }
+        
+        /// <summary>
+        /// Change user's verify status
+        /// </summary>
+        /// <remarks></remarks>
+        /// <returns></returns>
+        [HttpPatch("update-verify-status")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<UserDetailsReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ChangeUserVerifyStatus(UserVerifyStatusUpdateDTO updateDto)
+        {
+            var result = await _userService.ChangeUserVerifyStatusAsync(updateDto);
 
             return ResponseFactory.Ok(result);
         }

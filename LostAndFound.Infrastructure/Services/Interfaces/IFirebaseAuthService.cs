@@ -13,5 +13,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
                                                     string avatar, string phone);
 
         Task<string> GetAccessTokenWithRefreshToken(string refreshToken);
+        Task CheckUserRoles(string userId, string[] roles);
     }
 }

@@ -221,6 +221,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return _context.Users
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 

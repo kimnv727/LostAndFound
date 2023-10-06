@@ -25,10 +25,13 @@ namespace LostAndFound.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUserMediaService _userMediaService;
-        public UserController(IUserService userService, IUserMediaService userMediaService)
+        private readonly IFirebaseAuthService _firebaseAuthService;
+
+        public UserController(IUserService userService, IUserMediaService userMediaService, IFirebaseAuthService firebaseAuthService)
         {
             _userService = userService;
             _userMediaService = userMediaService;
+            _firebaseAuthService = firebaseAuthService;
         }
 
         ///<summary>
@@ -241,6 +244,9 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ChangeUserVerifyStatus([Required]UserVerifyStatusUpdateDTO updateDTO)
         {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            string[] roles = { "Manager", "Storage Manager" };
+            await _firebaseAuthService.CheckUserRoles(stringId, roles);
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
             return ResponseFactory.Ok(result);

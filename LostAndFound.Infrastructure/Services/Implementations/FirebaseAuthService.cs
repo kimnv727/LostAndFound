@@ -9,6 +9,7 @@ using Firebase.Auth;
 using FirebaseAdmin.Auth;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
@@ -207,6 +208,28 @@ namespace LostAndFound.API.Authentication
                 }
 
                 return null;
+            }
+        }
+
+        public async Task CheckUserRoles(string userId, string[] roles)
+        {
+            bool checker = false;
+            var user = await _userRepository.FindUserByID(userId);
+            if(user == null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            for (int i = 0; i < roles.Length; i++)
+            {
+                if (roles[i].ToLower().Equals(user.Role.Name.ToLower()))
+                {
+                    checker = true;
+                }
+            }
+            if (!checker)
+            {
+                throw new NotPermittedException("You are not permitted to access this function");
             }
         }
     }

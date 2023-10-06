@@ -1,11 +1,11 @@
 ﻿using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Media;
 
 namespace LostAndFound.Infrastructure.DTOs.UserMedia
 {
-    public class UserMediaWriteDTO
+    public class UserMediaLiteReadDTO
     {
-        public string UserId { get; set; }
         public UserMediaType MediaType { get; set; }
-        public UserMediaWriteDTO Media { get; set; }
+        public MediaReadDTO Media { get; set; }
     }
 }

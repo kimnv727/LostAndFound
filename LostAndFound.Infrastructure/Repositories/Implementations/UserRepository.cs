@@ -22,7 +22,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false)
         {
-            IQueryable<User> users = _context.Users.Include(u => u.Role).Where(u => u.IsActive == true && u.RoleId != 1).AsSplitQuery();
+            IQueryable<User> users = _context.Users
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
+                .Where(u => u.IsActive == true && u.RoleId != 1)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -101,7 +106,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQueryIgnoreStatus query, bool trackChanges = false)
         {
-            IQueryable<User> users = _context.Users.Include(u => u.Role)
+            IQueryable<User> users = _context.Users
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
                 .Where(u => u.RoleId != 1)
                 .AsSplitQuery();
 
@@ -210,12 +218,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public Task<User> FindUserByID(string id)
         {
-            return _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return _context.Users
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public Task<User> FindUserByEmail(string email)
         {
             return _context.Users
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
                 .Where(u => u.IsActive == true )
                 .Where(u => u.DeletedDate == null)
                 .FirstOrDefaultAsync(u => u.Email == email);

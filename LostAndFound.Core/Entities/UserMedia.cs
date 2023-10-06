@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LostAndFound.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,6 +19,7 @@ namespace LostAndFound.Core.Entities
         [ForeignKey("Media")]
         [Key, Column(Order = 1)]
         public Guid MediaId { get; set; }
+        public UserMediaType? MediaType { get; set; }
         public virtual User User { get; set; }
         public virtual Media Media { get; set; }
     }

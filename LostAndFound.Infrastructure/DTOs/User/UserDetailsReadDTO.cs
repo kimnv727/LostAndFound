@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.UserMedia;
 using Newtonsoft.Json;
 
 namespace LostAndFound.Infrastructure.DTOs.User
@@ -34,5 +36,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public UserVerifyStatus VerifyStatus { get; set; }
         
         public DateTime CreatedDate{ get; set; }
+
+        public ICollection<UserMediaLiteReadDTO> UserMedias { get; set; }
     }
 }

@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using LostAndFound.Core.Entities;
+﻿using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.Data;
-using LostAndFound.Infrastructure.Services.Implementations;
-using LostAndFound.Infrastructure.Services.Interfaces;
 using System;
 using System.Linq;
 
@@ -14,9 +11,14 @@ namespace LostAndFound.Infrastructure.Extensions
     {
         public static void MapInitialData(this LostAndFoundDbContext context)
         {
+            //TEAMMATE_NOTE: please nuke the db and run the project again because I only check the very first acc
+            //              if that acc exist the rest of the function will not run
+            //              Besides, we use int on a few ids, so if you only nuke the data, index of those pk might get 
+            //              messed up
             var testAcc = context.Users.FirstOrDefault(u => u.Email.Equals("abc123@fpt.edu.vn"));
             if(testAcc == null)
             {
+                #region Add Roles
                 Role admin = new Role
                 {
                     Name = "Admin",
@@ -48,24 +50,28 @@ namespace LostAndFound.Infrastructure.Extensions
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Roles.Add(userRole);
+                #endregion
 
+                #region Add Properties
                 Property property = new Property
                 {
                     PropertyName = "FPT HCM Campus",
                     Address = "FPT HCM Campus"
                 };
                 context.Properties.Add(property);
-                
+                #endregion
+
+                #region Add Users
                 User adminUser = new User()
                 {
                     Id = "n8pJOw1SeoXexNsGwGCDq9GQ8SV2",
                     Email = "admin@fpt.edu.vn",
                     Password = "",
                     IsActive = true,
-                    Avatar = "Avatar.png",
                     FirstName = "Test",
                     LastName = "Admin",
                     Gender = Core.Enums.Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0101010101",
                     SchoolId = "ADMIN",
                     Campus = Campus.HO_CHI_MINH_CAMPUS,
@@ -81,10 +87,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     Email = "abc456@fpt.edu.vn",
                     Password = "",
                     IsActive = true,
-                    Avatar = "Avatar.png",
                     FirstName = "Test",
                     LastName = "User",
                     Gender = Core.Enums.Gender.Male,
+                    VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                     Phone = "0808080808",
                     SchoolId = "SE111111",
                     Campus = Campus.HO_CHI_MINH_CAMPUS,
@@ -100,10 +106,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     Email = "abc123@fpt.edu.vn",
                     Password = "",
                     IsActive = true,
-                    Avatar = "Avatar.png",
                     FirstName = "Test",
                     LastName = "Manager",
                     Gender = Core.Enums.Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
                     Campus = Campus.HO_CHI_MINH_CAMPUS,
@@ -119,10 +125,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     Email = "def123@fpt.edu.vn",
                     Password = "",
                     IsActive = true,
-                    Avatar = "Avatar.png",
                     FirstName = "Test",
                     LastName = "Storage Manager",
                     Gender = Core.Enums.Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
                     Campus = Campus.HO_CHI_MINH_CAMPUS,
@@ -130,6 +136,8 @@ namespace LostAndFound.Infrastructure.Extensions
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(storageManagerUser);
+                #endregion
+
                 context.SaveChanges();
             }
 

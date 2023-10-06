@@ -104,14 +104,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (ext.Equals(".png") ||
                 ext.Equals(".jpeg") ||
                 ext.Equals(".jpg") ||
-                ext.Equals(".jfif") ||
-                ext.Equals(".mp4") ||
-                ext.Equals(".mkv"))
+                ext.Equals(".jfif"))
             {
             }
             else
             {
-                throw new InvalidFileFormatException("image or video");
+                throw new InvalidFileFormatException("images");
             }
         }
 

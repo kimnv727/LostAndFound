@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.User;
+using LostAndFound.Infrastructure.DTOs.UserMedia;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -72,7 +75,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetUser(string id)
+        public async Task<IActionResult> GetUser([Required] string id)
         {
             var user = await _userService.GetUserAsync(id);
 
@@ -89,7 +92,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetUserByMail(string email)
+        public async Task<IActionResult> GetUserByMail([Required] string email)
         {
             var result = await _userService.GetUserByEmailAsync(email);
 
@@ -106,7 +109,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreateUser(UserWriteDTO writeDTO)
+        public async Task<IActionResult> CreateUser([Required] UserWriteDTO writeDTO)
         {
             var result = await _userService.CreateUserAsync(writeDTO);
 
@@ -127,7 +130,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserPasswordAsync(UserUpdatePasswordDTO updatePasswordDTO)
+        public async Task<IActionResult> UpdateUserPasswordAsync([Required] UserUpdatePasswordDTO updatePasswordDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _userService.UpdateUserPasswordAndSendEmailAsync(stringId, updatePasswordDTO);
@@ -146,7 +149,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ChangeUserIsActiveStatus(string id)
+        public async Task<IActionResult> ChangeUserIsActiveStatus([Required] string id)
         {
             var result = await _userService.ChangeUserStatusAsync(id);
 
@@ -163,7 +166,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserDetailsAsync(UserUpdateDTO updateDTO)
+        public async Task<IActionResult> UpdateUserDetailsAsync([Required]UserUpdateDTO updateDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.UpdateUserDetailsAsync(stringId, updateDTO);
@@ -181,7 +184,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserDetailsAsync(string id, UserUpdateDTO updateDTO)
+        public async Task<IActionResult> UpdateUserDetailsAsync([Required]string id, [Required]UserUpdateDTO updateDTO)
         {
             var user = await _userService.UpdateUserDetailsAsync(id, updateDTO);
 
@@ -192,33 +195,53 @@ namespace LostAndFound.API.Controllers
         /// Update user avatar (this function will also add avatar if user currently don't have one)
         /// </summary>
         /// <remarks>Update user's avatar</remarks>
+        /// <param name="avatar"></param>
         /// <returns></returns>
-        [HttpPatch("media")]
+        [HttpPost("media")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserMediaReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserAvatarAsync(IFormFile avatar)
+        public async Task<IActionResult> UpdateUserAvatarAsync([Required]IFormFile avatar)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
 
             return ResponseFactory.Ok(result);
         }
-        
+
+        ///<summary>
+        /// Update user credentails (this function will also add credentials if user currently don't have one)
+        /// </summary>
+        /// <remarks>Update user's credentials</remarks>
+        /// <param name="ccid"></param>
+        /// <param name="studentCard"></param>
+        /// <returns></returns>
+        [HttpPost("media-credentials")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ICollection<UserMediaReadDTO>>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateUserCredentialImagesAsync([Required]IFormFile ccid, [Required]IFormFile studentCard)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userMediaService.UploadUserCredentialForVerification(stringId, ccid, studentCard);
+            return ResponseFactory.Ok(result);
+        }
+
         /// <summary>
         /// Change user's verify status
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>Change user's verify status</remarks>
         /// <returns></returns>
         [HttpPatch("update-verify-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<UserDetailsReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ChangeUserVerifyStatus(UserVerifyStatusUpdateDTO updateDto)
+        public async Task<IActionResult> ChangeUserVerifyStatus([Required]UserVerifyStatusUpdateDTO updateDTO)
         {
-            var result = await _userService.ChangeUserVerifyStatusAsync(updateDto);
+            var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
             return ResponseFactory.Ok(result);
         }

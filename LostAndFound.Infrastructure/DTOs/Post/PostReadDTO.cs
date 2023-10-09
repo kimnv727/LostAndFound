@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
 
@@ -16,5 +18,6 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string CategoryName { get; set; }
         public DateTime CreatedDate { get; set; }
         public UserReadDTO User { get; set; }
+        public ICollection<PostMediaLiteReadDTO> PostMedias { get; set; }
     }
 }

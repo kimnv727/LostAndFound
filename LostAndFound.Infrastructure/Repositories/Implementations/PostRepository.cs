@@ -50,6 +50,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(p => p.User)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE);
 
             posts = posts.Where(p => p.PostUserId == userId);
@@ -63,6 +65,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(p => p.User)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
 
             if (!trackChanges)
@@ -128,6 +132,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
                 .AsSplitQuery();
 
             if (!trackChanges)
@@ -211,6 +217,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Post> FindPostByIdAndUserId(int id, string userId)
         {
             return await _context.Posts
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
                 .SingleOrDefaultAsync(p => p.Id == id && p.PostUserId == userId);
         }
     }

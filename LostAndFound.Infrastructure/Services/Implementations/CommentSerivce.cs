@@ -138,7 +138,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<User>(userId);
             }
             //Get Post
-            var post = _postRepository.FindPostByIdAsync(postId);
+            var post = await _postRepository.FindPostByIdAsync(postId);
             if (post == null)
             {
                 throw new EntityWithIDNotFoundException<Post>(postId);

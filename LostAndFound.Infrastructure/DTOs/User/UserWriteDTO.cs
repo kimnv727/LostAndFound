@@ -24,5 +24,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public string Password{ get; set; }
 
         public string Avatar{ get; set; }
+
+        public int RoleId { get; set; }
     }
 }

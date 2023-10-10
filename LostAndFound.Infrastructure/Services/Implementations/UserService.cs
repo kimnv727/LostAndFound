@@ -10,7 +10,7 @@ using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
-using User = LostAndFound.Core.Entities.User;
+using LostAndFound.Core.Entities;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -54,7 +54,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userId);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(userId);
             }
 
             return _mapper.Map<UserDetailsReadDTO>(user);
@@ -66,7 +66,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if (user == null)
             {
-                throw new EntityWithEmailNotFoundException<User>(email);
+                throw new EntityWithEmailNotFoundException<Core.Entities.User>(email);
             }
 
             return _mapper.Map<UserDetailsReadDTO>(user);
@@ -94,12 +94,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     //Create on Firebase successfully
                     //Create User in DB
                     userWriteDTO.Password = _passwordHasherService.HashPassword(userWriteDTO.Password);
-                    var user = _mapper.Map<User>(userWriteDTO);
+                    var user = _mapper.Map<Core.Entities.User>(userWriteDTO);
                     //Get FirebaseUID before create new User (this only for Admin created account)
                     user.Id = userCredentials.User.Uid;
-                    //TODO: Role default to Manager or let Admin choose?
-                    //Default to 2 (Manager)
-                    user.RoleId = 2;
                     user.VerifyStatus = UserVerifyStatus.VERIFIED;
                     await _userRepository.AddAsync(user);
                     await _unitOfWork.CommitAsync();
@@ -125,7 +122,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var user = await _userRepository.FindUserByID(id);
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(id);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(id);
             }
 
             if (await _userRepository.IsDuplicatedPhoneNumber(updateDTO.Phone))
@@ -147,7 +144,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userId);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(userId);
             }
             else if (!_passwordHasherService.VerifyCorrectPassword(
                     updatePasswordDTO.oldPassword, //Old password 
@@ -171,7 +168,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userId);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(userId);
             }
             else if (!_passwordHasherService.VerifyCorrectPassword(
                     updatePasswordDTO.oldPassword, //Old password 
@@ -195,7 +192,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var user = await _userRepository.FindUserByEmail(userRequestResetPasswordDTO.Email);
             if (user == null)
             {
-                throw new EntityWithEmailNotFoundException<User>(userRequestResetPasswordDTO.Email);
+                throw new EntityWithEmailNotFoundException<Core.Entities.User>(userRequestResetPasswordDTO.Email);
             }
             string pass = Guid.NewGuid().ToString("d").Substring(1, 16);
             user.Password = _passwordHasherService.HashPassword(pass);
@@ -208,7 +205,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var user = await _userRepository.FindUserByID(id);
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(id);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(id);
             }
 
             if (user.IsActive == true)
@@ -236,7 +233,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var user = await _userRepository.FindUserByID(updateDto.UserId);
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(updateDto.UserId);
+                throw new EntityWithIDNotFoundException<Core.Entities.User>(updateDto.UserId);
             }
 
             user.VerifyStatus = updateDto.VerifyStatus;

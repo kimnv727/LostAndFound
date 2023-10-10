@@ -1,3 +1,4 @@
+using LostAndFound.Infrastructure.DTOs.User;
 using System;
 
 namespace LostAndFound.Infrastructure.DTOs.Comment
@@ -13,5 +14,6 @@ namespace LostAndFound.Infrastructure.DTOs.Comment
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
+        public UserReadDTO User { get; set; }
     }
 }

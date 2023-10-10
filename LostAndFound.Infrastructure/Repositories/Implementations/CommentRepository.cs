@@ -20,12 +20,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<Comment> FindCommentByIdAsync(int id)
         {
-            return await _context.Comments.Where(c => c.DeletedDate == null).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Comments
+                .Include(c => c.User)
+                .Where(c => c.DeletedDate == null).FirstOrDefaultAsync(c => c.Id == id);
         }
         
         public async Task<Comment> FindCommentIgnoreStatusByIdAsync(int id)
         {
-            return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Comments
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
         
         /*public async Task<Comment> FindCommentWithReplyByIdAsync(int id)
@@ -39,7 +43,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
-            comments = comments.Where(c => c.PostId == postId).OrderBy(c => c.CreatedDate);
+            comments = comments
+                .Include(c => c.User)
+                .Where(c => c.PostId == postId).OrderBy(c => c.CreatedDate);
             
             return await Task.FromResult(comments.ToList());
         }
@@ -49,14 +55,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
-            comments = comments.Where(c => c.CommentUserId == userId).OrderBy(c => c.CreatedDate);
+            comments = comments
+                .Include(c => c.User)
+                .Where(c => c.CommentUserId == userId).OrderBy(c => c.CreatedDate);
             
             return await Task.FromResult(comments.ToList());
         }
 
         public async Task<IEnumerable<Comment>> QueryCommentAsync(CommentQuery query, bool trackChanges = false)
         {
-            IQueryable<Comment> comments = _context.Comments.Where(c => c.DeletedDate == null).AsSplitQuery();
+            IQueryable<Comment> comments = _context.Comments
+                .Include(c => c.User)
+                .Where(c => c.DeletedDate == null).AsSplitQuery();
             if (!trackChanges)
             {
                 comments = comments.AsNoTracking();
@@ -102,7 +112,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Comment>> QueryCommentIgnoreStatusAsync(CommentQuery query, bool trackChanges = false)
         {
-            IQueryable<Comment> comments = _context.Comments.AsSplitQuery();
+            IQueryable<Comment> comments = _context.Comments
+                .Include(c => c.User)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {

@@ -1,3 +1,4 @@
+using LostAndFound.Infrastructure.DTOs.User;
 using System;
 
 namespace LostAndFound.Infrastructure.DTOs.Comment
@@ -11,5 +12,6 @@ namespace LostAndFound.Infrastructure.DTOs.Comment
         public string CommentPath { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+        public UserReadDTO User { get; set; }
     }
 }

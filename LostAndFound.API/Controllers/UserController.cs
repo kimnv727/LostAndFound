@@ -42,7 +42,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(UserQuery))]
+        //[QueryResponseCache(typeof(UserQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAll([FromQuery] UserQuery query)
         {
@@ -59,7 +59,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-ignore-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(UserQuery))]
+        //[QueryResponseCache(typeof(UserQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAllIgnoreStatus([FromQuery] UserQueryIgnoreStatus query)
         {

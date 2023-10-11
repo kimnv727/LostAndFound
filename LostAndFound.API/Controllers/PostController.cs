@@ -78,7 +78,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(PostQuery))]
+        //[QueryResponseCache(typeof(PostQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostReadDTO>))]
         public async Task<IActionResult> GetAllPosts([FromQuery] PostQuery query)
         {
@@ -95,7 +95,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("query-with-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(PostQueryWithStatus))]
+        //[QueryResponseCache(typeof(PostQueryWithStatus))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostDetailReadDTO>))]
         public async Task<IActionResult> GetAllPostsWithStatus([FromQuery] PostQueryWithStatus query)
         {

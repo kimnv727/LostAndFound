@@ -72,7 +72,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(CommentQuery))]
+        //[QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
         public async Task<IActionResult> GetAllComments([FromQuery] CommentQuery query)
         {
@@ -89,7 +89,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-ignore-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(CommentQuery))]
+        //[QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
         public async Task<IActionResult> GetAllCommentsIgnoreStatus([FromQuery] CommentQuery query)
         {

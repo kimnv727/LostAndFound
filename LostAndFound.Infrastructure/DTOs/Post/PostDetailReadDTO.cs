@@ -17,7 +17,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
 
         public string PostContent { get; set; }
 
-        [JsonProperty(PropertyName = "LocationName")]
+        [JsonProperty(PropertyName = "locationName")]
         public string LocationLocationName { get; set; }
 
         public string CategoryName { get; set; }

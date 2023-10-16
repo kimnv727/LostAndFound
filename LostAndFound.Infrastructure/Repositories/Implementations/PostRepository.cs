@@ -130,6 +130,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Post>> QueryPostWithStatusAsync(PostQueryWithStatus query, bool trackChanges = false)
         {
             IQueryable<Post> posts = _context.Posts
+                .Include(p => p.User)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))

@@ -76,7 +76,7 @@ namespace LostAndFound.API.Controllers
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
                 authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
 
-            //check user device existed -> if not create new
+            /*//check user device existed -> if not create new
             var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(authenticateRequest.DeviceToken);
             if (userDevice == null)
             {
@@ -86,7 +86,7 @@ namespace LostAndFound.API.Controllers
                     UserId = authenticateRequest.Uid
                 };
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
-            }
+            }*/
             
             return ResponseFactory.Ok(result);
         }

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LostAndFound.Core.Enums;
+using static LostAndFound.Infrastructure.DTOs.Post.PostQueryWithStatus;
+using System.ComponentModel;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
@@ -24,6 +26,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int CategoryId { get; set; }
 
         //Status = Pending / Active / Returned / Closed / Rejected
+        [DefaultValue(ItemStatus.ACTIVE)]
         public ItemStatus ItemStatus { get; set; }
 
         public DateTime FoundDate { get; set; }

@@ -38,12 +38,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
         
-        public async Task<PaginatedResponse<ItemReadDTO>> QueryItemIgnoreStatusAsync(ItemQuery query)
-        {
-            var items = await _itemRepository.QueryItemIgnoreStatusAsync(query);
-            return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
-        }
-
         public async Task UpdateItemStatusAsync(int itemId)
         {
             var item = await _itemRepository.FindItemByIdAsync(itemId);
@@ -90,78 +84,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ItemReadDTO>(item);
 
         }
-        
-        
-        //public async Task<ItemReadDTO> CreateItemAsync(ItemValue itemValue, string categoryName, string userId, ItemWriteDTO itemWriteDTO)
-        //{
-        //    //Check if user exist
-        //    var user = await _userRepository.FindUserByID(userId);
-        //    if (user == null)
-        //    {
-        //        throw new EntityWithIDNotFoundException<User>(userId);
-        //    }
-            
-        //    //Load categories to a list
-        //    //For user selectable dropdown of categories
-        //    //var categories = await _categoryRepository.GetAllAsync();
-            
-        //    //Categorize item value high or low
-        //    //Check from itemWriteDTO for categoryId
-        //    //From that categoryId, get categoryGroupId
-        //    //Then, check if that groupId Value is matching with the given value
-
-        //    var category = await _categoryRepository.FindCategoryByNameAsync(categoryName);
-            
-        //    //If category exist -> Check category group
-        //    if (category != null)
-        //    {
-        //        var categoryGroup = await _categoryGroupRepository.FindCategoryGroupByIdAsync(category.CategoryGroupId);
-                
-        //        //If category group's value matches with input, do nothing
-        //        //Else, add the category to the generic category group
-                
-        //        if (Enum.IsDefined(itemValue))
-        //        {
-        //            if (categoryGroup.Value == itemValue)
-        //            {
-        //                //do nothing
-        //            }
-        //            else if (categoryGroup.Value != itemValue)
-        //            {
-                        
-        //            }
-        //        }
-        //    }
-        //    //If category doesnt already exist -> Throw error
-        //    else if (category == null)
-        //    {
-        //        throw new EntityNotFoundException<Category>();
-        //    }
-            
-        //    /*
-        //     *if (Enum.IsDefined(itemValue))
-        //        {
-        //            switch (itemValue)
-        //            {
-        //                case ItemValue.High:
-        //                    if(categoryGroup.Value == ItemValue.High)
-        //                        break;
-        //                case ItemValue.Low:
-        //                    break;
-        //            }
-        //        }
-        //     * 
-        //     */
-     
-        //    var item = _mapper.Map<Item>(itemWriteDTO);
-        //    item.FoundUserId = user.Id;
-        //    item.ItemStatus = ItemStatus.PENDING;
-        //    await _itemRepository.AddAsync(item);
-        //    await _unitOfWork.CommitAsync();
-        //    return _mapper.Map<ItemReadDTO>(item);
-
-        //}
-        
 
         public async Task DeleteItemAsync(int itemId)
         {
@@ -200,7 +122,19 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ItemReadDTO>(item);
         }
 
-        public async Task<ItemReadDTO> FindItemNameAsync(string name)
+        public async Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus)
+        {
+            var Item = await _itemRepository.FindItemByIdAsync(itemId);
+            if(Item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            Item.ItemStatus = itemStatus;
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<ItemReadDTO> FindItemByNameAsync(string name)
         {
             var item = await _itemRepository.FindItemByNameAsync(name);
 

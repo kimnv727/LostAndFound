@@ -1,9 +1,11 @@
 ﻿using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +40,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false)
         {
-            //IQueryable<Item> items = _context.Items.Where(i => i.IsActive == true).AsSplitQuery();
             IQueryable<Item> items = _context.Items
                             .Include(i => i.Category)
                             .Include(i => i.Location)
@@ -51,6 +52,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 items = items.AsNoTracking();
             }
 
+            if (query.Id > 0)
+            {
+                items = items.Where(i => i.Id == query.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundUserId))
+            {
+                items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
+            }
+            if (query.LocationId > 0)
+            {
+                items = items.Where(i => i.LocationId == query.LocationId);
+            }
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
                 items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
@@ -59,32 +72,46 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
             }
-
-            return await Task.FromResult(items.ToList());
-        }
-
-        public async Task<IEnumerable<Item>> QueryItemIgnoreStatusAsync(ItemQuery query, bool trackChanges = false)
-        {
-            IQueryable<Item> items = _context.Items
-                                .Include(i => i.Category)
-                                .Include(i => i.Location)
-                                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
-                                .ThenInclude(im => im.Media)
-                                .AsSplitQuery();
-
-            if (!trackChanges)
+            if (query.CategoryId > 0)
             {
-                items = items.AsNoTracking();
+                items = items.Where(i => i.CategoryId == query.CategoryId);
+            }
+            if (Enum.IsDefined(query.ItemStatus))
+            {
+                switch (query.ItemStatus)
+                {
+                    case ItemStatus.PENDING:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.PENDING);
+                        break;
+                    case ItemStatus.ACTIVE:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE);
+                        break;
+                    case ItemStatus.RETURNED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.RETURNED);
+                        break;
+                    case ItemStatus.CLOSED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.CLOSED);
+                        break;
+                    case ItemStatus.REJECTED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.REJECTED);
+                        break;
+                    default: 
+                        break;
+                }
+            }
+            else
+            {
+
+            }
+            if (query.FoundDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }
+            if (query.CreatedDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.CreatedDate == query.CreatedDate).OrderBy(i => i.CreatedDate);
             }
 
-            if (!string.IsNullOrWhiteSpace(query.Name))
-            {
-                items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
-            }
-            if (!string.IsNullOrWhiteSpace(query.Description))
-            {
-                items = items.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
-            }
 
             return await Task.FromResult(items.ToList());
         }

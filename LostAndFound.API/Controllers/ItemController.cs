@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.ItemFlag;
+using System.Xml.Linq;
 
 namespace LostAndFound.API.Controllers
 {
@@ -56,20 +57,6 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Query Items by Item status with pagination
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("all")]
-        [QueryResponseCache(typeof(ItemQuery))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
-        public async Task<IActionResult> QueryIgnoreStatus([FromQuery] ItemQuery query)
-        {
-            var paginatedItemDTO = await _itemService.QueryItemIgnoreStatusAsync(query);
-
-            return ResponseFactory.PaginatedOk(paginatedItemDTO);
-        }
-
-        /// <summary>
         /// Find Item By Id
         /// </summary>
         /// <returns></returns>
@@ -94,8 +81,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindItemByName([Required] string name)
         {
-            var item = await _itemService.FindItemNameAsync(name);
-
+            var item = await _itemService.FindItemByNameAsync(name);
             return ResponseFactory.Ok(item);
         }
 
@@ -103,17 +89,19 @@ namespace LostAndFound.API.Controllers
         /// Update Item status
         /// </summary>
         /// <param name="itemId"></param>
+        /// <param name="itemStatus"></param>
+        /// <remarks>Update Item's status</remarks>
         /// <returns></returns>
         [HttpPatch("change-status/{itemId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateItemStatus([Required] int itemId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateItemStatus([Required] int itemId, ItemStatus itemStatus)
         {
-            //TODO: Change isActive to ItemStatus
-            await _itemService.UpdateItemStatusAsync(itemId);
-            return ResponseFactory.NoContent();
+            await _itemService.ChangeItemStatusAsync(itemId, itemStatus);
+            return NoContent();
         }
-        
+
         ///<summary>
         /// Update item information
         /// </summary>

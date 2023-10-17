@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
-    public interface IItemRepository : 
+    public interface IItemRepository :
         IGetAllAsync<Item>,
         IDelete<Item>,
         IUpdate<Item>,
@@ -16,8 +16,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         
         Task<Item> FindItemByIdAsync(int ItemId);
         Task<Item> FindItemByNameAsync(string Name);
-
         Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false);
-        Task<IEnumerable<Item>> QueryItemIgnoreStatusAsync(ItemQuery query, bool trackChanges = false);
     }
 }

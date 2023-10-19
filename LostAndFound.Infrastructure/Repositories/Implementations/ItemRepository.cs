@@ -20,6 +20,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<Item> FindItemByIdAsync(int ItemId)
         {
             return _context.Items
+                .Include(i => i.User)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -30,6 +31,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<Item> FindItemByNameAsync(string Name)
         {
             return _context.Items
+                .Include(i => i.User)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -41,6 +43,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false)
         {
             IQueryable<Item> items = _context.Items
+                            .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))

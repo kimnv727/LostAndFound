@@ -42,6 +42,7 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Item Media
             CreateMap<ItemMedia, ItemMediaReadDTO>();
+            CreateMap<ItemMedia, ItemMediaLiteReadDTO>();
 
             //User Media Mapping
             CreateMap<UserMediaWriteDTO, UserMedia>();

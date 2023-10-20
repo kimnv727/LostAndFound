@@ -32,7 +32,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _itemMediaService = itemMediaService;
         }
 
-        public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQuery query)
+        public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
         {
             var items = await _itemRepository.QueryItemAsync(query);
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);

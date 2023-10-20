@@ -28,15 +28,31 @@ namespace LostAndFound.API.Controllers
         /// Get Ocr from a picture url
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        [HttpPost]
-        public async Task<IActionResult> GetOcrAsync([FromForm] string imageUrl)
+        [HttpPost("/eng")]
+        public async Task<IActionResult> GetOcrEngAsync([FromForm] string imageUrl)
         {
             using (var httpClient = new HttpClient())
             {
                 byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
 
-                string text = await _ocrService.GetOcrFromImageUrlAsync(imageUrl);
+                string text = await _ocrService.GetEngOcrFromImageUrlAsync(imageUrl);
+                return Ok(text);
+            }
+
+        }
+
+        /// <summary>
+        /// Get Ocr from a picture url
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("/vie")]
+        public async Task<IActionResult> GetOcrVieAsync([FromForm] string imageUrl)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                byte[] imageBytes = await httpClient.GetByteArrayAsync(imageUrl);
+
+                string text = await _ocrService.GetVieOcrFromImageUrlAsync(imageUrl);
                 return Ok(text);
             }
 

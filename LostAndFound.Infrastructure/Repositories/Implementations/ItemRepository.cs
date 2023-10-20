@@ -40,7 +40,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 (i => i.Name.ToLower().Contains(Name.ToLower()));
         }
 
-        public async Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false)
+        public async Task<IEnumerable<Item>> QueryItemAsync(ItemQueryWithStatus query, bool trackChanges = false)
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
@@ -83,22 +83,25 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 switch (query.ItemStatus)
                 {
-                    case ItemStatus.PENDING:
+                    
+                    case ItemQueryWithStatus.ItemStatusQuery.ALL:
+                        break;
+                    case ItemQueryWithStatus.ItemStatusQuery.PENDING:
                         items = items.Where(i => i.ItemStatus == ItemStatus.PENDING);
                         break;
-                    case ItemStatus.ACTIVE:
+                    case ItemQueryWithStatus.ItemStatusQuery.ACTIVE:
                         items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE);
                         break;
-                    case ItemStatus.RETURNED:
+                    case ItemQueryWithStatus.ItemStatusQuery.RETURNED:
                         items = items.Where(i => i.ItemStatus == ItemStatus.RETURNED);
                         break;
-                    case ItemStatus.CLOSED:
+                    case ItemQueryWithStatus.ItemStatusQuery.CLOSED:
                         items = items.Where(i => i.ItemStatus == ItemStatus.CLOSED);
                         break;
-                    case ItemStatus.REJECTED:
+                    case ItemQueryWithStatus.ItemStatusQuery.REJECTED:
                         items = items.Where(i => i.ItemStatus == ItemStatus.REJECTED);
                         break;
-                    default: 
+                    default:
                         break;
                 }
             }

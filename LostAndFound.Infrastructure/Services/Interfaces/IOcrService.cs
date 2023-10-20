@@ -8,6 +8,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IOcrService
     {
-        public Task<string> GetOcrFromImageUrlAsync(string imageUrl);
+        public Task<string> GetEngOcrFromImageUrlAsync(string imageUrl);
+        public Task<string> GetVieOcrFromImageUrlAsync(string imageUrl);
     }
 }

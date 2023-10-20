@@ -16,6 +16,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         
         Task<Item> FindItemByIdAsync(int ItemId);
         Task<Item> FindItemByNameAsync(string Name);
-        Task<IEnumerable<Item>> QueryItemAsync(ItemQuery query, bool trackChanges = false);
+        Task<IEnumerable<Item>> QueryItemAsync(ItemQueryWithStatus query, bool trackChanges = false);
     }
 }

@@ -6,6 +6,8 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public string Description { get; set; }
 
-        public string FoundLocation { get; set; }
+        public int LocationId { get; set; }
+        public int CategoryId { get; set; }
+         
     }
 }

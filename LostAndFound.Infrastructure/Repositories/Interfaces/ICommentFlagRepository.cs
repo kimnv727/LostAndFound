@@ -11,7 +11,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IUpdate<CommentFlag>,
         IDelete<CommentFlag>
     {
-        Task<int> CountCommentFlagAsync(int commentId);
+        //Task<int> CountCommentFlagAsync(int commentId);
+        Task<IEnumerable<CommentFlag>> CountCommentFlagAsync(int commentId);
         Task<CommentFlag> FindCommentFlagAsync(int commentId, string userId);
         Task<IEnumerable<Comment>> FindCommentFlagsByUserIdAsync(string userId);
     }

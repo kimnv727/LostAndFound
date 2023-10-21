@@ -14,13 +14,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public PostFlagRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        
-        public async Task<int> CountPostFlagAsync(int postId)
+
+        /*public async Task<int> CountPostFlagAsync(int postId)
         {
             var result = _context.PostFlags.Where(pf => pf.PostId == postId && pf.IsActive == true);
             return await Task.FromResult(result.Count());
+        }*/
+
+        public async Task<IEnumerable<PostFlag>> CountPostFlagAsync(int postId)
+        {
+            var result = _context.PostFlags.Where(pf => pf.PostId == postId && pf.IsActive == true);
+            return await Task.FromResult(result.ToList());
         }
-        
+
         public async Task<IEnumerable<Post>> FindPostFlagsByUserIdAsync(string userId)
         {
             IQueryable<PostFlag> postFlags = _context.PostFlags.Where(pf => pf.UserId == userId && pf.IsActive == true);

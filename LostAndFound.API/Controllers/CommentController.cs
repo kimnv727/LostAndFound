@@ -198,6 +198,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("count-comment-flag/{commentId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CommentFlagCountReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountCommentFlagOfAPost(int commentId)
         {
@@ -252,6 +253,14 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> FlagAComment(int commentId, CommentFlagReason reason)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            //check cant flag your own comment
+            var commentCheck = await _commentService.GetCommentByIdAsync(commentId);
+            if (stringId == commentCheck.CommentUserId)
+            {
+                throw new UnauthorizedException();
+            }
+
+            //Flag a comment
             var commentFlag = await _commentFlagService.FlagAComment(stringId, commentId, reason);
             
             return ResponseFactory.CreatedAt(nameof(GetCommentFlag), 

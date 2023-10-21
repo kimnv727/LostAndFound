@@ -31,8 +31,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _postRepository = postRepository;
             _postFlagRepository = postFlagRepository;
         }
-        
-        public async Task<int> CountPostFlagAsync(int postId)
+
+        /*public async Task<int> CountPostFlagAsync(int postId)
         {
             //check Post
             var post = await _postRepository.FindPostByIdAsync(postId);
@@ -44,8 +44,57 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _postFlagRepository.CountPostFlagAsync(postId);
 
             return result;
+        }*/
+
+        public async Task<PostFlagCountReadDTO> CountPostFlagAsync(int postId)
+        {
+            //check Post
+            var post = await _postRepository.FindPostByIdAsync(postId);
+            if (post == null)
+            {
+                throw new EntityWithIDNotFoundException<Post>(postId);
+            }
+            //get post flag
+            var result = await _postFlagRepository.CountPostFlagAsync(postId);
+            //map result
+            var response = new PostFlagCountReadDTO()
+            {
+                WrongInformationCount = 0,
+                SpamCount = 0,
+                ViolatedUserCount = 0,
+                OthersCount = 0,
+                TotalCount = 0
+            };
+            //Count
+            foreach(var flag in result)
+            {
+                switch (flag.PostFlagReason)
+                {
+                    case PostFlagReason.WrongInformation:
+                        response.WrongInformationCount++;
+                        response.TotalCount++;
+                        break;
+                    case PostFlagReason.Spam:
+                        response.SpamCount++;
+                        response.TotalCount++;
+                        break;
+                    case PostFlagReason.ViolatedUser:
+                        response.ViolatedUserCount++;
+                        response.TotalCount++;
+                        break;
+                    case PostFlagReason.Others:
+                        response.OthersCount++;
+                        response.TotalCount++;
+                        break;
+                    default:
+                        response.TotalCount++;
+                        break;
+                }
+            }
+
+            return response;
         }
-        
+
         public async Task<PostFlagReadDTO> GetPostFlag(string userId, int postId)
         {
             //check User

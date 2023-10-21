@@ -336,6 +336,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("count-post-flag/{postId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountPostFlagOfAPost(int postId)
         {
@@ -390,6 +391,14 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> FlagAPost(int postId, PostFlagReason reason)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            //check cant flag your own post
+            var postCheck = await _postService.GetPostByIdAsync(postId);
+            if (stringId == postCheck.PostUserId)
+            {
+                throw new UnauthorizedException();
+            }
+
+            //Flag a post
             var postFlag = await _postFlagService.FlagAPost(stringId, postId, reason);
             
             return ResponseFactory.CreatedAt(nameof(GetPostFlag), 

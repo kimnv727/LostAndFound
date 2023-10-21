@@ -32,8 +32,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _commentRepository = commentRepository;
             _commentFlagRepository = commentFlagRepository;
         }
-        
-        public async Task<int> CountCommentFlagAsync(int commentId)
+
+        /*public async Task<int> CountCommentFlagAsync(int commentId)
         {
             //check Post
             var comment = await _commentRepository.FindCommentByIdAsync(commentId);
@@ -45,8 +45,57 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _commentFlagRepository.CountCommentFlagAsync(commentId);
 
             return result;
+        }*/
+
+        public async Task<CommentFlagCountReadDTO> CountCommentFlagAsync(int commentId)
+        {
+            //check Post
+            var comment = await _commentRepository.FindCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new EntityWithIDNotFoundException<Comment>(commentId);
+            }
+            //get comment flag
+            var result = await _commentFlagRepository.CountCommentFlagAsync(commentId);
+            //map result
+            var response = new CommentFlagCountReadDTO()
+            {
+                WrongInformationCount = 0,
+                SpamCount = 0,
+                ViolatedUserCount = 0,
+                OthersCount = 0,
+                TotalCount = 0
+            };
+            //Count
+            foreach (var flag in result)
+            {
+                switch (flag.CommentFlagReason)
+                {
+                    case CommentFlagReason.WrongInformation:
+                        response.WrongInformationCount++;
+                        response.TotalCount++;
+                        break;
+                    case CommentFlagReason.Spam:
+                        response.SpamCount++;
+                        response.TotalCount++;
+                        break;
+                    case CommentFlagReason.ViolatedUser:
+                        response.ViolatedUserCount++;
+                        response.TotalCount++;
+                        break;
+                    case CommentFlagReason.Others:
+                        response.OthersCount++;
+                        response.TotalCount++;
+                        break;
+                    default:
+                        response.TotalCount++;
+                        break;
+                }
+            }
+
+            return response;
         }
-        
+
         public async Task<CommentFlagReadDTO> GetCommentFlag(string userId, int commentId)
         {
             //check User

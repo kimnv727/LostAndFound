@@ -11,7 +11,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IUpdate<PostFlag>,
         IDelete<PostFlag>
     {
-        Task<int> CountPostFlagAsync(int postId);
+        //Task<int> CountPostFlagAsync(int postId);
+        Task<IEnumerable<PostFlag>> CountPostFlagAsync(int postId);
         Task<PostFlag> FindPostFlagAsync(int postId, string userId);
         Task<IEnumerable<Post>> FindPostFlagsByUserIdAsync(string userId);
     }

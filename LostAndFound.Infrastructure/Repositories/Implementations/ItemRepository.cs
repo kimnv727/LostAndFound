@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
@@ -112,6 +113,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                items = items.OrderBy(query.OrderBy);
             }
             if (query.CreatedDate > DateTime.MinValue)
             {

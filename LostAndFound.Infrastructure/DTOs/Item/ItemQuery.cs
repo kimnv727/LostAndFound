@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
-    public class ItemQuery : PaginatedQuery
+    public class ItemQuery : PaginatedQuery, IOrderedQuery
     {
 
         public int Id { get; set; }
@@ -32,5 +32,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public DateTime FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
+        public string OrderBy { get; set; } = "Id Desc";
+
     }
 }

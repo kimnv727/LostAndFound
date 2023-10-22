@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
+using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
@@ -13,7 +14,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         
         public string FoundUserId { get; set; }
         
-        public int LocationId { get; set; }
+        //public int LocationId { get; set; }
         
         public string Name { get; set; }
         
@@ -30,6 +31,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public DateTime? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
+        public UserReadDTO User { get; set; }
 
         public ICollection<ItemMediaReadDTO> ItemMedias { get; set; }
     }

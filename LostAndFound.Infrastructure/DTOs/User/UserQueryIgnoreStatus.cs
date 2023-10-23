@@ -37,7 +37,18 @@ namespace LostAndFound.Infrastructure.DTOs.User
         }
         [DefaultValue(CampusSearch.All)]
         public CampusSearch Campus { get; set; }
-        
+
+        public enum RoleSearch
+        {
+            All,
+            User,
+            All_Manager,
+            Manager,
+            Storage_Manager
+        }
+        [DefaultValue(GenderSearch.All)]
+        public RoleSearch Role { get; set; }
+
         public enum UserVerifyStatusSearch
         {
             All,

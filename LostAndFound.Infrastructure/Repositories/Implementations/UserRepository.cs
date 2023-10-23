@@ -91,7 +91,27 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
                 }
             }
-            
+
+            if (Enum.IsDefined(query.Role))
+            {
+                if (query.Role == UserQuery.RoleSearch.User)
+                {
+                    users = users.Where(u => u.RoleId == 4);
+                }
+                else if (query.Role == UserQuery.RoleSearch.All_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2 || u.RoleId == 3);
+                }
+                else if (query.Role == UserQuery.RoleSearch.Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2);
+                }
+                else if (query.Role == UserQuery.RoleSearch.Storage_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 3);
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 users = users.Where(p => p.FullName.ToLower().Contains(query.SearchText.ToLower()));
@@ -175,7 +195,27 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
                 }
             }
-            
+
+            if (Enum.IsDefined(query.Role))
+            {
+                if (query.Role == UserQueryIgnoreStatus.RoleSearch.User)
+                {
+                    users = users.Where(u => u.RoleId == 4);
+                }
+                else if (query.Role == UserQueryIgnoreStatus.RoleSearch.All_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2 || u.RoleId == 3);
+                }
+                else if (query.Role == UserQueryIgnoreStatus.RoleSearch.Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2);
+                }
+                else if (query.Role == UserQueryIgnoreStatus.RoleSearch.Storage_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 3);
+                }
+            }
+
             if (Enum.IsDefined(query.UserVerifyStatus))
             {
                 if (query.UserVerifyStatus == UserQueryIgnoreStatus.UserVerifyStatusSearch.VERIFIED)

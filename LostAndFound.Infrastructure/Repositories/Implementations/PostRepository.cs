@@ -190,6 +190,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     posts = posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
                 }
+                else if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.REJECTED)
+                {
+                    posts = posts.Where(p => p.PostStatus == PostStatus.REJECTED);
+                }
             }
             
             if (query.FromDate != null)

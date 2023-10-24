@@ -22,7 +22,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
             PENDING,
             ACTIVE,
             DELETED,
-            CLOSED
+            CLOSED,
+            REJECTED
         }
         [DefaultValue(PostStatusQuery.All)]
         public PostStatusQuery PostStatus { get; set; }

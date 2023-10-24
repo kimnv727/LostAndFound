@@ -19,9 +19,9 @@ namespace LostAndFound.Infrastructure.DTOs.User
         [RegularExpression("(\\+\\d{1,3}\\s?)?((\\(\\d{3}\\)\\s?)|(\\d{3})(\\s|-?))(\\d{3}(\\s|-?))(\\d{4})(\\s?(([E|e]xt[:|.|]?)|x|X)(\\s?\\d+))?", ErrorMessage = "Phone number must be of right format")] //10-digit phone number
         public string Phone{ get; set; }
 
-        public string Avatar{ get; set; }
+        //public string Avatar{ get; set; }
         //TODO: check unique SchoolId or not? Also when login screen do we let them choose Campus?
         public string? SchoolId{ get; set; }
-        public Campus? Campus { get; set; }
+        //public Campus? Campus { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query);
         Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusAsync(UserQueryIgnoreStatus query);
+        Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query);
         Task<UserDetailsReadDTO> GetUserAsync(string userID);
         Task<UserDetailsReadDTO> GetUserByEmailAsync(string email);
         Task RequestResetPassword(UserRequestResetPasswordDTO userRequestResetPasswordDTO);

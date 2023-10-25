@@ -47,7 +47,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             
             return PaginatedResponse<UserDetailsReadDTO>.FromEnumerableWithMapping(users, query, _mapper);
         }
-    
+
+        public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query)
+        {
+            var users = await _userRepository.QueryUserIgnoreStatusWithoutWaitingVerifiedAsync(query);
+
+            return PaginatedResponse<UserDetailsReadDTO>.FromEnumerableWithMapping(users, query, _mapper);
+        }
+
         public async Task<UserDetailsReadDTO> GetUserAsync(string userId)
         {
             var user = await _userRepository.FindUserByID(userId);

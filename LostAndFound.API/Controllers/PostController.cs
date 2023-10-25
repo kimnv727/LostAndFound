@@ -103,7 +103,24 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.PaginatedOk(postPaginatedDto);
         }
-        
+
+        ///<summary>
+        /// Get all posts with status exclude pending and rejected
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("query-with-status-exclude")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        //[QueryResponseCache(typeof(PostQueryWithStatus))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostDetailReadDTO>))]
+        public async Task<IActionResult> GetAllPostsWithStatusExcludePendingAndRejected([FromQuery] PostQueryWithStatusExcludePendingAndRejected query)
+        {
+            var postPaginatedDto = await _postService.QueryPostWithStatusExcludePendingAndRejectedAsync(query);
+
+            return ResponseFactory.PaginatedOk(postPaginatedDto);
+        }
+
         ///<summary>
         /// Create new post
         /// </summary>

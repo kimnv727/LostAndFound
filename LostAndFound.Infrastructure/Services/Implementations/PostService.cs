@@ -105,6 +105,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
         }
 
+        public async Task<PaginatedResponse<PostDetailReadDTO>> QueryPostWithStatusExcludePendingAndRejectedAsync(PostQueryWithStatusExcludePendingAndRejected query)
+        {
+            var posts = await _postRepository.QueryPostWithStatusExcludePendingAndRejectedAsync(query);
+
+            return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
+        }
+
         public async Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO)
         {
             //Get User

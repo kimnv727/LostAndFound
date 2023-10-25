@@ -67,7 +67,24 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.PaginatedOk(userPaginatedDto);
         }
-        
+
+        ///<summary>
+        /// Get all users ignore status exclude waiting verified
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("get-ignore-status-exclude")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        //[QueryResponseCache(typeof(UserQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
+        public async Task<IActionResult> GetAllIgnoreStatusExcludeWaitingVerified([FromQuery] UserQueryIgnoreStatusWithoutWaitingVerified query)
+        {
+            var userPaginatedDto = await _userService.GetAllUsersIgnoreStatusWithoutWaitingVerifiedAsync(query);
+
+            return ResponseFactory.PaginatedOk(userPaginatedDto);
+        }
+
         /// <summary>
         /// Get user's details by id
         /// </summary>

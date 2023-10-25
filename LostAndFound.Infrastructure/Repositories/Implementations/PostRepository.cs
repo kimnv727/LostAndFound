@@ -225,6 +225,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
+                .Where(p => p.PostStatus != PostStatus.PENDING && p.PostStatus != PostStatus.REJECTED)
                 .AsSplitQuery();
 
             if (!trackChanges)

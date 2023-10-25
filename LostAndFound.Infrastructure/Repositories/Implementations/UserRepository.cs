@@ -252,7 +252,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
-                .Where(u => u.RoleId != 1)
+                .Where(u => u.RoleId != 1 && u.VerifyStatus != UserVerifyStatus.WAITING_VERIFIED)
                 .AsSplitQuery();
 
             if (!trackChanges)

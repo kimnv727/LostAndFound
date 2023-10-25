@@ -161,16 +161,22 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdatePoststatus(int postId, PostStatusExcludeDelete postStatusExcludeDelete)
+        public async Task<IActionResult> UpdatePoststatus(int postId, PostStatusExcludePending postStatusExcludePending)
         {
             var postStatus = PostStatus.PENDING;
-            switch (postStatusExcludeDelete)
+            switch (postStatusExcludePending)
             {
-                case PostStatusExcludeDelete.ACTIVE:
+                case PostStatusExcludePending.ACTIVE:
                     postStatus = PostStatus.ACTIVE;
                     break;
-                case PostStatusExcludeDelete.CLOSED:
+                case PostStatusExcludePending.CLOSED:
                     postStatus = PostStatus.CLOSED;
+                    break;
+                case PostStatusExcludePending.REJECTED:
+                    postStatus = PostStatus.REJECTED;
+                    break;
+                case PostStatusExcludePending.DELETED:
+                    postStatus = PostStatus.DELETED;
                     break;
                 default:
                     break;

@@ -22,7 +22,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Post> FindPostByIdAsync(int id)
         {
             return await _context.Posts
-                .Where(p => p.PostStatus != PostStatus.DELETED)
                 .Include(p => p.User)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
@@ -34,7 +33,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Post> FindPostIncludeDetailsAsync(int id)
         {
             return await _context.Posts
-                .Where(p => p.PostStatus != PostStatus.DELETED)
                 .Include(p => p.User)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
@@ -206,6 +204,90 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.CreatedDate <= query.ToDate);
             }
             
+            if (!string.IsNullOrWhiteSpace(query.SearchText))
+            {
+                posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                posts = posts.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(posts.ToList());
+        }
+
+        public async Task<IEnumerable<Post>> QueryPostWithStatusExcludePendingAndRejectedAsync(PostQueryWithStatusExcludePendingAndRejected query, bool trackChanges = false)
+        {
+            IQueryable<Post> posts = _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
+                .AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                posts = posts.AsNoTracking();
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.PostUserId))
+            {
+                posts = posts.Where(p => p.PostUserId == query.PostUserId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Title))
+            {
+                posts = posts.Where(p => p.Title.ToLower().Contains(query.Title.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.PostContent))
+            {
+                posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
+            }
+
+            if (query.PostCategoryGroupId > 0)
+            {
+                posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
+            }
+
+            if (query.PostCategoryId > 0)
+            {
+                posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
+            }
+
+            if (query.PostLocationId > 0)
+            {
+                posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
+            }
+
+            if (Enum.IsDefined(query.PostStatus))
+            {
+                if (query.PostStatus == PostQueryWithStatusExcludePendingAndRejected.PostStatusQuery.CLOSED)
+                {
+                    posts = posts.Where(p => p.PostStatus == PostStatus.CLOSED);
+                }
+                else if (query.PostStatus == PostQueryWithStatusExcludePendingAndRejected.PostStatusQuery.DELETED)
+                {
+                    posts = posts.Where(p => p.PostStatus == PostStatus.DELETED);
+                }
+                else if (query.PostStatus == PostQueryWithStatusExcludePendingAndRejected.PostStatusQuery.ACTIVE)
+                {
+                    posts = posts.Where(p => p.PostStatus == PostStatus.ACTIVE);
+                }
+            }
+
+            if (query.FromDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate >= query.FromDate);
+            }
+
+            if (query.ToDate != null)
+            {
+                posts = posts.Where(p => p.CreatedDate <= query.ToDate);
+            }
+
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));

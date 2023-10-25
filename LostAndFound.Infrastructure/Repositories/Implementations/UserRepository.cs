@@ -65,11 +65,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
             }
-
-            /*if (!string.IsNullOrWhiteSpace(query.Avatar))
-            {
-                users = users.Where(u => u.Avatar.ToLower().Contains(query.Avatar.ToLower()));
-            }*/
             
             if (!string.IsNullOrWhiteSpace(query.SchoolId))
             {
@@ -169,11 +164,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
             }
-
-            /*if (!string.IsNullOrWhiteSpace(query.Avatar))
-            {
-                users = users.Where(u => u.Avatar.ToLower().Contains(query.Avatar.ToLower()));
-            }*/
             
             if (!string.IsNullOrWhiteSpace(query.SchoolId))
             {
@@ -239,6 +229,129 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     users = users.Where(u => u.IsActive == true);
                 }
                 else if (query.UserStatus == UserQueryIgnoreStatus.UserStatusSearch.INACTIVE)
+                {
+                    users = users.Where(u => u.IsActive == false);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchText))
+            {
+                users = users.Where(p => p.FullName.ToLower().Contains(query.SearchText.ToLower()));
+            }
+            else if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                users = users.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(users.ToList());
+        }
+
+        public async Task<IEnumerable<User>> QueryUserIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query, bool trackChanges = false)
+        {
+            IQueryable<User> users = _context.Users
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId != 1)
+                .AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                users = users.AsNoTracking();
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.FirstName))
+            {
+                users = users.Where(u => u.FirstName.ToLower().Contains(query.FirstName.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.LastName))
+            {
+                users = users.Where(u => u.LastName.ToLower().Contains(query.LastName.ToLower()));
+            }
+
+            if (Enum.IsDefined(query.Gender))
+            {
+                if (query.Gender == UserQueryIgnoreStatusWithoutWaitingVerified.GenderSearch.Male)
+                {
+                    users = users.Where(u => u.Gender == Gender.Male);
+                }
+                else if (query.Gender == UserQueryIgnoreStatusWithoutWaitingVerified.GenderSearch.Female)
+                {
+                    users = users.Where(u => u.Gender == Gender.Female);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Email))
+            {
+                users = users.Where(u => u.Email.ToLower().Contains(query.Email.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Phone))
+            {
+                users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SchoolId))
+            {
+                users = users.Where(u => u.SchoolId.ToLower().Contains(query.SchoolId.ToLower()));
+            }
+
+            if (Enum.IsDefined(query.Campus))
+            {
+                if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HO_CHI_MINH_CAMPUS)
+                {
+                    users = users.Where(u => u.Campus == Campus.HO_CHI_MINH_CAMPUS);
+                }
+                else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.DA_NANG_CAMPUS)
+                {
+                    users = users.Where(u => u.Campus == Campus.DA_NANG_CAMPUS);
+                }
+                else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HA_NOI_CAMPUS)
+                {
+                    users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
+                }
+            }
+
+            if (Enum.IsDefined(query.Role))
+            {
+                if (query.Role == UserQueryIgnoreStatusWithoutWaitingVerified.RoleSearch.User)
+                {
+                    users = users.Where(u => u.RoleId == 4);
+                }
+                else if (query.Role == UserQueryIgnoreStatusWithoutWaitingVerified.RoleSearch.All_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2 || u.RoleId == 3);
+                }
+                else if (query.Role == UserQueryIgnoreStatusWithoutWaitingVerified.RoleSearch.Manager)
+                {
+                    users = users.Where(u => u.RoleId == 2);
+                }
+                else if (query.Role == UserQueryIgnoreStatusWithoutWaitingVerified.RoleSearch.Storage_Manager)
+                {
+                    users = users.Where(u => u.RoleId == 3);
+                }
+            }
+
+            if (Enum.IsDefined(query.UserVerifyStatus))
+            {
+                if (query.UserVerifyStatus == UserQueryIgnoreStatusWithoutWaitingVerified.UserVerifyStatusSearch.VERIFIED)
+                {
+                    users = users.Where(u => u.VerifyStatus == UserVerifyStatus.VERIFIED);
+                }
+                else if (query.UserVerifyStatus == UserQueryIgnoreStatusWithoutWaitingVerified.UserVerifyStatusSearch.NOT_VERIFIED)
+                {
+                    users = users.Where(u => u.VerifyStatus == UserVerifyStatus.NOT_VERIFIED);
+                }
+            }
+
+            if (Enum.IsDefined(query.UserStatus))
+            {
+                if (query.UserStatus == UserQueryIgnoreStatusWithoutWaitingVerified.UserStatusSearch.ACTIVE)
+                {
+                    users = users.Where(u => u.IsActive == true);
+                }
+                else if (query.UserStatus == UserQueryIgnoreStatusWithoutWaitingVerified.UserStatusSearch.INACTIVE)
                 {
                     users = users.Where(u => u.IsActive == false);
                 }

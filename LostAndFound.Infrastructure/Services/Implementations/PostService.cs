@@ -136,8 +136,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Post>(postId);
             }
-
             _mapper.Map(postUpdateDTO, post);
+            if(post.PostStatus == PostStatus.REJECTED)
+            {
+                post.PostStatus = PostStatus.PENDING;
+            }
             await _unitOfWork.CommitAsync();
             return _mapper.Map<PostDetailReadDTO>(post);
         }

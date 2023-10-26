@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
@@ -110,6 +111,26 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var posts = await _postRepository.QueryPostWithStatusExcludePendingAndRejectedAsync(query);
 
             return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
+        }
+
+        public async Task<PaginatedResponse<PostDetailWithFlagReadDTO>> QueryPostWithFlagAsync(PostQueryWithFlag query)
+        {
+            var posts = await _postRepository.QueryPostWithFlagAsync(query);
+            var result = new List<PostDetailWithFlagReadDTO>();
+
+            foreach (var p in posts)
+            {
+                var r = _mapper.Map<PostDetailWithFlagReadDTO>(p);
+                r.WrongInformationCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.WrongInformation).Count();
+                r.SpamCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.Spam).Count();
+                r.ViolatedUserCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.ViolatedUser).Count();
+                r.OthersCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.Others).Count();
+                r.TotalCount = p.PostFlags.Count();
+                result.Add(r);
+            }
+
+            //return _mapper.Map<PaginatedResponse<PostDetailWithFlagReadDTO>>(result);
+            return PaginatedResponse<PostDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);
         }
 
         public async Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO)

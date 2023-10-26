@@ -66,7 +66,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 TotalCount = 0
             };
             //Count
-            foreach(var flag in result)
+            response.WrongInformationCount = result.Where(r => r.PostFlagReason == PostFlagReason.WrongInformation).Count();
+            response.SpamCount = result.Where(r => r.PostFlagReason == PostFlagReason.Spam).Count();
+            response.ViolatedUserCount = result.Where(r => r.PostFlagReason == PostFlagReason.ViolatedUser).Count();
+            response.OthersCount = result.Where(r => r.PostFlagReason == PostFlagReason.Others).Count();
+            response.TotalCount = result.Count();
+            /*foreach (var flag in result)
             {
                 switch (flag.PostFlagReason)
                 {
@@ -90,7 +95,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         response.TotalCount++;
                         break;
                 }
-            }
+            }*/
 
             return response;
         }

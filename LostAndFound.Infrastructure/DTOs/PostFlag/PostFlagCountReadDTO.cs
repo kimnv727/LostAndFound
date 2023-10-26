@@ -9,15 +9,15 @@ namespace LostAndFound.Infrastructure.DTOs.PostFlag
 {
     public class PostFlagCountReadDTO
     {
-        [JsonProperty(PropertyName = "Wrong Information")]
+        [JsonProperty(PropertyName = "wrongInformation")]
         public int WrongInformationCount { get; set; }
-        [JsonProperty(PropertyName = "Violated User")]
+        [JsonProperty(PropertyName = "violatedUser")]
         public int ViolatedUserCount { get; set; }
-        [JsonProperty(PropertyName = "Spam")]
+        [JsonProperty(PropertyName = "spam")]
         public int SpamCount { get; set; }
-        [JsonProperty(PropertyName = "Others")]
+        [JsonProperty(PropertyName = "others")]
         public int OthersCount { get; set; }
-        [JsonProperty(PropertyName = "Total Count")]
+        [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount { get; set; }
 
     }

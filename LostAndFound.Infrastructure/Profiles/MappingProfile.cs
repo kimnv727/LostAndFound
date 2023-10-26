@@ -86,6 +86,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Post, PostReadDTO>();
             CreateMap<Post, PostDetailReadDTO>();
             CreateMap<Post, PostDetailWithCommentsReadDTO>();
+            CreateMap<Post, PostDetailWithFlagReadDTO>();
             CreateMap<PostWriteDTO, Post>();
             CreateMap<PostUpdateDTO, Post>();
             CreateMap<PostStatusUpdateDTO, Post>();

@@ -122,6 +122,23 @@ namespace LostAndFound.API.Controllers
         }
 
         ///<summary>
+        /// Get all posts with flag
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("query-with-flag")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        //[QueryResponseCache(typeof(PostQueryWithStatus))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<PostDetailWithFlagReadDTO>))]
+        public async Task<IActionResult> GetAllPostsWithFlag([FromQuery] PostQueryWithFlag query)
+        {
+            var postPaginatedDto = await _postService.QueryPostWithFlagAsync(query);
+
+            return ResponseFactory.PaginatedOk(postPaginatedDto);
+        }
+
+        ///<summary>
         /// Create new post
         /// </summary>
         /// <param name="writeDTO"></param>

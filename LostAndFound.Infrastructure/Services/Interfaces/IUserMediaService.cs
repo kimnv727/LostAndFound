@@ -8,6 +8,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IUserMediaService
     {
         Task<UserMediaReadDTO> UploadUserAvatar(IFormFile file, string userId);
-        Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, IFormFile ccid, IFormFile studentCard);
+        Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, string schoolId, IFormFile ccid, IFormFile studentCard);
     }
 }

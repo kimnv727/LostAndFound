@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
@@ -74,7 +75,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<UserMediaReadDTO>(userMedia);
         }
 
-        public async Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, IFormFile ccid, IFormFile studentCard)
+        public async Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, string schoolId, IFormFile ccid, IFormFile studentCard)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -84,7 +85,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if(user.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
             {
-                throw new Exception(); //TODO: <<Exception>>: say the user already verified, so they are not allowed to use this
+                throw new UserAlreadyVerifiedException(); //TODO: <<Exception>>: say the user already verified, so they are not allowed to use this
             }
 
             //Deactivate old credential images 
@@ -95,6 +96,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 cred.Media.DeletedDate = DateTime.Now.ToVNTime();
             }
             await _unitOfWork.CommitAsync();
+
+            //Update User SchoolId (Student ID and such)
+            user.SchoolId = schoolId;
 
             //Upload images
             var ccidResult = await _mediaService.UploadFileAsync(ccid, _awsCredentials);

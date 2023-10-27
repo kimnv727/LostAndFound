@@ -234,18 +234,20 @@ namespace LostAndFound.API.Controllers
         /// Update user credentails (this function will also add credentials if user currently don't have one)
         /// </summary>
         /// <remarks>Update user's credentials</remarks>
-        /// <param name="ccid"></param>
-        /// <param name="studentCard"></param>
+        /// <param name="userMediaCredentialsWriteDTO"></param>
         /// <returns></returns>
         [HttpPost("media-credentials")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ICollection<UserMediaReadDTO>>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateUserCredentialImagesAsync([Required]IFormFile ccid, [Required]IFormFile studentCard)
+        public async Task<IActionResult> UpdateUserCredentialImagesAsync([FromForm]UserMediaCredentialsWriteDTO userMediaCredentialsWriteDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _userMediaService.UploadUserCredentialForVerification(stringId, ccid, studentCard);
+            var result = await _userMediaService.UploadUserCredentialForVerification(stringId, 
+                userMediaCredentialsWriteDTO.SchoolId, 
+                userMediaCredentialsWriteDTO.CCID, 
+                userMediaCredentialsWriteDTO.StudentCard);
             return ResponseFactory.Ok(result);
         }
 

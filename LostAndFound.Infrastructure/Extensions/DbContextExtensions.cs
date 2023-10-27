@@ -35,14 +35,6 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Roles.Add(manager);
                 
-                Role managerStorage = new Role
-                {
-                    Name = "Storage Manager",
-                    Description = "Storage Manager of the system. Managing data related to posts, items, users and also managing system's storage in the system.",
-                    CreatedDate = DateTime.Now.ToVNTime()
-                };
-                context.Roles.Add(managerStorage);
-                
                 Role userRole = new Role
                 {
                     Name = "User",
@@ -118,24 +110,6 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Users.Add(managerUser);
                 context.SaveChanges();
-                
-                User storageManagerUser = new User()
-                {
-                    Id = "UXFjz04VvING1SxKxcfIZQQhVCo1",
-                    Email = "def123@fpt.edu.vn",
-                    Password = "",
-                    IsActive = true,
-                    FirstName = "Test",
-                    LastName = "Storage Manager",
-                    Gender = Core.Enums.Gender.Male,
-                    VerifyStatus = UserVerifyStatus.VERIFIED,
-                    Phone = "0909090909",
-                    SchoolId = "MANAGER",
-                    Campus = Campus.HO_CHI_MINH_CAMPUS,
-                    RoleId = 3,
-                    CreatedDate = DateTime.Now.ToVNTime()
-                };
-                context.Users.Add(storageManagerUser);
                 #endregion
 
                 context.SaveChanges();

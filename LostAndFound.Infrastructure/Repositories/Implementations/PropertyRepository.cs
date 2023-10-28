@@ -20,7 +20,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Property>> QueryPropertyAsync(PropertyQuery query, bool trackChanges = false)
         {
-            IQueryable<Property> properties = _context.Properties.AsSplitQuery();
+            IQueryable<Property> properties = _context.Properties
+                .Include(p => p.Locations)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -51,6 +53,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Property>> QueryPropertyIgnoreStatusAsync(PropertyQuery query, bool trackChanges = false)
         {
             IQueryable<Property> properties = _context.Properties
+                .Include(p => p.Locations)
                 .Where(p => p.IsActive == true)
                 .AsSplitQuery();
 
@@ -74,12 +77,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<Property> FindPropertyByIdAsync(int propertyId)
         {
-            return await _context.Properties.FirstOrDefaultAsync(p => p.Id == propertyId);
+            return await _context.Properties
+                .Include(p => p.Locations)
+                .FirstOrDefaultAsync(p => p.Id == propertyId);
         }
 
         public async Task<Property> FindPropertyByNameAsync(string propertyName)
         {
-            return await _context.Properties.FirstOrDefaultAsync(p => p.PropertyName.ToLower().Contains(propertyName.ToLower()));
+            return await _context.Properties
+                .Include(p => p.Locations)
+                .FirstOrDefaultAsync(p => p.PropertyName.ToLower().Contains(propertyName.ToLower()));
         }
     }
 }

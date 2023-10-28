@@ -215,10 +215,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Core.Entities.User>(id);
             }
 
+            if(user.Role.Name == "Admin")
+            {
+                throw new AdminModificationException();
+            }
+
             if (user.IsActive == true)
             {
                 user.IsActive = false;
             }
+
             else
             {
                 user.IsActive = true;
@@ -241,6 +247,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (user == null)
             {
                 throw new EntityWithIDNotFoundException<Core.Entities.User>(updateDto.UserId);
+            }
+
+            if (user.Role.Name == "Admin")
+            {
+                throw new AdminModificationException();
             }
 
             user.VerifyStatus = updateDto.VerifyStatus;

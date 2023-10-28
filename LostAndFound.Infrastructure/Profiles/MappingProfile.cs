@@ -75,6 +75,7 @@ namespace LostAndFound.Infrastructure.Profiles
             
             //Property Mapping
             CreateMap<Property, PropertyReadDTO>();
+            CreateMap<Property, PropertyLiteReadDTO>();
             CreateMap<PropertyWriteDTO, Property>();
 
             //Violation Report Mapping
@@ -115,6 +116,7 @@ namespace LostAndFound.Infrastructure.Profiles
             
             //Location Mapping
             CreateMap<Location, LocationReadDTO>();
+            CreateMap<Location, LocationLiteReadDTO>();
             CreateMap<LocationWriteDTO, Location>();
             
             //Notification Mapping

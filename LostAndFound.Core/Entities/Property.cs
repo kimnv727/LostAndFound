@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Entities.Common;
@@ -19,5 +20,6 @@ namespace LostAndFound.Core.Entities
         [Required]
         public bool? IsActive { get; set; }
         
+        public ICollection<Location> Locations { get; set; }
     }
 }

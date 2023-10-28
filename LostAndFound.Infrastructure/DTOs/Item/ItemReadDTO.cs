@@ -20,7 +20,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         
         public string Description { get; set; }
 
-        [JsonProperty(PropertyName = "LocationName")]
+        [JsonProperty(PropertyName = "locationName")]
         public string LocationLocationName { get; set; }
         public string CategoryName { get; set; }
 

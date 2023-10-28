@@ -23,8 +23,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await Task.FromResult(
                 _context.ItemClaims
-                .Include(ic => ic.UserId)
-                .Include(ic => ic.ItemId)
                 .AsSplitQuery()
                 .Where(ic => ic.UserId == userId)
                 .OrderByDescending(i => i.ClaimDate)

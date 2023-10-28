@@ -1,4 +1,5 @@
-﻿using LostAndFound.API.Attributes;
+﻿
+using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
@@ -19,6 +20,8 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.ItemFlag;
 using System.Xml.Linq;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
+using Microsoft.VisualBasic;
 
 namespace LostAndFound.API.Controllers
 {
@@ -31,14 +34,16 @@ namespace LostAndFound.API.Controllers
         private readonly IItemFlagService _itemFlagService;
         private readonly IItemBookmarkService _itemBookmarkService;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IItemClaimService _itemClaimService;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
             _itemFlagService = itemFlagService;
             _itemBookmarkService = itemBookmarkService;
             _categoryRepository = categoryRepository;
+            _itemClaimService = itemClaimService;
         }
 
         /// <summary>
@@ -319,8 +324,8 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllOwnItemBookmark()
         {
-            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.Ok(await _itemBookmarkService.GetOwnItemBookmarks(stringId));
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _itemBookmarkService.GetOwnItemBookmarks(userId));
         }
         
         /// <summary>
@@ -336,13 +341,79 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> BookmarkAnItem(int itemId)
         {
 
-            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            var itemFlag = await _itemBookmarkService.BookmarkAnItem(stringId, itemId);
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var itemFlag = await _itemBookmarkService.BookmarkAnItem(userId, itemId);
             
             return ResponseFactory.CreatedAt(nameof(GetItemBookmark), 
                 nameof(ItemController), 
                 new { userId = itemFlag.UserId, itemId = itemFlag.ItemId }, 
                 itemFlag);
+        }
+
+        /// <summary>
+        /// Claim an item
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpPost("claim/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ClaimAnItem(int itemId)
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var claim = await _itemClaimService.ClaimAnItemAsync(itemId, userId);
+
+            return ResponseFactory.Ok(claim);
+        }
+        
+        /// <summary>
+        /// Unclaim an item
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpPost("unclaim/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UnClaimAnItem(int itemId)
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            await _itemClaimService.UnClaimAnItemAsync(itemId, userId);
+
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Get all claims of an item by item id
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpPost("claims/item/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
+        {
+            return ResponseFactory.Ok(await _itemClaimService.GetClaimsByItemIdAsync(itemId));
+        }
+
+        /// <summary>
+        /// Get all claims of an item by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("claims/users/{userId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllClaimsByUserId(string userId)
+        {
+            return ResponseFactory.Ok(await _itemClaimService.GetClaimsByUserIdAsync(userId));
         }
     }
 }

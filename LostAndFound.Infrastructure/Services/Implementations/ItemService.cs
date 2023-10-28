@@ -46,19 +46,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
-
-            /*if (item.IsActive == true)
-            {
-                _itemRepository.Delete(item);
-            }
-            else if (item.IsActive == false)
-            {
-                item.IsActive = true;
-                item.DeletedDate = null;
-                item.DeletedDate = null;
-            }*/
             await _unitOfWork.CommitAsync();
-
         }
 
         public async Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO)

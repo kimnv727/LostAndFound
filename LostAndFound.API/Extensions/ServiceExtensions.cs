@@ -54,6 +54,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IGiveawayService, GiveawayService>();
             services.AddScoped<IGiveawayParticipantService, GiveawayParticipantService>();
             services.AddScoped<IOcrService, OcrService>();
+            services.AddScoped<IItemClaimService, ItemClaimService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -81,6 +82,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IUserDeviceRepository, UserDeviceRepository>();
             services.AddScoped<IGiveawayRepository, GiveawayRepository>();
             services.AddScoped<IGiveawayParticipantRepository, GiveawayParticipantRepository>();
+            services.AddScoped<IItemClaimRepository, ItemClaimRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

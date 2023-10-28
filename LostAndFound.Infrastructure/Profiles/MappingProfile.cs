@@ -8,6 +8,7 @@ using LostAndFound.Infrastructure.DTOs.Giveaway;
 using LostAndFound.Infrastructure.DTOs.GiveawayParticipant;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemBookmark;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using LostAndFound.Infrastructure.DTOs.ItemFlag;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.Location;
@@ -135,6 +136,10 @@ namespace LostAndFound.Infrastructure.Profiles
             
             //GiveawayParticipant
             CreateMap<GiveawayParticipant, GiveawayParticipantReadDTO>();
+
+            //Claim
+            CreateMap<ItemClaim, ItemClaimReadDTO>();
+            CreateMap<ItemClaimWriteDTO, ItemClaim>();
         }
     }
 }

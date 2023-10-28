@@ -75,6 +75,9 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<Giveaway> Giveaways { get; set; }
         //GiveawayParticipant table
         public virtual DbSet<GiveawayParticipant> GiveawayParticipants { get; set; }
+        //ItemClaim table
+        public virtual DbSet<ItemClaim> ItemClaims { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
@@ -87,6 +90,7 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<ItemFlag>().HasKey(itf => new { itf.ItemId, itf.UserId });
             modelBuilder.Entity<ItemBookmark>().HasKey(ib => new { ib.ItemId, ib.UserId });
             modelBuilder.Entity<GiveawayParticipant>().HasKey(gp => new { gp.GiveawayId, gp.UserId });
+            modelBuilder.Entity<ItemClaim>().HasKey(ic => new { ic.ItemId, ic.UserId });
             
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)

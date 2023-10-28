@@ -22,7 +22,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Comments
                 .Include(c => c.User)
-                .Where(c => c.DeletedDate == null).FirstOrDefaultAsync(c => c.Id == id);
+                .Where(c => c.IsActive == true && c.DeletedDate == null).FirstOrDefaultAsync(c => c.Id == id);
         }
         
         public async Task<Comment> FindCommentIgnoreStatusByIdAsync(int id)
@@ -40,12 +40,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Comment>> FindAllCommentsByPostIdAsync(int postId)
         {
-            //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
             comments = comments
                 .Include(c => c.User)
-                .Where(c => c.PostId == postId).OrderBy(c => c.CreatedDate);
+                .Where(c => c.PostId == postId && c.IsActive == true && c.DeletedDate == null).OrderBy(c => c.CreatedDate);
             
             return await Task.FromResult(comments.ToList());
         }
@@ -68,10 +67,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(c => c.User)
                 .Where(c => c.DeletedDate == null).AsSplitQuery().AsTracking();*/
 
-            IQueryable<Comment> comments = _context.Comments;
-
-            comments = comments
-                .Include(c => c.User);
+            //IQueryable<Comment> comments = _context.Comments;
+            IQueryable<Comment> comments = _context.Comments
+                .Include(c => c.User)
+                .Where(c => c.IsActive == true && c.DeletedDate == null)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {

@@ -58,7 +58,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<ItemClaimReadDTO>>(claims.ToList());
         }
 
-        public async Task<ItemClaimReadDTO> ClaimAnItemAsync(int itemId, string userId)
+        public async Task ClaimAnItemAsync(int itemId, string userId)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -73,27 +73,43 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
-            if(check != null)
+            //If Claim record exists & status == 1 ==> User already claimed it
+            if(check != null && check.ClaimStatus == 1)
             {
                 throw new DuplicateItemClaimException();
             }
+            //If Claim record exists & status == 0 ==> User has unclaimed it
+            else if (check != null && check.ClaimStatus == 0)
+            {
+                ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
+                itemClaimWriteDTO.UserId = userId;
+                itemClaimWriteDTO.ItemId = itemId;
+                itemClaimWriteDTO.ClaimStatus = 1;
+                itemClaimWriteDTO.ClaimDate = DateTime.Now;
 
-            ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
-            itemClaimWriteDTO.UserId = userId;
-            itemClaimWriteDTO.ItemId = itemId;
+                _mapper.Map(itemClaimWriteDTO, check);
+                await _unitOfWork.CommitAsync();
+            }//If Claim record doesn not exists then create new
+            else if (check == null) 
+            {
+                ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
+                itemClaimWriteDTO.UserId = userId;
+                itemClaimWriteDTO.ItemId = itemId;
+                itemClaimWriteDTO.ClaimStatus = 1;
+                itemClaimWriteDTO.ClaimDate = DateTime.Now;
 
-            var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
-            claim.ClaimStatus = 1;
-            claim.ClaimDate = DateTime.Now;
+                var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
+                await _itemClaimRepository.AddAsync(claim);
+                await _unitOfWork.CommitAsync();
+            }
 
-            await _itemClaimRepository.AddAsync(claim);
-            await _unitOfWork.CommitAsync();
-
-            return _mapper.Map<ItemClaimReadDTO>(claim);
+            //For return object
+            //var result = _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            //return _mapper.Map<ItemClaimReadDTO>(result);
 
         }
 
-        public async Task<ItemClaimReadDTO> UnClaimAnItemAsync(int itemId, string userId)
+        public async Task UnClaimAnItemAsync(int itemId, string userId)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -107,8 +123,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
 
-            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
-            if (check == null)
+            var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            if (claim == null)
             {
                 throw new NoSuchClaimException();
             }
@@ -116,14 +132,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
             itemClaimWriteDTO.UserId = userId;
             itemClaimWriteDTO.ItemId = itemId;
+            itemClaimWriteDTO.ClaimStatus = 0;
+            itemClaimWriteDTO.ClaimDate = DateTime.MinValue;
 
-            var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
-            claim.ClaimStatus = 0;
-
-            await _itemClaimRepository.AddAsync(claim);
+            _mapper.Map(itemClaimWriteDTO, claim);
             await _unitOfWork.CommitAsync();
 
-            return _mapper.Map<ItemClaimReadDTO>(claim);
+            //return _mapper.Map<ItemClaimReadDTO>(claim);
         }
 
     }

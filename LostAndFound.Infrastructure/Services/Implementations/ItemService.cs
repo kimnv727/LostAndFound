@@ -9,6 +9,8 @@ using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
 using System.Threading.Tasks;
 using LostAndFound.Core.Enums;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -144,6 +146,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
 
             return item.FoundUserId == userId ? true : false;
+        }
+
+        public async Task<IEnumerable<ItemReadDTO>> GetItemsClaimedByUserId(string userId)
+        {
+            var items = await _itemRepository.GetItemsClaimedByUserId(userId);
+            return _mapper.Map<List<ItemReadDTO>>(items);
+        }
+
+        public async Task<IEnumerable<ItemReadDTO>> GetAllClaimsOfAnItem(int itemId)
+        {
+            var items = await _itemRepository.GetAllClaimsOfAnItem(itemId);
+            return _mapper.Map<List<ItemReadDTO>>(items);
         }
     }
 }

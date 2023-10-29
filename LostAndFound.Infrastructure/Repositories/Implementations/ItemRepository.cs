@@ -26,6 +26,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(i => i.ItemClaims)
                 .FirstOrDefaultAsync(i => i.Id == ItemId);
         }
 
@@ -37,6 +38,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(i => i.ItemClaims)
                 .FirstOrDefaultAsync
                 (i => i.Name.ToLower().Contains(Name.ToLower()));
         }
@@ -49,7 +51,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Include(i=> i.ItemClaims)
+                            .Include(i => i.ItemClaims)
                             .AsSplitQuery();
 
             if (!trackChanges)
@@ -85,7 +87,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 switch (query.ItemStatus)
                 {
-                    
+
                     case ItemQueryWithStatus.ItemStatusQuery.ALL:
                         break;
                     case ItemQueryWithStatus.ItemStatusQuery.PENDING:
@@ -128,5 +130,46 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(items.ToList());
         }
+
+        public async Task<IEnumerable<Item>> GetItemsClaimedByUserId(string userId)
+        {
+            /*
+             * Get an item list
+             * Then filter by itemclaim, the list then becomes an ItemClaim list
+             * Add the list of ItemClaim to a new list of Items
+             * Return that mf
+             */
+            var items = _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Include(i => i.ItemClaims)
+                            .AsSplitQuery();
+
+            var filtered = items.SelectMany(i => i.ItemClaims.Where(ic => ic.UserId == userId));
+
+            return await Task.FromResult(items.ToList());
+        }
+
+        public async Task<IEnumerable<Item>> GetAllClaimsOfAnItem(int itemId)
+        {
+            var items = _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Include(i => i.ItemClaims)
+                            .ThenInclude(ic => ic.ItemId == itemId)
+                            .AsSplitQuery();
+
+            return await Task.FromResult(items.ToList());
+        }
+
+
     }
+
+
 }

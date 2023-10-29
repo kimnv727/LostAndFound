@@ -14,7 +14,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 
         public Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByItemIdAsync(int itemId);
         public Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByUserIdAsync(string userId);
-        public Task<ItemClaimReadDTO> ClaimAnItemAsync(int itemId, string userId);
-        public Task<ItemClaimReadDTO> UnClaimAnItemAsync(int itemId, string userId);
+        public Task ClaimAnItemAsync(int itemId, string userId);
+        public Task UnClaimAnItemAsync(int itemId, string userId);
     }
 }

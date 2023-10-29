@@ -363,9 +363,9 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> ClaimAnItem(int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            var claim = await _itemClaimService.ClaimAnItemAsync(itemId, userId);
+            await _itemClaimService.ClaimAnItemAsync(itemId, userId);
 
-            return ResponseFactory.PaginatedOk(claim);
+            return Ok();
         }
         
         /// <summary>
@@ -398,7 +398,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
         {
-            return ResponseFactory.PaginatedOk(await _itemClaimService.GetClaimsByItemIdAsync(itemId));
+            return ResponseFactory.PaginatedOk(await _itemService.GetAllClaimsOfAnItem(itemId));
         }
 
         /// <summary>
@@ -413,11 +413,11 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByUserId(string userId)
         {
-            return ResponseFactory.PaginatedOk(await _itemClaimService.GetClaimsByUserIdAsync(userId));
+            return ResponseFactory.PaginatedOk(await _itemService.GetItemsClaimedByUserId(userId));
         }
 
         /// <summary>
-        /// Get all claims this user made
+        /// Get all claims made by currently logged in user
         /// </summary>
         /// <returns></returns>
         [HttpPost("claims/my/")]
@@ -429,7 +429,7 @@ namespace LostAndFound.API.Controllers
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 
-            return ResponseFactory.PaginatedOk(await _itemClaimService.GetClaimsByUserIdAsync(userId));
+            return ResponseFactory.PaginatedOk(await _itemService.GetItemsClaimedByUserId(userId));
         }
     }
 }

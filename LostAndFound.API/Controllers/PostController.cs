@@ -50,7 +50,7 @@ namespace LostAndFound.API.Controllers
         {
             var post = await _postService.GetPostByIdAsync(postId);
 
-            return ResponseFactory.Ok(post);
+            return ResponseFactory.PaginatedOk(post);
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _postService.GetPostByUserIdAsync(userId);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         ///<summary>
@@ -181,7 +181,7 @@ namespace LostAndFound.API.Controllers
                 throw new UnauthorizedException();
             }
             var post = await _postService.UpdatePostDetailsAsync(postId, postUpdateWriteDTO);
-            return ResponseFactory.Ok(post);
+            return ResponseFactory.PaginatedOk(post);
         }
         
         /// <summary>
@@ -217,7 +217,7 @@ namespace LostAndFound.API.Controllers
             }
             await _postService.UpdatePostStatusAsync(postId, postStatus);
             var post = await _postService.GetPostByIdAsync(postId);
-            return ResponseFactory.Ok(post);
+            return ResponseFactory.PaginatedOk(post);
         }
         
         /// <summary>
@@ -256,7 +256,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllPostMedia([Required] int postId)
         {
-            return ResponseFactory.Ok(await _postMediaService.GetPostMedias(postId));
+            return ResponseFactory.PaginatedOk(await _postMediaService.GetPostMedias(postId));
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountPostBookmarkOfAPost(int postId)
         {
-            return ResponseFactory.Ok(await _postBookmarkService.CountPostBookmarkAsync(postId));
+            return ResponseFactory.PaginatedOk(await _postBookmarkService.CountPostBookmarkAsync(postId));
         }
         
         /// <summary>
@@ -327,7 +327,7 @@ namespace LostAndFound.API.Controllers
         {
             var postBookmark = await _postBookmarkService.GetPostBookmark(userId, postId);
 
-            return ResponseFactory.Ok(postBookmark);
+            return ResponseFactory.PaginatedOk(postBookmark);
         }
         
         /// <summary>
@@ -343,7 +343,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllOwnPostBookmark()
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.Ok(await _postBookmarkService.GetOwnPostBookmarkeds(stringId));
+            return ResponseFactory.PaginatedOk(await _postBookmarkService.GetOwnPostBookmarkeds(stringId));
         }
         
         /// <summary>
@@ -380,7 +380,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountPostFlagOfAPost(int postId)
         {
-            return ResponseFactory.Ok(await _postFlagService.CountPostFlagAsync(postId));
+            return ResponseFactory.PaginatedOk(await _postFlagService.CountPostFlagAsync(postId));
         }
         
         /// <summary>
@@ -398,7 +398,7 @@ namespace LostAndFound.API.Controllers
         {
             var postFlag = await _postFlagService.GetPostFlag(userId, postId);
 
-            return ResponseFactory.Ok(postFlag);
+            return ResponseFactory.PaginatedOk(postFlag);
         }
         
         /// <summary>
@@ -414,7 +414,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllOwnPostFlag()
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.Ok(await _postFlagService.GetOwnPostFlags(stringId));
+            return ResponseFactory.PaginatedOk(await _postFlagService.GetOwnPostFlags(stringId));
         }
         
         /// <summary>

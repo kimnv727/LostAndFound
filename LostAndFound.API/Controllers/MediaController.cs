@@ -62,7 +62,7 @@ namespace LostAndFound.API.Controllers
         {
             var media = await _mediaService.FindMediaById(mediaId);
 
-            return ResponseFactory.Ok(media);
+            return ResponseFactory.PaginatedOk(media);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateMedia([Required] Guid mediaId, MediaUpdateWriteDTO mediaUpdateWriteDTO)
         {
             var media = await _mediaService.UpdateMediaDetail(mediaId, mediaUpdateWriteDTO);
-            return ResponseFactory.Ok(media);
+            return ResponseFactory.PaginatedOk(media);
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveaway = await _giveawayService.GetGiveawayByIdAsync(giveawayId);
 
-            return ResponseFactory.Ok(giveaway);
+            return ResponseFactory.PaginatedOk(giveaway);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveaway = await _giveawayService.GetGiveawayIncludeParticipantsByIdAsync(giveawayId);
 
-            return ResponseFactory.Ok(giveaway);
+            return ResponseFactory.PaginatedOk(giveaway);
         }
         
         ///<summary>
@@ -130,7 +130,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateGiveaway(int giveawayId, GiveawayUpdateDTO giveawayUpdateDTO)
         {
             var giveaway = await _giveawayService.UpdateGiveawayDetailsAsync(giveawayId, giveawayUpdateDTO);
-            return ResponseFactory.Ok(giveaway);
+            return ResponseFactory.PaginatedOk(giveaway);
         }
         
         /// <summary>
@@ -149,7 +149,7 @@ namespace LostAndFound.API.Controllers
             //TODO: add more check (like not allowed to change back to NOT STARTED)
             await _giveawayService.UpdateGiveawayStatusAsync(giveawayId, giveawayStatus);
             var giveaway = await _giveawayService.GetGiveawayByIdAsync(giveawayId);
-            return ResponseFactory.Ok(giveaway);
+            return ResponseFactory.PaginatedOk(giveaway);
         }
         
         /// <summary>
@@ -163,7 +163,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountGiveawayParticipantsAsync(int giveawayId)
         {
-            return ResponseFactory.Ok(await _giveawayParticipantService.CountGiveawayParticipantsAsync(giveawayId));
+            return ResponseFactory.PaginatedOk(await _giveawayParticipantService.CountGiveawayParticipantsAsync(giveawayId));
         }
         
         /// <summary>
@@ -181,7 +181,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveawayParticipant = await _giveawayParticipantService.GetGiveawayParticipant(giveawayId, userId);
 
-            return ResponseFactory.Ok(giveawayParticipant);
+            return ResponseFactory.PaginatedOk(giveawayParticipant);
         }
         
         /// <summary>
@@ -197,7 +197,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetUsersParticipateInGiveaway(int giveawayId)
         {
-            return ResponseFactory.Ok(await _giveawayParticipantService.GetUsersParticipateInGiveaway(giveawayId));
+            return ResponseFactory.PaginatedOk(await _giveawayParticipantService.GetUsersParticipateInGiveaway(giveawayId));
         }
         
         /// <summary>

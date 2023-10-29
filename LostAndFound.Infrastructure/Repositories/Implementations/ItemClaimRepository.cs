@@ -24,6 +24,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(
                 _context.ItemClaims
                 .AsSplitQuery()
+                .Include(ic => ic.User)
+                .Include(ic => ic.Item)
                 .Where(ic => ic.UserId == userId)
                 .OrderByDescending(i => i.ClaimDate)
                 .ToList());
@@ -34,6 +36,20 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(
                 _context.ItemClaims
                 .AsSplitQuery()
+                .Include(ic => ic.User)
+                .Include(ic => ic.Item)
+                .Where(ic => ic.ItemId == itemId)
+                .OrderByDescending(i => i.ClaimDate)
+                .ToList());
+        }
+
+        public async Task<IEnumerable<ItemClaim>> GetItemsByClaimStatus(int itemId)
+        {
+            return await Task.FromResult(
+                _context.ItemClaims
+                .AsSplitQuery()
+                .Include(ic => ic.User)
+                .Include(ic => ic.Item)
                 .Where(ic => ic.ItemId == itemId)
                 .OrderByDescending(i => i.ClaimDate)
                 .ToList());

@@ -99,7 +99,7 @@ namespace LostAndFound.API.Controllers
         {
             var user = await _userService.GetUserAsync(id);
 
-            return ResponseFactory.Ok(user);
+            return ResponseFactory.PaginatedOk(user);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _userService.GetUserByEmailAsync(email);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
 
         ///<summary>
@@ -173,7 +173,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _userService.ChangeUserStatusAsync(id);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         ///<summary>
@@ -191,7 +191,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.UpdateUserDetailsAsync(stringId, updateDTO);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         ///<summary>
@@ -208,7 +208,7 @@ namespace LostAndFound.API.Controllers
         {
             var user = await _userService.UpdateUserDetailsAsync(id, updateDTO);
 
-            return ResponseFactory.Ok(user);
+            return ResponseFactory.PaginatedOk(user);
         }
 
         ///<summary>
@@ -227,7 +227,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
 
         ///<summary>
@@ -248,7 +248,7 @@ namespace LostAndFound.API.Controllers
                 userMediaCredentialsWriteDTO.SchoolId, 
                 userMediaCredentialsWriteDTO.CCID, 
                 userMediaCredentialsWriteDTO.StudentCard);
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(stringId, roles);
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
     }
 }

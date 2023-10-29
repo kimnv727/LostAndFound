@@ -57,7 +57,7 @@ namespace LostAndFound.API.Controllers
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
             }
             
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace LostAndFound.API.Controllers
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
             }*/
             
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         /// <summary>
@@ -102,7 +102,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
             var result = await _authService.Login(loginRequest);
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAccessTokenWithRefreshToken([Required]string refreshToken)
         {
-            return ResponseFactory.Ok(await _authService.GetAccessTokenWithRefreshToken(refreshToken));
+            return ResponseFactory.PaginatedOk(await _authService.GetAccessTokenWithRefreshToken(refreshToken));
         }
         
         /// <summary>
@@ -140,7 +140,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CheckUserByEmail([Required]string email)
         {
-            return ResponseFactory.Ok(await _userService.GetUserByEmailAsync(email));
+            return ResponseFactory.PaginatedOk(await _userService.GetUserByEmailAsync(email));
         }
     }
 }

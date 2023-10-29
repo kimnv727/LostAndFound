@@ -6,7 +6,7 @@ namespace LostAndFound.API.ResponseWrapper
 {
     public static class ResponseFactory
     {
-        public static ActionResult Ok<T>(T result, string message = null) =>
+        public static ActionResult PaginatedOk<T>(T result, string message = null) =>
             new OkObjectResult(new ApiOkResponse<T>(result, message));
 
         public static ActionResult PaginatedOk<T>(PaginatedResponse<T> result, string message = null) =>

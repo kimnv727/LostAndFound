@@ -36,6 +36,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<CategoryReadDTO>.FromEnumerableWithMapping(categories, query, _mapper);
         }
 
+        public async Task<IEnumerable<CategoryReadDTO>> ListAllAsync()
+        {
+            var categories = await _categoryRepository.GetAllAsync();
+
+            return _mapper.Map<List<CategoryReadDTO>>(categories);
+        }
+
         public async Task<CategoryReadDTO> FindCategoryByIdAsync(int categoryId)
         {
             var category = await _categoryRepository.FindCategoryByIdAsync(categoryId);

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
@@ -26,17 +28,47 @@ namespace LostAndFound.API.Controllers
         /// Query locations with pagination
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("/paginated")]
         [Authorize]
         [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<LocationReadDTO>>))]
-        public async Task<IActionResult> Query([FromQuery] LocationQuery query)
+        public async Task<IActionResult> PaginatedQuery([FromQuery] LocationQuery query)
         {
-            var paginatedLocationDTO = await _locationService.QueryLocationAsync(query);
+            var paginatedLocationDTO = await _locationService.QueryLocationWithPaginationAsync(query);
 
             return ResponseFactory.PaginatedOk(paginatedLocationDTO);
         }
-        
+
+        /// <summary>
+        /// Query locations
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [QueryResponseCache(typeof(LocationQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
+        public async Task<IActionResult> Query([FromQuery] LocationQuery query)
+        {
+            var LocationDTO = await _locationService.QueryLocationAsync(query);
+
+            return Ok(LocationDTO);
+        }
+
+        /// <summary>
+        /// List locations
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [Authorize]
+        [QueryResponseCache(typeof(LocationQuery))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
+        public async Task<IActionResult> ListAll()
+        {
+            var LocationDTO = await _locationService.ListAllAsync();
+
+            return Ok(LocationDTO);
+        }
+
         /// <summary>
         /// Get Location By Id
         /// </summary>
@@ -49,7 +81,7 @@ namespace LostAndFound.API.Controllers
         {
             var location = await _locationService.FindLocationByIdAsync(LocationId);
 
-            return ResponseFactory.Ok(location);
+            return ResponseFactory.PaginatedOk(location);
         }
         
         /// <summary>
@@ -63,7 +95,7 @@ namespace LostAndFound.API.Controllers
         {
             var item = await _locationService.FindLocationByNameAsync(locationName);
 
-            return ResponseFactory.Ok(item);
+            return ResponseFactory.PaginatedOk(item);
         }
         
         ///<summary>
@@ -80,7 +112,7 @@ namespace LostAndFound.API.Controllers
         {
             var location = await _locationService.UpdateLocationDetailsAsync(LocationId, writeDTO);
 
-            return ResponseFactory.Ok(location);
+            return ResponseFactory.PaginatedOk(location);
         }
         
         ///<summary>
@@ -97,7 +129,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _locationService.CreateItemAsync(writeDTO);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         /// <summary>

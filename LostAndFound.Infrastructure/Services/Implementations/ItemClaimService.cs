@@ -93,16 +93,37 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         }
 
-        public async Task UnClaimAnItemAsync(int itemId, string userId)
+        public async Task<ItemClaimReadDTO> UnClaimAnItemAsync(int itemId, string userId)
         {
-            var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
-            if (claim == null)
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            if (check == null)
             {
                 throw new NoSuchClaimException();
             }
 
-            _itemClaimRepository.Delete(claim);
+            ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
+            itemClaimWriteDTO.UserId = userId;
+            itemClaimWriteDTO.ItemId = itemId;
+
+            var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
+            claim.ClaimStatus = 0;
+
+            await _itemClaimRepository.AddAsync(claim);
             await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<ItemClaimReadDTO>(claim);
         }
 
     }

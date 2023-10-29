@@ -39,6 +39,6 @@ namespace LostAndFound.Core.Entities
         public virtual Location Location { get; set; }
         public virtual Category Category { get; set; }
         public ICollection<ItemMedia> ItemMedias { get; set; }
-        
+        public ICollection<ItemClaim> ItemClaims { get; set; }
     }
 }

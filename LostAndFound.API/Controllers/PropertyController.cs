@@ -40,6 +40,18 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// List all properties
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<PropertyReadDTO>>))]
+        public async Task<IActionResult> ListAll()
+        {
+            var propertiesDTO = await _propertyService.ListAllAsync();
+            return Ok(propertiesDTO);
+        }
+
+        /// <summary>
         /// Find property by Id
         /// </summary>
         /// <returns></returns>
@@ -49,7 +61,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> FindPropertyByID([Required] int propertyId)
         {
             var Property = await _propertyService.GetPropertyByIdAsync(propertyId);
-            return ResponseFactory.Ok(Property);
+            return ResponseFactory.PaginatedOk(Property);
         }
         
         /// <summary>
@@ -77,7 +89,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdatePropertyDetailsAsync(int propertyId, PropertyWriteDTO propertyWriteDTO)
         {
             var property = await _propertyService.UpdatePropertyDetailsAsync(propertyId, propertyWriteDTO);
-            return ResponseFactory.Ok(property);
+            return ResponseFactory.PaginatedOk(property);
         }
         
         ///<summary>
@@ -94,7 +106,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _propertyService.CreatePropertyAsync(stringId, propertyWriteDTO);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         /// <summary>

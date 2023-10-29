@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
@@ -25,12 +27,26 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _locationRepository = locationRepository;
         }
 
-        public async Task<PaginatedResponse<LocationReadDTO>> QueryLocationAsync(LocationQuery query)
+        public async Task<PaginatedResponse<LocationReadDTO>> QueryLocationWithPaginationAsync(LocationQuery query)
         {
             var locations = await _locationRepository.QueryLocationsAsync(query);
             return PaginatedResponse<LocationReadDTO>.FromEnumerableWithMapping(locations, query, _mapper);
         }
-        
+
+
+
+        public async Task<IEnumerable<LocationReadDTO>> QueryLocationAsync(LocationQuery query)
+        {
+            var locations = await _locationRepository.QueryLocationsAsync(query);
+            return _mapper.Map<List<LocationReadDTO>>(locations.ToList());
+        }
+
+        public async Task<IEnumerable<LocationReadDTO>> ListAllAsync()
+        {
+            var locations = await _locationRepository.GetAllAsync();
+            return _mapper.Map<List<LocationReadDTO>>(locations.ToList());
+        }
+
         public async Task<LocationReadDTO> FindLocationByIdAsync(int LocationId)
         {
             var Location = await _locationRepository.FindLocationByIdAsync(LocationId);

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
@@ -30,6 +32,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             var categoryGroups = await _categoryGroupRepository.QueryCategoryGroupAsync(query);
             return PaginatedResponse<CategoryGroupReadDTO>.FromEnumerableWithMapping(categoryGroups, query, _mapper);
+        }
+
+        public async Task<IEnumerable<CategoryGroupReadDTO>> ListAllAsync()
+        {
+            var categoryGroups = await _categoryGroupRepository.GetAllAsync();
+            return _mapper.Map<List<CategoryGroupReadDTO>>(categoryGroups);
         }
 
         public async Task<CategoryGroupReadDTO> GetCategoryGroupByIdAsync(int categoryGroupId)

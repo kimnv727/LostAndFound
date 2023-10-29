@@ -16,7 +16,7 @@ namespace LostAndFound.Infrastructure.DTOs.ItemClaim
         public int ClaimStatus { get; set; }
         public DateTime ClaimDate { get; set; }
 
-        //public ItemReadDTO Item { get; set; } 
-        //public UserReadDTO User { get; set; }
+        /*public ItemReadDTO Item { get; set; } 
+        public UserReadDTO User { get; set; }*/
     }
 }

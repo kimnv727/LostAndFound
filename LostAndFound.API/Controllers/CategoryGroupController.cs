@@ -32,8 +32,20 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryGroupReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] CategoryGroupQuery query)
         {
-            var paginatedPropertiesDTO = await _categoryGroupService.QueryCategoryGroupAsync(query);
-            return ResponseFactory.PaginatedOk(paginatedPropertiesDTO);
+            var paginatedCategoryGroupsDTO = await _categoryGroupService.QueryCategoryGroupAsync(query);
+            return ResponseFactory.PaginatedOk(paginatedCategoryGroupsDTO);
+        }
+
+        /// <summary>
+        /// List all category groups
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryGroupReadDTO>>))]
+        public async Task<IActionResult> ListAll()
+        {
+            var categoryGroups = await _categoryGroupService.ListAllAsync();
+            return Ok(categoryGroups);
         }
 
         /// <summary>
@@ -46,7 +58,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> FindCategoryGroupByID([Required] int categoryGroupId)
         {
             var CategoryGroup = await _categoryGroupService.GetCategoryGroupByIdAsync(categoryGroupId);
-            return ResponseFactory.Ok(CategoryGroup);
+            return ResponseFactory.PaginatedOk(CategoryGroup);
         }
 
         ///<summary>
@@ -60,7 +72,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateCategoryGroupDetailsAsync(int categoryGroupId, CategoryGroupWriteDTO categoryGroupWriteDTO)
         {
             var categoryGroup = await _categoryGroupService.UpdateCategoryGroupDetailsAsync(categoryGroupId, categoryGroupWriteDTO);
-            return ResponseFactory.Ok(categoryGroup);
+            return ResponseFactory.PaginatedOk(categoryGroup);
         }
         
         ///<summary>
@@ -77,7 +89,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _categoryGroupService.CreateCategoryGroupAsync(stringId, categoryGroupWriteDTO);
 
-            return ResponseFactory.Ok(result);
+            return ResponseFactory.PaginatedOk(result);
         }
         
         /// <summary>

@@ -49,6 +49,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
+                            .Include(i=> i.ItemClaims)
                             .AsSplitQuery();
 
             if (!trackChanges)

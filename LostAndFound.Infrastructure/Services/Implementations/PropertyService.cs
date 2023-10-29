@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
@@ -31,6 +34,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             var properties = await _propertyRepository.QueryPropertyAsync(query);
             return PaginatedResponse<PropertyReadDTO>.FromEnumerableWithMapping(properties, query, _mapper);
+        }
+        
+        public async Task<IEnumerable<PropertyReadDTO>> ListAllAsync()
+        {
+            var properties = await _propertyRepository.GetAllAsync();
+            return _mapper.Map<List<PropertyReadDTO>>(properties.ToList());
         }
         
         public async Task<PaginatedResponse<PropertyReadDTO>> QueryPropertyIgnoreStatusAsync(PropertyQuery query)

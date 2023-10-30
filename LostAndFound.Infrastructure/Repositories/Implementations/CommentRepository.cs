@@ -51,12 +51,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Comment>> FindAllCommentsByUserIdAsync(string userId)
         {
-            //Still get deleted one
             IQueryable<Comment> comments = _context.Comments;
 
             comments = comments
                 .Include(c => c.User)
-                .Where(c => c.CommentUserId == userId).OrderBy(c => c.CreatedDate);
+                .Where(c => c.CommentUserId == userId && c.IsActive == true && c.DeletedDate == null).OrderBy(c => c.CreatedDate);
             
             return await Task.FromResult(comments.ToList());
         }

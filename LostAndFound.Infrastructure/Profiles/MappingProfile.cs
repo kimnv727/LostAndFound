@@ -75,13 +75,13 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<CategoryGroupWriteDTO, CategoryGroup>();
             
             //Property Mapping
-            CreateMap<Property, PropertyReadDTO>();
-            CreateMap<Property, PropertyLiteReadDTO>();
-            CreateMap<PropertyWriteDTO, Property>();
+            CreateMap<Campus, CampusReadDTO>();
+            CreateMap<Campus, CampusLiteReadDTO>();
+            CreateMap<CampusWriteDTO, Campus>();
 
             //Violation Report Mapping
-            CreateMap<ViolationReportWriteDTO, ViolationReport>();
-            CreateMap<ViolationReport, ViolationReportReadDTO>();
+            CreateMap<ReportWriteDTO, Report>();
+            CreateMap<Report, ReportReadDTO>();
             CreateMap<UserViolationReport, UserViolationReportDetailDTO>();
             
             //Post Mapping

@@ -42,7 +42,7 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<ItemMedia> ItemMedias { get; set; }
         //Violation report table
         public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
-        public virtual DbSet<ViolationReport> ViolationReports { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
         //Item table
         public virtual DbSet<Item> Items { get; set; }
         //Category table
@@ -52,7 +52,7 @@ namespace LostAndFound.Infrastructure.Data
         //Location table
         public virtual DbSet<Location> Locations { get; set; }
         //Property table
-        public virtual DbSet<Property> Properties { get; set; }
+        public virtual DbSet<Campus> Campuses { get; set; }
         //Post table
         public virtual DbSet<Post> Posts { get; set; }
         //Comment table
@@ -77,6 +77,13 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<GiveawayParticipant> GiveawayParticipants { get; set; }
         //ItemClaim table
         public virtual DbSet<ItemClaim> ItemClaims { get; set; }
+        //Cabinet table
+        public virtual DbSet<Cabinet> Cabinets { get; set; }
+        //Storage table
+        public virtual DbSet<Storage> Storages { get; set; }
+        //Receipt table
+        public virtual DbSet<Receipt> Receipts { get; set; }
+        //Campus table (rename of Property table)
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -100,7 +107,7 @@ namespace LostAndFound.Infrastructure.Data
                 .Property(l => l.IsActive)
                 .HasDefaultValue(true);
             
-            modelBuilder.Entity<Property>()
+            modelBuilder.Entity<Core.Entities.Campus>()
                 .Property(p => p.IsActive)
                 .HasDefaultValue(true);
             

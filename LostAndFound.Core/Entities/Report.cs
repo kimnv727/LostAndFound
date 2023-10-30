@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LostAndFound.Core.Entities
 {
-    public class ViolationReport : ICreatedEntity
+    public class Report : ICreatedEntity
     {
         [Key]
         public int Id { get; set; }

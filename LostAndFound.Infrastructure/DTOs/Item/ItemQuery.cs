@@ -25,6 +25,10 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         
         public int CategoryId { get; set; }
 
+        public int CabinetId { get; set; }
+
+        public bool IsInStorage { get; set; }
+
         //Status = Pending / Active / Returned / Closed / Rejected
         [DefaultValue(ItemStatus.ACTIVE)]
         public ItemStatus ItemStatus { get; set; }

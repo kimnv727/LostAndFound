@@ -26,18 +26,21 @@ namespace LostAndFound.Core.Entities
         
         public int CategoryId { get; set; }
 
+        public int CabinetId { get; set; }
+        
+        public bool IsInStorage { get; set; }
+
         //Status = Pending / Active / Returned / Closed
         public ItemStatus ItemStatus { get; set; }
 
         public DateTime? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
-
-
-        //Foreign key tables
+        
         public virtual User User { get; set; }
         public virtual Location Location { get; set; }
         public virtual Category Category { get; set; }
+        public virtual Cabinet Cabinet {  get; set; }
         public ICollection<ItemMedia> ItemMedias { get; set; }
         public ICollection<ItemClaim> ItemClaims { get; set; }
     }

@@ -12,27 +12,27 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
-    public class ViolationReportRepository : GenericRepository<ViolationReport>, 
-        IViolationReportRepository
+    public class ReportRepository : GenericRepository<Report>, 
+        IReportRepository
     {
-        public ViolationReportRepository(LostAndFoundDbContext context) : base(context)
+        public ReportRepository(LostAndFoundDbContext context) : base(context)
         {
         }
 
-        public async Task<ViolationReport> GetLastestCreatedReportAsync()
+        public async Task<Report> GetLastestCreatedReportAsync()
         {
-            return await _context.ViolationReports.LastOrDefaultAsync();
+            return await _context.Reports.LastOrDefaultAsync();
         }
 
         public async Task<Int32> GetLastestCreatedReportIdAsync()
         {
-            return await _context.ViolationReports.CountAsync();
+            return await _context.Reports.CountAsync();
         }
 
-        public async Task<IEnumerable<ViolationReport>> QueryAsync
-            (ViolationReportQuery query, bool trackChanges = false)
+        public async Task<IEnumerable<Report>> QueryAsync
+            (ReportQuery query, bool trackChanges = false)
         {
-            IQueryable<ViolationReport> violations = _context.ViolationReports
+            IQueryable<Report> violations = _context.Reports
                 .Include(vr => vr.UserViolationReports)
                 .ThenInclude(uvr => uvr.User).AsSplitQuery();
 
@@ -67,9 +67,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(violations.ToList());
         }
 
-        public async Task<ViolationReport> GetReportByIdAsync(int id)
+        public async Task<Report> GetReportByIdAsync(int id)
         {
-            return await _context.ViolationReports
+            return await _context.Reports
                 .Include(vr => vr.UserViolationReports)
                 .ThenInclude(uvr => uvr.User).SingleOrDefaultAsync(vr => vr.Id == id);
         }

@@ -28,7 +28,7 @@ namespace LostAndFound.API.Controllers
         /// Query locations with pagination
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/paginated")]
+        [HttpGet("paginated")]
         [Authorize]
         [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<LocationReadDTO>>))]

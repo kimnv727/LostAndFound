@@ -14,12 +14,12 @@ namespace LostAndFound.API.Controllers
 {
     [Route("api/reports")]
     [ApiController]
-    public class ViolationReportController : ControllerBase
+    public class ReportController : ControllerBase
     {
-        private readonly IViolationReportService _violationReportService;
+        private readonly IReportService _violationReportService;
 
-        public ViolationReportController(
-            IViolationReportService violationReportService)
+        public ReportController(
+            IReportService violationReportService)
         {
             _violationReportService = violationReportService;
         }
@@ -32,7 +32,7 @@ namespace LostAndFound.API.Controllers
         [HttpPost]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ViolationReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ReportReadDTO>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiBadRequestResponse))]
         public async Task<IActionResult> CreateReport([FromBody] CreateReportDTO createDTO)
         {
@@ -40,7 +40,7 @@ namespace LostAndFound.API.Controllers
                 User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
             return ResponseFactory.CreatedAt(nameof(GetReport)
-                , nameof(ViolationReportController), new { id = result.Id }
+                , nameof(ReportController), new { id = result.Id }
                 , result);
         }
 
@@ -52,9 +52,9 @@ namespace LostAndFound.API.Controllers
         [HttpGet("list")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<ViolationReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<ReportReadDTO>))]
         public async Task<IActionResult> GetReportList
-            ([FromQuery] ViolationReportQuery query)
+            ([FromQuery] ReportQuery query)
         {
             var result = await _violationReportService.QueryViolationReport(query);
 
@@ -69,7 +69,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("detail/{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ViolationReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReportReadDTO>))]
         public async Task<IActionResult> GetReport(int id)
         {
             var result = await _violationReportService.GetReportById(id);

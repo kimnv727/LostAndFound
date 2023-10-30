@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.ViolationReport
 {
-    public class ViolationReportQuery : PaginatedQuery, ISearchTextQuery
+    public class ReportQuery : PaginatedQuery, ISearchTextQuery
     {
         public string SearchText { get; set; }//Search violation report title
 

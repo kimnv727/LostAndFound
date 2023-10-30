@@ -1,8 +1,8 @@
 namespace LostAndFound.Infrastructure.DTOs.Property
 {
-    public class PropertyWriteDTO
+    public class CampusWriteDTO
     {
-        public string PropertyName { get; set; }
+        public string Name { get; set; }
         public string Address { get; set; }
     }
 }

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
-    public interface IViolationReportRepository : IAddAsync<ViolationReport>, IDelete<ViolationReport>
+    public interface IReportRepository : IAddAsync<Report>, IDelete<Report>
     {
         Task<Int32> GetLastestCreatedReportIdAsync();
 
-        Task<ViolationReport> GetLastestCreatedReportAsync();
+        Task<Report> GetLastestCreatedReportAsync();
 
-        Task<IEnumerable<ViolationReport>> QueryAsync
-            (ViolationReportQuery query, bool trackChanges = false);
+        Task<IEnumerable<Report>> QueryAsync
+            (ReportQuery query, bool trackChanges = false);
 
-        Task<ViolationReport> GetReportByIdAsync(int id);
+        Task<Report> GetReportByIdAsync(int id);
     }
 }

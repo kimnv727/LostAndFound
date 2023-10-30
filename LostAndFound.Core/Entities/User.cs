@@ -36,7 +36,7 @@ namespace LostAndFound.Core.Entities
 
         public string? Password { get; set; }
         public string? SchoolId { get; set; }
-        public Campus? Campus { get; set; }
+        public Enums.CampusName? Campus { get; set; }
         [Required]
         public bool IsActive { get; set; }
         public UserVerifyStatus VerifyStatus { get; set; }

@@ -57,7 +57,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             }
             if (!string.IsNullOrWhiteSpace(query.PropertyName))
             {
-                locations = locations.Where(l => l.Property.PropertyName.ToLower().Contains(query.PropertyName.ToLower()));
+                locations = locations.Where(l => l.Property.Name.ToLower().Contains(query.PropertyName.ToLower()));
             }
             if(query.Floor > 0)
             {

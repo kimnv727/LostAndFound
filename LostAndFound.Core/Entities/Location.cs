@@ -22,6 +22,6 @@ namespace LostAndFound.Core.Entities
         [Required]
         public bool? IsActive { get; set; }
         
-        public virtual Property Property { get; set; }  
+        public virtual Campus Property { get; set; }  
     }
 }

@@ -65,25 +65,25 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.SchoolId))
             {
                 users = users.Where(u => u.SchoolId.ToLower().Contains(query.SchoolId.ToLower()));
             }
 
-            if (Enum.IsDefined(query.Campus))
+            if (Enum.IsDefined(query.CampusName))
             {
-                if (query.Campus == UserQuery.CampusSearch.HO_CHI_MINH_CAMPUS)
+                if (query.CampusName == UserQuery.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
                 }
-                else if (query.Campus == UserQuery.CampusSearch.DA_NANG_CAMPUS)
+                else if (query.CampusName == UserQuery.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
                 }
-                else if (query.Campus == UserQuery.CampusSearch.HA_NOI_CAMPUS)
+                else if (query.CampusName == UserQuery.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 users = users.Where(u => u.Phone.ToLower().Contains(query.Phone.ToLower()));
             }
-            
+
             if (!string.IsNullOrWhiteSpace(query.SchoolId))
             {
                 users = users.Where(u => u.SchoolId.ToLower().Contains(query.SchoolId.ToLower()));
@@ -174,15 +174,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.Campus == UserQueryIgnoreStatus.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
                 }
                 else if (query.Campus == UserQueryIgnoreStatus.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
                 }
                 else if (query.Campus == UserQueryIgnoreStatus.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
                 }
             }
 
@@ -221,7 +221,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     users = users.Where(u => u.VerifyStatus == UserVerifyStatus.NOT_VERIFIED);
                 }
             }
-            
+
             if (Enum.IsDefined(query.UserStatus))
             {
                 if (query.UserStatus == UserQueryIgnoreStatus.UserStatusSearch.ACTIVE)
@@ -301,15 +301,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
                 }
                 else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
                 }
                 else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == Campus.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
                 }
             }
 
@@ -383,7 +383,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return _context.Users
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
-                .Where(u => u.IsActive == true )
+                .Where(u => u.IsActive == true)
                 .Where(u => u.DeletedDate == null)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }

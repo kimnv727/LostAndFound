@@ -22,7 +22,11 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         [JsonProperty(PropertyName = "locationName")]
         public string LocationLocationName { get; set; }
-        public string CategoryName { get; set; }
+        public string CategoryId { get; set; }
+
+        public int CabinetId { get; set; }
+
+        public bool IsInStorage { get; set; }
 
         //Status = Pending / Active / Returned / Closed / Rejected
         public ItemStatus ItemStatus { get; set; }

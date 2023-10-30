@@ -14,7 +14,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         public string Description { get; set; }
         
-        //TODO: wait Kim change Category and Item crud for this
+        public bool IsSensitive { get; set; }
         
         [Required]
         public ItemValue Value { get; set; }

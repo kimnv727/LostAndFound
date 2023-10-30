@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
-    public interface IViolationReportService
+    public interface IReportService
     {
-        Task<ViolationReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId);
+        Task<ReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId);
 
-        Task<PaginatedResponse<ViolationReportReadDTO>> QueryViolationReport(ViolationReportQuery query);
+        Task<PaginatedResponse<ReportReadDTO>> QueryViolationReport(ReportQuery query);
 
-        Task<ViolationReportReadDTO> GetReportById(int id);
+        Task<ReportReadDTO> GetReportById(int id);
     }
 }

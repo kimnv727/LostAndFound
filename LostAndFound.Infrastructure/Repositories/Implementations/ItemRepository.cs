@@ -146,9 +146,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
+                            .ThenInclude(ic => ic.UserId)
                             .AsSplitQuery();
-
-            var filtered = items.SelectMany(i => i.ItemClaims.Where(ic => ic.UserId == userId));
 
             return await Task.FromResult(items.ToList());
         }

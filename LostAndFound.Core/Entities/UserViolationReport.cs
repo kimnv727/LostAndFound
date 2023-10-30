@@ -21,6 +21,6 @@ namespace LostAndFound.Core.Entities
 
         public virtual User User { get; set; }
 
-        public virtual ViolationReport Report { get; set; }
+        public virtual Report Report { get; set; }
     }
 }

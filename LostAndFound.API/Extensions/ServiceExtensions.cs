@@ -36,7 +36,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IEmailSendingService, EmailSendingService>();
-            services.AddScoped<IViolationReportService, ViolationReportService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentSerivce>();
@@ -45,7 +45,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<ICommentFlagService, CommentFlagService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ILocationService, LocationService>();
-            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<ICampusService, CampusService>();
             services.AddScoped<ICategoryGroupService, CategoryGroupService>();
             services.AddScoped<IItemFlagService, ItemFlagService>();
             services.AddScoped<IItemBookmarkService, ItemBookmarkService>();
@@ -64,7 +64,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IUserMediaRepository, UserMediaRepository>();
             services.AddScoped<IItemMediaRepository, ItemMediaRepository>();
             services.AddScoped<IPostMediaRepository, PostMediaRepository>();
-            services.AddScoped<IViolationReportRepository, ViolationReportRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IUserViolationReportRepository, UserViolationReportRepository>();
             services.AddScoped<IItemRepository,ItemRepository>();
             services.AddScoped<IPostRepository,PostRepository>();
@@ -74,7 +74,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<ICommentFlagRepository, CommentFlagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
-            services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<ICampusRepository, CampusRepository>();
             services.AddScoped<ICategoryGroupRepository, CategoryGroupRepository>();
             services.AddScoped<IItemFlagRepository, ItemFlagRepository>();
             services.AddScoped<IItemBookmarkRepository, ItemBookmarkRepository>();

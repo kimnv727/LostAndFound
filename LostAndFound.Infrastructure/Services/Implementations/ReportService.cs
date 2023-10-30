@@ -13,15 +13,15 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
-    public class ViolationReportService : IViolationReportService
+    public class ReportService : IReportService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IViolationReportRepository _violationReportRepository;
+        private readonly IReportRepository _violationReportRepository;
         private readonly IUserViolationReportRepository _userViolationReportRepository;
 
-        public ViolationReportService(IMapper mapper, IUnitOfWork unitOfWork, 
-            IViolationReportRepository violationReportRepository, 
+        public ReportService(IMapper mapper, IUnitOfWork unitOfWork, 
+            IReportRepository violationReportRepository, 
             IUserViolationReportRepository userViolationReportRepository)
         {
             _mapper = mapper;
@@ -30,14 +30,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _userViolationReportRepository = userViolationReportRepository;
         }
 
-        public async Task<ViolationReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId)
+        public async Task<ReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId)
         {
             try
             {
                 if (userId.Equals(report.ReportedUserId))
                     throw new CreateReportException();
 
-                var r = _mapper.Map<ViolationReport>(report.ViolationReport);
+                var r = _mapper.Map<Report>(report.ViolationReport);
                 r.Status = Core.Enums.ViolationStatus.PENDING;
 
                 await _violationReportRepository.AddAsync(r);
@@ -60,7 +60,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         Type = Core.Enums.ViolationType.RECEIVED,
                     });
                 await _unitOfWork.CommitAsync();
-                return _mapper.Map<ViolationReportReadDTO>
+                return _mapper.Map<ReportReadDTO>
                     (await _violationReportRepository.GetReportByIdAsync(reportId));
             } catch (Exception ex)
             {
@@ -71,21 +71,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
         }
 
-        public async Task<PaginatedResponse<ViolationReportReadDTO>> QueryViolationReport
-            (ViolationReportQuery query)
+        public async Task<PaginatedResponse<ReportReadDTO>> QueryViolationReport
+            (ReportQuery query)
         {
-            return PaginatedResponse<ViolationReportReadDTO>
+            return PaginatedResponse<ReportReadDTO>
                 .FromEnumerableWithMapping(await _violationReportRepository.QueryAsync(query)
                 , query, _mapper);
         }
 
-        public async Task<ViolationReportReadDTO> GetReportById(int id)
+        public async Task<ReportReadDTO> GetReportById(int id)
         {
             var report = await _violationReportRepository.GetReportByIdAsync(id);
 
             if (report == null)
-                throw new ViolationReportNotFoundException();
-            var r = _mapper.Map<ViolationReportReadDTO>(report);
+                throw new ReportNotFoundException();
+            var r = _mapper.Map<ReportReadDTO>(report);
             return r;
         }
     }

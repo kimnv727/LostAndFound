@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Exceptions.ViolationReport
 {
-    public class ViolationReportNotFoundException : HandledException
+    public class ReportNotFoundException : HandledException
     {
-        public ViolationReportNotFoundException() : base(404, "Violation report not found")
+        public ReportNotFoundException() : base(404, "Report not found")
         {
         }
     }

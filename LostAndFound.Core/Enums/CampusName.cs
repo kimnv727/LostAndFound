@@ -1,6 +1,6 @@
 namespace LostAndFound.Core.Enums
 {
-    public enum Campus
+    public enum CampusName
     {
         HO_CHI_MINH_CAMPUS,
         DA_NANG_CAMPUS,

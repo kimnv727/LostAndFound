@@ -15,6 +15,10 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         
         public int LocationId { get; set; }
 
+        public int CabinetId { get; set; }
+
+        public bool IsInStorage { get; set; }
+
         [Required]
         public IFormFile[] Medias { get; set; }
         

@@ -16,6 +16,6 @@ namespace LostAndFound.Infrastructure.DTOs.Location
         
         public int Floor { get; set; }
 
-        public PropertyLiteReadDTO Property { get; set; }
+        public CampusLiteReadDTO Property { get; set; }
     }
 }

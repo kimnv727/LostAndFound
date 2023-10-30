@@ -45,12 +45,12 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Properties
-                Property property = new Property
+                Core.Entities.Campus property = new Core.Entities.Campus
                 {
-                    PropertyName = "FPT HCM Campus",
+                    Name = "FPT HCM Campus",
                     Address = "FPT HCM Campus"
                 };
-                context.Properties.Add(property);
+                context.Campuses.Add(property);
                 #endregion
 
                 #region Add Users
@@ -66,13 +66,13 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0101010101",
                     SchoolId = "ADMIN",
-                    Campus = Campus.HO_CHI_MINH_CAMPUS,
+                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(adminUser);
                 context.SaveChanges();
-                
+
                 User user = new User()
                 {
                     Id = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
@@ -85,13 +85,13 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                     Phone = "0808080808",
                     SchoolId = "SE111111",
-                    Campus = Campus.HO_CHI_MINH_CAMPUS,
+                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
-                
+
                 User managerUser = new User()
                 {
                     Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
@@ -104,7 +104,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    Campus = Campus.HO_CHI_MINH_CAMPUS,
+                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };

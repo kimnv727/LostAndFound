@@ -36,7 +36,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
             HA_NOI_CAMPUS
         }
         [DefaultValue(CampusSearch.All)]
-        public CampusSearch Campus { get; set; }
+        public CampusSearch CampusName { get; set; }
 
         public enum RoleSearch
         {

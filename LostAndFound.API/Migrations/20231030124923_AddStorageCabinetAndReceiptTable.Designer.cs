@@ -4,14 +4,16 @@ using LostAndFound.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LostAndFound.API.Migrations
 {
     [DbContext(typeof(LostAndFoundDbContext))]
-    partial class LostAndFoundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231030124923_AddStorageCabinetAndReceiptTable")]
+    partial class AddStorageCabinetAndReceiptTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,32 +45,6 @@ namespace LostAndFound.API.Migrations
                     b.HasIndex("StorageId");
 
                     b.ToTable("Cabinets");
-                });
-
-            modelBuilder.Entity("LostAndFound.Core.Entities.Campus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsActive")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Campuses");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Category", b =>
@@ -104,9 +80,6 @@ namespace LostAndFound.API.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsSensitive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -244,9 +217,6 @@ namespace LostAndFound.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CabinetId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -262,9 +232,6 @@ namespace LostAndFound.API.Migrations
 
                     b.Property<string>("FoundUserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsInStorage")
-                        .HasColumnType("bit");
 
                     b.Property<int>("ItemStatus")
                         .HasColumnType("int");
@@ -570,6 +537,32 @@ namespace LostAndFound.API.Migrations
                     b.ToTable("PostMedias");
                 });
 
+            modelBuilder.Entity("LostAndFound.Core.Entities.Property", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("PropertyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Properties");
+                });
+
             modelBuilder.Entity("LostAndFound.Core.Entities.Receipt", b =>
                 {
                     b.Property<int>("Id")
@@ -630,35 +623,6 @@ namespace LostAndFound.API.Migrations
                         .IsUnique();
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("LostAndFound.Core.Entities.Report", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Role", b =>
@@ -854,6 +818,35 @@ namespace LostAndFound.API.Migrations
                     b.ToTable("UserViolationReports");
                 });
 
+            modelBuilder.Entity("LostAndFound.Core.Entities.ViolationReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ViolationReports");
+                });
+
             modelBuilder.Entity("LostAndFound.Core.Entities.Cabinet", b =>
                 {
                     b.HasOne("LostAndFound.Core.Entities.Storage", "Storage")
@@ -1034,7 +1027,7 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Location", b =>
                 {
-                    b.HasOne("LostAndFound.Core.Entities.Campus", "Property")
+                    b.HasOne("LostAndFound.Core.Entities.Property", "Property")
                         .WithMany("Locations")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1200,7 +1193,7 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.UserViolationReport", b =>
                 {
-                    b.HasOne("LostAndFound.Core.Entities.Report", "Report")
+                    b.HasOne("LostAndFound.Core.Entities.ViolationReport", "Report")
                         .WithMany("UserViolationReports")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1215,11 +1208,6 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("Report");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LostAndFound.Core.Entities.Campus", b =>
-                {
-                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Comment", b =>
@@ -1259,9 +1247,9 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("PostMedias");
                 });
 
-            modelBuilder.Entity("LostAndFound.Core.Entities.Report", b =>
+            modelBuilder.Entity("LostAndFound.Core.Entities.Property", b =>
                 {
-                    b.Navigation("UserViolationReports");
+                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Role", b =>
@@ -1294,6 +1282,11 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("UserDevices");
 
                     b.Navigation("UserMedias");
+                });
+
+            modelBuilder.Entity("LostAndFound.Core.Entities.ViolationReport", b =>
+                {
+                    b.Navigation("UserViolationReports");
                 });
 #pragma warning restore 612, 618
         }

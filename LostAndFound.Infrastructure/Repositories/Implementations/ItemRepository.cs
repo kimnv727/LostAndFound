@@ -79,9 +79,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
             }
-            if (query.CategoryId > 0)
+            /*if (query.CategoryId > 0)
             {
                 items = items.Where(i => i.CategoryId == query.CategoryId);
+            }*/
+            if (query.CategoryId != null)
+            {
+                items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
             }
             if (Enum.IsDefined(query.ItemStatus))
             {

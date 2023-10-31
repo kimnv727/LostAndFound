@@ -23,7 +23,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         
         public string Description { get; set; }
         
-        public int CategoryId { get; set; }
+        public int[] CategoryId { get; set; }
 
         public int CabinetId { get; set; }
 

@@ -35,6 +35,14 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Roles.Add(manager);
                 
+                Role storageManager = new Role
+                {
+                    Name = "Storage Manager",
+                    Description = "Storage Manager of the system. Managing data related to posts, items, users and also managing system's storage in the system.",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Roles.Add(storageManager);
+
                 Role userRole = new Role
                 {
                     Name = "User",
@@ -45,7 +53,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Properties
-                Core.Entities.Campus property = new Core.Entities.Campus
+                Campus property = new Campus
                 {
                     Name = "FPT HCM Campus",
                     Address = "FPT HCM Campus"
@@ -62,11 +70,11 @@ namespace LostAndFound.Infrastructure.Extensions
                     IsActive = true,
                     FirstName = "Test",
                     LastName = "Admin",
-                    Gender = Core.Enums.Gender.Male,
+                    Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0101010101",
                     SchoolId = "ADMIN",
-                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
+                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -81,11 +89,11 @@ namespace LostAndFound.Infrastructure.Extensions
                     IsActive = true,
                     FirstName = "Test",
                     LastName = "User",
-                    Gender = Core.Enums.Gender.Male,
+                    Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                     Phone = "0808080808",
                     SchoolId = "SE111111",
-                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
+                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -100,16 +108,34 @@ namespace LostAndFound.Infrastructure.Extensions
                     IsActive = true,
                     FirstName = "Test",
                     LastName = "Manager",
-                    Gender = Core.Enums.Gender.Male,
+                    Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    Campus = Core.Enums.CampusName.HO_CHI_MINH_CAMPUS,
+                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Users.Add(managerUser);
                 context.SaveChanges();
+
+                User storageManagerUser = new User()
+                {
+                    Id = "UXFjz04VvING1SxKxcfIZQQhVCo1",
+                    Email = "def123@fpt.edu.vn",
+                    Password = "",
+                    IsActive = true,
+                    FirstName = "Test",
+                    LastName = "Storage Manager",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0909090909",
+                    SchoolId = "MANAGER",
+                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    RoleId = 3,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+
                 #endregion
 
                 context.SaveChanges();

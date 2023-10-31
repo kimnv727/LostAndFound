@@ -11,7 +11,5 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public int CabinetId { get; set; }
 
-        public bool IsInStorage { get; set; }
-
     }
 }

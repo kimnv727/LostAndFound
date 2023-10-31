@@ -23,5 +23,6 @@ namespace LostAndFound.Core.Entities
         public DateTime CreatedDate { get; set; }
         
         public virtual Storage Storage { get; set; }
+        public ICollection<Item> Items { get; set; }
     }
 }

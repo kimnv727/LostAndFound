@@ -27,7 +27,6 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [QueryResponseCache(typeof(MediaQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<MediaReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] MediaQuery query)
         {
@@ -62,7 +61,7 @@ namespace LostAndFound.API.Controllers
         {
             var media = await _mediaService.FindMediaById(mediaId);
 
-            return ResponseFactory.PaginatedOk(media);
+            return ResponseFactory.Ok(media);
         }
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateMedia([Required] Guid mediaId, MediaUpdateWriteDTO mediaUpdateWriteDTO)
         {
             var media = await _mediaService.UpdateMediaDetail(mediaId, mediaUpdateWriteDTO);
-            return ResponseFactory.PaginatedOk(media);
+            return ResponseFactory.Ok(media);
         }
 
         /// <summary>

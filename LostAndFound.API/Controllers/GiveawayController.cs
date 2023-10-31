@@ -41,7 +41,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveaway = await _giveawayService.GetGiveawayByIdAsync(giveawayId);
 
-            return ResponseFactory.PaginatedOk(giveaway);
+            return ResponseFactory.Ok(giveaway);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveaway = await _giveawayService.GetGiveawayIncludeParticipantsByIdAsync(giveawayId);
 
-            return ResponseFactory.PaginatedOk(giveaway);
+            return ResponseFactory.Ok(giveaway);
         }
         
         ///<summary>
@@ -69,7 +69,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(GiveawayQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<GiveawayReadDTO>))]
         public async Task<IActionResult> GetAllGiveaways([FromQuery] GiveawayQuery query)
         {
@@ -86,7 +85,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet("query-with-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [QueryResponseCache(typeof(GiveawayQueryWithStatus))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<GiveawayReadDTO>))]
         public async Task<IActionResult> GetAllGiveawaysWithStatus([FromQuery] GiveawayQueryWithStatus query)
         {
@@ -130,7 +128,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateGiveaway(int giveawayId, GiveawayUpdateDTO giveawayUpdateDTO)
         {
             var giveaway = await _giveawayService.UpdateGiveawayDetailsAsync(giveawayId, giveawayUpdateDTO);
-            return ResponseFactory.PaginatedOk(giveaway);
+            return ResponseFactory.Ok(giveaway);
         }
         
         /// <summary>
@@ -149,7 +147,7 @@ namespace LostAndFound.API.Controllers
             //TODO: add more check (like not allowed to change back to NOT STARTED)
             await _giveawayService.UpdateGiveawayStatusAsync(giveawayId, giveawayStatus);
             var giveaway = await _giveawayService.GetGiveawayByIdAsync(giveawayId);
-            return ResponseFactory.PaginatedOk(giveaway);
+            return ResponseFactory.Ok(giveaway);
         }
         
         /// <summary>
@@ -163,7 +161,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountGiveawayParticipantsAsync(int giveawayId)
         {
-            return ResponseFactory.PaginatedOk(await _giveawayParticipantService.CountGiveawayParticipantsAsync(giveawayId));
+            return ResponseFactory.Ok(await _giveawayParticipantService.CountGiveawayParticipantsAsync(giveawayId));
         }
         
         /// <summary>
@@ -181,7 +179,7 @@ namespace LostAndFound.API.Controllers
         {
             var giveawayParticipant = await _giveawayParticipantService.GetGiveawayParticipant(giveawayId, userId);
 
-            return ResponseFactory.PaginatedOk(giveawayParticipant);
+            return ResponseFactory.Ok(giveawayParticipant);
         }
         
         /// <summary>
@@ -197,7 +195,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetUsersParticipateInGiveaway(int giveawayId)
         {
-            return ResponseFactory.PaginatedOk(await _giveawayParticipantService.GetUsersParticipateInGiveaway(giveawayId));
+            return ResponseFactory.Ok(await _giveawayParticipantService.GetUsersParticipateInGiveaway(giveawayId));
         }
         
         /// <summary>

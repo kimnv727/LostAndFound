@@ -52,7 +52,6 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        [QueryResponseCache(typeof(ItemQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] ItemQueryWithStatus query)
         {
@@ -66,14 +65,13 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{itemId}")]
-        //[QueryResponseCache(typeof(ItemQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemDetailReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindItemById([Required] int itemId)
         {
             var item = await _itemService.FindItemByIdAsync(itemId);
 
-            return ResponseFactory.PaginatedOk(item);
+            return ResponseFactory.Ok(item);
         }
 
         /// <summary>
@@ -81,13 +79,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("name/{name}")]
-        [QueryResponseCache(typeof(ItemQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<MediaReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindItemByName([Required] string name)
         {
             var item = await _itemService.FindItemByNameAsync(name);
-            return ResponseFactory.PaginatedOk(item);
+            return ResponseFactory.Ok(item);
         }
 
         /// <summary>
@@ -122,7 +119,7 @@ namespace LostAndFound.API.Controllers
             
             var item = await _itemService.UpdateItemDetailsAsync(itemId, updateDTO);
 
-            return ResponseFactory.PaginatedOk(item);
+            return ResponseFactory.Ok(item);
         }
  
         ///<summary>
@@ -140,7 +137,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _itemService.CreateItemAsync(stringId, writeDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         /// <summary>
@@ -168,7 +165,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllItemMedia([Required] int itemId)
         {
-            return ResponseFactory.PaginatedOk(await _itemMediaService.GetItemMedias(itemId));
+            return ResponseFactory.Ok(await _itemMediaService.GetItemMedias(itemId));
         }
 
         /// <summary>
@@ -220,7 +217,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountItemFlagOfAnItem(int itemId)
         {
-            return ResponseFactory.PaginatedOk(await _itemFlagService.CountItemFlagAsync(itemId));
+            return ResponseFactory.Ok(await _itemFlagService.CountItemFlagAsync(itemId));
         }
         
         /// <summary>
@@ -237,7 +234,7 @@ namespace LostAndFound.API.Controllers
         {
             var itemFlag = await _itemFlagService.GetItemFlag(userId, itemId);
 
-            return ResponseFactory.PaginatedOk(itemFlag);
+            return ResponseFactory.Ok(itemFlag);
         }
         
         /// <summary>
@@ -252,7 +249,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllOwnItemFlag()
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.PaginatedOk(await _itemFlagService.GetOwnItemFlags(stringId));
+            return ResponseFactory.Ok(await _itemFlagService.GetOwnItemFlags(stringId));
         }
         
         /// <summary>
@@ -293,7 +290,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountBookmarkOfAnItem(int itemId)
         {
-            return ResponseFactory.PaginatedOk(await _itemBookmarkService.CountItemBookmarkAsync(itemId));
+            return ResponseFactory.Ok(await _itemBookmarkService.CountItemBookmarkAsync(itemId));
         }
         
         /// <summary>
@@ -310,7 +307,7 @@ namespace LostAndFound.API.Controllers
         {
             var itemFlag = await _itemBookmarkService.GetItemBookmark(userId, itemId);
 
-            return ResponseFactory.PaginatedOk(itemFlag);
+            return ResponseFactory.Ok(itemFlag);
         }
         
         /// <summary>
@@ -325,7 +322,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllOwnItemBookmark()
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.PaginatedOk(await _itemBookmarkService.GetOwnItemBookmarks(userId));
+            return ResponseFactory.Ok(await _itemBookmarkService.GetOwnItemBookmarks(userId));
         }
         
         /// <summary>
@@ -398,7 +395,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
         {
-            return ResponseFactory.PaginatedOk(await _itemService.GetAllClaimsOfAnItem(itemId));
+            return ResponseFactory.Ok(await _itemService.GetAllClaimsOfAnItem(itemId));
         }
 
         /// <summary>
@@ -413,7 +410,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByUserId(string userId)
         {
-            return ResponseFactory.PaginatedOk(await _itemService.GetItemsClaimedByUserId(userId));
+            return ResponseFactory.Ok(await _itemService.GetItemsClaimedByUserId(userId));
         }
 
         /// <summary>
@@ -429,7 +426,7 @@ namespace LostAndFound.API.Controllers
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 
-            return ResponseFactory.PaginatedOk(await _itemService.GetItemsClaimedByUserId(userId));
+            return ResponseFactory.Ok(await _itemService.GetItemsClaimedByUserId(userId));
         }
     }
 }

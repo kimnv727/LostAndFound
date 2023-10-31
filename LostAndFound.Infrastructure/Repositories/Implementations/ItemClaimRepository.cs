@@ -81,17 +81,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     claims = claims.Where(ic => ic.UserId == query.UserId);
                 }
-                if (query.ClaimStatus >= 0)
+                if (query.ClaimStatus == true)
                 {
                     switch (query.ClaimStatus)
                     {
                         default:
                             break;
-                        case 0:
-                            claims = claims.Where(ic => ic.ClaimStatus == 0);
+                        case true:
+                            claims = claims.Where(ic => ic.ClaimStatus == true);
                             break;
-                        case 1:
-                            claims = claims.Where(ic => ic.ClaimStatus == 1);
+                        case false:
+                            claims = claims.Where(ic => ic.ClaimStatus == false);
                             break;
                     }
                 }

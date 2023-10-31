@@ -29,13 +29,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [QueryResponseCache(typeof(CategoryQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<CategoryQuery>>))]
         public async Task<IActionResult> Query([FromQuery] CategoryQuery query)
         {
             var paginatedCategoryDTO = await _categoryService.QueryCategoryAsync(query);
 
-            return ResponseFactory.PaginatedOk<Infrastructure.DTOs.Common.PaginatedResponse<CategoryReadDTO>>(paginatedCategoryDTO);
+            return ResponseFactory.Ok<Infrastructure.DTOs.Common.PaginatedResponse<CategoryReadDTO>>(paginatedCategoryDTO);
         }
 
         /// <summary>
@@ -56,13 +55,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{categoryId}")]
-        [QueryResponseCache(typeof(CategoryQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCategoryById([Required] int categoryId)
         {
             var category = await _categoryService.FindCategoryByIdAsync(categoryId);
 
-            return ResponseFactory.PaginatedOk(category);
+            return ResponseFactory.Ok(category);
         }
 
         /// <summary>
@@ -70,13 +68,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("name/{categoryName}")]
-        [QueryResponseCache(typeof(CategoryQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCategoryByName([Required] string categoryName)
         {
             var category = await _categoryService.FindCategoryByNameAsync(categoryName);
 
-            return ResponseFactory.PaginatedOk(category);
+            return ResponseFactory.Ok(category);
         }
         
         ///<summary>
@@ -93,7 +90,7 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _categoryService.CreateCategoryAsync(stringId, writeDTO);
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         ///<summary>
@@ -110,7 +107,7 @@ namespace LostAndFound.API.Controllers
         {
             
             var category = await _categoryService.UpdateCategoryAsync(categoryId, writeDTO);
-            return ResponseFactory.PaginatedOk(category);
+            return ResponseFactory.Ok(category);
         }
         
         /// <summary>

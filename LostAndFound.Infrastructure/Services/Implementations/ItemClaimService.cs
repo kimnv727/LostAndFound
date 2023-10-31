@@ -74,17 +74,17 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
             //If Claim record exists & status == 1 ==> User already claimed it
-            if(check != null && check.ClaimStatus == 1)
+            if(check != null && check.ClaimStatus == true)
             {
                 throw new DuplicateItemClaimException();
             }
             //If Claim record exists & status == 0 ==> User has unclaimed it
-            else if (check != null && check.ClaimStatus == 0)
+            else if (check != null && check.ClaimStatus == false)
             {
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
-                itemClaimWriteDTO.ClaimStatus = 1;
+                itemClaimWriteDTO.ClaimStatus = true;
                 itemClaimWriteDTO.ClaimDate = DateTime.Now;
 
                 _mapper.Map(itemClaimWriteDTO, check);
@@ -95,7 +95,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
-                itemClaimWriteDTO.ClaimStatus = 1;
+                itemClaimWriteDTO.ClaimStatus = true;
                 itemClaimWriteDTO.ClaimDate = DateTime.Now;
 
                 var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
@@ -132,7 +132,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
             itemClaimWriteDTO.UserId = userId;
             itemClaimWriteDTO.ItemId = itemId;
-            itemClaimWriteDTO.ClaimStatus = 0;
+            itemClaimWriteDTO.ClaimStatus = true;
             itemClaimWriteDTO.ClaimDate = DateTime.MinValue;
 
             _mapper.Map(itemClaimWriteDTO, claim);

@@ -42,7 +42,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        //[QueryResponseCache(typeof(UserQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAll([FromQuery] UserQuery query)
         {
@@ -59,7 +58,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-ignore-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        //[QueryResponseCache(typeof(UserQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAllIgnoreStatus([FromQuery] UserQueryIgnoreStatus query)
         {
@@ -76,7 +74,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-ignore-status-exclude")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        //[QueryResponseCache(typeof(UserQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<UserDetailsReadDTO>))]
         public async Task<IActionResult> GetAllIgnoreStatusExcludeWaitingVerified([FromQuery] UserQueryIgnoreStatusWithoutWaitingVerified query)
         {
@@ -99,7 +96,7 @@ namespace LostAndFound.API.Controllers
         {
             var user = await _userService.GetUserAsync(id);
 
-            return ResponseFactory.PaginatedOk(user);
+            return ResponseFactory.Ok(user);
         }
 
         /// <summary>
@@ -116,7 +113,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _userService.GetUserByEmailAsync(email);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
 
         ///<summary>
@@ -173,7 +170,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _userService.ChangeUserStatusAsync(id);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         ///<summary>
@@ -191,7 +188,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.UpdateUserDetailsAsync(stringId, updateDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         ///<summary>
@@ -208,7 +205,7 @@ namespace LostAndFound.API.Controllers
         {
             var user = await _userService.UpdateUserDetailsAsync(id, updateDTO);
 
-            return ResponseFactory.PaginatedOk(user);
+            return ResponseFactory.Ok(user);
         }
 
         ///<summary>
@@ -227,7 +224,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
 
         ///<summary>
@@ -248,7 +245,7 @@ namespace LostAndFound.API.Controllers
                 userMediaCredentialsWriteDTO.SchoolId, 
                 userMediaCredentialsWriteDTO.CCID, 
                 userMediaCredentialsWriteDTO.StudentCard);
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
 
         /// <summary>
@@ -268,7 +265,7 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(stringId, roles);
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
     }
 }

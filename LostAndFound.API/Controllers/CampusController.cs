@@ -28,7 +28,6 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [QueryResponseCache(typeof(CampusQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CampusReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] CampusQuery query)
         {
@@ -53,12 +52,11 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{CampusId}")]
-        [QueryResponseCache(typeof(CampusQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCampusByID([Required] int CampusId)
         {
             var campus = await _CampusService.GetCampusByIdAsync(CampusId);
-            return ResponseFactory.PaginatedOk(campus);
+            return ResponseFactory.Ok(campus);
         }
         
         /// <summary>
@@ -86,7 +84,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateCampusDetailsAsync(int CampusId, CampusWriteDTO CampusWriteDTO)
         {
             var campus = await _CampusService.UpdateCampusDetailsAsync(CampusId, CampusWriteDTO);
-            return ResponseFactory.PaginatedOk(campus);
+            return ResponseFactory.Ok(campus);
         }
         
         ///<summary>
@@ -103,7 +101,7 @@ namespace LostAndFound.API.Controllers
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _CampusService.CreateCampusAsync(userId, CampusWriteDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         /// <summary>

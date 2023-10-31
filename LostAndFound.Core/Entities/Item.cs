@@ -26,7 +26,8 @@ namespace LostAndFound.Core.Entities
         
         public int CategoryId { get; set; }
 
-        public int CabinetId { get; set; }
+        [ForeignKey("Cabinet")]
+        public int? CabinetId { get; set; }
         
         public bool IsInStorage { get; set; }
 

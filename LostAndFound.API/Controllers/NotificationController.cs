@@ -41,7 +41,7 @@ namespace LostAndFound.API.Controllers
         {
             var notification = await _notificationService.GetNotification(notificationId);
 
-            return ResponseFactory.PaginatedOk(notification);
+            return ResponseFactory.Ok(notification);
         }
         
         ///<summary>
@@ -76,7 +76,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountUnreadNotificationOfAUser(string userId)
         {
-            return ResponseFactory.PaginatedOk(await _notificationService.CountUnreadOfUser(userId));
+            return ResponseFactory.Ok(await _notificationService.CountUnreadOfUser(userId));
         }
         
         /// <summary>

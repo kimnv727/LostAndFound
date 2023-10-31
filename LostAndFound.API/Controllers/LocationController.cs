@@ -30,7 +30,6 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("paginated")]
         [Authorize]
-        [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<LocationReadDTO>>))]
         public async Task<IActionResult> PaginatedQuery([FromQuery] LocationQuery query)
         {
@@ -45,7 +44,6 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] LocationQuery query)
         {
@@ -60,7 +58,6 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("all")]
         [Authorize]
-        [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
         public async Task<IActionResult> ListAll()
         {
@@ -74,14 +71,13 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{LocationId}")]
-        [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<LocationReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetLocationByID([Required] int LocationId)
         {
             var location = await _locationService.FindLocationByIdAsync(LocationId);
 
-            return ResponseFactory.PaginatedOk(location);
+            return ResponseFactory.Ok(location);
         }
         
         /// <summary>
@@ -89,13 +85,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("name/{locationName}")]
-        [QueryResponseCache(typeof(LocationQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetLocationByName([Required] string locationName)
         {
             var item = await _locationService.FindLocationByNameAsync(locationName);
 
-            return ResponseFactory.PaginatedOk(item);
+            return ResponseFactory.Ok(item);
         }
         
         ///<summary>
@@ -112,7 +107,7 @@ namespace LostAndFound.API.Controllers
         {
             var location = await _locationService.UpdateLocationDetailsAsync(LocationId, writeDTO);
 
-            return ResponseFactory.PaginatedOk(location);
+            return ResponseFactory.Ok(location);
         }
         
         ///<summary>
@@ -129,7 +124,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _locationService.CreateItemAsync(writeDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         /// <summary>

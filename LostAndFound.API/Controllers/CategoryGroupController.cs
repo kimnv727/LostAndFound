@@ -28,7 +28,6 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [QueryResponseCache(typeof(CategoryGroupQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryGroupReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] CategoryGroupQuery query)
         {
@@ -53,12 +52,11 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{categoryGroupId}")]
-        [QueryResponseCache(typeof(CategoryGroupQuery))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCategoryGroupByID([Required] int categoryGroupId)
         {
             var CategoryGroup = await _categoryGroupService.GetCategoryGroupByIdAsync(categoryGroupId);
-            return ResponseFactory.PaginatedOk(CategoryGroup);
+            return ResponseFactory.Ok(CategoryGroup);
         }
 
         ///<summary>
@@ -72,7 +70,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateCategoryGroupDetailsAsync(int categoryGroupId, CategoryGroupWriteDTO categoryGroupWriteDTO)
         {
             var categoryGroup = await _categoryGroupService.UpdateCategoryGroupDetailsAsync(categoryGroupId, categoryGroupWriteDTO);
-            return ResponseFactory.PaginatedOk(categoryGroup);
+            return ResponseFactory.Ok(categoryGroup);
         }
         
         ///<summary>
@@ -89,7 +87,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _categoryGroupService.CreateCategoryGroupAsync(stringId, categoryGroupWriteDTO);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
         
         /// <summary>

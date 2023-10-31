@@ -134,7 +134,13 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<Notification>()
                 .Property(n => n.IsRead)
                 .HasDefaultValue(false);
-            
+
+            modelBuilder.Entity<Item>()
+                .HasOne(i => i.Cabinet)
+                .WithMany(c => c.Items)
+                .HasForeignKey(i => i.CabinetId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.SaveEnumsAsString();
         }
 

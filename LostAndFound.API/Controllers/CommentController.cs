@@ -43,7 +43,7 @@ namespace LostAndFound.API.Controllers
         {
             var comment = await _commentService.GetCommentByIdAsync(commentId);
 
-            return ResponseFactory.PaginatedOk(comment);
+            return ResponseFactory.Ok(comment);
         }
 
         /// <summary>
@@ -72,7 +72,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        //[QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
         public async Task<IActionResult> GetAllComments([FromQuery] CommentQuery query)
         {
@@ -89,7 +88,6 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-ignore-status")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        //[QueryResponseCache(typeof(CommentQuery))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentReadDTO>))]
         public async Task<IActionResult> GetAllCommentsIgnoreStatus([FromQuery] CommentQuery query)
         {
@@ -164,7 +162,7 @@ namespace LostAndFound.API.Controllers
                 throw new UnauthorizedException();
             }
             var comment = await _commentService.UpdateCommentDetailsAsync(commentId, commentUpdateWriteDTO);
-            return ResponseFactory.PaginatedOk(comment);
+            return ResponseFactory.Ok(comment);
         }
 
         /// <summary>
@@ -202,7 +200,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CountCommentFlagOfAPost(int commentId)
         {
-            return ResponseFactory.PaginatedOk(await _commentFlagService.CountCommentFlagAsync(commentId));
+            return ResponseFactory.Ok(await _commentFlagService.CountCommentFlagAsync(commentId));
         }
         
         /// <summary>
@@ -220,7 +218,7 @@ namespace LostAndFound.API.Controllers
         {
             var commentFlag = await _commentFlagService.GetCommentFlag(userId, commentId);
 
-            return ResponseFactory.PaginatedOk(commentFlag);
+            return ResponseFactory.Ok(commentFlag);
         }
         
         /// <summary>
@@ -236,7 +234,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllOwnCommentFlag()
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            return ResponseFactory.PaginatedOk(await _commentFlagService.GetOwnCommentFlags(stringId));
+            return ResponseFactory.Ok(await _commentFlagService.GetOwnCommentFlags(stringId));
         }
         
         /// <summary>

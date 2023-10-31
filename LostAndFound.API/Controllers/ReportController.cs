@@ -74,7 +74,7 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _violationReportService.GetReportById(id);
 
-            return ResponseFactory.PaginatedOk(result);
+            return ResponseFactory.Ok(result);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace LostAndFound.Infrastructure.DTOs.Location
         public string LocationName { get; set; }
         
         public int Floor { get; set; }
+        public bool? IsActive { get; set; }
 
         public CampusLiteReadDTO Property { get; set; }
     }

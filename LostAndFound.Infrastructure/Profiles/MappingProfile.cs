@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.Cabinet;
 using LostAndFound.Infrastructure.DTOs.Category;
 using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 using LostAndFound.Infrastructure.DTOs.Comment;
@@ -19,6 +20,7 @@ using LostAndFound.Infrastructure.DTOs.PostBookmark;
 using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.Property;
+using LostAndFound.Infrastructure.DTOs.Storage;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserDevice;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
@@ -141,6 +143,16 @@ namespace LostAndFound.Infrastructure.Profiles
             //Claim
             CreateMap<ItemClaim, ItemClaimReadDTO>();
             CreateMap<ItemClaimWriteDTO, ItemClaim>();
+
+            //Storage
+            CreateMap<Storage, StorageReadDTO>();
+            CreateMap<StorageWriteDTO, Storage>();
+            CreateMap<StorageUpdateDTO, Storage>();
+
+            //Cabinet
+            CreateMap<Cabinet, CabinetReadDTO>();
+            CreateMap<CabinetWriteDTO, Cabinet>();
+            CreateMap<CabinetUpdateDTO, Cabinet>();
         }
     }
 }

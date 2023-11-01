@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.API.Controllers
 {
-    [Route("api/properties")]
+    [Route("api/campuses")]
     [ApiController]
     public class CampusController : Controller
     {

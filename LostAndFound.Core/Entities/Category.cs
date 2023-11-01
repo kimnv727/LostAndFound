@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
@@ -16,5 +17,9 @@ namespace LostAndFound.Core.Entities
 
         [ForeignKey("CategoryGroup")]
         public int CategoryGroupId { get; set; }
+        /*public bool IsSensitive { get; set; }
+        [Required]
+        public ItemValue Value { get; set; }*/
+        public virtual CategoryGroup CategoryGroup { get; set; }
     }
 }

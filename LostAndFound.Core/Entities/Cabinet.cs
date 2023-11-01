@@ -13,8 +13,8 @@ namespace LostAndFound.Core.Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public int Name { get; set; }
-
+        public string Name { get; set; }
+        [Required]
         [ForeignKey("Storage")]
         public int StorageId { get; set; }
 

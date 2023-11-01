@@ -89,7 +89,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CampusReadDTO>(campus);
         }
         
-        public async Task ChangeCampusStatusAsync(int CampusId)
+        public async Task<CampusReadDTO> ChangeCampusStatusAsync(int CampusId)
         {
             var campus = await _CampusRepository.FindCampusByIdAsync(CampusId);
 
@@ -97,21 +97,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Core.Entities.Campus>(CampusId);
             }
-            
-            switch (campus.IsActive)
-            {
-                case true:
-                    campus.IsActive = false;
-                    break;
-                case false:
-                    campus.IsActive = true;
-                    break;
-            }
+
+            campus.IsActive = !campus.IsActive;
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<CampusReadDTO>(campus);
         }
 
-        public async Task DeleteCampusAsync(int CampusId)
+        public async Task<CampusReadDTO> DeleteCampusAsync(int CampusId)
         {
             var campus = await _CampusRepository.FindCampusByIdAsync(CampusId);
 
@@ -122,6 +115,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             _CampusRepository.Delete(campus);
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<CampusReadDTO>(campus);
         }
     }
 }

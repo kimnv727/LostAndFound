@@ -158,7 +158,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Item>> GetClaimsForMember(string userId)
         {
             var items = _context.Items
-                            .Where(i => i.FoundUserId == userId) 
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)

@@ -13,8 +13,8 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<CampusReadDTO> GetCampusByIdAsync(int CampusId);
         public Task<CampusReadDTO> CreateCampusAsync(string userId, CampusWriteDTO CampusWriteDTO);
         public Task<CampusReadDTO> UpdateCampusDetailsAsync(int CampusId, CampusWriteDTO CampusWriteDTO);
-        public Task ChangeCampusStatusAsync(int CampusId);
-        public Task DeleteCampusAsync(int CampusId);
+        public Task<CampusReadDTO> ChangeCampusStatusAsync(int CampusId);
+        public Task<CampusReadDTO> DeleteCampusAsync(int CampusId);
         
     }
 }

@@ -2,6 +2,7 @@ using LostAndFound.API.Attributes;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 using LostAndFound.Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryGroupReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] CategoryGroupQuery query)
         {
@@ -40,6 +42,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CategoryGroupReadDTO>>))]
         public async Task<IActionResult> ListAll()
         {
@@ -52,6 +55,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{categoryGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCategoryGroupByID([Required] int categoryGroupId)
         {
@@ -64,6 +68,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("{categoryGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
@@ -74,11 +79,12 @@ namespace LostAndFound.API.Controllers
         }
         
         ///<summary>
-        /// Create new categoryGroup
+        /// Create new Category Group
         /// </summary>
         /// <param name="categoryGroupWriteDTO"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<CategoryGroupReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
@@ -95,6 +101,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("{categoryGroupId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> DeleteCategoryGroup([Required] int categoryGroupId)
@@ -102,6 +109,22 @@ namespace LostAndFound.API.Controllers
             await _categoryGroupService.DeleteCategoryGroupAsync(categoryGroupId);
             return ResponseFactory.NoContent();
         }
-        
+
+        /// <summary>
+        /// Change Category Group's IsActive value
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<CategoryGroupReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ChangeCategoryIsActiveStatus([Required] int id)
+        {
+            return ResponseFactory.Ok(await _categoryGroupService.ChangeCategoryGroupStatusAsync(id));
+        }
+
     }
 }

@@ -20,7 +20,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<CategoryGroup>> QueryCategoryGroupAsync(CategoryGroupQuery query, bool trackChanges = false)
         {
-            IQueryable<CategoryGroup> categoryGroups = _context.CategoryGroups.AsSplitQuery();
+            IQueryable<CategoryGroup> categoryGroups = _context.CategoryGroups
+                .Include(c => c.Categories)
+                .AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -36,31 +38,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 categoryGroups = categoryGroups.Where(cg => cg.Description.ToLower().Contains(query.Description.ToLower()));
             }
 
-            if (Enum.IsDefined(query.Value))
+            if (Enum.IsDefined(query.IsActive))
             {
-                switch (query.Value)
+                switch (query.IsActive)
                 {
-                    case ItemValue.High:
-                        categoryGroups = categoryGroups.Where(cg => cg.Value == ItemValue.High);
+                    case CategoryGroupQuery.ActiveStatus.Active:
+                        categoryGroups = categoryGroups.Where(cg => cg.IsActive == true);
                         break;
-                    case ItemValue.Low:
-                        categoryGroups = categoryGroups.Where(cg => cg.Value == ItemValue.Low);
+                    case CategoryGroupQuery.ActiveStatus.Disabled:
+                        categoryGroups = categoryGroups.Where(cg => cg.IsActive == false);
                         break;
                 }
             }
-            
-                
+
+
             return await Task.FromResult(categoryGroups.ToList());
         }
 
         public async Task<CategoryGroup> FindCategoryGroupByIdAsync(int categoryGroupId)
         {
-            return await _context.CategoryGroups.FirstOrDefaultAsync(cg => cg.Id == categoryGroupId);
+            return await _context.CategoryGroups
+                .Include(cg => cg.Categories)
+                .ThenInclude(c => c.Items)
+                .Include(cg => cg.Categories)
+                .ThenInclude(c => c.Posts)
+                .FirstOrDefaultAsync(cg => cg.Id == categoryGroupId);
         }
 
         public async Task<CategoryGroup> FindCategoryGroupByNameAsync(string categoryGroupName)
         {
-            return await _context.CategoryGroups.FirstOrDefaultAsync(cg => cg.Name.ToLower().Contains(categoryGroupName.ToLower()));
+            return await _context.CategoryGroups
+                .Include(cg => cg.Categories)
+                .ThenInclude(c => c.Items)
+                .Include(cg => cg.Categories)
+                .ThenInclude(c => c.Posts)
+                .FirstOrDefaultAsync(cg => cg.Name.ToLower().Contains(categoryGroupName.ToLower()));
         }
     }
 }

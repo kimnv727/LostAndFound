@@ -1,5 +1,4 @@
-﻿using LostAndFound.Core.Exceptions.Common;
-
+﻿
 namespace LostAndFound.Core.Exceptions.Common
 {
     public class EntityNotFoundException : HandledException

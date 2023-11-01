@@ -122,5 +122,21 @@ namespace LostAndFound.API.Controllers
             await _categoryService.DeleteCategoryAsync(categoryId);
             return ResponseFactory.NoContent();
         }
+
+        /// <summary>
+        /// Change category's IsActive value
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<CategoryReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ChangeCategoryIsActiveStatus([Required] int id)
+        {
+            return ResponseFactory.Ok(await _categoryService.ChangeCategoryStatusAsync(id));
+        }
     }
 }

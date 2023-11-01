@@ -14,9 +14,7 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         public string Description { get; set; }
-        public bool IsSensitive { get; set; }
-        [Required]
-        public ItemValue Value { get; set; }
+        public bool? IsActive { get; set; }
         public ICollection<Category> Categories { get; set; }
     }
 }

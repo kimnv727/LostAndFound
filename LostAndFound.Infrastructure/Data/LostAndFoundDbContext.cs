@@ -135,6 +135,14 @@ namespace LostAndFound.Infrastructure.Data
                 .Property(n => n.IsRead)
                 .HasDefaultValue(false);
 
+            modelBuilder.Entity<CategoryGroup>()
+                .Property(cg => cg.IsActive)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Category>()
+                .Property(cg => cg.IsActive)
+                .HasDefaultValue(true);
+
             modelBuilder.Entity<Item>()
                 .HasOne(i => i.Cabinet)
                 .WithMany(c => c.Items)

@@ -94,6 +94,41 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CategoryReadDTO>(category);
         }
 
+        public async Task<CategoryReadDTO> ChangeCategoryStatusAsync(int id)
+        {
+            var category = await _categoryRepository.FindCategoryByIdAsync(id);
+            if (category == null)
+            {
+                throw new EntityWithIDNotFoundException<Category>(id);
+            }
+            if(category.IsActive == true)
+            {
+                foreach(var item in category.Items)
+                {
+                    if(item.ItemStatus == Core.Enums.ItemStatus.ACTIVE || 
+                        item.ItemStatus == Core.Enums.ItemStatus.PENDING || 
+                        item.ItemStatus == Core.Enums.ItemStatus.REJECTED)
+                    {
+                        throw new CategoryStillHaveItemOrPostException();
+                    }
+                }
+
+                foreach (var post in category.Posts)
+                {
+                    if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
+                        post.PostStatus == Core.Enums.PostStatus.PENDING ||
+                        post.PostStatus == Core.Enums.PostStatus.REJECTED)
+                    {
+                        throw new CategoryStillHaveItemOrPostException();
+                    }
+                }
+            }
+
+            category.IsActive = !category.IsActive;
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<CategoryReadDTO>(category);
+        }
+
         public async Task<CategoryReadDTO> CreateCategoryAsync(string userId, CategoryWriteDTO categoryWriteDTO)
         {
             //Check if user exist

@@ -87,7 +87,30 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             return _mapper.Map<CategoryGroupReadDTO>(categoryGroup);
         }
-        
+
+        public async Task<CategoryGroupReadDTO> ChangeCategoryGroupStatusAsync(int id)
+        {
+            var categoryGroup = await _categoryGroupRepository.FindCategoryGroupByIdAsync(id);
+            if (categoryGroup == null)
+            {
+                throw new EntityWithIDNotFoundException<CategoryGroup>(id);
+            }
+            if (categoryGroup.IsActive == true)
+            {
+                foreach (var category in categoryGroup.Categories)
+                {
+                    if (category.IsActive == true)
+                    {
+                        throw new CategoryGroupStillHaveActiveCategory();
+                    }
+                }
+            }
+
+            categoryGroup.IsActive = !categoryGroup.IsActive;
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<CategoryGroupReadDTO>(categoryGroup);
+        }
+
         public async Task DeleteCategoryGroupAsync(int categoryGroupId)
         {
             var categoryGroup = await _categoryGroupRepository.FindCategoryGroupByIdAsync(categoryGroupId);

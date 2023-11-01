@@ -8,16 +8,18 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface ICategoryGroupService 
     {
-        Task<PaginatedResponse<CategoryGroupReadDTO>> QueryCategoryGroupAsync(CategoryGroupQuery query);
+        public Task<PaginatedResponse<CategoryGroupReadDTO>> QueryCategoryGroupAsync(CategoryGroupQuery query);
 
-        Task<IEnumerable<CategoryGroupReadDTO>> ListAllAsync();
+        public Task<IEnumerable<CategoryGroupReadDTO>> ListAllAsync();
 
-        Task<CategoryGroupReadDTO> GetCategoryGroupByIdAsync(int categoryGroupId);
+        public Task<CategoryGroupReadDTO> ChangeCategoryGroupStatusAsync(int id);
+
+        public Task<CategoryGroupReadDTO> GetCategoryGroupByIdAsync(int categoryGroupId);
 
         Task<CategoryGroupReadDTO> CreateCategoryGroupAsync(string userId, CategoryGroupWriteDTO categoryGroupWriteDTO);
 
-        Task<CategoryGroupReadDTO> UpdateCategoryGroupDetailsAsync(int categoryGroupId, CategoryGroupWriteDTO categoryGroupWriteDTO);
+        public Task<CategoryGroupReadDTO> UpdateCategoryGroupDetailsAsync(int categoryGroupId, CategoryGroupWriteDTO categoryGroupWriteDTO);
         
-        Task DeleteCategoryGroupAsync(int categoryGroupId);
+        public Task DeleteCategoryGroupAsync(int categoryGroupId);
     }
 }

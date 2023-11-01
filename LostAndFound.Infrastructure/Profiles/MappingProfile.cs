@@ -71,10 +71,12 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Category Mapping
             CreateMap<Category, CategoryReadDTO>();
+            CreateMap<Category, CategoryReadLiteDTO>();
             CreateMap<CategoryWriteDTO, Category>();
             
             //Category Group Mapping
             CreateMap<CategoryGroup, CategoryGroupReadDTO>();
+            CreateMap<CategoryGroup, CategoryGroupReadLiteDTO>();
             CreateMap<CategoryGroupWriteDTO, CategoryGroup>();
             
             //Property Mapping

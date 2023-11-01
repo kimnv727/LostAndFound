@@ -179,26 +179,209 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Category Groups
-                //CategoryGroup electronics = new CategoryGroup()
-                //{
-                //    Name = "Electronics",
-                //    Description="Laptop, Chargers, Phone and any technology related devices",
-                //    Value = ItemValue.High, //TODO: This and one below should be inside the category instead of the group
-                //                            // Please remove or remigrate this later
-                //    IsSensitive = true,
-                //};
-                //context.CategoryGroups.Add(electronics);
-                //context.SaveChanges();
+                CategoryGroup electronicsDevices = new CategoryGroup()
+                {
+                    Name = "Electronics Devices",
+                    Description = "High value electrionic devices such as phones, tablets, laptops,...",
+                };
+                context.CategoryGroups.Add(electronicsDevices);
+                context.SaveChanges();
 
-                //CategoryGroup personalItems = new CategoryGroup()
-                //{
-                //    Name = "Personal Items",
-                //    Description = "Wallet, Keys, Parking Ticket and so on that a person carry but not electronic devices",
-                //    Value = ItemValue.High,
-                //    IsSensitive = true,
-                //};
-                //context.CategoryGroups.Add(personalItems);
-                //context.SaveChanges();
+                CategoryGroup electronicsAccessories = new CategoryGroup()
+                {
+                    Name = "Electronics Accessories",
+                    Description = "Accessories to use with electronic devices like phone case, mousepad,...",
+                };
+                context.CategoryGroups.Add(electronicsAccessories);
+                context.SaveChanges();
+
+                CategoryGroup key = new CategoryGroup()
+                {
+                    Name = "Keys",
+                    Description = "Car keys, house keys, and so on",
+                };
+                context.CategoryGroups.Add(key);
+                context.SaveChanges();
+
+                CategoryGroup peronsalAccessories = new CategoryGroup()
+                {
+                    Name = "Personal Accessories",
+                    Description = "Accessories people wear eveeryday like chain, necklace, bracelet,...",
+                };
+                context.CategoryGroups.Add(peronsalAccessories);
+                context.SaveChanges();
+
+                CategoryGroup idCard = new CategoryGroup()
+                {
+                    Name = "ID Card",
+                    Description = "Contain Identify information could be Student Card, CCID, Driver Liscense,...",
+                };
+                context.CategoryGroups.Add(idCard);
+                context.SaveChanges();
+
+                CategoryGroup clothing = new CategoryGroup()
+                {
+                    Name = "Clothes",
+                    Description = "Clothes, belts and the likes",
+                };
+                context.CategoryGroups.Add(clothing);
+                context.SaveChanges();
+                #endregion
+
+                #region Add Categories
+                Category laptop = new Category()
+                {
+                    Name = "Laptops",
+                    Description = "On top of your lap",
+                    IsSensitive = true,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 1,
+                };
+                context.Categories.Add(laptop);
+                context.SaveChanges();
+
+                Category camera = new Category()
+                {
+                    Name = "Camera",
+                    Description = "Records and take pictures",
+                    IsSensitive = true,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 1,
+                };
+                context.Categories.Add(camera);
+                context.SaveChanges();
+
+                Category phone = new Category()
+                {
+                    Name = "Phones",
+                    Description = "Smartphone, feature phones alike",
+                    IsSensitive = true,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 1,
+                };
+                context.Categories.Add(phone);
+                context.SaveChanges();
+
+                Category wallets = new Category()
+                {
+                    Name = "Wallets",
+                    Description = "Can contain money, and various identifier items",
+                    IsSensitive = true,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 4,
+                };
+                context.Categories.Add(wallets);
+                context.SaveChanges();
+
+                Category glasses = new Category()
+                {
+                    Name = "Glasses",
+                    Description = "Glasses that you wear init?",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 4,
+                };
+                context.Categories.Add(glasses);
+                context.SaveChanges();
+
+                Category charger = new Category()
+                {
+                    Name = "Charger",
+                    Description = "Charger for various things like laptop, phone, smartwatch",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(charger);
+                context.SaveChanges();
+
+                Category headphone = new Category()
+                {
+                    Name = "Headphones & Earphones",
+                    Description = "Headphones & Earphones (Wired & Wireless)",
+                    IsSensitive = false,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(headphone);
+                context.SaveChanges();
+
+                Category keyboards = new Category()
+                {
+                    Name = "Keyboards",
+                    Description = "Membrance keyboard, mechanical keyboards and more",
+                    IsSensitive = false,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(keyboards);
+                context.SaveChanges();
+
+                Category mouses = new Category()
+                {
+                    Name = "Mouses",
+                    Description = "Mouses for PC and that",
+                    IsSensitive = false,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(mouses);
+                context.SaveChanges();
+
+                Category driverLiscense = new Category()
+                {
+                    Name = "Driver License",
+                    Description = "License for motorbike, car, helicopter, planes, aircraft carriers,...",
+                    IsSensitive = true,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 5,
+                };
+                context.Categories.Add(driverLiscense);
+                context.SaveChanges();
+
+                Category ccid = new Category()
+                {
+                    Name = "Ciziten Identity Card",
+                    Description = "Citizen Identity Card (CCID)",
+                    IsSensitive = true,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 5,
+                };
+                context.Categories.Add(ccid);
+                context.SaveChanges();
+
+                Category studentCard = new Category()
+                {
+                    Name = "Student Card",
+                    Description = "FPTU Student Card",
+                    IsSensitive = true,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 5,
+                };
+                context.Categories.Add(studentCard);
+                context.SaveChanges();
+
+                Category underwear = new Category()
+                {
+                    Name = "Underwear",
+                    Description = "Okay bro, but how?",
+                    IsSensitive = true,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 6,
+                };
+                context.Categories.Add(underwear);
+                context.SaveChanges();
+
+                Category swimsuit = new Category()
+                {
+                    Name = "Swimsuit",
+                    Description = "You swim in lotus lake or something? Why is this here?",
+                    IsSensitive = true,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 6,
+                };
+                context.Categories.Add(swimsuit);
+                context.SaveChanges();
                 #endregion
 
                 context.SaveChanges();

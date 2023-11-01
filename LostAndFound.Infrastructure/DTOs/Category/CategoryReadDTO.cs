@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.CategoryGroup;
 
 namespace LostAndFound.Infrastructure.DTOs.Category
 {
@@ -14,7 +10,9 @@ namespace LostAndFound.Infrastructure.DTOs.Category
         public string Name { get; set; }
 
         public string Description { get; set; }
-        
-        public int CategoryGroupId { get; set; }
+        public bool IsActive { get; set; }
+        public ItemValue Value { get; set; }
+        public bool IsSensitive { get; set; }
+        public CategoryGroupReadLiteDTO CategoryGroup { get; set; }
     }
 }

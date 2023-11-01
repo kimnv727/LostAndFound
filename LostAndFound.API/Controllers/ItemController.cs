@@ -22,6 +22,8 @@ using LostAndFound.Infrastructure.DTOs.ItemFlag;
 using System.Xml.Linq;
 using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using Microsoft.VisualBasic;
+using LostAndFound.API.Authentication;
+using System.Data;
 
 namespace LostAndFound.API.Controllers
 {
@@ -35,8 +37,9 @@ namespace LostAndFound.API.Controllers
         private readonly IItemBookmarkService _itemBookmarkService;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IItemClaimService _itemClaimService;
+        private readonly IFirebaseAuthService _firebaseAuthService;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService, IFirebaseAuthService firebaseAuthService)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
@@ -44,6 +47,7 @@ namespace LostAndFound.API.Controllers
             _itemBookmarkService = itemBookmarkService;
             _categoryRepository = categoryRepository;
             _itemClaimService = itemClaimService;
+            _firebaseAuthService = firebaseAuthService;
         }
 
         /// <summary>
@@ -362,7 +366,7 @@ namespace LostAndFound.API.Controllers
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _itemClaimService.ClaimAnItemAsync(itemId, userId);
 
-            return Ok();
+            return ResponseFactory.NoContent();
         }
         
         /// <summary>
@@ -384,49 +388,87 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all claims of an item by item id
+        /// Get all claims of an item by item id for member
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("claims/item/{itemId}")]
+        [HttpGet("claims/member/item/{itemId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
         {
-            return ResponseFactory.Ok(await _itemService.GetAllClaimsOfAnItem(itemId));
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForMember(userId, itemId));
         }
 
         /// <summary>
-        /// Get all claims of an item by user id
+        /// Get all claims of an item by item id (For Managers)
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("claims/users/{userId}")]
+        [HttpGet("claims/manager/item/{itemId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetAllClaimsByUserId(string userId)
+        public async Task<IActionResult> GetAllClaimsByItemIdForManager(int itemId)
         {
-            return ResponseFactory.Ok(await _itemService.GetItemsClaimedByUserId(userId));
+            //Return an item with claims instead of only own claims  
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            string[] roles = { "Manager", "Storage Manager" };
+            await _firebaseAuthService.CheckUserRoles(userId, roles);
+            return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForManager(itemId));
         }
 
+        /*/// <summary>
+        /// Get list of items with claims made by user by user Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("claims/member/all/{userId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<List<ItemReadWithClaimStatusDTO>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllClaimsByUserId(string userId)
+        {
+            return ResponseFactory.Ok(await _itemService.GetClaimsForMember(userId));
+        }*/
+
         /// <summary>
-        /// Get all claims made by currently logged in user
+        /// Get list of items with claims made by currently logged in user
         /// </summary>
         /// <returns></returns>
-        [HttpPost("claims/my/")]
+        [HttpGet("claims/my/")]
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<List<ItemReadWithClaimStatusDTO>>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetAllClaimsByCurrentUser()
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 
-            return ResponseFactory.Ok(await _itemService.GetItemsClaimedByUserId(userId));
+            return ResponseFactory.Ok(await _itemService.GetClaimsForMember(userId));
         }
+
+        /// <summary>
+        /// Get all claims for all users for manager
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("claims/manager/all/")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemReadWithClaimStatusDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllClaimsForManager()
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            string[] roles = { "Manager", "Storage Manager" };
+            await _firebaseAuthService.CheckUserRoles(userId, roles);
+            return ResponseFactory.Ok(await _itemService.GetAllClaimsForManager());
+        }
+
     }
 }

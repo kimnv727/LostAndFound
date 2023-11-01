@@ -65,6 +65,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Item, ItemDetailReadDTO>();
             CreateMap<ItemWriteDTO, Item>();
             CreateMap<ItemUpdateDTO, Item>();
+            CreateMap<Item, ItemReadWithClaimStatusDTO>();
 
             //Category Mapping
             CreateMap<Category, CategoryReadDTO>();

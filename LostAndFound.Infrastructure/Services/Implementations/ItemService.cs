@@ -148,16 +148,28 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return item.FoundUserId == userId ? true : false;
         }
 
-        public async Task<IEnumerable<ItemReadDTO>> GetItemsClaimedByUserId(string userId)
+        public async Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetClaimsForMember(string userId)
         {
-            var items = await _itemRepository.GetItemsClaimedByUserId(userId);
-            return _mapper.Map<List<ItemReadDTO>>(items);
+            var items = await _itemRepository.GetClaimsForMember(userId);
+            return _mapper.Map<List<ItemReadWithClaimStatusDTO>>(items);
         }
 
-        public async Task<IEnumerable<ItemReadDTO>> GetAllClaimsOfAnItem(int itemId)
+        public async Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager()
         {
-            var items = await _itemRepository.GetAllClaimsOfAnItem(itemId);
-            return _mapper.Map<List<ItemReadDTO>>(items);
+            var items = await _itemRepository.GetAllClaimsForManager();
+            return _mapper.Map<List<ItemReadWithClaimStatusDTO>>(items);
+        }
+
+        public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId)
+        {
+            var item = await _itemRepository.GetAllClaimsOfAnItemForMember(userId, itemId);
+            return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
+        }
+
+        public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId)
+        {
+            var item = await _itemRepository.GetAllClaimsOfAnItem(itemId);
+            return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
         }
     }
 }

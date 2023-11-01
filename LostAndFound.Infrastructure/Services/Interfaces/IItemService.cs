@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using LostAndFound.Core.Enums;
 using System.Collections.Generic;
+using LostAndFound.Core.Entities;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
@@ -20,7 +21,9 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO);
         //public Task<ItemReadDTO> CreateItemAsync(ItemValue itemValue, string categoryName, string userId, ItemWriteDTO itemWriteDTO);
         public Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus);
-        public Task<IEnumerable<ItemReadDTO>> GetItemsClaimedByUserId(string userId);
-        public Task<IEnumerable<ItemReadDTO>> GetAllClaimsOfAnItem(int itemId);
+        public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetClaimsForMember(string userId);
+        public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager();
+        public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId);
+        public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId);
     }
 }

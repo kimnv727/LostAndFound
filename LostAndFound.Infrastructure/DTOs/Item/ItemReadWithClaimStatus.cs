@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
@@ -39,9 +40,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public ICollection<ItemMediaLiteReadDTO> ItemMedias { get; set; }
 
-        public int ClaimStatus { get; set; }
-
-        public int ItemClaim { get; set; }
+        public ICollection<ItemClaimReadDTO> ItemClaims { get; set; }
 
     }
 }

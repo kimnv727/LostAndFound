@@ -31,7 +31,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IItemRepository _itemRepository;
         private readonly Repositories.Interfaces.IUserRepository _userRepository;
 
-        public ItemClaimService(IMapper mapper, IUnitOfWork unitOfWork, IItemClaimRepository itemClaimRepository, IItemRepository itemRepository ,Repositories.Interfaces.IUserRepository userRepository)
+        public ItemClaimService(IMapper mapper, IUnitOfWork unitOfWork, IItemClaimRepository itemClaimRepository, IItemRepository itemRepository, Repositories.Interfaces.IUserRepository userRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -45,13 +45,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var claims = await _itemClaimRepository.QueryItemClaimsAsync(query);
             return PaginatedResponse<ItemClaimReadDTO>.FromEnumerableWithMapping(claims, query, _mapper);
         }
-        
+
         public async Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByItemIdAsync(int itemId)
         {
             var claims = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
             return _mapper.Map<List<ItemClaimReadDTO>>(claims.ToList());
         }
-        
+
         public async Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByUserIdAsync(string userId)
         {
             var claims = await _itemClaimRepository.GetAllClaimsByUserIdAsync(userId);
@@ -71,14 +71,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
+            else if (item != null)
+            {
+                if(item.FoundUserId == userId)
+                {
+                    throw new CannotClaimOwnItemException();
+                }
+            }
 
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
-            //If Claim record exists & status == 1 ==> User already claimed it
-            if(check != null && check.ClaimStatus == true)
+            //If Claim record exists & status == true ==> User already claimed it
+            if (check != null && check.ClaimStatus == true)
             {
                 throw new DuplicateItemClaimException();
             }
-            //If Claim record exists & status == 0 ==> User has unclaimed it
+            //If Claim record exists & status == false ==> User has unclaimed it
             else if (check != null && check.ClaimStatus == false)
             {
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
@@ -90,7 +97,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 _mapper.Map(itemClaimWriteDTO, check);
                 await _unitOfWork.CommitAsync();
             }//If Claim record doesn not exists then create new
-            else if (check == null) 
+            else if (check == null)
             {
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
                 itemClaimWriteDTO.UserId = userId;
@@ -102,10 +109,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 await _itemClaimRepository.AddAsync(claim);
                 await _unitOfWork.CommitAsync();
             }
-
-            //For return object
-            //var result = _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
-            //return _mapper.Map<ItemClaimReadDTO>(result);
 
         }
 
@@ -137,8 +140,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             _mapper.Map(itemClaimWriteDTO, claim);
             await _unitOfWork.CommitAsync();
-
-            //return _mapper.Map<ItemClaimReadDTO>(claim);
         }
 
     }

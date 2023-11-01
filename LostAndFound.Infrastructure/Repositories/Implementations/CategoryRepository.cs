@@ -23,7 +23,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<Category> FindCategoryByNameAsync(string categoryName)
         {
             return _context.Categories.FirstOrDefaultAsync
-                (i => i.Name.ToLower().Contains(categoryName.ToLower()));
+                (i => i.Name.ToLower() == (categoryName.ToLower()));
         }
         
         public Task<Category> GetCategoryWithCategoryGroup(int categoryId)

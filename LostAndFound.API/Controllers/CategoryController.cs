@@ -63,7 +63,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(category);
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Get Category by name
         /// </summary>
         /// <returns></returns>
@@ -74,7 +74,7 @@ namespace LostAndFound.API.Controllers
             var category = await _categoryService.FindCategoryByNameAsync(categoryName);
 
             return ResponseFactory.Ok(category);
-        }
+        }*/
         
         ///<summary>
         /// Create new category

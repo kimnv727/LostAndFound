@@ -10,7 +10,6 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 {
     public class ItemReadDTO
     {
-
         public int Id { get; set; }
         
         public string FoundUserId { get; set; }

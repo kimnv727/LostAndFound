@@ -55,7 +55,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<CategoryReadDTO>(category);
         }
 
-        public async Task<CategoryReadDTO> FindCategoryByNameAsync(string categoryName)
+        /*public async Task<CategoryReadDTO> FindCategoryByNameAsync(string categoryName)
         {
             var category = await _categoryRepository.FindCategoryByNameAsync(categoryName);
 
@@ -65,7 +65,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             return _mapper.Map<CategoryReadDTO>(category);
-        }
+        }*/
         
         public async Task DeleteCategoryAsync(int categoryId)
         {

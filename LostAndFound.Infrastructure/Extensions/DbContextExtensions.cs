@@ -138,6 +138,9 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 #endregion
 
+                #region Add location
+                #endregion
+
                 context.SaveChanges();
             }
 

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Enums;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LostAndFound.Core.Entities
 {

@@ -1,4 +1,6 @@
-﻿using LostAndFound.Core.Entities;
+﻿using Firebase.Auth;
+using Google.Apis.Util;
+using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Item;
@@ -135,40 +137,66 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
-        public async Task<IEnumerable<Item>> GetItemsClaimedByUserId(string userId)
+        //For managers, Get Items with claims from all users
+        //Returns a list of items that have been claimed and their claim objects
+        public async Task<IEnumerable<Item>> GetAllClaimsForManager()
         {
-            /*
-             * Get an item list
-             * Then filter by itemclaim, the list then becomes an ItemClaim list
-             * Add the list of ItemClaim to a new list of Items
-             * Return that mf
-             */
             var items = _context.Items
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.ItemClaims)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Include(i => i.ItemClaims)
-                            .ThenInclude(ic => ic.UserId)
                             .AsSplitQuery();
 
             return await Task.FromResult(items.ToList());
         }
 
-        public async Task<IEnumerable<Item>> GetAllClaimsOfAnItem(int itemId)
+        //For member, get claims matching userId
+        //Returns a list of items that matches userId
+        public async Task<IEnumerable<Item>> GetClaimsForMember(string userId)
         {
             var items = _context.Items
+                            .Where(i => i.FoundUserId == userId) 
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Include(i => i.ItemClaims)
-                            .ThenInclude(ic => ic.ItemId == itemId)
                             .AsSplitQuery();
 
             return await Task.FromResult(items.ToList());
+        }
+
+        //For normal users, only get own claims (of an Item == itemId)
+        public Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId)
+        {
+            //Check for item owner & user id
+            return _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId && ic.ItemId == itemId))
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .FirstOrDefaultAsync
+                            (i => i.Id == itemId 
+                            && i.FoundUserId != userId); //Check if this owner is getting this item, if false => remove item from this list
+        }
+
+        //Function for managers, get all claims (of an Item == itemId), from all users
+        public Task<Item> GetAllClaimsOfAnItem(int itemId)
+        {
+            return _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .FirstOrDefaultAsync(i => i.Id == itemId);
         }
 
 

@@ -135,7 +135,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
             itemClaimWriteDTO.UserId = userId;
             itemClaimWriteDTO.ItemId = itemId;
-            itemClaimWriteDTO.ClaimStatus = true;
+            itemClaimWriteDTO.ClaimStatus = false;
             itemClaimWriteDTO.ClaimDate = DateTime.MinValue;
 
             _mapper.Map(itemClaimWriteDTO, claim);

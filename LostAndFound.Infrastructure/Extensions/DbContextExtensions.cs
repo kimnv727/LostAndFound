@@ -82,11 +82,25 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.Users.Add(adminUser);
                 context.SaveChanges();
 
+                List<UserMedia> userMedias1 = new List<UserMedia>();
+                UserMedia userMedia1 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfUser1.png",
+                        Description = "Avatar of User1 Account",
+                        URL = "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMedias1.Add(userMedia1);
                 User user = new User()
                 {
                     Id = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
                     Email = "abc456@fpt.edu.vn",
                     Password = "",
+                    Avatar= "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
                     IsActive = true,
                     FirstName = "Test",
                     LastName = "User",
@@ -96,16 +110,90 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "SE111111",
                     Campus = CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 4,
-                    CreatedDate = DateTime.Now.ToVNTime()
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    UserMedias = userMedias1
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
 
+                List<UserMedia> userMedias2 = new List<UserMedia>();
+                UserMedia userMedia2 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfUser2.png",
+                        Description = "Avatar of User2 Account",
+                        URL = "https://pbs.twimg.com/media/F9nsg-2a0AA0WCc?format=jpg&name=large",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                UserMedia userMediaCCID2 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "CCIDOfUser2.png",
+                        Description = "CCID of User2 Account",
+                        URL = "https://pbs.twimg.com/media/F9FHQzNagAAy6NU?format=jpg&name=large",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                };
+                UserMedia userMediaStudentCard2 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "StudentCardOfUser2.png",
+                        Description = "Student Card of User2 Account",
+                        URL = "https://pbs.twimg.com/media/F9FHQzObcAAgyyK?format=jpg&name=large",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.STUDENT_CARD
+                };
+                userMedias2.Add(userMedia2);
+                userMedias2.Add(userMediaCCID2);
+                userMedias2.Add(userMediaStudentCard2);
+                User user2 = new User()
+                {
+                    Id = "eK9abWwxluYzbScdsQ8dx2zWnxD3",
+                    Email = "aruurara@gmail.com",
+                    Password = "",
+                    Avatar = "https://pbs.twimg.com/media/F9nsg-2a0AA0WCc?format=jpg&name=large",
+                    IsActive = true,
+                    FirstName = "aruurara",
+                    LastName = "あるうらら",
+                    Gender = Gender.Female,
+                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
+                    Phone = "0909090909",
+                    SchoolId = "SE121212",
+                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    RoleId = 4,
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    UserMedias = userMedias2
+                };
+                context.Users.Add(user2);
+                context.SaveChanges();
+
+
+                List<UserMedia> managerMedias = new List<UserMedia>();
+                UserMedia managerMedia = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfManager.png",
+                        Description = "Avatar of Manager Account",
+                        URL = "https://pbs.twimg.com/media/F94XNNBWcAAnOqX?format=jpg&name=medium",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                managerMedias.Add(managerMedia);
                 User managerUser = new User()
                 {
                     Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
                     Email = "abc123@fpt.edu.vn",
                     Password = "",
+                    Avatar = "https://pbs.twimg.com/media/F94XNNBWcAAnOqX?format=jpg&name=medium",
                     IsActive = true,
                     FirstName = "Test",
                     LastName = "Manager",
@@ -115,7 +203,8 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "MANAGER",
                     Campus = CampusName.HO_CHI_MINH_CAMPUS,
                     RoleId = 2,
-                    CreatedDate = DateTime.Now.ToVNTime()
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    UserMedias = managerMedias,
                 };
                 context.Users.Add(managerUser);
                 context.SaveChanges();
@@ -384,6 +473,81 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
+                #region Add Items
+
+                    #region Item 1
+                    List<ItemMedia> medias1 = new List<ItemMedia>();
+                    ItemMedia itemMedia1 = new ItemMedia()
+                    {
+                        Media = new Media()
+                        {
+                            Name = "Item1.png",
+                            Description="Item 1 Image",
+                            URL= "https://pbs.twimg.com/media/F2Gk22ZbMAAL3qf?format=jpg&name=large",
+                            CreatedDate = DateTime.Now.ToVNTime(),
+                        }
+                    };
+                    ItemMedia itemMedia2nd1 = new ItemMedia()
+                    {
+                        Media = new Media()
+                        {
+                            Name = "Item1.png",
+                            Description = "Item 1 2nd Image",
+                            URL = "https://pbs.twimg.com/media/F63opCAaMAA1RCN?format=jpg&name=large",
+                            CreatedDate = DateTime.Now.ToVNTime(),
+                        }
+                    };
+                    medias1.Add(itemMedia2nd1);
+
+                    Item item1 = new Item()
+                    {
+                        Name = "Macbook Air",
+                        Description = "I lost my macbook air please help me find it",
+                        LocationId = 1,
+                        CategoryId = 1,
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                        FoundUserId = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
+                        ItemStatus = ItemStatus.PENDING,
+                        IsInStorage = false,
+                        FoundDate = DateTime.Now.ToVNTime(),
+                        ItemMedias = medias1,
+                    };
+                    context.Items.Add(item1);
+                    context.SaveChanges();
+                    #endregion
+
+                    #region Item 2
+                    List<ItemMedia> medias2 = new List<ItemMedia>();
+                    ItemMedia itemMedia2 = new ItemMedia()
+                    {
+                        Media = new Media()
+                        {
+                            Name = "Item2.png",
+                            Description = "Item 2 Image",
+                            URL = "https://pbs.twimg.com/media/F0Hyt75aAAAm6IC?format=jpg&name=large",
+                            CreatedDate = DateTime.Now.ToVNTime(),
+                        }
+                    };
+                    medias2.Add(itemMedia2);
+
+                    Item item2 = new Item()
+                    {
+                        Name = "Canon DSLR",
+                        Description = "Help me find my DSLR, some roadman stole it from me and yeeted it somewhere",
+                        LocationId = 26,
+                        CategoryId = 2,
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                        FoundUserId = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
+                        ItemStatus = ItemStatus.ACTIVE,
+                        IsInStorage = false,
+                        FoundDate = DateTime.Now.ToVNTime(),
+                        ItemMedias = medias2,
+                    };
+                    context.Items.Add(item2);
+                    context.SaveChanges();
+                    #endregion
+
+                #endregion
                 context.SaveChanges();
             }
 

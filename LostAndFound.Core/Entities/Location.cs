@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Entities.Common;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Location 
+    public class Location : ISoftDeleteLiteEntity
     {
         [Key]
         public int Id { get; set; }
@@ -23,5 +24,7 @@ namespace LostAndFound.Core.Entities
         public bool? IsActive { get; set; }
         
         public virtual Campus Property { get; set; }  
+        public ICollection<Item> Items { get; set; }
+        public ICollection<Post> Posts { get;set; }
     }
 }

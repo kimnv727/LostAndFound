@@ -75,7 +75,35 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Category>(categoryId);
             }
-            
+
+            if(category.IsActive == false)
+            {
+                throw new CategoryAlreadyDisabledException();
+            }
+
+            if (category.IsActive == true)
+            {
+                foreach (var item in category.Items)
+                {
+                    if (item.ItemStatus == Core.Enums.ItemStatus.ACTIVE ||
+                        item.ItemStatus == Core.Enums.ItemStatus.PENDING ||
+                        item.ItemStatus == Core.Enums.ItemStatus.REJECTED)
+                    {
+                        throw new CategoryStillHaveItemOrPostException();
+                    }
+                }
+
+                foreach (var post in category.Posts)
+                {
+                    if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
+                        post.PostStatus == Core.Enums.PostStatus.PENDING ||
+                        post.PostStatus == Core.Enums.PostStatus.REJECTED)
+                    {
+                        throw new CategoryStillHaveItemOrPostException();
+                    }
+                }
+            }
+
             _categoryRepository.Delete(category);
             await _unitOfWork.CommitAsync();
         }

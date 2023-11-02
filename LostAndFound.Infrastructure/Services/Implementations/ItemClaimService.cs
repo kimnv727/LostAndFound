@@ -92,7 +92,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
                 itemClaimWriteDTO.ClaimStatus = true;
-                itemClaimWriteDTO.ClaimDate = DateTime.Now;
+                itemClaimWriteDTO.ClaimDate = DateTime.Now.ToVNTime();
 
                 _mapper.Map(itemClaimWriteDTO, check);
                 await _unitOfWork.CommitAsync();
@@ -103,7 +103,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
                 itemClaimWriteDTO.ClaimStatus = true;
-                itemClaimWriteDTO.ClaimDate = DateTime.Now;
+                itemClaimWriteDTO.ClaimDate = DateTime.Now.ToVNTime();
 
                 var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
                 await _itemClaimRepository.AddAsync(claim);

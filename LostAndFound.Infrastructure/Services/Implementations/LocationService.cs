@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Location;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Location;
@@ -82,15 +83,78 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         
         public async Task DeleteLocationAsync(int LocationId)
         {
-            var Location = await _locationRepository.FindLocationByIdAsync(LocationId);
+            var location = await _locationRepository.FindLocationByIdAsync(LocationId);
 
-            if (Location == null)
+            if (location == null)
             {
                 throw new EntityWithIDNotFoundException<Location>(LocationId);
             }
-            
-            _locationRepository.Delete(Location);
+
+            if (location.IsActive == false)
+            {
+                throw new LocationAlreadyDisabledException();
+            }
+
+            if (location.IsActive == true)
+            {
+                foreach (var item in location.Items)
+                {
+                    if (item.ItemStatus == Core.Enums.ItemStatus.ACTIVE ||
+                        item.ItemStatus == Core.Enums.ItemStatus.PENDING ||
+                        item.ItemStatus == Core.Enums.ItemStatus.REJECTED)
+                    {
+                        throw new LocationStillHaveItemOrPostException();
+                    }
+                }
+
+                foreach (var post in location.Posts)
+                {
+                    if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
+                        post.PostStatus == Core.Enums.PostStatus.PENDING ||
+                        post.PostStatus == Core.Enums.PostStatus.REJECTED)
+                    {
+                        throw new LocationStillHaveItemOrPostException();
+                    }
+                }
+            }
+
+            _locationRepository.Delete(location);
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<LocationReadDTO> ChangeLocationStatusAsync(int id)
+        {
+            var location = await _locationRepository.FindLocationByIdAsync(id);
+            if (location == null)
+            {
+                throw new EntityWithIDNotFoundException<Category>(id);
+            }
+            if (location.IsActive == true)
+            {
+                foreach (var item in location.Items)
+                {
+                    if (item.ItemStatus == Core.Enums.ItemStatus.ACTIVE ||
+                        item.ItemStatus == Core.Enums.ItemStatus.PENDING ||
+                        item.ItemStatus == Core.Enums.ItemStatus.REJECTED)
+                    {
+                        throw new LocationStillHaveItemOrPostException();
+                    }
+                }
+
+                foreach (var post in location.Posts)
+                {
+                    if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
+                        post.PostStatus == Core.Enums.PostStatus.PENDING ||
+                        post.PostStatus == Core.Enums.PostStatus.REJECTED)
+                    {
+                        throw new LocationStillHaveItemOrPostException();
+                    }
+                }
+            }
+
+            location.IsActive = !location.IsActive;
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<LocationReadDTO>(location);
         }
 
         public async Task<LocationReadDTO> UpdateLocationDetailsAsync(int LocationId, LocationWriteDTO LocationWriteDTO)

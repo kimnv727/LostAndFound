@@ -2,10 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using LostAndFound.Core.Enums;
 using System.Collections.Generic;
+using LostAndFound.Core.Entities.Common;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Category 
+    public class Category : ISoftDeleteLiteEntity
     {
         [Key]
         public int Id { get; set; }

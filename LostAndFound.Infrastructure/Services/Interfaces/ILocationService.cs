@@ -8,6 +8,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface ILocationService 
     {
         public Task<PaginatedResponse<LocationReadDTO>> QueryLocationWithPaginationAsync(LocationQuery query);
+        public Task<LocationReadDTO> ChangeLocationStatusAsync(int id);
         public Task<IEnumerable<LocationReadDTO>> QueryLocationAsync(LocationQuery query);
         public Task<IEnumerable<LocationReadDTO>> ListAllAsync();
         public Task DeleteLocationAsync(int LocationId);

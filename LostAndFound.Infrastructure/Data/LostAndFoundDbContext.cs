@@ -159,6 +159,7 @@ namespace LostAndFound.Infrastructure.Data
             AuditEntities();
             SetSoftDeleteColumns();
             SetPostSoftDeleteColumns();
+            SetSoftDeleteLiteColumns(); 
             //await DispatchEvents<DomainEvent>();
             var result = await base.SaveChangesAsync(cancellationToken);
             //_ = DispatchEvents<IntegrationEvent>();
@@ -216,7 +217,28 @@ namespace LostAndFound.Infrastructure.Data
                 }
             }
         }
-        
+
+        private void SetSoftDeleteLiteColumns()
+        {
+            var entriesDeleted = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is ISoftDeleteLiteEntity);
+
+            foreach (var entry in entriesDeleted)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["DeletedDate"] = null;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["IsActive"] = false;
+                        break;
+                }
+            }
+        }
+
         private void SetPostSoftDeleteColumns()
         {
             var entriesDeleted = ChangeTracker

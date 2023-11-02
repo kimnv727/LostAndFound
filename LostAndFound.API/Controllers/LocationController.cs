@@ -139,5 +139,21 @@ namespace LostAndFound.API.Controllers
             await _locationService.DeleteLocationAsync(LocationId);
             return ResponseFactory.NoContent();
         }
+
+        /// <summary>
+        /// Change location's IsActive value
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<LocationReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ChangeLocationIsActiveStatus([Required] int id)
+        {
+            return ResponseFactory.Ok(await _locationService.ChangeLocationStatusAsync(id));
+        }
     }
 }

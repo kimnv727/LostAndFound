@@ -120,6 +120,22 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<CategoryGroup>(categoryGroupId);
             }
 
+            if(categoryGroup.IsActive == false)
+            {
+                throw new CategoryGroupAlreadyDisabledException();
+            }
+
+            if (categoryGroup.IsActive == true)
+            {
+                foreach (var category in categoryGroup.Categories)
+                {
+                    if (category.IsActive == true)
+                    {
+                        throw new CategoryGroupStillHaveActiveCategory();
+                    }
+                }
+            }
+
             _categoryGroupRepository.Delete(categoryGroup);
             await _unitOfWork.CommitAsync();
         }

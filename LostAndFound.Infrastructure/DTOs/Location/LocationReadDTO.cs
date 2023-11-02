@@ -8,9 +8,6 @@ namespace LostAndFound.Infrastructure.DTOs.Location
         public int Id { get; set; }
         
         public int PropertyId { get; set; }
-
-        [JsonProperty(PropertyName = "propertyName")]
-        public string PropertyPropertyName { get; set; }
         
         public string LocationName { get; set; }
         

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Location> FindLocationByIdAsync(int locationId)
         {
             return await _context.Locations
+                .Include(l => l.Items)
+                .Include(l => l.Posts)
                 .Include(l => l.Property)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
         }
@@ -26,6 +29,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<Location> FindLocationByNameAsync(string Name)
         {
             return _context.Locations
+                .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
+                .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
                 .Include(l => l.Property)
                 .FirstOrDefaultAsync
                 (l => l.LocationName == Name);
@@ -35,6 +40,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             
             IQueryable<Location> locations = _context.Locations
+                .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
+                .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
                 .Include(l => l.Property)
                 .AsSplitQuery();
 
@@ -59,7 +66,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 locations = locations.Where(l => l.Property.Name.ToLower().Contains(query.PropertyName.ToLower()));
             }
-            if(query.Floor > 0)
+            if (Enum.IsDefined(query.Status))
+            {
+                switch (query.Status)
+                {
+                    case LocationQuery.ActiveStatus.Active:
+                        locations = locations.Where(c => c.IsActive == true);
+                        break;
+                    case LocationQuery.ActiveStatus.Disabled:
+                        locations = locations.Where(c => c.IsActive == false);
+                        break;
+                }
+            }
+            if (query.Floor > 0)
             {
                 locations = locations.Where(l => l.Floor == query.Floor);
             }

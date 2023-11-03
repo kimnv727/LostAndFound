@@ -166,7 +166,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(im => im.Media)
                             .AsSplitQuery();
 
-            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId)));
+            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus));
 
             return await Task.FromResult(items.ToList());
         }

@@ -172,19 +172,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         }
 
         //For normal users, only get own claims (of an Item == itemId)
-        public Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId)
+        public Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId)
         {
             //Check for item owner & user id
             return _context.Items
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
-                            .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId && ic.ItemId == itemId))
+                            .Include(i => i.ItemClaims)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .FirstOrDefaultAsync
-                            (i => i.Id == itemId 
-                            && i.FoundUserId != userId); //Check if this owner is getting this item, if false => remove item from this list
+                            .FirstOrDefaultAsync(i => i.Id == itemId && i.FoundUserId == userId); //Check if this owner is getting this item, if false => remove item from this list
         }
 
         //Function for managers, get all claims (of an Item == itemId), from all users

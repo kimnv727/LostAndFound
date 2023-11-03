@@ -167,7 +167,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId)
         {
-            var item = await _itemRepository.GetAllClaimsOfAnItemForMember(userId, itemId);
+            var item = await _itemRepository.GetAllClaimsOfAnItemForFounder(userId, itemId);
             return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
         }
 

@@ -25,5 +25,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager();
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId);
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId);
+        public Task<ItemReadDTO> UpdateItemCabinet(int itemId, int cabinetId);
     }
 }

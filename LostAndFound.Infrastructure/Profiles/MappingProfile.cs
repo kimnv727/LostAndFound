@@ -148,6 +148,7 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Storage
             CreateMap<Storage, StorageReadDTO>();
+            CreateMap<Storage, StorageReadIncludeCabinetsDTO>();
             CreateMap<StorageWriteDTO, Storage>();
             CreateMap<StorageUpdateDTO, Storage>();
 

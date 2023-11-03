@@ -24,7 +24,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICategoryGroupRepository _categoryGroupRepository;
-        public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository, ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService)
+        private readonly ICabinetRepository _cabinetRepository;
+        public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository, 
+            ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService,
+            ICabinetRepository cabinetRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -33,6 +36,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _categoryRepository = categoryRepository;
             _categoryGroupRepository = categoryGroupRepository;
             _itemMediaService = itemMediaService;
+            _cabinetRepository = cabinetRepository;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
@@ -171,6 +175,23 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             var item = await _itemRepository.GetAllClaimsOfAnItem(itemId);
             return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
+        }
+
+        public async Task<ItemReadDTO> UpdateItemCabinet(int itemId, int cabinetId)
+        {
+            //check Item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+
+            //check Cabinet
+            var cabinet = await _cabinetRepository.FindCabinetByIdAsync(cabinetId);
+            if(cabinet == null)
+                throw new EntityWithIDNotFoundException<Cabinet>(cabinetId);
+
+            item.CabinetId = cabinetId;
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<ItemReadDTO>(item);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LostAndFound.Core.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Storage
+    public class Storage : ICreatedEntity
     {
         [Key]
         public int Id { get; set; }

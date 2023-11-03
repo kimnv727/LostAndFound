@@ -225,6 +225,8 @@ namespace LostAndFound.Infrastructure.Extensions
                     RoleId = 3,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
+                context.Users.Add(storageManagerUser);
+                context.SaveChanges();
 
                 #endregion
 

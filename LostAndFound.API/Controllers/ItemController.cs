@@ -38,8 +38,10 @@ namespace LostAndFound.API.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly IItemClaimService _itemClaimService;
         private readonly IFirebaseAuthService _firebaseAuthService;
+        private readonly ICabinetService _cabinetService;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService, IFirebaseAuthService firebaseAuthService)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, 
+            ICategoryRepository categoryRepository, IItemClaimService itemClaimService, IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
@@ -48,6 +50,7 @@ namespace LostAndFound.API.Controllers
             _categoryRepository = categoryRepository;
             _itemClaimService = itemClaimService;
             _firebaseAuthService = firebaseAuthService;
+            _cabinetService = cabinetService;
         }
 
         /// <summary>
@@ -470,5 +473,21 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(await _itemService.GetAllClaimsForManager());
         }
 
+        /// <summary>
+        /// Update Item Cabinet
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="cabinetId"></param>
+        /// <remarks>Update Item's status</remarks>
+        /// <returns></returns>
+        [HttpPatch("change-cabinet")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateItemStatus([Required] int itemId, [Required] int cabinetId)
+        {
+            var result = await _itemService.UpdateItemCabinet(itemId, cabinetId);
+            return ResponseFactory.Ok(result);
+        }
     }
 }

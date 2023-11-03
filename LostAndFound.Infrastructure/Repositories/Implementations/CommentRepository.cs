@@ -62,11 +62,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Comment>> QueryCommentAsync(CommentQuery query, bool trackChanges = false)
         {
-            /*IQueryable<Comment> comments = _context.Comments
-                .Include(c => c.User)
-                .Where(c => c.DeletedDate == null).AsSplitQuery().AsTracking();*/
-
-            //IQueryable<Comment> comments = _context.Comments;
             IQueryable<Comment> comments = _context.Comments
                 .Include(c => c.User)
                 .Where(c => c.IsActive == true && c.DeletedDate == null)
@@ -74,7 +69,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (!trackChanges)
             {
-                comments = comments.AsTracking();
+                comments = comments.AsNoTracking();
             }
 
             if (!string.IsNullOrWhiteSpace(query.CommentUserId))

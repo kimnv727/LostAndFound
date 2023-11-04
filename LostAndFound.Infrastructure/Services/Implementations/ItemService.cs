@@ -12,6 +12,10 @@ using LostAndFound.Core.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using LostAndFound.Core.Extensions;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
+using System.Security.Claims;
+using LostAndFound.Core.Exceptions.ItemClaim;
+using System.Linq;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -25,9 +29,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICategoryGroupRepository _categoryGroupRepository;
         private readonly ICabinetRepository _cabinetRepository;
+        private readonly IItemClaimRepository _itemClaimRepository;
+
         public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository, 
             ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService,
-            ICabinetRepository cabinetRepository)
+            ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -37,6 +43,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _categoryGroupRepository = categoryGroupRepository;
             _itemMediaService = itemMediaService;
             _cabinetRepository = cabinetRepository;
+            _itemClaimRepository = itemClaimRepository;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
@@ -120,13 +127,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus)
         {
-            var Item = await _itemRepository.FindItemByIdAsync(itemId);
-            if(Item == null)
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if(item == null)
             {
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
 
-            Item.ItemStatus = itemStatus;
+            item.ItemStatus = itemStatus;
             await _unitOfWork.CommitAsync();
         }
 
@@ -155,25 +162,31 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetClaimsForMember(string userId)
         {
-            var items = await _itemRepository.GetClaimsForMember(userId);
+            var items = await _itemRepository.GetItemsWithClaimsForMember(userId);
             return _mapper.Map<List<ItemReadWithClaimStatusDTO>>(items);
         }
 
         public async Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager()
         {
-            var items = await _itemRepository.GetAllClaimsForManager();
+            var items = await _itemRepository.GetAllItemsWithClaimsForManager();
             return _mapper.Map<List<ItemReadWithClaimStatusDTO>>(items);
         }
 
-        public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId)
+        public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForFounder(string userId, int itemId)
         {
             var item = await _itemRepository.GetAllClaimsOfAnItemForFounder(userId, itemId);
             return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
         }
 
+        public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId)
+        {
+            var item = await _itemRepository.GetAllClaimsOfAnItemForMember(userId, itemId);
+            return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
+        }
+
         public async Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId)
         {
-            var item = await _itemRepository.GetAllClaimsOfAnItem(itemId);
+            var item = await _itemRepository.GetAllClaimsOfAnItemForManager(itemId);
             return _mapper.Map<ItemReadWithClaimStatusDTO>(item);
         }
 
@@ -193,5 +206,61 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             return _mapper.Map<ItemReadDTO>(item);
         }
+
+        public async Task UpdateClaimStatusAsync(int itemId, string userId)
+        {
+            var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            if(claim == null)
+            {
+                throw new NoSuchClaimException();
+            }
+
+            claim.ClaimStatus = !claim.ClaimStatus;
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task AcceptAClaimAsync(int itemId, string userId)
+        {
+            /*
+            Accept a claim:
+            + Change item status to RETURNED
+            + Set all claims to status = false, except for the claimer
+            + Set "get items with claims for member" to query for status=returned if member claimed it
+            */
+
+            //Check userId
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            //Get claims of this item
+            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+
+            //Set all claims of this item to status = false
+            var claimsOfThisItem = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
+            foreach(var claim in claimsOfThisItem)
+            {
+                if(claim.UserId != userId)
+                {
+                    claim.ClaimStatus = false;
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            //Get item and change item status to RETURNED
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            //Change item status
+            await ChangeItemStatusAsync(itemId, ItemStatus.RETURNED);
+            //await _unitOfWork.CommitAsync();
+            //Set only one claim to true and the rest to false
+        }
+
     }
 }

@@ -390,8 +390,26 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.NoContent();
         }
 
+        
+
         /// <summary>
-        /// Get all claims of an item by item id for member
+        /// (For item founder) Get an item and (all of) its ItemClaims, by itemId
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpGet("claims/founder/item/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForFounder(userId, itemId));
+        }
+
+        /// <summary>
+        /// (For member) Get an item and (only this user's) ItemClaims, by itemId
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
@@ -400,14 +418,14 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
+        public async Task<IActionResult> GetThisMemberClaimByItemId(int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForMember(userId, itemId));
         }
 
         /// <summary>
-        /// Get all claims of an item by item id (For Managers)
+        /// (Manager) Get an item and its claims by itemId
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
@@ -425,8 +443,8 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForManager(itemId));
         }
 
-        /*/// <summary>
-        /// Get list of items with claims made by user by user Id
+        /// <summary>
+        /// (No role) Get all items that has a user has claimed, by userId
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -438,10 +456,10 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> GetAllClaimsByUserId(string userId)
         {
             return ResponseFactory.Ok(await _itemService.GetClaimsForMember(userId));
-        }*/
+        }
 
         /// <summary>
-        /// Get list of items with claims made by currently logged in user
+        /// (For member) Get all items that has been claimed by this member
         /// </summary>
         /// <returns></returns>
         [HttpGet("claims/my/")]
@@ -457,7 +475,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all claims for all users for manager
+        /// (For manager) Get all items that has been claimed
         /// </summary>
         /// <returns></returns>
         [HttpGet("claims/manager/all/")]

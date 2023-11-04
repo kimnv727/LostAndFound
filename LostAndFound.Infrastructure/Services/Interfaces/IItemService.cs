@@ -23,8 +23,13 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus);
         public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetClaimsForMember(string userId);
         public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager();
+        public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForFounder(string userId, int itemId);
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForMember(string userId, int itemId);
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId);
         public Task<ItemReadDTO> UpdateItemCabinet(int itemId, int cabinetId);
+
+        public Task UpdateClaimStatusAsync(int itemId, string userId);
+
+        public Task AcceptAClaimAsync(int itemId, string userId);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Firebase.Auth;
-using Google.Apis.Util;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
     public class ItemRepository : GenericRepository<Item>, IItemRepository
     {
+
         public ItemRepository(LostAndFoundDbContext context) : base(context) { }
 
 
@@ -139,7 +141,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         //For managers, Get Items with claims from all users
         //Returns a list of items that have been claimed and their claim objects
-        public async Task<IEnumerable<Item>> GetAllClaimsForManager()
+        public async Task<IEnumerable<Item>> GetAllItemsWithClaimsForManager()
         {
             var items = _context.Items
                             .Include(i => i.User)
@@ -149,13 +151,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .AsSplitQuery();
+
+            items = items.Where(i => i.ItemClaims.Any(ic => ic.ClaimStatus == true));
+
+            //Sort by claim date desceding 
+            items = items.OrderByDescending(i => i.ItemClaims.Max(ic => ic.ClaimDate));
 
             return await Task.FromResult(items.ToList());
         }
 
         //For member, get claims matching userId
         //Returns a list of items that matches userId
-        public async Task<IEnumerable<Item>> GetClaimsForMember(string userId)
+        public async Task<IEnumerable<Item>> GetItemsWithClaimsForMember(string userId)
         {
             var items = _context.Items
                             .Include(i => i.User)
@@ -166,29 +173,53 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(im => im.Media)
                             .AsSplitQuery();
 
-            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus));
+            
+            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
+
+            //Sort by claim date desceding 
+            items = items.OrderByDescending(i => i.ItemClaims.Max(ic => ic.ClaimDate));
 
             return await Task.FromResult(items.ToList());
         }
 
-        //For normal users, only get own claims (of an Item == itemId)
-        public Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId)
+        //For item founder, returns an item and all its claims
+        public async Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId)
         {
-            //Check for item owner & user id
-            return _context.Items
+            //Item founder can get all claims of the item they created
+            var item = await _context.Items
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .FirstOrDefaultAsync(i => i.Id == itemId && i.FoundUserId == userId); //Check if this owner is getting this item, if false => remove item from this list
+                            .FirstOrDefaultAsync(i => i.Id == itemId && i.FoundUserId == userId);
+
+            return await Task.FromResult(item);
+        }
+
+        //For member, returns an item and a claim matching userId
+        public async Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId)
+        {
+            //Member can only get their own claim
+            var item = await _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .FirstOrDefaultAsync(i => i.Id == itemId && i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
+
+            //item = item.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
+
+            return await Task.FromResult(item);
         }
 
         //Function for managers, get all claims (of an Item == itemId), from all users
-        public Task<Item> GetAllClaimsOfAnItem(int itemId)
+        public async Task<Item> GetAllClaimsOfAnItemForManager(int itemId)
         {
-            return _context.Items
+            var item = await _context.Items
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
@@ -196,8 +227,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .FirstOrDefaultAsync(i => i.Id == itemId);
+
+            return await Task.FromResult(item);
         }
 
+        
 
     }
 

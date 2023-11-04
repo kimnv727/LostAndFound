@@ -1,3 +1,5 @@
+using LostAndFound.Core.Enums;
+
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
     public class ItemUpdateDTO
@@ -10,6 +12,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int CategoryId { get; set; }
 
         public int CabinetId { get; set; }
+        public ItemStatus itemStatus { get; set; }
 
     }
 }

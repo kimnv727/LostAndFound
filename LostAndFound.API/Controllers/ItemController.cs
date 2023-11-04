@@ -24,6 +24,8 @@ using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using Microsoft.VisualBasic;
 using LostAndFound.API.Authentication;
 using System.Data;
+using Firebase.Auth;
+using LostAndFound.Core.Exceptions.ItemClaim;
 
 namespace LostAndFound.API.Controllers
 {
@@ -40,7 +42,7 @@ namespace LostAndFound.API.Controllers
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly ICabinetService _cabinetService;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService, 
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService,
             ICategoryRepository categoryRepository, IItemClaimService itemClaimService, IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService)
         {
             _itemService = itemService;
@@ -123,12 +125,12 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO updateDTO)
         {
-            
+
             var item = await _itemService.UpdateItemDetailsAsync(itemId, updateDTO);
 
             return ResponseFactory.Ok(item);
         }
- 
+
         ///<summary>
         /// Create new item
         /// </summary>
@@ -139,14 +141,14 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ItemReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreateItem([FromForm]ItemWriteDTO writeDTO)
+        public async Task<IActionResult> CreateItem([FromForm] ItemWriteDTO writeDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _itemService.CreateItemAsync(stringId, writeDTO);
 
             return ResponseFactory.Ok(result);
         }
-        
+
         /// <summary>
         /// Delete an item
         /// </summary>
@@ -211,9 +213,9 @@ namespace LostAndFound.API.Controllers
             await _itemMediaService.DeleteItemMedia(User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value, itemId, mediaId);
             return ResponseFactory.NoContent();
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Count total flags of an item
         /// </summary>
@@ -226,7 +228,7 @@ namespace LostAndFound.API.Controllers
         {
             return ResponseFactory.Ok(await _itemFlagService.CountItemFlagAsync(itemId));
         }
-        
+
         /// <summary>
         /// Get item flag details
         /// </summary>
@@ -243,7 +245,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(itemFlag);
         }
-        
+
         /// <summary>
         /// Get all own ItemFlags
         /// </summary>
@@ -258,7 +260,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemFlagService.GetOwnItemFlags(stringId));
         }
-        
+
         /// <summary>
         /// Flag an item
         /// </summary>
@@ -275,18 +277,18 @@ namespace LostAndFound.API.Controllers
             {
                 throw new Exception();
             }
-            
+
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var itemFlag = await _itemFlagService.FlagAnItem(stringId, itemId, reason);
-            
-            return ResponseFactory.CreatedAt(nameof(GetItemFlag), 
-                nameof(ItemController), 
-                new { userId = itemFlag.UserId, itemId = itemFlag.ItemId }, 
+
+            return ResponseFactory.CreatedAt(nameof(GetItemFlag),
+                nameof(ItemController),
+                new { userId = itemFlag.UserId, itemId = itemFlag.ItemId },
                 itemFlag);
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Count total bookmarks of an item
         /// </summary>
@@ -299,7 +301,7 @@ namespace LostAndFound.API.Controllers
         {
             return ResponseFactory.Ok(await _itemBookmarkService.CountItemBookmarkAsync(itemId));
         }
-        
+
         /// <summary>
         /// Get item bookmark details
         /// </summary>
@@ -316,7 +318,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(itemFlag);
         }
-        
+
         /// <summary>
         /// Get all own bookmarks
         /// </summary>
@@ -331,7 +333,7 @@ namespace LostAndFound.API.Controllers
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemBookmarkService.GetOwnItemBookmarks(userId));
         }
-        
+
         /// <summary>
         /// Bookmark an item
         /// </summary>
@@ -347,10 +349,10 @@ namespace LostAndFound.API.Controllers
 
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var itemFlag = await _itemBookmarkService.BookmarkAnItem(userId, itemId);
-            
-            return ResponseFactory.CreatedAt(nameof(GetItemBookmark), 
-                nameof(ItemController), 
-                new { userId = itemFlag.UserId, itemId = itemFlag.ItemId }, 
+
+            return ResponseFactory.CreatedAt(nameof(GetItemBookmark),
+                nameof(ItemController),
+                new { userId = itemFlag.UserId, itemId = itemFlag.ItemId },
                 itemFlag);
         }
 
@@ -371,7 +373,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.NoContent();
         }
-        
+
         /// <summary>
         /// Unclaim an item
         /// </summary>
@@ -390,7 +392,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.NoContent();
         }
 
-        
+
 
         /// <summary>
         /// (For item founder) Get an item and (all of) its ItemClaims, by itemId
@@ -422,6 +424,51 @@ namespace LostAndFound.API.Controllers
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForMember(userId, itemId));
+        }
+
+        /// <summary>
+        /// Accept a claim (Will disable any other claims)
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("accept/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> AcceptAClaimAsync(int itemId, string userId)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            {
+                await _itemService.AcceptAClaimAsync(itemId, userId);
+            }
+            else throw new ItemFounderNotMatchException();
+
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Deny a claim
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("deny/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> DenyAClaimAsync(int itemId, string userId)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            {
+                await _itemService.DenyAClaimAsync(itemId, userId);
+            }
+            else throw new ItemFounderNotMatchException();
+            return ResponseFactory.NoContent();
         }
 
         /// <summary>

@@ -31,5 +31,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task UpdateClaimStatusAsync(int itemId, string userId);
 
         public Task AcceptAClaimAsync(int itemId, string userId);
+        public Task DenyAClaimAsync(int itemId, string userId);
     }
 }

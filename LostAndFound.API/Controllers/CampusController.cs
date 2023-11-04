@@ -67,9 +67,9 @@ namespace LostAndFound.API.Controllers
         [HttpPatch("change-status/{CampusId}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<CampusReadDTO> ChangeCampusStatus([Required] int CampusId)
+        public async Task<IActionResult> ChangeCampusStatus([Required] int CampusId)
         {
-            return await _CampusService.ChangeCampusStatusAsync(CampusId);
+            return ResponseFactory.Ok(await _CampusService.ChangeCampusStatusAsync(CampusId));
         }
         
         ///<summary>

@@ -34,7 +34,7 @@ namespace LostAndFound.API.Controllers
         {
             var paginatedCategoryDTO = await _categoryService.QueryCategoryAsync(query);
 
-            return ResponseFactory.Ok<Infrastructure.DTOs.Common.PaginatedResponse<CategoryReadDTO>>(paginatedCategoryDTO);
+            return ResponseFactory.PaginatedOk(paginatedCategoryDTO);
         }
 
         /// <summary>

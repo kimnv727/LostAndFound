@@ -49,7 +49,7 @@ namespace LostAndFound.API.Controllers
         {
             var LocationDTO = await _locationService.QueryLocationAsync(query);
 
-            return Ok(LocationDTO);
+            return ResponseFactory.Ok(LocationDTO);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace LostAndFound.API.Controllers
         {
             var LocationDTO = await _locationService.ListAllAsync();
 
-            return Ok(LocationDTO);
+            return ResponseFactory.Ok(LocationDTO);
         }
 
         /// <summary>

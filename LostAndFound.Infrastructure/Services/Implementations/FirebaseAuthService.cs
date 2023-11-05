@@ -61,19 +61,19 @@ namespace LostAndFound.API.Authentication
                     else
                     {
                         //Either Wrong Email or Password
-                        throw new WrongCredentialsException();
+                        throw new Exception("Exception 1");
                     }
                 }
                 else
                 {
                     //User not yet existed
-                    throw new WrongCredentialsException();
+                    throw new Exception("Exception 2: User not yet existed");
                 }
             }
             catch (Exception e)
             {
                 //Catch Wrong Email or Password 
-                throw new WrongCredentialsException();
+                throw new Exception("Exception 3");
             }
         }
     

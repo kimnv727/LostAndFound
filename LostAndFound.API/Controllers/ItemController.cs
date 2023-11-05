@@ -392,8 +392,6 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.NoContent();
         }
 
-
-
         /// <summary>
         /// (For item founder) Get an item and (all of) its ItemClaims, by itemId
         /// </summary>

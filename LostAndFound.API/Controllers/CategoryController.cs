@@ -47,7 +47,7 @@ namespace LostAndFound.API.Controllers
         {
             var categoryDTO = await _categoryService.ListAllAsync();
 
-            return Ok(categoryDTO);
+            return ResponseFactory.Ok(categoryDTO);
         }
 
         /// <summary>

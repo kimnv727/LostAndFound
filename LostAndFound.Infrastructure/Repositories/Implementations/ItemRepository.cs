@@ -206,13 +206,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
-                            .Include(i => i.ItemClaims)
+                            .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .FirstOrDefaultAsync(i => i.Id == itemId && i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
 
-            //item = item.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
-
+            
             return await Task.FromResult(item);
         }
 

@@ -1,4 +1,5 @@
-﻿using LostAndFound.Core.Enums;
+﻿using LostAndFound.Core.Entities.Common;
+using LostAndFound.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Receipt
+    public class Receipt : ICreatedEntity
     {
         [Key]
         public int Id { get; set; }
@@ -24,7 +25,7 @@ namespace LostAndFound.Core.Entities
         [ForeignKey("Item")]
         public string ItemId { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public Guid ReceiptImage { get;set; }
@@ -33,6 +34,5 @@ namespace LostAndFound.Core.Entities
         public ReceiptType ReceiptType { get; set; }
 
         public virtual Media Media {  get; set; }
-
     }
 }

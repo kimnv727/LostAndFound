@@ -154,12 +154,12 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPatch("status/{cabinetId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CabinetReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateCabinetStatus(int cabinetId)
         {
-            await _cabinetService.UpdateCabinetStatusAsync(cabinetId);
-            return ResponseFactory.NoContent();
+            return ResponseFactory.Ok(await _cabinetService.UpdateCabinetStatusAsync(cabinetId));
         }
     }
 }

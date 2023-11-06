@@ -20,14 +20,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStorageRepository _storageRepository;
         private readonly ICabinetRepository _cabinetRepository;
+        private readonly IItemRepository _itemRepository;
 
         public CabinetService(IMapper mapper, IUnitOfWork unitOfWork, IStorageRepository storageRepository,
-            ICabinetRepository cabinetRepository)
+            ICabinetRepository cabinetRepository, IItemRepository itemRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _storageRepository = storageRepository;
             _cabinetRepository = cabinetRepository;
+            _itemRepository = itemRepository;
         }
         public async Task<CabinetReadDTO> CreateCabinetAsync(CabinetWriteDTO cabinetWriteDTO)
         {
@@ -55,12 +57,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return cabinetReadDTO;
         }
 
-        public async Task UpdateCabinetStatusAsync(int cabinetId)
+        public async Task<CabinetReadDTO> UpdateCabinetStatusAsync(int cabinetId)
         {
             var cabinet = await _cabinetRepository.FindCabinetByIdIgnoreStatusAsync(cabinetId);
             if (cabinet == null)
             {
                 throw new EntityWithIDNotFoundException<Cabinet>(cabinetId);
+            }
+
+            if(cabinet.IsActive == true)
+            {
+                var cabinetCheck = await _cabinetRepository.FindCabinetByIdAsync(cabinetId);
+                if (cabinet.Items.ToList().Count > 0)
+                {
+                    throw new Exception("There is still active items in this Storage.");
+                }
             }
 
             if (cabinet.IsActive == true)
@@ -72,6 +83,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 cabinet.IsActive = true;
             }
             await _unitOfWork.CommitAsync();
+            var cabinetReadDTO = _mapper.Map<CabinetReadDTO>(cabinet);
+            return cabinetReadDTO;
         }
 
         public async Task<IEnumerable<CabinetReadDTO>> GetAllCabinetsByStorageIdAsync(int storageId)

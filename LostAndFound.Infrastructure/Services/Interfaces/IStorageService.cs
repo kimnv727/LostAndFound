@@ -10,7 +10,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IStorageService
     {
-        Task UpdateStorageStatusAsync(int storageId);
+        Task<StorageReadDTO> UpdateStorageStatusAsync(int storageId);
         Task<StorageReadDTO> GetStorageByIdAsync(int id);
         Task<StorageReadDTO> GetStorageByIdIgnoreStatusAsync(int id);
         Task<StorageReadIncludeCabinetsDTO> GetStorageByIdIncludeCabinetsAsync(int id);

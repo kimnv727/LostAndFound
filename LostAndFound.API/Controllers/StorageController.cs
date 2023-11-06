@@ -222,12 +222,12 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPatch("status/{storageId}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<StorageReadDTO>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateStorageStatus(int storageId)
         {
-            await _storageService.UpdateStorageStatusAsync(storageId);
-            return ResponseFactory.NoContent();
+            return ResponseFactory.Ok(await _storageService.UpdateStorageStatusAsync(storageId));
         }
     }
 }

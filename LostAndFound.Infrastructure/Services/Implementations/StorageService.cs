@@ -219,12 +219,22 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<StorageReadDTO>(storage);
         }
 
-        public async Task UpdateStorageStatusAsync(int storageId)
+        public async Task<StorageReadDTO> UpdateStorageStatusAsync(int storageId)
         {
-            var storage = await _storageRepository.FindStorageByIdAsync(storageId);
+            var storage = await _storageRepository.FindStorageByIdIgnoreStatusAsync(storageId);
             if (storage == null)
             {
                 throw new EntityWithIDNotFoundException<Storage>(storage);
+            }
+
+            //check cabinets
+            if(storage.IsActive == true)
+            {
+                var cabinets = await _cabinetRepository.FindAllCabinetsByStorageIdAsync(storageId);
+                if (cabinets.ToList().Count > 0)
+                {
+                    throw new Exception("There is still active cabinets in this Storage.");
+                }
             }
 
             if (storage.IsActive == true)
@@ -236,6 +246,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 storage.IsActive = true;
             }
             await _unitOfWork.CommitAsync();
+            var storageReadDTO = _mapper.Map<StorageReadDTO>(storage);
+            return storageReadDTO;
         }
     }
 }

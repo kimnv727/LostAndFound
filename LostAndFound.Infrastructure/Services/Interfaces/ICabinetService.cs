@@ -10,7 +10,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface ICabinetService
     {
-        Task UpdateCabinetStatusAsync(int cabinetId);
+        Task<CabinetReadDTO> UpdateCabinetStatusAsync(int cabinetId);
         Task<CabinetReadDTO> GetCabinetByIdAsync(int id);
         Task<CabinetReadDTO> GetCabinetByIdIgnoreStatusAsync(int id);
         Task<IEnumerable<CabinetReadDTO>> GetAllCabinetsByStorageIdAsync(int storageId);

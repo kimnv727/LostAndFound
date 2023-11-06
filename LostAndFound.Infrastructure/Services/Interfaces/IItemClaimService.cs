@@ -11,10 +11,10 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IItemClaimService
     {
         public Task<PaginatedResponse<ItemClaimReadDTO>> QueryItemClaimAsync(ItemClaimQuery query);
-
         public Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByItemIdAsync(int itemId);
         public Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByUserIdAsync(string userId);
         public Task ClaimAnItemAsync(int itemId, string userId);
-        public Task UnClaimAnItemAsync(int itemId, string userId);
+        public Task UnclaimAnItemAsync(int itemId, string userId);
+        public Task<IEnumerable<ItemClaimWithUserReadDTO>> GetClaimsWithUserByItemIdAsync(int itemId);
     }
 }

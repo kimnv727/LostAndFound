@@ -230,8 +230,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(item);
         }
 
-        
-
     }
 
 

@@ -51,6 +51,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var claims = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
             return _mapper.Map<List<ItemClaimReadDTO>>(claims.ToList());
         }
+        
+        public async Task<IEnumerable<ItemClaimWithUserReadDTO>> GetClaimsWithUserByItemIdAsync(int itemId)
+        {
+            var claims = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
+            return _mapper.Map<List<ItemClaimWithUserReadDTO>>(claims.ToList());
+        }
+
+        public async Task<IEnumerable<ItemClaimWithUserReadDTO>> GetActiveClaimsWithUserByItemIdAsync(int itemId, string userId)
+        {
+            var claims = await _itemClaimRepository.GetAllActiveClaimsByItemIdAsync(itemId);
+            return _mapper.Map<List<ItemClaimWithUserReadDTO>>(claims.ToList());
+        }
 
         public async Task<IEnumerable<ItemClaimReadDTO>> GetClaimsByUserIdAsync(string userId)
         {
@@ -112,7 +124,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         }
 
-        public async Task UnClaimAnItemAsync(int itemId, string userId)
+        public async Task UnclaimAnItemAsync(int itemId, string userId)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)

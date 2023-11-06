@@ -31,6 +31,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ToList());
         }
 
+        public async Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByItemIdAsync(int itemId)
+        {
+            var claims = _context.ItemClaims
+                .AsSplitQuery()
+                .Where(ic => ic.ClaimStatus == true)
+                .Include(ic => ic.User)
+                .Include(ic => ic.Item)
+                .Where(ic => ic.ItemId == itemId)
+                .OrderByDescending(i => i.ClaimDate);
+
+            return await Task.FromResult(claims.ToList());
+        }
+
         public async Task<IEnumerable<ItemClaim>> GetAllClaimsByItemIdAsync(int itemId)
         {
             return await Task.FromResult(
@@ -43,7 +56,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ToList());
         }
 
-        public async Task<IEnumerable<ItemClaim>> GetItemsByClaimStatus(int itemId)
+        public async Task<IEnumerable<ItemClaim>> GetItemClaimsByClaimStatus(int itemId)
         {
             return await Task.FromResult(
                 _context.ItemClaims
@@ -54,6 +67,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .OrderByDescending(i => i.ClaimDate)
                 .ToList());
         }
+
+
 
         public Task<ItemClaim> FindClaimByItemIdAndUserId(int itemId, string userId)
         {
@@ -83,17 +98,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
                 if (query.ClaimStatus == true)
                 {
-                    switch (query.ClaimStatus)
-                    {
-                        default:
-                            break;
-                        case true:
-                            claims = claims.Where(ic => ic.ClaimStatus == true);
-                            break;
-                        case false:
-                            claims = claims.Where(ic => ic.ClaimStatus == false);
-                            break;
-                    }
+                    claims = query.ClaimStatus == true ? claims.Where(ic => ic.ClaimStatus == true) 
+                                                       : claims.Where(ic => ic.ClaimStatus == false);
                 }
                 if (query.ClaimDate > DateTime.MinValue)
                 {

@@ -144,6 +144,7 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Claim
             CreateMap<ItemClaim, ItemClaimReadDTO>();
+            CreateMap<ItemClaim, ItemClaimWithUserReadDTO>();
             CreateMap<ItemClaimWriteDTO, ItemClaim>();
 
             //Storage

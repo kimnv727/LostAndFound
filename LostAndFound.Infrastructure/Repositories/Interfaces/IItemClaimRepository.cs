@@ -20,5 +20,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<ItemClaim>> GetAllClaimsByUserIdAsync(string userId);
         public Task<IEnumerable<ItemClaim>> GetAllClaimsByItemIdAsync(int itemId);
         public Task<ItemClaim> FindClaimByItemIdAndUserId(int itemId, string userId);
+        public Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByItemIdAsync(int itemId);
     }
 }

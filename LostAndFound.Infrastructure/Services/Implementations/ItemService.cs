@@ -268,7 +268,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task DenyAClaimAsync(int itemId, string userId)
         {
-            //Check userId & check if user is the item creator
+            //Check userId & check if item exists
             var user = await _userRepository.FindUserByID(userId) ?? throw new EntityWithIDNotFoundException<User>(userId);
             var item = await _itemRepository.FindItemByIdAsync(itemId) ?? throw new EntityWithIDNotFoundException<Item>(itemId);
             //Set this claim to status = false

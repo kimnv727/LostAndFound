@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LostAndFound.Core.Enums;
 using System.Collections.Generic;
 using LostAndFound.Core.Entities;
+using LostAndFound.Infrastructure.DTOs.ItemClaim;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {

@@ -23,6 +23,5 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId);
         public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);
 
-
     }
 }

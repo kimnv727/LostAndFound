@@ -387,7 +387,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UnClaimAnItem(int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            await _itemClaimService.UnClaimAnItemAsync(itemId, userId);
+            await _itemClaimService.UnclaimAnItemAsync(itemId, userId);
 
             return ResponseFactory.NoContent();
         }
@@ -551,6 +551,28 @@ namespace LostAndFound.API.Controllers
         {
             var result = await _itemService.UpdateItemCabinet(itemId, cabinetId);
             return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// (For item founder) Get all claims of an item, without the item
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpGet("claims/all/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimWithUserReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GetClaimsWithoutItemByItemId(int itemId)
+        {
+
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            {
+                var claims = await _itemClaimService.GetClaimsWithUserByItemIdAsync(itemId);
+                return ResponseFactory.Ok(claims);
+            }
+            else throw new ItemFounderNotMatchException();
         }
     }
 }

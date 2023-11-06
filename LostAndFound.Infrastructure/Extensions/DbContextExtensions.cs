@@ -547,9 +547,65 @@ namespace LostAndFound.Infrastructure.Extensions
                     };
                     context.Items.Add(item2);
                     context.SaveChanges();
-                    #endregion
+                #endregion
 
                 #endregion
+
+                #region Add Storages
+                Storage storage1 = new Storage
+                {
+                    CampusId = 1,
+                    Location = "Copper Drum Lobby",
+                    MainStorageManagerId = "UXFjz04VvING1SxKxcfIZQQhVCo1"
+                };
+                context.Storages.Add(storage1);
+                context.SaveChanges();
+                Storage storage2 = new Storage
+                {
+                    CampusId = 1,
+                    Location = "Back Gate",
+                    MainStorageManagerId = "UXFjz04VvING1SxKxcfIZQQhVCo1"
+                };
+                context.Storages.Add(storage2);
+                context.SaveChanges();
+                #endregion
+
+                #region Add Cabinets
+                List<Cabinet> cabinets1 = new List<Cabinet>();
+                cabinets1.Add(new Cabinet() { Name = "A1", StorageId = 1});
+                cabinets1.Add(new Cabinet() { Name = "A2", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A3", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A4", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A5", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A6", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A7", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A8", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A9", StorageId = 1 });
+                cabinets1.Add(new Cabinet() { Name = "A10", StorageId = 1 });
+                foreach (var c in cabinets1)
+                {
+                    context.Cabinets.Add(c);
+                    context.SaveChanges();
+                }
+
+                List<Cabinet> cabinets2 = new List<Cabinet>();
+                cabinets2.Add(new Cabinet() { Name = "B1", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B2", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B3", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B4", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B5", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B6", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B7", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B8", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B9", StorageId = 2 });
+                cabinets2.Add(new Cabinet() { Name = "B10", StorageId = 2 });
+                foreach (var c in cabinets2)
+                {
+                    context.Cabinets.Add(c);
+                    context.SaveChanges();
+                }
+                #endregion
+
                 context.SaveChanges();
             }
 

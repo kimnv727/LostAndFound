@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Storage;
@@ -53,7 +54,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             else if(manager.RoleId != 3)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedException();
             }
             //check location unique
             var storages = await _storageRepository.FindAllStoragesByCampusIdAsync(storageWriteDTO.CampusId);

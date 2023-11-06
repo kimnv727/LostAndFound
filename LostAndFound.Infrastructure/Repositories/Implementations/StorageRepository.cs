@@ -85,7 +85,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Storages
                 .Include(s => s.Campus)
                 .Include(s => s.Cabinets)
-                .FirstOrDefaultAsync(s => s.Id == id && s.IsActive == true);
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<IEnumerable<Storage>> QueryStorageAsync(StorageQuery query, bool trackChanges = false)

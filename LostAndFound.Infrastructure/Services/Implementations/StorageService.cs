@@ -2,6 +2,7 @@
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Storage;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Storage;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
@@ -221,7 +222,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task<StorageReadDTO> UpdateStorageStatusAsync(int storageId)
         {
-            var storage = await _storageRepository.FindStorageByIdIgnoreStatusAsync(storageId);
+            var storage = await _storageRepository.FindStorageByIdIncludeCabinetsIgnoreStatusAsync(storageId);
             if (storage == null)
             {
                 throw new EntityWithIDNotFoundException<Storage>(storage);
@@ -230,21 +231,19 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //check cabinets
             if(storage.IsActive == true)
             {
-                var cabinets = await _cabinetRepository.FindAllCabinetsByStorageIdAsync(storageId);
-                if (cabinets.ToList().Count > 0)
+                if (storage.Cabinets.ToList().Count > 0)
                 {
-                    throw new Exception("There is still active cabinets in this Storage.");
+                    foreach(var cabin in storage.Cabinets)
+                    {
+                        if(cabin.IsActive == true)
+                        {
+                            throw new StorageStillHaveActiveCabinet();
+                        }
+                    }
                 }
             }
 
-            if (storage.IsActive == true)
-            {
-                storage.IsActive = false;
-            }
-            else
-            {
-                storage.IsActive = true;
-            }
+            storage.IsActive = !storage.IsActive;
             await _unitOfWork.CommitAsync();
             var storageReadDTO = _mapper.Map<StorageReadDTO>(storage);
             return storageReadDTO;

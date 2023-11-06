@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.Cabinet;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Cabinet;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -67,21 +68,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if(cabinet.IsActive == true)
             {
-                var cabinetCheck = await _cabinetRepository.FindCabinetByIdAsync(cabinetId);
                 if (cabinet.Items.ToList().Count > 0)
                 {
-                    throw new Exception("There is still active items in this Storage.");
+                    foreach (var item in cabinet.Items)
+                    {
+                        if (item.ItemStatus == Core.Enums.ItemStatus.ACTIVE ||
+                            item.ItemStatus == Core.Enums.ItemStatus.PENDING ||
+                            item.ItemStatus == Core.Enums.ItemStatus.REJECTED)
+                        {
+                            throw new CabinetStillHaveItemException();
+                        }
+                    }
                 }
             }
 
-            if (cabinet.IsActive == true)
-            {
-                cabinet.IsActive = false;
-            }
-            else
-            {
-                cabinet.IsActive = true;
-            }
+            cabinet.IsActive = !cabinet.IsActive;
             await _unitOfWork.CommitAsync();
             var cabinetReadDTO = _mapper.Map<CabinetReadDTO>(cabinet);
             return cabinetReadDTO;

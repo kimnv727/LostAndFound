@@ -28,6 +28,7 @@ namespace LostAndFound.Core.Entities
         public DateTime CreatedDate { get; set; }
 
         [Required]
+        [ForeignKey("Media")]
         public Guid ReceiptImage { get;set; }
 
         [Required]

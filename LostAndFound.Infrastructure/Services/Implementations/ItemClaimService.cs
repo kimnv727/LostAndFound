@@ -89,6 +89,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 {
                     throw new CannotClaimOwnItemException();
                 }
+                if(item.ItemStatus != ItemStatus.ACTIVE)
+                {
+                    throw new CannotClaimInactiveItem();
+                }
             }
 
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);

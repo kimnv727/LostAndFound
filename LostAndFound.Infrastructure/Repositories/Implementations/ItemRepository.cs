@@ -117,11 +117,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         break;
                 }
             }
-            else
-            {
-
-
-            }
             if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
@@ -190,7 +185,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.User)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
-                            .Include(i => i.ItemClaims)
+                            .Include(i => i.ItemClaims.Where(ic => ic.ClaimStatus == true))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .FirstOrDefaultAsync(i => i.Id == itemId && i.FoundUserId == userId);

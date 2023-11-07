@@ -369,6 +369,12 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> ClaimAnItem([Required]int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+
+            //Check role
+            //Cant claim if not user
+            string[] roles = { "User" };
+            await _firebaseAuthService.CheckUserRoles(userId, roles);
+
             await _itemClaimService.ClaimAnItemAsync(itemId, userId);
 
             return ResponseFactory.NoContent();
@@ -406,6 +412,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> AcceptAClaimAsync([FromForm] MakeClaimDTO makeClaimDTO)
         {
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            //Check if current user is Item founder
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
                 await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);

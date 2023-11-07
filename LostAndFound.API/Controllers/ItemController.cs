@@ -62,7 +62,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
-        public async Task<IActionResult> Query([FromQuery] ItemQueryWithStatus query)
+        public async Task<IActionResult> Query([FromQuery]ItemQueryWithStatus query)
         {
             var paginatedItemDTO = await _itemService.QueryItemAsync(query);
 
@@ -361,12 +361,12 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("claim/{itemId}")]
+        [HttpPost("claim")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ClaimAnItem(int itemId)
+        public async Task<IActionResult> ClaimAnItem([Required]int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _itemClaimService.ClaimAnItemAsync(itemId, userId);
@@ -379,16 +379,61 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("unclaim/{itemId}")]
+        [HttpPost("unclaim")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UnClaimAnItem(int itemId)
+        public async Task<IActionResult> UnClaimAnItem([Required]int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _itemClaimService.UnclaimAnItemAsync(itemId, userId);
 
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Accept a claim (Will disable any other claims)
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("accept")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> AcceptAClaimAsync([Required]int itemId, [Required]string userId)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            {
+                await _itemService.AcceptAClaimAsync(itemId, userId);
+            }
+            else throw new ItemFounderNotMatchException();
+
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Deny a claim
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost("deny")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> DenyAClaimAsync([Required] int itemId, [Required] string userId)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            {
+                await _itemService.DenyAClaimAsync(itemId, userId);
+            }
+            else throw new ItemFounderNotMatchException();
             return ResponseFactory.NoContent();
         }
 
@@ -402,7 +447,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetAllClaimsByItemId(int itemId)
+        public async Task<IActionResult> GetAllItemsWithClaimsForCreator(int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForFounder(userId, itemId));
@@ -422,51 +467,6 @@ namespace LostAndFound.API.Controllers
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             return ResponseFactory.Ok(await _itemService.GetAnItemWithClaimsForMember(userId, itemId));
-        }
-
-        /// <summary>
-        /// Accept a claim (Will disable any other claims)
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [HttpPost("accept/{itemId}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> AcceptAClaimAsync(int itemId, string userId)
-        {
-            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
-            {
-                await _itemService.AcceptAClaimAsync(itemId, userId);
-            }
-            else throw new ItemFounderNotMatchException();
-
-            return ResponseFactory.NoContent();
-        }
-
-        /// <summary>
-        /// Deny a claim
-        /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [HttpPost("deny/{itemId}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> DenyAClaimAsync(int itemId, string userId)
-        {
-            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
-            {
-                await _itemService.DenyAClaimAsync(itemId, userId);
-            }
-            else throw new ItemFounderNotMatchException();
-            return ResponseFactory.NoContent();
         }
 
         /// <summary>

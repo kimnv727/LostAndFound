@@ -361,7 +361,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("claim")]
+        [HttpPost("claim/{itemId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
@@ -379,7 +379,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        [HttpPost("unclaim")]
+        [HttpPost("unclaim/{itemId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
@@ -403,12 +403,12 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> AcceptAClaimAsync([Required]int itemId, [Required]string userId)
+        public async Task<IActionResult> AcceptAClaimAsync([FromForm] MakeClaimDTO makeClaimDTO)
         {
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.AcceptAClaimAsync(itemId, userId);
+                await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
 
@@ -426,12 +426,12 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> DenyAClaimAsync([Required] int itemId, [Required] string userId)
+        public async Task<IActionResult> DenyAClaimAsync([FromForm] MakeClaimDTO makeClaimDTO)
         {
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.DenyAClaimAsync(itemId, userId);
+                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
             return ResponseFactory.NoContent();

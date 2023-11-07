@@ -238,6 +238,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             //Check if claim status = true
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            if(check == null)
+            {
+                throw new NoSuchClaimException();
+            }
             if (check.ClaimStatus == false)
             {
                 throw new CannotAcceptDisabledClaimException();

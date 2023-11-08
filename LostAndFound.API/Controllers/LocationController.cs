@@ -47,9 +47,9 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] LocationQuery query)
         {
-            var LocationDTO = await _locationService.QueryLocationAsync(query);
+            var locationDTO = await _locationService.QueryLocationAsync(query);
 
-            return ResponseFactory.Ok(LocationDTO);
+            return ResponseFactory.Ok(locationDTO);
         }
 
         /// <summary>
@@ -59,11 +59,12 @@ namespace LostAndFound.API.Controllers
         [HttpGet("all")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ListAll()
         {
-            var LocationDTO = await _locationService.ListAllAsync();
+            var locations = await _locationService.ListAllAsync();
 
-            return ResponseFactory.Ok(LocationDTO);
+            return ResponseFactory.Ok(locations);
         }
 
         /// <summary>

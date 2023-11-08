@@ -58,6 +58,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IItemClaimService, ItemClaimService>();
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<ICabinetService, CabinetService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -88,6 +89,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IItemClaimRepository, ItemClaimRepository>();
             services.AddScoped<IStorageRepository, StorageRepository>();
             services.AddScoped<ICabinetRepository, CabinetRepository>();
+            services.AddScoped<IReceiptRepository, ReceiptRepository>();
         }
         public static void AddServiceFilters(this IServiceCollection services)
         {

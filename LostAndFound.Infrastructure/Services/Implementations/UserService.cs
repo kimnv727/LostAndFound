@@ -88,7 +88,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Create User on Firebase
             try
             {
-                //Check ìf email existed on Firebase here
+                //Check if email existed on Firebase here
                 var result = await _firebaseAuth.FetchSignInMethodsForEmailAsync(userWriteDTO.Email);
                 if (result.UserExists)
                 {

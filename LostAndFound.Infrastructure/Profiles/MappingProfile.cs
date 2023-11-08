@@ -20,6 +20,7 @@ using LostAndFound.Infrastructure.DTOs.PostBookmark;
 using LostAndFound.Infrastructure.DTOs.PostFlag;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.Property;
+using LostAndFound.Infrastructure.DTOs.Receipt;
 using LostAndFound.Infrastructure.DTOs.Storage;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserDevice;
@@ -157,6 +158,11 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Cabinet, CabinetReadDTO>();
             CreateMap<CabinetWriteDTO, Cabinet>();
             CreateMap<CabinetUpdateDTO, Cabinet>();
+
+            //Receipt
+            CreateMap<Receipt, ReceiptReadDTO>();
+            CreateMap<ReceiptWriteDTO, Receipt>();
+
         }
     }
 }

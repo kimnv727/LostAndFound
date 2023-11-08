@@ -9,6 +9,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
     public interface IMediaRepository :
         IGetAllAsync<Media>,
+        IAddAsync<Media>,
         IDelete<Media>,
         IUpdate<Media>,
         IFindAsync<Media>
@@ -16,5 +17,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Media>> QueryMediaAsync(MediaQuery query, bool trackChanges = false);
         Task<IEnumerable<Media>> QueryMediaIgnoreStatusAsync(MediaQueryWithStatus query, bool trackChanges = false);
         Task<Media> FindMediaByIdAsync(Guid mediaId);
+        Task<Media> FindMediaByUrlAsync(string url);
     }
 }

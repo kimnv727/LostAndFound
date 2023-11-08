@@ -45,7 +45,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         public async Task<IEnumerable<LocationReadDTO>> ListAllAsync()
         {
             var locations = await _locationRepository.GetAllAsync();
-            return _mapper.Map<List<LocationReadDTO>>(locations.ToList());
+            return _mapper.Map<List<LocationReadDTO>>(locations);
         }
 
         public async Task<LocationReadDTO> FindLocationByIdAsync(int LocationId)

@@ -109,7 +109,7 @@ namespace LostAndFound.API.Authentication
                         Gender = null,
                         Phone = phone,
                         //User role
-                        RoleId = 3,
+                        RoleId = 4,
                         //User School Id
                         SchoolId = "",
                         Campus = null,
@@ -150,7 +150,7 @@ namespace LostAndFound.API.Authentication
                         Gender = null,
                         Phone = phone,
                         //User role
-                        RoleId = 3,
+                        RoleId = 4,
                         //User School Id
                         SchoolId = "",
                         Campus = null,

@@ -36,7 +36,8 @@ namespace LostAndFound.Core.Entities
 
         public string? Password { get; set; }
         public string? SchoolId { get; set; }
-        public Enums.CampusName? Campus { get; set; }
+        [ForeignKey("Campus")]
+        public int? CampusId { get; set; }
         [Required]
         public bool IsActive { get; set; }
         public UserVerifyStatus VerifyStatus { get; set; }
@@ -50,6 +51,7 @@ namespace LostAndFound.Core.Entities
         };
         
         public virtual Role Role { get; set; }
+        public virtual Campus Campus { get; set; }
         public ICollection<UserMedia> UserMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }
         public ICollection<PostFlag> PostFlags { get; set; }

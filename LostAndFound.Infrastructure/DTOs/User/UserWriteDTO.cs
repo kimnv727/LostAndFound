@@ -26,5 +26,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public string Avatar{ get; set; }
 
         public int RoleId { get; set; }
+
+        public int CampusId { get; set; }
     }
 }

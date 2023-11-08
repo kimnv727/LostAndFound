@@ -23,6 +23,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users
+                .Include(u => u.Campus)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -75,15 +76,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.CampusName == UserQuery.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.CampusId == 1);
                 }
                 else if (query.CampusName == UserQuery.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.CampusId == 2);
                 }
                 else if (query.CampusName == UserQuery.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.CampusId == 3);
                 }
             }
 
@@ -122,6 +123,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQueryIgnoreStatus query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users
+                .Include(u => u.Campus)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -174,15 +176,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.Campus == UserQueryIgnoreStatus.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.CampusId == 1);
                 }
                 else if (query.Campus == UserQueryIgnoreStatus.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.CampusId == 2);
                 }
                 else if (query.Campus == UserQueryIgnoreStatus.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.CampusId == 3);
                 }
             }
 
@@ -249,6 +251,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<User>> QueryUserIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users
+                .Include(u => u.Campus)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -301,15 +304,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HO_CHI_MINH_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HO_CHI_MINH_CAMPUS);
+                    users = users.Where(u => u.CampusId == 1);
                 }
                 else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.DA_NANG_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.DA_NANG_CAMPUS);
+                    users = users.Where(u => u.CampusId == 2);
                 }
                 else if (query.Campus == UserQueryIgnoreStatusWithoutWaitingVerified.CampusSearch.HA_NOI_CAMPUS)
                 {
-                    users = users.Where(u => u.Campus == CampusName.HA_NOI_CAMPUS);
+                    users = users.Where(u => u.CampusId == 3);
                 }
             }
 
@@ -372,6 +375,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<User> FindUserByID(string id)
         {
             return _context.Users
+                .Include(u => u.Campus)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -381,6 +385,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public Task<User> FindUserByEmail(string email)
         {
             return _context.Users
+                .Include(u => u.Campus)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Where(u => u.IsActive == true)

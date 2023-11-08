@@ -54,12 +54,33 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Properties
-                Campus property = new Campus
+                Campus campus = new Campus
                 {
                     Name = "FPT HCM Campus",
                     Address = "FPT HCM Campus",
                 };
-                context.Campuses.Add(property);
+                context.Campuses.Add(campus);
+
+                Campus campus2 = new Campus
+                {
+                    Name = "FPT Da Nang Campus",
+                    Address = "FPT Da Nang Campus",
+                };
+                context.Campuses.Add(campus2);
+
+                Campus campus3 = new Campus
+                {
+                    Name = "FPT Ha Noi Campus",
+                    Address = "FPT Ha Noi Campus",
+                };
+                context.Campuses.Add(campus3);
+
+                Campus campus4 = new Campus
+                {
+                    Name = "FPT HCM Nha Van Hoa",
+                    Address = "FPT HCM Nha Van Hoa",
+                };
+                context.Campuses.Add(campus4);
                 #endregion
 
                 #region Add Users
@@ -75,7 +96,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0101010101",
                     SchoolId = "ADMIN",
-                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    CampusId = 1,
                     RoleId = 1,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
@@ -108,7 +129,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                     Phone = "0808080808",
                     SchoolId = "SE111111",
-                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    CampusId = 1,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime(),
                     UserMedias = userMedias1
@@ -166,7 +187,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "SE121212",
-                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    CampusId = 1,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime(),
                     UserMedias = userMedias2
@@ -201,7 +222,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    CampusId = 1,
                     RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime(),
                     UserMedias = managerMedias,
@@ -221,7 +242,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "MANAGER",
-                    Campus = CampusName.HO_CHI_MINH_CAMPUS,
+                    CampusId = 1,
                     RoleId = 3,
                     CreatedDate = DateTime.Now.ToVNTime()
                 };

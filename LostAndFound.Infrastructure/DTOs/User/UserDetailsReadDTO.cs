@@ -29,7 +29,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
         
         public string SchoolId { get; set; }
         
-        public CampusName Campus { get; set; }
+        public string CampusName { get; set; }
         
         public bool IsActive { get; set; }
         

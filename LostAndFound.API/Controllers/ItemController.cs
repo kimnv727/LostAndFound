@@ -401,8 +401,6 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Accept a claim (Will disable any other claims)
         /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost("accept")]
         [Authorize]
@@ -425,8 +423,6 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Deny a claim
         /// </summary>
-        /// <param name="itemId"></param>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost("deny")]
         [Authorize]

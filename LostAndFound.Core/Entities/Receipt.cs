@@ -23,7 +23,7 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         [ForeignKey("Item")]
-        public string ItemId { get; set; }
+        public int ItemId { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

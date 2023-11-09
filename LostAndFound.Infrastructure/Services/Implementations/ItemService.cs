@@ -150,7 +150,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ItemReadDTO>(item);
         }
 
-        public async Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus)
+        public async Task<ItemReadDTO> UpdateItemStatus(int itemId, ItemStatus itemStatus)
         {
             var item = await _itemRepository.FindItemByIdAsync(itemId);
             if (item == null)
@@ -160,6 +160,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             item.ItemStatus = itemStatus;
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<ItemReadDTO>(item);
         }
 
         public async Task<ItemReadDTO> FindItemByNameAsync(string name)
@@ -278,7 +279,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
             //Change item status
-            await ChangeItemStatusAsync(itemId, ItemStatus.RETURNED);
+            await UpdateItemStatus(itemId, ItemStatus.RETURNED);
             await _unitOfWork.CommitAsync();
             //Set only one claim to true and the rest to false
 

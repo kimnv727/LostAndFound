@@ -139,8 +139,13 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateItemStatus([Required] int itemId, ItemStatus itemStatus)
         {
-            await _itemService.ChangeItemStatusAsync(itemId, itemStatus);
-            return NoContent();
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            string[] roles = { "Manager", "Storage Manager" };
+            await _firebaseAuthService.CheckUserRoles(userId, roles);
+
+            var item = await _itemService.UpdateItemStatus(itemId, itemStatus);
+            
+            return Ok(item);
         }
 
         ///<summary>
@@ -423,7 +428,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UnClaimAnItem([Required] int itemId)
+        public async Task<IActionResult> UnclaimAnItem([Required] int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _itemClaimService.UnclaimAnItemAsync(itemId, userId);

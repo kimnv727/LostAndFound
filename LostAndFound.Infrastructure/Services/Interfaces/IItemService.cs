@@ -24,7 +24,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO);
         public Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO);
         //public Task<ItemReadDTO> CreateItemAsync(ItemValue itemValue, string categoryName, string userId, ItemWriteDTO itemWriteDTO);
-        public Task ChangeItemStatusAsync(int itemId, ItemStatus itemStatus);
+        public Task<ItemReadDTO> UpdateItemStatus(int itemId, ItemStatus itemStatus);
         public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetClaimsForMember(string userId);
         public Task<IEnumerable<ItemReadWithClaimStatusDTO>> GetAllClaimsForManager();
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForFounder(string userId, int itemId);

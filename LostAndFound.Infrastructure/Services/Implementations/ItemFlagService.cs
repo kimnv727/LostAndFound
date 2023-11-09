@@ -111,6 +111,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             else
             {
+                //Switch flag reason
+                itemFlag.ItemFlagReason = reason;
+                //Switch flag isActive status
                 switch (itemFlag.IsActive)
                 {
                     case true:

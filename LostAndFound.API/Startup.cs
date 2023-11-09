@@ -138,7 +138,7 @@ namespace LostAndFound.API
 
             app.UseAuthorization();
 
-            app.UseCheckPostAuthorMiddleware();
+            //app.UseCheckPostAuthorMiddleware();
 
             //app.UseCheckItemFounderMiddleware(); //TODO: Test run when Kim finish item controller
 

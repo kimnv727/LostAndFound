@@ -13,8 +13,11 @@ namespace LostAndFound.API.Extensions
 
         public static void UseTokenCheckMiddleware(this IApplicationBuilder app)
         {
-            app.UseWhen(context => (!context.Request.Path.StartsWithSegments("/auth"))
+            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/auth") 
+                        && context.Request.Path.StartsWithSegments("/api")
+                        //&& !context.Request.Method.Equals("GET")
                         || context.Request.Path.StartsWithSegments("/auth/logout")
+                        || context.Request.Path.StartsWithSegments("/auth/authenticate")
                         ,
                 appBuilder =>
                 {

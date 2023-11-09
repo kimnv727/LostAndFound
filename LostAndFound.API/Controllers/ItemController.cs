@@ -26,6 +26,8 @@ using LostAndFound.API.Authentication;
 using System.Data;
 using Firebase.Auth;
 using LostAndFound.Core.Exceptions.ItemClaim;
+using LostAndFound.Core.Exceptions.Authenticate;
+using LostAndFound.Core.Exceptions.ItemFlag;
 
 namespace LostAndFound.API.Controllers
 {
@@ -62,7 +64,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
-        public async Task<IActionResult> Query([FromQuery]ItemQueryWithStatus query)
+        public async Task<IActionResult> Query([FromQuery] ItemQueryWithStatus query)
         {
             var paginatedItemDTO = await _itemService.QueryItemAsync(query);
 
@@ -293,6 +295,7 @@ namespace LostAndFound.API.Controllers
         /// Flag an item
         /// </summary>
         /// <param name="itemId"></param>
+        /// <param name="reason">Reason for the flag</param>
         /// <returns></returns>
         [HttpPost("flag-an-item/{itemId}")]
         [Authorize]
@@ -301,12 +304,16 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FlagAnItem(int itemId, ItemFlagReason reason)
         {
-            if (!Enum.IsDefined(reason))
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+
+            var item = await _itemService.FindItemByIdAsync(itemId);
+
+            //Check if user is flagging own item
+            if (stringId == item.FoundUserId)
             {
-                throw new Exception();
+                throw new CannotFlagOwnItemException();
             }
 
-            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var itemFlag = await _itemFlagService.FlagAnItem(stringId, itemId, reason);
 
             return ResponseFactory.CreatedAt(nameof(GetItemFlag),
@@ -314,8 +321,6 @@ namespace LostAndFound.API.Controllers
                 new { userId = itemFlag.UserId, itemId = itemFlag.ItemId },
                 itemFlag);
         }
-
-
 
         /// <summary>
         /// Count total bookmarks of an item
@@ -394,7 +399,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> ClaimAnItem([Required]int itemId)
+        public async Task<IActionResult> ClaimAnItem([Required] int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 
@@ -418,7 +423,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemClaimReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UnClaimAnItem([Required]int itemId)
+        public async Task<IActionResult> UnClaimAnItem([Required] int itemId)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             await _itemClaimService.UnclaimAnItemAsync(itemId, userId);

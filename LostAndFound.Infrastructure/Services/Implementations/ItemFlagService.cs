@@ -104,6 +104,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 };
                 await _itemFlagRepository.AddAsync(itf);
                 await _unitOfWork.CommitAsync();
+
+                //query again to get after create
+                itemFlag = await _itemFlagRepository.FindItemFlagAsync(itemId, userId);
+                return _mapper.Map<ItemFlagReadDTO>(itemFlag);
             }
             else
             {
@@ -120,9 +124,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
                 await _unitOfWork.CommitAsync();
+                return _mapper.Map<ItemFlagReadDTO>(itemFlag);
             }
 
-            return _mapper.Map<ItemFlagReadDTO>(itemFlag);
+            
+
+            
         }
     }
 }

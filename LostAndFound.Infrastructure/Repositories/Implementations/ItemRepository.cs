@@ -221,6 +221,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
+                            .Include(i => i.ItemFlags)
                             .Where(i => i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED && i.ItemFlags.Count() > 0)
                             .AsSplitQuery();
 

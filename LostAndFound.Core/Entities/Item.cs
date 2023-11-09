@@ -45,5 +45,6 @@ namespace LostAndFound.Core.Entities
         public virtual Cabinet Cabinet {  get; set; }
         public ICollection<ItemMedia> ItemMedias { get; set; }
         public ICollection<ItemClaim> ItemClaims { get; set; }
+        public ICollection<ItemFlag> ItemFlags { get; set; }
     }
 }

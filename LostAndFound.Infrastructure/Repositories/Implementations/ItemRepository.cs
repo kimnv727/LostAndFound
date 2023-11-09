@@ -134,6 +134,161 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
+        public async Task<IEnumerable<Item>> QueryItemExcludePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query, bool trackChanges = false)
+        {
+            IQueryable<Item> items = _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Include(i => i.ItemClaims)
+                            .Where(i => i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED)
+                            .AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                items = items.AsNoTracking();
+            }
+
+            if (query.Id > 0)
+            {
+                items = items.Where(i => i.Id == query.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundUserId))
+            {
+                items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
+            }
+            if (query.LocationId > 0)
+            {
+                items = items.Where(i => i.LocationId == query.LocationId);
+            }
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Description))
+            {
+                items = items.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
+            }
+            /*if (query.CategoryId > 0)
+            {
+                items = items.Where(i => i.CategoryId == query.CategoryId);
+            }*/
+            if (query.CategoryId != null)
+            {
+                items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
+            }
+            if (Enum.IsDefined(query.ItemStatus))
+            {
+                switch (query.ItemStatus)
+                {
+
+                    case ItemQueryIgnoreStatusExcludePendingRejected.ItemStatusQuery.ACTIVE:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE);
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.ItemStatusQuery.RETURNED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.RETURNED);
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.ItemStatusQuery.CLOSED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.CLOSED);
+                        break;
+                }
+            }
+            if (query.FoundDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                items = items.OrderBy(query.OrderBy);
+            }
+            if (query.CreatedDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.CreatedDate == query.CreatedDate).OrderBy(i => i.CreatedDate);
+            }
+
+
+            return await Task.FromResult(items.ToList());
+        }
+
+        public async Task<IEnumerable<Item>> QueryItemExcludePendingRejectedWithFlagAsync(ItemQueryWithFlag query, bool trackChanges = false)
+        {
+            IQueryable<Item> items = _context.Items
+                            .Include(i => i.User)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Include(i => i.ItemClaims)
+                            .Where(i => i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED && i.ItemFlags.Count() > 0)
+                            .AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                items = items.AsNoTracking();
+            }
+
+            if (query.Id > 0)
+            {
+                items = items.Where(i => i.Id == query.Id);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundUserId))
+            {
+                items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
+            }
+            if (query.LocationId > 0)
+            {
+                items = items.Where(i => i.LocationId == query.LocationId);
+            }
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Description))
+            {
+                items = items.Where(i => i.Description.ToLower().Contains(query.Description.ToLower()));
+            }
+            /*if (query.CategoryId > 0)
+            {
+                items = items.Where(i => i.CategoryId == query.CategoryId);
+            }*/
+            if (query.CategoryId != null)
+            {
+                items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
+            }
+            if (Enum.IsDefined(query.ItemStatus))
+            {
+                switch (query.ItemStatus)
+                {
+
+                    case ItemQueryWithFlag.ItemStatusQuery.ACTIVE:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE);
+                        break;
+                    case ItemQueryWithFlag.ItemStatusQuery.RETURNED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.RETURNED);
+                        break;
+                    case ItemQueryWithFlag.ItemStatusQuery.CLOSED:
+                        items = items.Where(i => i.ItemStatus == ItemStatus.CLOSED);
+                        break;
+                }
+            }
+            if (query.FoundDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                items = items.OrderBy(query.OrderBy);
+            }
+            if (query.CreatedDate > DateTime.MinValue)
+            {
+                items = items.Where(i => i.CreatedDate == query.CreatedDate).OrderBy(i => i.CreatedDate);
+            }
+
+            return await Task.FromResult(items.ToList());
+        }
+
         //For managers, Get Items with claims from all users
         //Returns a list of items that have been claimed and their claim objects
         public async Task<IEnumerable<Item>> GetAllItemsWithClaimsForManager()

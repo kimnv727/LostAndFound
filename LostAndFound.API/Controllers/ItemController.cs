@@ -70,6 +70,34 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// Query Items with pagination (exclude Pending and Rejected)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ignore-pending-rejected")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> QueryIgnorePendingRejected([FromQuery] ItemQueryIgnoreStatusExcludePendingRejected query)
+        {
+            var paginatedItemDTO = await _itemService.QueryItemIgnorePendingRejectedAsync(query);
+
+            return ResponseFactory.PaginatedOk(paginatedItemDTO);
+        }
+
+        /// <summary>
+        /// Query Items with pagination (exclude Pending and Rejected)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ignore-pending-rejected-with-flag")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> QueryIgnorePendingRejectedWithFlag([FromQuery] ItemQueryWithFlag query)
+        {
+            var paginatedItemDTO = await _itemService.QueryItemIgnorePendingRejectedWithFlagAsync(query);
+
+            return ResponseFactory.PaginatedOk(paginatedItemDTO);
+        }
+
+        /// <summary>
         /// Find Item By Id
         /// </summary>
         /// <returns></returns>

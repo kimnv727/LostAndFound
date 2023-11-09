@@ -52,6 +52,30 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var items = await _itemRepository.QueryItemAsync(query);
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
+        public async Task<PaginatedResponse<ItemReadDTO>> QueryItemIgnorePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query)
+        {
+            var items = await _itemRepository.QueryItemExcludePendingRejectedAsync(query);
+            return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
+        }
+
+        public async Task<PaginatedResponse<ItemDetailWithFlagReadDTO>> QueryItemIgnorePendingRejectedWithFlagAsync(ItemQueryWithFlag query)
+        {
+            var items = await _itemRepository.QueryItemExcludePendingRejectedWithFlagAsync(query);
+
+            var result = new List<ItemDetailWithFlagReadDTO>();
+
+            foreach (var i in items)
+            {
+                var r = _mapper.Map<ItemDetailWithFlagReadDTO>(i);
+                r.BlurryCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.BLURRY).Count();
+                r.WrongCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.WRONG).Count();
+                r.InapproriateCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.INAPPROPRIATE).Count();
+                r.TotalCount = i.ItemFlags.Count();
+                result.Add(r);
+            }
+
+            return PaginatedResponse<ItemDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);
+        }
 
         public async Task UpdateItemStatusAsync(int itemId)
         {

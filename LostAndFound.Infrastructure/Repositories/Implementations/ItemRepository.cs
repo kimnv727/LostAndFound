@@ -273,6 +273,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         break;
                 }
             }
+            if (query.FlagCount > 0)
+            {
+                items = items.Where(p => p.ItemFlags.Count() >= query.FlagCount);
+            }
             if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);

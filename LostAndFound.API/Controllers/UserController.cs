@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
+using LostAndFound.API.Extensions;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
@@ -266,6 +267,23 @@ namespace LostAndFound.API.Controllers
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
             return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// Generate QR Code
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet("qrcode")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> GenerateQRCode(string userId)
+        {
+            var result = await QRCodeExtensions.GenerateQRCode(userId);
+
+            return File(result, "image/bmp");
         }
     }
 }

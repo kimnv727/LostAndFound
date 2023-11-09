@@ -25,7 +25,7 @@ namespace LostAndFound.API.Extensions
             var message = "𝐓𝐢𝐭𝐥𝐞: " + post.Title + " \n" + "𝐂𝐨𝐧𝐭𝐞𝐧𝐭: " + post.PostContent + " \n";
             if(post.LocationLocationName != null)
             {
-                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: " + post.LocationLocationName;
+                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: " + post.LocationLocationName + " (" + post.Location.Property.Name + ")";
             }
             if (post.CategoryName != null)
             {

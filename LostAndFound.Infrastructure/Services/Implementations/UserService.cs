@@ -22,9 +22,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IEmailSendingService _emailSendingService;
         private readonly FirebaseAuthClient _firebaseAuth;
+        private readonly ICampusRepository _campusRepository;
 
         public UserService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasherService, 
-            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth)
+            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth, ICampusRepository campusRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -32,6 +33,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _passwordHasherService = passwordHasherService;
             _emailSendingService = emailSendingService;
             _firebaseAuth = firebaseAuth;
+            _campusRepository = campusRepository;
         }
 
         public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query)
@@ -85,6 +87,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EmailAlreadyUsedException();
             }
+
+            //check Campus
+            var campus = await _campusRepository.FindCampusByIdAsync(userWriteDTO.CampusId);
+            if (campus == null)
+            {
+                throw new EntityWithIDNotFoundException<Campus>(userWriteDTO.CampusId);
+            }
+
             //Create User on Firebase
             try
             {

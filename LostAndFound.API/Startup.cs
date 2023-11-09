@@ -30,6 +30,7 @@ using LostAndFound.API.Extensions;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.Extensions;
+using LostAndFound.Infrastructure.DTOs.Post;
 
 namespace LostAndFound.API
 {
@@ -45,9 +46,15 @@ namespace LostAndFound.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Aws Credentials
             AwsCredentials awsCredentials = new AwsCredentials();
             Configuration.Bind("AwsCredentials", awsCredentials);
             services.AddSingleton(awsCredentials);
+
+            //Facebook Credentials
+            FacebookCredentials facebookCredentials = new FacebookCredentials();
+            Configuration.Bind("FacebookCredentials", facebookCredentials);
+            services.AddSingleton(facebookCredentials);
 
             services.AddCors();
             services.AddControllers();

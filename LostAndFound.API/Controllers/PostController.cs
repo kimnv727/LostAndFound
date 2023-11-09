@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
+using LostAndFound.API.Extensions;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Authenticate;
@@ -26,14 +27,16 @@ namespace LostAndFound.API.Controllers
         private readonly IPostMediaService _postMediaService;
         private readonly IPostBookmarkService _postBookmarkService;
         private readonly IPostFlagService _postFlagService;
+        private readonly FacebookCredentials _facebookCredentials;
 
         public PostController(IPostService postService, IPostMediaService postMediaService,
-            IPostBookmarkService postBookmarkService, IPostFlagService postFlagService)
+            IPostBookmarkService postBookmarkService, IPostFlagService postFlagService, FacebookCredentials facebookCredentials)
         {
             _postService = postService;
             _postMediaService = postMediaService;
             _postBookmarkService = postBookmarkService;
             _postFlagService = postFlagService;
+            _facebookCredentials = facebookCredentials;
         }
 
         /// <summary>
@@ -441,6 +444,24 @@ namespace LostAndFound.API.Controllers
                 nameof(PostController), 
                 new { userId = postFlag.UserId, postId = postFlag.Post.Id }, 
                 postFlag);
+        }
+
+        ///<summary>
+        /// PostOnFacebook
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpPost("post-on-facebook")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<string>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        public async Task<ActionResult> PostOnFacebook(int postId)
+        {
+            var result = await FacebookHelperExtensions
+                                    .CreatePost(_facebookCredentials, _postService, postId);
+            return ResponseFactory.Ok(result);
+
         }
     }
 }

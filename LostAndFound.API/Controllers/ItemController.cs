@@ -145,7 +145,7 @@ namespace LostAndFound.API.Controllers
 
             var item = await _itemService.UpdateItemStatus(itemId, itemStatus);
             
-            return Ok(item);
+            return ResponseFactory.Ok(item);
         }
 
         ///<summary>

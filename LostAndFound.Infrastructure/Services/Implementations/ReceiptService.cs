@@ -9,6 +9,7 @@ using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,6 +53,17 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<ReceiptReadDTO>>(receipts);
         }
 
+        public async Task<ReceiptReadDTO> FindReceiptByIdAsync(int receiptId)
+        {
+            var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
+            if (receipt == null)
+            {
+                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
+            }
+
+            return _mapper.Map<ReceiptReadDTO>(receipt);
+        }
+
         public async Task DeleteReceiptAsync(int receiptId)
         {
             var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
@@ -91,17 +103,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(receiptCreateDTO.ItemId);
             }
 
-            var resultImage = await UploadReceiptImageAsync(receiptCreateDTO.ItemId, image);
-
-            //Query image guid
-            /*
-
-            if(receiptImage == null)
-            {
-                throw new Exception();
-            }*/
-
-            //Save to db
+            var result = await _mediaService.UploadFileAsync(image, _awsCredentials);
 
             //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
             ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
@@ -109,8 +111,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 ReceiverId = receiptCreateDTO.ReceiverId,
                 SenderId = receiptCreateDTO.SenderId,
                 ItemId = receiptCreateDTO.ItemId,
-                ReceiptImage = resultImage.ID,
                 ReceiptType = receiptCreateDTO.ReceiptType,
+                Media = new MediaWriteDTO()
+                {
+                    Name = image.FileName,
+                    Description = "Receipt image for item Id = " + receiptCreateDTO.ItemId,
+                    Url = result.Url,
+                }
             };
 
             var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
@@ -120,34 +127,5 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ReceiptReadDTO>(receipt);
         }
 
-        public async Task<MediaReadDTO> UploadReceiptImageAsync(int itemId, IFormFile image)
-        {
-            //Upload Media
-            //Upload image file then get url from result
-            var result = await _mediaService.UploadFileAsync(image, _awsCredentials);
-            Media media = new Media()
-            {
-                Name = image.FileName,
-                Description = "Receipt image for item Id = " + itemId,
-                URL = result.Url,
-            };
-            //Save this image to db so query can return sth
-            await _mediaRepository.AddAsync(media);    
-            await _unitOfWork.CommitAsync();
-
-            return _mapper.Map<MediaReadDTO>(media);
-        }
-
-        public async Task<ReceiptReadDTO> GetReceiptByIdAsync(int receiptId)
-        {
-            var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
-
-            if (receipt == null)
-            {
-                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
-            }
-
-            return _mapper.Map<ReceiptReadDTO>(receipt);
-        }
     }
 }

@@ -110,7 +110,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetReceiptByIdAsync([Required] int receiptId)
         {
-            var receipt = await _receiptService.GetReceiptByIdAsync(receiptId);
+            var receipt = await _receiptService.FindReceiptByIdAsync(receiptId);
 
             return ResponseFactory.Ok(receipt);
         }

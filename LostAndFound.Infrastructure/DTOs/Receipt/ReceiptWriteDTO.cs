@@ -28,5 +28,7 @@ namespace LostAndFound.Infrastructure.DTOs.Receipt
         [Required]
         public ReceiptType ReceiptType { get; set; }
 
+        public virtual MediaWriteDTO Media { get; set; }
+
     }
 }

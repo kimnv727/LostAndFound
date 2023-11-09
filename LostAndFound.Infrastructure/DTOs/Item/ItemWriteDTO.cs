@@ -6,18 +6,18 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 {
     public class ItemWriteDTO
     {
-
+        [Required]
         public string Name { get; set; }
-
+        [Required]
         public string Description { get; set; }
-
+        [Required]
         public int CategoryId { get; set; }
-        
+        [Required]
         public int LocationId { get; set; }
 
         public int? CabinetId { get; set; }
 
-        public ItemStatus ItemStatus { get; set; }
+        //public ItemStatus ItemStatus { get; set; }
 
         [Required]
         public IFormFile[] Medias { get; set; }

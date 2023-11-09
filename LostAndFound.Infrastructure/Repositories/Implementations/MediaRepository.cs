@@ -76,12 +76,5 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Where(m => m.IsActive == true && m.DeletedDate == null)
                 .FirstOrDefaultAsync(m => m.Id == mediaId);
         }
-
-        public async Task<Media> FindMediaByUrlAsync(string url)
-        {
-            return await _context.Medias
-                .Where(m => m.IsActive == true && m.DeletedDate == null)
-                .FirstOrDefaultAsync(m => m.URL == url);
-        }
     }
 }

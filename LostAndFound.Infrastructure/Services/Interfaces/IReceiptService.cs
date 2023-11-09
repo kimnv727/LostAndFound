@@ -15,9 +15,8 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         public Task<PaginatedResponse<ReceiptReadDTO>> QueryReceiptAsync(ReceiptQuery query);
         public Task<ReceiptReadDTO> CreateReceiptAsync(ReceiptCreateDTO receiptCreateDTO, IFormFile image);
-        public Task<MediaReadDTO> UploadReceiptImageAsync(int itemId, IFormFile image);
         public Task DeleteReceiptAsync(int receiptId);
         public Task<IEnumerable<ReceiptReadDTO>> ListAllAsync();
-        public Task<ReceiptReadDTO> GetReceiptByIdAsync(int receiptId);
+        public Task<ReceiptReadDTO> FindReceiptByIdAsync(int receiptId);
     }
 }

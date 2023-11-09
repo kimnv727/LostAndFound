@@ -134,9 +134,9 @@ namespace LostAndFound.API.Controllers
         /// <remarks>Update Item's status</remarks>
         /// <returns></returns>
         [HttpPatch("change-status/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateItemStatus([Required] int itemId, ItemStatus itemStatus)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
@@ -582,13 +582,13 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <param name="itemId"></param>
         /// <param name="cabinetId"></param>
-        /// <remarks>Update Item's status</remarks>
+        /// <remarks>Update Item Cabinet</remarks>
         /// <returns></returns>
         [HttpPatch("change-cabinet")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateItemStatus([Required] int itemId, [Required] int cabinetId)
+        public async Task<IActionResult> UpdateItemCabinet([Required] int itemId, [Required] int cabinetId)
         {
             var result = await _itemService.UpdateItemCabinet(itemId, cabinetId);
             return ResponseFactory.Ok(result);

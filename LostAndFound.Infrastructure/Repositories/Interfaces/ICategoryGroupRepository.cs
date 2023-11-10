@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
 
         public Task<CategoryGroup> FindCategoryGroupByIdAsync(int categoryGroupId);
         public Task<CategoryGroup> FindCategoryGroupByNameAsync(string categoryGroupName);
+        public Task<IEnumerable<CategoryGroup>> GetAllWithCategoriesAsync();
     }
 }

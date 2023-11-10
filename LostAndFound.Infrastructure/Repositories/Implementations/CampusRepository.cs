@@ -50,6 +50,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(campuses.ToList());
         }
 
+        public async Task<IEnumerable<Campus>> GetAllWithLocationsAsync()
+        {
+            var campuses = _context
+                .Campuses
+                .Include(c => c.Locations)
+                .AsSplitQuery();
+            campuses = campuses.AsNoTracking();
+            return await Task.FromResult(campuses.ToList());
+        }
         public async Task<IEnumerable<Campus>> QueryCampusIgnoreStatusAsync(CampusQuery query, bool trackChanges = false)
         {
             IQueryable<Campus> campuses = _context.Campuses

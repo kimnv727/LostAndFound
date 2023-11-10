@@ -53,7 +53,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// List locations
+        /// List all locations
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
@@ -62,7 +62,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ListAll()
         {
-            var locations = await _locationService.ListAllAsync();
+            var locations = await _locationService.ListAllWithCampusAsync();
 
             return ResponseFactory.Ok(locations);
         }

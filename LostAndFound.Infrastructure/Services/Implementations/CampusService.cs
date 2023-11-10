@@ -36,9 +36,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<CampusReadDTO>.FromEnumerableWithMapping(campuses, query, _mapper);
         }
         
-        public async Task<IEnumerable<CampusReadDTO>> ListAllAsync()
+        public async Task<IEnumerable<CampusReadDTO>> ListAllWithLocationsAsync()
         {
-            var campuses = await _CampusRepository.GetAllAsync();
+            var campuses = await _CampusRepository.GetAllWithLocationsAsync();
             return _mapper.Map<List<CampusReadDTO>>(campuses.ToList());
         }
         

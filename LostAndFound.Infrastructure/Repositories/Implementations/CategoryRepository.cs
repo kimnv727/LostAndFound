@@ -43,6 +43,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .FirstOrDefaultAsync(c => c.Id == categoryId);
         }
         
+        public async Task<IEnumerable<Category>> GetAllWithGroupsAsync()
+        {
+            var result = _context
+                                            .Categories
+                                            .Include(c => c.CategoryGroup)
+                                            .AsSplitQuery();
+            result = result.AsNoTracking();
+
+            return await Task.FromResult(result.ToList());
+        }
+
         public async Task<IEnumerable<Category>> QueryCategoriesAsync(CategoryQuery query, bool trackChanges = false)
         {
             

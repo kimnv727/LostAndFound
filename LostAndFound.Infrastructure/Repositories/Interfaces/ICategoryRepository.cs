@@ -20,5 +20,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Category>> QueryCategoriesAsync(CategoryQuery query, bool trackChanges = false);
 
         public Task<Category> GetCategoryWithCategoryGroup(int categoryId);
+
+        public Task<IEnumerable<Category>> GetAllWithGroupsAsync();
     }
 }

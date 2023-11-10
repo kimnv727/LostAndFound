@@ -10,7 +10,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         public Task<PaginatedResponse<CategoryGroupReadDTO>> QueryCategoryGroupAsync(CategoryGroupQuery query);
 
-        public Task<IEnumerable<CategoryGroupReadDTO>> ListAllAsync();
+        public Task<IEnumerable<CategoryGroupReadDTO>> ListAllWithCategoriesAsync();
 
         public Task<CategoryGroupReadDTO> ChangeCategoryGroupStatusAsync(int id);
 

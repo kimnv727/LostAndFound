@@ -43,8 +43,8 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<CampusReadDTO>>))]
         public async Task<IActionResult> ListAll()
         {
-            var campusDTO = await _CampusService.ListAllAsync();
-            return Ok(campusDTO);
+            var campusDTO = await _CampusService.ListAllWithLocationsAsync();
+            return ResponseFactory.Ok(campusDTO);
         }
 
         /// <summary>

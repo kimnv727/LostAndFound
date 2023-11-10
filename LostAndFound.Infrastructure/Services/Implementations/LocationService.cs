@@ -34,7 +34,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<LocationReadDTO>.FromEnumerableWithMapping(locations, query, _mapper);
         }
 
-
+        public async Task<IEnumerable<LocationReadDTO>> ListAllWithCampusAsync()
+        {
+            var locations = await _locationRepository.GetAllWithCampusAsync();
+            return _mapper.Map <List<LocationReadDTO>>(locations);
+        }
 
         public async Task<IEnumerable<LocationReadDTO>> QueryLocationAsync(LocationQuery query)
         {

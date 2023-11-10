@@ -45,7 +45,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ListAll()
         {
-            var categoryDTO = await _categoryService.ListAllAsync();
+            var categoryDTO = await _categoryService.ListAllWithGroupAsync();
 
             return ResponseFactory.Ok(categoryDTO);
         }

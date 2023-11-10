@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LostAndFound.API.Controllers
 {
+    [ApiController]
+    [Route("api/notifications")]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;
@@ -150,8 +152,7 @@ namespace LostAndFound.API.Controllers
         ///<summary>
         /// Push notification
         /// </summary>
-        /// <param name="pushNotification"></param>
-        /// <param name="userId"></param>
+        /// <param name="notification"></param>
         /// <returns></returns>
         [HttpPost("push")]
         [Authorize]

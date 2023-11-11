@@ -63,7 +63,20 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> ListAll()
         {
             var locations = await _locationService.ListAllWithCampusAsync();
+            return ResponseFactory.Ok(locations);
+        }
 
+        /// <summary>
+        /// List all locations sorted by floor 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all-sorted")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ListAllSorted()
+        {
+            var locations = await _locationService.ListAllWithCampusSortedByFloorAsync();
             return ResponseFactory.Ok(locations);
         }
 

@@ -17,5 +17,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<LocationReadDTO> UpdateLocationDetailsAsync(int LocationId, LocationWriteDTO LocationWriteDTO);
         public Task<LocationReadDTO> CreateItemAsync(LocationWriteDTO locationWriteDTO);
         public Task<IEnumerable<LocationReadDTO>> ListAllWithCampusAsync();
+        public Task<IEnumerable<LocationReadDTO>> ListAllWithCampusSortedByFloorAsync();
     }
 }

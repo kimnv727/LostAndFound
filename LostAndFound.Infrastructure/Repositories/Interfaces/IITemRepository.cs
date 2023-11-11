@@ -20,10 +20,12 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Item>> QueryItemExcludePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query, bool trackChanges = false);
         public Task<IEnumerable<Item>> QueryItemExcludePendingRejectedWithFlagAsync(ItemQueryWithFlag query, bool trackChanges = false);
         public Task<IEnumerable<Item>> GetItemsWithClaimsForMember(string userId);
+        public Task<IEnumerable<Item>> GetItemsByFloorNumberAsync(int floorNumber);
+        public Task<IEnumerable<Item>> GetItemsSortByFloorNumberAsync();
         public Task<IEnumerable<Item>> GetAllItemsWithClaimsForManager();
         public Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId);
         public Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId);
-        public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);
+        public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);    
 
     }
 }

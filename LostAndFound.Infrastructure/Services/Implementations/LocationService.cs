@@ -40,6 +40,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map <List<LocationReadDTO>>(locations);
         }
 
+        public async Task<IEnumerable<LocationReadDTO>> ListAllWithCampusSortedByFloorAsync()
+        {
+            var locations = await _locationRepository.GetAllWithCampusSortedByFloorAsync();
+            return _mapper.Map<List<LocationReadDTO>>(locations);
+        }
+
         public async Task<IEnumerable<LocationReadDTO>> QueryLocationAsync(LocationQuery query)
         {
             var locations = await _locationRepository.QueryLocationsAsync(query);

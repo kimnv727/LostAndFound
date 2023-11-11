@@ -46,6 +46,23 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(locations.ToList());
         }
 
+        public async Task<IEnumerable<Location>> GetAllWithCampusSortedByFloorAsync()
+        {
+            var locations = _context
+                .Locations
+                .Include(l => l.Property)
+                .AsSplitQuery();
+
+            //Sort by floor then by name
+            locations = locations
+                .OrderBy(l => l.Floor)
+                .ThenBy(l => l.LocationName);
+
+            locations = locations.AsNoTracking();
+
+            return await Task.FromResult(locations.ToList());
+        }
+
         public async Task<IEnumerable<Location>> QueryLocationsAsync(LocationQuery query, bool trackChanges = false)
         {
             

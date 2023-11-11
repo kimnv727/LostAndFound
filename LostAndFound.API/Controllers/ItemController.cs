@@ -100,6 +100,20 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// List items sort by floor number
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-by-floor")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> ListItemsSortByFloorNumber()
+        {
+            var paginatedItemDTO = await _itemService.ListItemsSortByFloorNumberAsync();
+
+            return ResponseFactory.Ok(paginatedItemDTO);
+        }
+
+        /// <summary>
         /// Find Item By Id
         /// </summary>
         /// <returns></returns>

@@ -88,6 +88,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task<IEnumerable<ItemReadDTO>> ListItemsSortByFloorNumberAsync()
+        {
+            var items = await _itemRepository.GetItemsSortByFloorNumberAsync();
+
+            return _mapper.Map<List<ItemReadDTO>>(items);
+        }
+
         public async Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO)
         {
             //Check if user exist

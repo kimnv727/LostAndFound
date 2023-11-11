@@ -19,6 +19,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<Location> FindLocationByNameAsync(string locationName);
         public Task<IEnumerable<Location>> QueryLocationsAsync(LocationQuery query, bool trackChanges = false);
         public Task<IEnumerable<Location>> GetAllWithCampusAsync();
-        
+        public Task<IEnumerable<Location>> GetAllWithCampusSortedByFloorAsync();
+
+
     }
 }

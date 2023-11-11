@@ -47,6 +47,44 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 (i => i.Name.ToLower().Contains(Name.ToLower()));
         }
 
+        public async Task<IEnumerable<Item>> GetItemsByFloorNumberAsync(int floorNumber)
+        {
+            var items = _context.Items
+                .Include(i => i.User)
+                .Include(i => i.Category)
+                .Include(i => i.Location)
+                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(i => i.ItemClaims)
+                .AsSplitQuery();
+
+            items = items.Where(i => i.Location.Floor == floorNumber)
+                .OrderBy(i => i.Location.Floor);
+
+            items = items.AsNoTracking();
+
+            return await Task.FromResult(items.ToList());
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsSortByFloorNumberAsync()
+        {
+            var items = _context.Items
+                .Include(i => i.User)
+                .Include(i => i.Category)
+                .Include(i => i.Location)
+                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(i => i.ItemClaims)
+                .AsSplitQuery();
+
+            items = items
+                .OrderBy(i => i.Location.Floor);
+
+            items = items.AsNoTracking();
+
+            return await Task.FromResult(items.ToList());
+        }
+
         public async Task<IEnumerable<Item>> QueryItemAsync(ItemQueryWithStatus query, bool trackChanges = false)
         {
             IQueryable<Item> items = _context.Items

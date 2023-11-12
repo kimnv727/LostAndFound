@@ -415,5 +415,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(pm => pm.Media)
                 .SingleOrDefaultAsync(p => p.Id == id && p.PostUserId == userId);
         }
+
+        public async Task UpdatePostRange(Post[] posts)
+        {
+            _context.Posts.UpdateRange(posts);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Post>> GetAllActivePosts()
+        {
+            var posts = _context.Posts
+                .Where(p => p.PostStatus == PostStatus.ACTIVE);
+
+            return await Task.FromResult(posts.ToList());
+        }
     }
 }

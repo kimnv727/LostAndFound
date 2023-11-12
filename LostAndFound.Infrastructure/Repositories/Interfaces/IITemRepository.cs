@@ -25,7 +25,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Item>> GetAllItemsWithClaimsForManager();
         public Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId);
         public Task<Item> GetAllClaimsOfAnItemForMember(string userId, int itemId);
-        public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);    
-
+        public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);
+        public Task UpdateItemRange(Item[] items);
+        public Task<IEnumerable<Item>> GetAllActiveItems();
     }
 }

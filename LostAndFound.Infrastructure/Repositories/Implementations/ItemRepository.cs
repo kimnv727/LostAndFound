@@ -423,6 +423,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(item);
         }
 
+        public async Task UpdateItemRange(Item[] items)
+        {
+            _context.Items.UpdateRange(items);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetAllActiveItems()
+        {
+            var items = _context.Items
+                .Where(i => i.ItemStatus == ItemStatus.ACTIVE);
+
+            return await Task.FromResult(items.ToList());
+        }
     }
 
 

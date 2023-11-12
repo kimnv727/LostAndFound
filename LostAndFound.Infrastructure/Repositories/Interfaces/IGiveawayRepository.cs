@@ -17,7 +17,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<Giveaway> FindGiveawayIncludeParticipantssAsync(int id);
         Task<IEnumerable<Giveaway>> QueryGiveawayAsync(GiveawayQuery query, bool trackChanges = false);
         Task<IEnumerable<Giveaway>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query, bool trackChanges = false);
-        //Add functions to randomize winner
-        //TODO: Learn worker to end giveaway and find winner
+        public Task UpdateGiveawayRange(Giveaway[] giveaway);
+        public Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways();
     }
 }

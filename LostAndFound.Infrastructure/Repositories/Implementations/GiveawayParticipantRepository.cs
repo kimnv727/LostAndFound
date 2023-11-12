@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,24 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.GiveawayParticipants.Include(gp => gp.User)
                 .FirstOrDefaultAsync(gp => gp.GiveawayId == giveawayId && gp.UserId == userId);
+        }
+
+        public async Task<GiveawayParticipant> RandomizeGiveawayWinnerAsync(int giveawayId)
+        {
+            IEnumerable<GiveawayParticipant> giveawayParticipants = _context.GiveawayParticipants.Where(gp => gp.GiveawayId == giveawayId);
+
+            var myList = giveawayParticipants.ToList();
+            var rng = new Random();
+            var randomIndex = rng.Next(0, myList.Count);
+            var randomParticipant = myList[randomIndex];
+
+            return randomParticipant;
+        }
+
+        public async Task UpdateGiveawayParticipantRange(GiveawayParticipant[] giveawayParticipant)
+        {
+            _context.GiveawayParticipants.UpdateRange(giveawayParticipant);
+            await _context.SaveChangesAsync();
         }
     }
 }

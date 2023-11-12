@@ -134,5 +134,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(giveaways.ToList());
         }
+
+        public async Task UpdateGiveawayRange(Giveaway[] giveaway)
+        {
+            _context.Giveaways.UpdateRange(giveaway);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways()
+        {
+            var giveaways = _context.Giveaways
+                .Where(g => g.GiveawayStatus == GiveawayStatus.ONGOING);
+
+            return await Task.FromResult(giveaways.ToList());
+        }
     }
 }

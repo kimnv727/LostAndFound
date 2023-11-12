@@ -31,6 +31,7 @@ using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.Extensions;
 using LostAndFound.Infrastructure.DTOs.Post;
+using LostAndFound.API.Services;
 
 namespace LostAndFound.API
 {
@@ -82,6 +83,12 @@ namespace LostAndFound.API
             services.ConfigureAutoMapper();
             services.AddServiceFilters();
             
+            //Open later - less load on server
+            /*//Add hosted services 
+            services.AddHostedService<ItemOutdatedCheckService>();
+            services.AddHostedService<PostOutdatedCheckService>();
+            services.AddHostedService<GiveawayHandlingService>();*/
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = Configuration["FirebaseJwt:Firebase:ValidIssuer"];

@@ -175,19 +175,19 @@ namespace LostAndFound.API.Controllers
                                 return Ok();
                         case NotificationType.OwnItemClaim:
                             await NotificationExtensions
-                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                                .NotifyItemClaimedToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.PostGotReplied:
                             await NotificationExtensions
-                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                                .NotifyPostRepliedToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.CommentGotReplied:
                             await NotificationExtensions
-                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                                .NotifyCommentRepliedToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.GiveawayResult:
                             await NotificationExtensions
-                                .NotifyChatToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
+                                .NotifyGiveawayResultToUser(_userDeviceService, _notificationService,notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         default:
                         return BadRequest();

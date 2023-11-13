@@ -19,16 +19,16 @@ namespace LostAndFound.API.Services
         public IServiceProvider Services { get; }
         private readonly ILogger<GiveawayHandlingService>? _logger;
         private Timer _timer = null!;
-        private readonly INotificationService _notificationService;
-        private readonly IUserDeviceService _userDeviceService;
+        /*private readonly INotificationService _notificationService;
+        private readonly IUserDeviceService _userDeviceService;*/
 
-        public GiveawayHandlingService(ILogger<GiveawayHandlingService> logger, IServiceProvider services,
-            INotificationService notificationService, IUserDeviceService userDeviceService)
+        public GiveawayHandlingService(ILogger<GiveawayHandlingService> logger, IServiceProvider services)
+            //INotificationService notificationService, IUserDeviceService userDeviceService)
         {
             _logger = logger;
             Services = services;
-            _notificationService = notificationService;
-            _userDeviceService = userDeviceService;
+            /*_notificationService = notificationService;
+            _userDeviceService = userDeviceService;*/
         }
         public void Dispose()
         {
@@ -105,17 +105,17 @@ namespace LostAndFound.API.Services
                             {
                                 gp.IsActive = false;
                                 gp.IsWinner = true;
-                                await NotificationExtensions
+                                /*await NotificationExtensions
                                 .NotifyGiveawayResultToUser(_userDeviceService, _notificationService, 
-                                gp.UserId, "Giveaway " + fg.Id + " Result", "You are the winner of Giveaway " + fg.Id + "!");
+                                gp.UserId, "Giveaway " + fg.Id + " Result", "You are the winner of Giveaway " + fg.Id + "!");*/
                             }
                             else
                             {
                                 gp.IsActive = false;
                                 gp.IsWinner = false;
-                                await NotificationExtensions
+                                /*await NotificationExtensions
                                 .NotifyGiveawayResultToUser(_userDeviceService, _notificationService,
-                                gp.UserId, "Giveaway " + fg.Id + " Result", "You are not the winner of Giveaway " + fg.Id + "! Try again next time!");
+                                gp.UserId, "Giveaway " + fg.Id + " Result", "You are not the winner of Giveaway " + fg.Id + "! Try again next time!");*/
                             }
                         }
                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());

@@ -19,5 +19,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Giveaway>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query, bool trackChanges = false);
         public Task UpdateGiveawayRange(Giveaway[] giveaway);
         public Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways();
+        public Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways();
     }
 }

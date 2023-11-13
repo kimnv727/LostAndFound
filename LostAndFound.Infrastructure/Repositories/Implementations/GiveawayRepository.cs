@@ -148,5 +148,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(giveaways.ToList());
         }
+
+        public async Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways()
+        {
+            var giveaways = _context.Giveaways
+                .Where(g => g.GiveawayStatus == GiveawayStatus.NOTSTARTED);
+
+            return await Task.FromResult(giveaways.ToList());
+        }
     }
 }

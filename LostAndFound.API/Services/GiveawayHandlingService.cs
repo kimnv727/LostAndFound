@@ -53,7 +53,27 @@ namespace LostAndFound.API.Services
                     var giveawayRepository = scope.ServiceProvider.GetRequiredService<IGiveawayRepository>();
                     var giveawayParticipantRepository = scope.ServiceProvider.GetRequiredService<IGiveawayParticipantRepository>();
                     List<Giveaway> giveaways = (await giveawayRepository.GetAllOngoingGiveaways()).ToList();
+                    List<Giveaway> notStartedGiveaways = (await giveawayRepository.GetAllNotStartedGiveaways()).ToList();
                     List<Giveaway> finishedGiveaways = new List<Giveaway>();
+
+                    //Get ontime giveaway
+                    foreach (var giveaway in notStartedGiveaways)
+                    {
+                        try
+                        {
+                            if (DateTime.Now >= giveaway.StartAt && giveaway.GiveawayStatus == GiveawayStatus.NOTSTARTED)
+                            {
+                                giveaway.GiveawayStatus = GiveawayStatus.ONGOING;
+                            }
+                        }
+                        catch
+                        {
+                            _logger!.LogInformation("Skipping faulty data.");
+                            continue;
+                        }
+                    }
+                    await giveawayRepository.UpdateGiveawayRange(notStartedGiveaways.ToArray());
+
                     //Get finished giveaway
                     foreach (var giveaway in giveaways)
                     {

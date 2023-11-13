@@ -82,12 +82,11 @@ namespace LostAndFound.API
             services.AddUOW();
             services.ConfigureAutoMapper();
             services.AddServiceFilters();
-            
-            //Open later - less load on server
-            /*//Add hosted services 
+
+            //Add hosted services 
             services.AddHostedService<ItemOutdatedCheckService>();
             services.AddHostedService<PostOutdatedCheckService>();
-            services.AddHostedService<GiveawayHandlingService>();*/
+            services.AddHostedService<GiveawayHandlingService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

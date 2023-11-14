@@ -237,7 +237,6 @@ namespace LostAndFound.Infrastructure.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.CurrentValues["DeletedDate"] = null;
                         break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;

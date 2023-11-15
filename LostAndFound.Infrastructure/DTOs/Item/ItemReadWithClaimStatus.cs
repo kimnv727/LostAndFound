@@ -25,7 +25,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public string LocationLocationName { get; set; }
 
         public string CategoryName { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public int CabinetId { get; set; }
 

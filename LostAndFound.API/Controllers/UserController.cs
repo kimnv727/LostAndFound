@@ -27,12 +27,15 @@ namespace LostAndFound.API.Controllers
         private readonly IUserService _userService;
         private readonly IUserMediaService _userMediaService;
         private readonly IFirebaseAuthService _firebaseAuthService;
+        private readonly FirestoreProvider _firestoreProvider;
 
-        public UserController(IUserService userService, IUserMediaService userMediaService, IFirebaseAuthService firebaseAuthService)
+        public UserController(IUserService userService, IUserMediaService userMediaService, IFirebaseAuthService firebaseAuthService
+            , FirestoreProvider firestoreProvider)
         {
             _userService = userService;
             _userMediaService = userMediaService;
             _firebaseAuthService = firebaseAuthService;
+            _firestoreProvider = firestoreProvider;
         }
 
         ///<summary>
@@ -130,6 +133,8 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> CreateUser([Required] UserWriteDTO writeDTO)
         {
             var result = await _userService.CreateUserAsync(writeDTO);
+            //create on Firebase
+            await _firestoreProvider.CreateNewUser(writeDTO.FirstName + " " + writeDTO.LastName, writeDTO.Email, writeDTO.Avatar, result.Id);
 
             return ResponseFactory.CreatedAt(
                 (nameof(GetUser)), 

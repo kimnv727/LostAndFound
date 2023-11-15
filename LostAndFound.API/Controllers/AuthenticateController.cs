@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LostAndFound.API.Extensions;
 using LostAndFound.API.Filters;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Infrastructure.DTOs.Authenticate;
@@ -22,12 +23,15 @@ namespace LostAndFound.API.Controllers
         private readonly IFirebaseAuthService _authService;
         private readonly IUserService _userService;
         private readonly IUserDeviceService _userDeviceService;
+        private readonly FirestoreProvider _firestoreProvider;
         //TODO: check soft deleted users wont be able to login
-        public AuthenticateController(IFirebaseAuthService authService, IUserService userService, IUserDeviceService userDeviceService)
+        public AuthenticateController(IFirebaseAuthService authService, IUserService userService, IUserDeviceService userDeviceService
+            , FirestoreProvider firestoreProvider)
         {
             _authService = authService;
             _userService = userService;
             _userDeviceService = userDeviceService;
+            _firestoreProvider = firestoreProvider;
         }
 
         /// <summary>
@@ -87,6 +91,13 @@ namespace LostAndFound.API.Controllers
                 };
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
             }*/
+
+            //create new User on Firebase
+            var check = await _firestoreProvider.GetUser(authenticateRequest.Uid);
+            if (!check)
+            {
+                await _firestoreProvider.CreateNewUser(authenticateRequest.Name, authenticateRequest.Email, authenticateRequest.Avatar, authenticateRequest.Uid);
+            }
             
             return ResponseFactory.Ok(result);
         }

@@ -32,6 +32,9 @@ using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.Extensions;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.API.Services;
+using System.Text.Json;
+using LostAndFound.API.Extensions.FirestoreService;
+using Google.Cloud.Firestore;
 
 namespace LostAndFound.API
 {
@@ -75,6 +78,15 @@ namespace LostAndFound.API
                     new GoogleProvider()
                 }
             };
+            var firebaseJson = JsonSerializer.Serialize(new FirebaseSetting());
+            services.AddSingleton(_ => new FirestoreProvider(
+                new FirestoreDbBuilder
+                {
+                    ProjectId = "lostandfound-test-b0e12",
+                    JsonCredentials = firebaseJson
+                }.Build()
+            ));
+
             services.AddScoped<IFirebaseAuthClient>(u => new FirebaseAuthClient(firebaseAuthConfig));
             services.AddSingleton(new FirebaseAuthClient(firebaseAuthConfig));
             services.AddServices();

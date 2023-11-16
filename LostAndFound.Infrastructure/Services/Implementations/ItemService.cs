@@ -153,6 +153,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             _mapper.Map(itemUpdateDTO, item);
+
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<ItemReadDTO>(item);
+        }
+
+        public async Task<ItemReadDTO> UpdateItemDetailsWithoutCabinetIdAsync(int itemId, ItemUpdateWithoutCabinetIdDTO itemUpdateDTO)
+        {
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            _mapper.Map(itemUpdateDTO, item);
+
             await _unitOfWork.CommitAsync();
             return _mapper.Map<ItemReadDTO>(item);
         }

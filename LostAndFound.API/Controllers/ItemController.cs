@@ -179,6 +179,24 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(item);
         }
+        
+        ///<summary>
+        /// Update item information without cabinet
+        /// </summary>
+        /// <remarks>Update Item's information</remarks>
+        /// <returns></returns>
+        [HttpPut("update-without-cabinet/{itemId:int}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<int>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateItemDetailsWithoutCabinetIdAsync(int itemId, ItemUpdateWithoutCabinetIdDTO updateDTO)
+        {
+
+            var item = await _itemService.UpdateItemDetailsWithoutCabinetIdAsync(itemId, updateDTO);
+
+            return ResponseFactory.Ok(item);
+        }
 
         ///<summary>
         /// Create new item

@@ -2,7 +2,7 @@ using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Infrastructure.DTOs.Item
 {
-    public class ItemUpdateDTO
+    public class ItemUpdateWithoutCabinetIdDTO
     {
         public string Name { get; set; }
 
@@ -11,8 +11,6 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int LocationId { get; set; }
         public int CategoryId { get; set; }
 
-        public int CabinetId { get; set; }
         public ItemStatus ItemStatus { get; set; }
-
     }
 }

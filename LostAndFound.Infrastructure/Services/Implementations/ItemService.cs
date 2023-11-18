@@ -17,6 +17,7 @@ using System.Security.Claims;
 using LostAndFound.Core.Exceptions.ItemClaim;
 using System.Linq;
 using AutoMapper.Configuration.Annotations;
+using F23.StringSimilarity;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -31,10 +32,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly ICategoryGroupRepository _categoryGroupRepository;
         private readonly ICabinetRepository _cabinetRepository;
         private readonly IItemClaimRepository _itemClaimRepository;
+        private readonly IPostRepository _postRepository;
 
         public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository,
             ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService,
-            ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository)
+            ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository, IPostRepository postRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -45,6 +47,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _itemMediaService = itemMediaService;
             _cabinetRepository = cabinetRepository;
             _itemClaimRepository = itemClaimRepository;
+            _postRepository = postRepository;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
@@ -326,6 +329,42 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId) ?? throw new EntityNotFoundException<ItemClaim>();
             claim.ClaimStatus = false;
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<ItemReadDTO> RecommendMostRelatedItemAsync(int postId)
+        {
+            //Get Post
+            var post = await _postRepository.FindPostByIdAsync(postId);
+            if (post == null)
+            {
+                throw new EntityWithIDNotFoundException<Post>(postId);
+            }
+
+            //Get Related Item
+            if(post.PostCategoryId != null && post.PostLocationId != null)
+            {
+                var items = await _itemRepository.GetItemsByLocationAndCategoryAsync((int)post.PostLocationId, (int)post.PostCategoryId);
+
+                //String similarity
+                if (items.Count() > 0)
+                {
+                    var jw = new JaroWinkler();
+                    foreach (var i in items)
+                    {
+                        if (jw.Similarity(post.Title, i.Name) > 0.8 && jw.Similarity(post.PostContent, i.Description) > 0.8)
+                        {
+                            return _mapper.Map<ItemReadDTO>(i);
+                        }
+                    }
+                }
+
+                return null;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
     }
 }

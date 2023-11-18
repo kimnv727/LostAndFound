@@ -429,5 +429,25 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(posts.ToList());
         }
+
+        public async Task<IEnumerable<Post>> GetPostsByLocationAndCategoryAsync(int locationId, int categoryId)
+        {
+            var posts = _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .Include(p => p.PostFlags)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media)
+                .Where(p => p.PostStatus == PostStatus.ACTIVE && p.PostLocationId == locationId && p.PostCategoryId == categoryId)
+                .AsSplitQuery();
+
+            posts = posts
+                .OrderBy(p => p.CreatedDate);
+
+            posts = posts.AsNoTracking();
+
+            return await Task.FromResult(posts.ToList());
+        }
     }
 }

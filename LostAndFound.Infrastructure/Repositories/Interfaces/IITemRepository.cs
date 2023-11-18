@@ -28,5 +28,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<Item> GetAllClaimsOfAnItemForManager(int itemId);
         public Task UpdateItemRange(Item[] items);
         public Task<IEnumerable<Item>> GetAllActiveItems();
+        public Task<IEnumerable<Item>> GetItemsByLocationAndCategoryAsync(int locationId, int categoryId);
     }
 }

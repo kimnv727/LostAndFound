@@ -28,6 +28,7 @@ using Firebase.Auth;
 using LostAndFound.Core.Exceptions.ItemClaim;
 using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.ItemFlag;
+using LostAndFound.API.Extensions;
 
 namespace LostAndFound.API.Controllers
 {
@@ -43,9 +44,12 @@ namespace LostAndFound.API.Controllers
         private readonly IItemClaimService _itemClaimService;
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly ICabinetService _cabinetService;
+        private readonly IPostService _postService;
+        private readonly NotificationExtensions _notificationExtensions;
 
-        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, IItemBookmarkService itemBookmarkService,
-            ICategoryRepository categoryRepository, IItemClaimService itemClaimService, IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService)
+        public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, 
+            IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService, 
+            IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService, IPostService postService, NotificationExtensions notificationExtensions)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
@@ -55,6 +59,8 @@ namespace LostAndFound.API.Controllers
             _itemClaimService = itemClaimService;
             _firebaseAuthService = firebaseAuthService;
             _cabinetService = cabinetService;
+            _postService = postService;
+            _notificationExtensions = notificationExtensions;
         }
 
         /// <summary>
@@ -212,6 +218,15 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _itemService.CreateItemAsync(stringId, writeDTO);
+
+            /*//Check related Post
+            var relatedPost = _postService.RecommendMostRelatedPostAsync(result.Id);
+            if (relatedPost != null)
+            {
+                //Push Noti here
+                await _notificationExtensions
+                                    .NotifyRecommendPostToUser(stringId, "This Post might be related to your Item!", "PostId: " + relatedPost.Id);
+            }*/
 
             return ResponseFactory.Ok(result);
         }

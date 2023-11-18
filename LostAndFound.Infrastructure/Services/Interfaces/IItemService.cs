@@ -38,5 +38,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 
         public Task AcceptAClaimAsync(int itemId, string userId);
         public Task DenyAClaimAsync(int itemId, string userId);
+
+        Task<ItemReadDTO> RecommendMostRelatedItemAsync(int postId);
     }
 }

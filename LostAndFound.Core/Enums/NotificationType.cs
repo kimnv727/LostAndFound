@@ -10,6 +10,8 @@ namespace LostAndFound.Core.Enums
         CommentGotReplied,
         Chat,
         GiveawayResult,
+        RecommendItem,
+        RecommendPost,
         Generic
     }
 }

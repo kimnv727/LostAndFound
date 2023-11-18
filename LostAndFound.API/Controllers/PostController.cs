@@ -28,15 +28,20 @@ namespace LostAndFound.API.Controllers
         private readonly IPostBookmarkService _postBookmarkService;
         private readonly IPostFlagService _postFlagService;
         private readonly FacebookCredentials _facebookCredentials;
+        private readonly IItemService _itemService;
+        private readonly NotificationExtensions _notificationExtensions;
 
         public PostController(IPostService postService, IPostMediaService postMediaService,
-            IPostBookmarkService postBookmarkService, IPostFlagService postFlagService, FacebookCredentials facebookCredentials)
+            IPostBookmarkService postBookmarkService, IPostFlagService postFlagService, 
+            FacebookCredentials facebookCredentials, IItemService itemService, NotificationExtensions notificationExtensions)
         {
             _postService = postService;
             _postMediaService = postMediaService;
             _postBookmarkService = postBookmarkService;
             _postFlagService = postFlagService;
             _facebookCredentials = facebookCredentials;
+            _itemService = itemService;
+            _notificationExtensions = notificationExtensions;
         }
 
         /// <summary>
@@ -151,6 +156,15 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _postService.CreatePostAsync(stringId, writeDTO);
+
+            /*//Check related Item
+            var relatedItem = _itemService.RecommendMostRelatedItemAsync(result.Id);
+            if(relatedItem != null)
+            {
+                //Push Noti here
+                await _notificationExtensions
+                                    .NotifyRecommendItemToUser(stringId, "This Item might be related to your Post!", "ItemId: " + relatedItem.Id);
+            }*/
 
             return ResponseFactory.CreatedAt(
                 (nameof(GetPost)), 

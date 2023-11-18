@@ -20,5 +20,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO);
         Task<PostDetailReadDTO> UpdatePostDetailsAsync(int postId, PostUpdateDTO postUpdateDTO);
         Task<bool> CheckPostAuthorAsync(int postId, string userId);
+        Task<PostReadDTO> RecommendMostRelatedPostAsync(int itemId);
     }
 }

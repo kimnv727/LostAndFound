@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using F23.StringSimilarity;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
@@ -25,11 +26,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IPostMediaRepository _postMediaRepository;
         private readonly IPostMediaService _postMediaService;
         private readonly ICommentRepository _commentRepository;
+        private readonly IItemRepository _itemRepository;
         private readonly IPasswordHasherService _passwordHasherService;
         private readonly IEmailSendingService _emailSendingService;
 
         public PostService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository,
-            IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService, IPostMediaRepository postMediaRepository, IPostMediaService postMediaService)
+            IPasswordHasherService passwordHasherService, IEmailSendingService emailSendingService, IPostMediaRepository postMediaRepository, 
+            IPostMediaService postMediaService, IItemRepository itemRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -40,6 +43,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _emailSendingService = emailSendingService;
             _postMediaRepository = postMediaRepository;
             _postMediaService = postMediaService;
+            _itemRepository = itemRepository;
         }
 
         public async Task UpdatePostStatusAsync(int postId, PostStatus postStatus)
@@ -181,6 +185,34 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Post>(postId);
 
             return post != null ? true : false;
+        }
+
+        public async Task<PostReadDTO> RecommendMostRelatedPostAsync(int itemId)
+        {
+            //Get Item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            //Get Related Post
+            var posts = await _postRepository.GetPostsByLocationAndCategoryAsync(item.LocationId, item.CategoryId);
+
+            //String similarity
+            if(posts.Count() > 0)
+            {
+                var jw = new JaroWinkler();
+                foreach (var p in posts)
+                {
+                    if(jw.Similarity(p.Title, item.Name) > 0.8 && jw.Similarity(p.PostContent, item.Description) > 0.8)
+                    {
+                        return _mapper.Map<PostReadDTO>(p);
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

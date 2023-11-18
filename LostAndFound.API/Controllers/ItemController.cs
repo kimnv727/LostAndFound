@@ -45,11 +45,10 @@ namespace LostAndFound.API.Controllers
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly ICabinetService _cabinetService;
         private readonly IPostService _postService;
-        private readonly NotificationExtensions _notificationExtensions;
 
         public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, 
             IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService, 
-            IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService, IPostService postService, NotificationExtensions notificationExtensions)
+            IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService, IPostService postService)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
@@ -60,7 +59,6 @@ namespace LostAndFound.API.Controllers
             _firebaseAuthService = firebaseAuthService;
             _cabinetService = cabinetService;
             _postService = postService;
-            _notificationExtensions = notificationExtensions;
         }
 
         /// <summary>
@@ -224,8 +222,7 @@ namespace LostAndFound.API.Controllers
             if (relatedPost != null)
             {
                 //Push Noti here
-                await _notificationExtensions
-                                    .NotifyRecommendPostToUser(stringId, "This Post might be related to your Item!", "PostId: " + relatedPost.Id);
+                //Noti must be pushed seperately 
             }*/
 
             return ResponseFactory.Ok(result);

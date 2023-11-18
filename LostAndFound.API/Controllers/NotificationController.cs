@@ -22,15 +22,12 @@ namespace LostAndFound.API.Controllers
         private readonly INotificationService _notificationService;
         private readonly IUserService _userService;
         private readonly IUserDeviceService _userDeviceService;
-        private readonly NotificationExtensions _notificationExtensions;
 
-        public NotificationController(INotificationService notificationService, IUserService userService, IUserDeviceService userDeviceService,
-            NotificationExtensions notificationExtensions)
+        public NotificationController(INotificationService notificationService, IUserService userService, IUserDeviceService userDeviceService)
         {
             _notificationService = notificationService;
             _userService = userService;
             _userDeviceService = userDeviceService;
-            _notificationExtensions = notificationExtensions;
         }
         
         /// <summary>
@@ -173,24 +170,32 @@ namespace LostAndFound.API.Controllers
                    switch (notification.NotificationType)
                     {
                         case NotificationType.Chat:
-                            await _notificationExtensions
-                                    .NotifyChatToUser(notification.UserId, notification.Title, notification.Content);
-                                return Ok();
+                            await NotificationExtensions
+                                    .NotifyChatToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
+                            return Ok();
                         case NotificationType.OwnItemClaim:
-                            await _notificationExtensions
-                                .NotifyItemClaimedToUser(notification.UserId, notification.Title, notification.Content);
+                            await NotificationExtensions
+                                    .NotifyItemClaimedToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.PostGotReplied:
-                            await _notificationExtensions
-                                .NotifyPostRepliedToUser(notification.UserId, notification.Title, notification.Content);
+                            await NotificationExtensions
+                                    .NotifyPostRepliedToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.CommentGotReplied:
-                            await _notificationExtensions
-                                .NotifyCommentRepliedToUser(notification.UserId, notification.Title, notification.Content);
+                            await NotificationExtensions
+                                    .NotifyCommentRepliedToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         case NotificationType.GiveawayResult:
-                            await _notificationExtensions
-                                .NotifyGiveawayResultToUser(notification.UserId, notification.Title, notification.Content);
+                            await NotificationExtensions
+                                    .NotifyGiveawayResultToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
+                            return Ok();
+                        case NotificationType.RecommendItem:
+                            await NotificationExtensions
+                                    .NotifyRecommendItemToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
+                            return Ok();
+                        case NotificationType.RecommendPost:
+                            await NotificationExtensions
+                                    .NotifyRecommendPostToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();
                         default:
                         return BadRequest();

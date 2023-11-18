@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace LostAndFound.API.Extensions
 {
-    /*public static class NotificationExtensions
+    public static class NotificationExtensions
     {
         public static async Task NotifyChatToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
@@ -28,7 +28,7 @@ namespace LostAndFound.API.Extensions
                 {
                     tokensList.Add(ud.Token);
                 }
-                
+
                 //Create notification to send
                 var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
                 {
@@ -38,11 +38,11 @@ namespace LostAndFound.API.Extensions
                         Title = notificationTitle,
                         Body = notificationContent,
                     },
-                    *//*Data = new Dictionary<string, string>
+                    Data = new Dictionary<string, string>
                     {
                         { "notificationType", ((int)NotificationType.Chat).ToString() },
                         { "createdDate", DateTime.Now.ToVNTime().ToString() }
-                    }*//*
+                    }
                 };
                 try
                 {
@@ -62,13 +62,13 @@ namespace LostAndFound.API.Extensions
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception(e.InnerException.ToString());
                 }
             }
         }
-        
+
         public static async Task NotifyPostRepliedToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
         {
@@ -81,7 +81,7 @@ namespace LostAndFound.API.Extensions
                 {
                     tokensList.Add(ud.Token);
                 }
-                
+
                 //Create notification to send
                 var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
                 {
@@ -110,13 +110,13 @@ namespace LostAndFound.API.Extensions
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception(e.InnerException.ToString());
                 }
             }
         }
-        
+
         public static async Task NotifyCommentRepliedToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
         {
@@ -129,7 +129,7 @@ namespace LostAndFound.API.Extensions
                 {
                     tokensList.Add(ud.Token);
                 }
-                
+
                 //Create notification to send
                 var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
                 {
@@ -158,13 +158,13 @@ namespace LostAndFound.API.Extensions
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception(e.InnerException.ToString());
                 }
             }
         }
-        
+
         public static async Task NotifyItemClaimedToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
         {
@@ -177,7 +177,7 @@ namespace LostAndFound.API.Extensions
                 {
                     tokensList.Add(ud.Token);
                 }
-                
+
                 //Create notification to send
                 var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
                 {
@@ -206,13 +206,13 @@ namespace LostAndFound.API.Extensions
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception(e.InnerException.ToString());
                 }
             }
         }
-        
+
         public static async Task NotifyGiveawayResultToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
         {
@@ -225,7 +225,7 @@ namespace LostAndFound.API.Extensions
                 {
                     tokensList.Add(ud.Token);
                 }
-                
+
                 //Create notification to send
                 var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
                 {
@@ -254,68 +254,6 @@ namespace LostAndFound.API.Extensions
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
-                catch(Exception e)
-                {
-                    throw new Exception(e.InnerException.ToString());
-                }
-            }
-        }
-    }*/
-
-    public class NotificationExtensions
-    {
-        private readonly IUserDeviceService _userDeviceService;
-        private readonly INotificationService _notificationService;
-        public NotificationExtensions(IUserDeviceService userDeviceService, INotificationService notificationService)
-        {
-            _userDeviceService = userDeviceService;
-            _notificationService = notificationService;
-        }
-        public async Task NotifyChatToUser(string userId, string notificationTitle, string notificationContent)
-        {
-            //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
-            if (userDevices.Count() > 0)
-            {
-                List<string> tokensList = new List<string>();
-                foreach (var ud in userDevices)
-                {
-                    tokensList.Add(ud.Token);
-                }
-
-                //Create notification to send
-                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
-                {
-                    Tokens = tokensList,
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = notificationTitle,
-                        Body = notificationContent,
-                    },
-                    /*Data = new Dictionary<string, string>
-                    {
-                        { "notificationType", ((int)NotificationType.Chat).ToString() },
-                        { "createdDate", DateTime.Now.ToVNTime().ToString() }
-                    }*/
-                };
-                try
-                {
-                    //Send notification
-                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
-
-                    if (response.SuccessCount > 0)
-                    {
-                        //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
-                        {
-                            Title = notificationTitle,
-                            Content = notificationContent,
-                            NotificationType = NotificationType.Chat
-                        };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
-                    }
-                }
                 catch (Exception e)
                 {
                     throw new Exception(e.InnerException.ToString());
@@ -323,10 +261,11 @@ namespace LostAndFound.API.Extensions
             }
         }
 
-        public async Task NotifyPostRepliedToUser(string userId, string notificationTitle, string notificationContent)
+        public static async Task NotifyRecommendItemToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
+            string userId, string notificationTitle, string notificationContent)
         {
             //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
+            var userDevices = await userDeviceService.GetUserDevicesOfUserAsync(userId);
             if (userDevices.Count() > 0)
             {
                 List<string> tokensList = new List<string>();
@@ -349,195 +288,7 @@ namespace LostAndFound.API.Extensions
                 {
                     //Send notification
                     var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
-
-                    if (response.SuccessCount > 0)
-                    {
-                        //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
-                        {
-                            Title = notificationTitle,
-                            Content = notificationContent,
-                            NotificationType = NotificationType.PostGotReplied
-                        };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.InnerException.ToString());
-                }
-            }
-        }
-
-        public async Task NotifyCommentRepliedToUser(string userId, string notificationTitle, string notificationContent)
-        {
-            //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
-            if (userDevices.Count() > 0)
-            {
-                List<string> tokensList = new List<string>();
-                foreach (var ud in userDevices)
-                {
-                    tokensList.Add(ud.Token);
-                }
-
-                //Create notification to send
-                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
-                {
-                    Tokens = tokensList,
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = notificationTitle,
-                        Body = notificationContent,
-                    },
-                };
-                try
-                {
-                    //Send notification
-                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
-
-                    if (response.SuccessCount > 0)
-                    {
-                        //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
-                        {
-                            Title = notificationTitle,
-                            Content = notificationContent,
-                            NotificationType = NotificationType.CommentGotReplied
-                        };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.InnerException.ToString());
-                }
-            }
-        }
-
-        public async Task NotifyItemClaimedToUser(string userId, string notificationTitle, string notificationContent)
-        {
-            //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
-            if (userDevices.Count() > 0)
-            {
-                List<string> tokensList = new List<string>();
-                foreach (var ud in userDevices)
-                {
-                    tokensList.Add(ud.Token);
-                }
-
-                //Create notification to send
-                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
-                {
-                    Tokens = tokensList,
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = notificationTitle,
-                        Body = notificationContent,
-                    },
-                };
-                try
-                {
-                    //Send notification
-                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
-
-                    if (response.SuccessCount > 0)
-                    {
-                        //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
-                        {
-                            Title = notificationTitle,
-                            Content = notificationContent,
-                            NotificationType = NotificationType.OwnItemClaim
-                        };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.InnerException.ToString());
-                }
-            }
-        }
-
-        public async Task NotifyGiveawayResultToUser(string userId, string notificationTitle, string notificationContent)
-        {
-            //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
-            if (userDevices.Count() > 0)
-            {
-                List<string> tokensList = new List<string>();
-                foreach (var ud in userDevices)
-                {
-                    tokensList.Add(ud.Token);
-                }
-
-                //Create notification to send
-                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
-                {
-                    Tokens = tokensList,
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = notificationTitle,
-                        Body = notificationContent,
-                    },
-                };
-                try
-                {
-                    //Send notification
-                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
-
-                    if (response.SuccessCount > 0)
-                    {
-                        //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
-                        {
-                            Title = notificationTitle,
-                            Content = notificationContent,
-                            NotificationType = NotificationType.GiveawayResult
-                        };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.InnerException.ToString());
-                }
-            }
-        }
-
-        public async Task NotifyRecommendItemToUser(string userId, string notificationTitle, string notificationContent)
-        {
-            //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
-            if (userDevices.Count() > 0)
-            {
-                List<string> tokensList = new List<string>();
-                foreach (var ud in userDevices)
-                {
-                    tokensList.Add(ud.Token);
-                }
-
-                //Create notification to send
-                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
-                {
-                    Tokens = tokensList,
-                    Notification = new FirebaseAdmin.Messaging.Notification
-                    {
-                        Title = notificationTitle,
-                        Body = notificationContent,
-                    },
-                };
-                try
-                {
-                    //Send notification
-                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
+                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, userDeviceService);
 
                     if (response.SuccessCount > 0)
                     {
@@ -548,7 +299,7 @@ namespace LostAndFound.API.Extensions
                             Content = notificationContent,
                             NotificationType = NotificationType.RecommendItem
                         };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
+                        await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
                 catch (Exception e)
@@ -558,10 +309,11 @@ namespace LostAndFound.API.Extensions
             }
         }
 
-        public async Task NotifyRecommendPostToUser(string userId, string notificationTitle, string notificationContent)
+        public static async Task NotifyRecommendPostToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
+            string userId, string notificationTitle, string notificationContent)
         {
             //get user's all device tokens
-            var userDevices = await _userDeviceService.GetUserDevicesOfUserAsync(userId);
+            var userDevices = await userDeviceService.GetUserDevicesOfUserAsync(userId);
             if (userDevices.Count() > 0)
             {
                 List<string> tokensList = new List<string>();
@@ -584,7 +336,7 @@ namespace LostAndFound.API.Extensions
                 {
                     //Send notification
                     var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
-                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, _userDeviceService);
+                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, userDeviceService);
 
                     if (response.SuccessCount > 0)
                     {
@@ -595,7 +347,7 @@ namespace LostAndFound.API.Extensions
                             Content = notificationContent,
                             NotificationType = NotificationType.RecommendPost
                         };
-                        await _notificationService.CreateNotification(notificationWriteDTO, userId);
+                        await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }
                 }
                 catch (Exception e)

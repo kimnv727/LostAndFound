@@ -29,11 +29,10 @@ namespace LostAndFound.API.Controllers
         private readonly IPostFlagService _postFlagService;
         private readonly FacebookCredentials _facebookCredentials;
         private readonly IItemService _itemService;
-        private readonly NotificationExtensions _notificationExtensions;
 
         public PostController(IPostService postService, IPostMediaService postMediaService,
             IPostBookmarkService postBookmarkService, IPostFlagService postFlagService, 
-            FacebookCredentials facebookCredentials, IItemService itemService, NotificationExtensions notificationExtensions)
+            FacebookCredentials facebookCredentials, IItemService itemService)
         {
             _postService = postService;
             _postMediaService = postMediaService;
@@ -41,7 +40,6 @@ namespace LostAndFound.API.Controllers
             _postFlagService = postFlagService;
             _facebookCredentials = facebookCredentials;
             _itemService = itemService;
-            _notificationExtensions = notificationExtensions;
         }
 
         /// <summary>
@@ -162,8 +160,7 @@ namespace LostAndFound.API.Controllers
             if(relatedItem != null)
             {
                 //Push Noti here
-                await _notificationExtensions
-                                    .NotifyRecommendItemToUser(stringId, "This Item might be related to your Post!", "ItemId: " + relatedItem.Id);
+                //Noti must be pushed seperately 
             }*/
 
             return ResponseFactory.CreatedAt(

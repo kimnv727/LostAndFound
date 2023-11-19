@@ -1,8 +1,11 @@
-﻿using Google.Cloud.Firestore;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Firestore;
+using Google.Cloud.Firestore.V1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace LostAndFound.API.Extensions
@@ -46,7 +49,7 @@ namespace LostAndFound.API.Extensions
                 cancellationToken: ct);
 
             //create their userChats
-            await _fireStoreDb.Collection("userChats").Document("random uid").SetAsync(new Dictionary<string, object>(), null, ct);
+            await _fireStoreDb.Collection("userChats").Document(uid).SetAsync(new Dictionary<string, object>(), null, ct);
         }
 
         public async Task<bool> GetUser(string id)
@@ -62,6 +65,5 @@ namespace LostAndFound.API.Extensions
                 return false;
             }
         }
-
     }
 }

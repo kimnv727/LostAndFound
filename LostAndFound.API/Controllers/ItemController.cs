@@ -659,5 +659,57 @@ namespace LostAndFound.API.Controllers
             }
             else throw new ItemFounderNotMatchException();
         }
+
+        ///<summary>
+        /// Create new item and put into Storage (Storage Manager only)
+        /// </summary>
+        /// <param name="writeDTO"></param>
+        /// <returns></returns>
+        [HttpPost("receive-into-storage")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ItemReadWithReceiptDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        public async Task<IActionResult> CreateItemIntoStorage([FromForm] ItemIntoStorageWithReceiptWriteDTO writeDTO)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _itemService.ReceiveAnItemIntoStorageAsync(stringId, writeDTO);
+
+            /*//Check related Post
+            var relatedPost = _postService.RecommendMostRelatedPostAsync(result.Id);
+            if (relatedPost != null)
+            {
+                //Push Noti here
+                //Noti must be pushed seperately 
+            }*/
+
+            return ResponseFactory.Ok(result);
+        }
+
+        ///<summary>
+        /// Transfer existing item into Storage (Storage Manager only)
+        /// </summary>
+        /// <param name="updateDTO"></param>
+        /// <returns></returns>
+        [HttpPost("transfer-into-storage")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<ItemReadWithReceiptDTO>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        public async Task<IActionResult> TransferItemIntoStorage([FromForm] ItemUpdateTransferToStorageDTO updateDTO)
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _itemService.TransferAnItemIntoStorageAsync(stringId, updateDTO);
+
+            /*//Check related Post
+            var relatedPost = _postService.RecommendMostRelatedPostAsync(result.Id);
+            if (relatedPost != null)
+            {
+                //Push Noti here
+                //Noti must be pushed seperately 
+            }*/
+
+            return ResponseFactory.Ok(result);
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         //Task<IEnumerable<Comment>> FindAllCommentsReplyToCommentId(int commentId);
         Task<IEnumerable<Comment>> QueryCommentAsync(CommentQuery query, bool trackChanges = false);
         Task<IEnumerable<Comment>> QueryCommentIgnoreStatusAsync(CommentQuery query, bool trackChanges = false);
+        Task<IEnumerable<Comment>> QueryCommentWithFlagAsync(CommentQueryWithFlag query, bool trackChanges = false);
 
     }
 }

@@ -71,6 +71,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<ItemUpdateDTO, Item>();
             CreateMap<ItemUpdateWithoutCabinetIdDTO, Item>();
             CreateMap<Item, ItemReadWithClaimStatusDTO>();
+            CreateMap<Item, ItemReadWithReceiptDTO>();
 
             //Category Mapping
             CreateMap<Category, CategoryReadDTO>();
@@ -105,6 +106,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<Comment, CommentReadDTO>();
             CreateMap<Comment, CommentDetailReadDTO>();
             CreateMap<Comment, CommentDetailWithReplyDetailReadDTO>();
+            CreateMap<Comment, CommentDetailReadWithFlagDTO>();
             CreateMap<CommentWriteDTO, Comment>();
             CreateMap<CommentUpdateDTO, Comment>();
             

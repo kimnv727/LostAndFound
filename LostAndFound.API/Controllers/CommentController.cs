@@ -266,5 +266,21 @@ namespace LostAndFound.API.Controllers
                 new { userId = commentFlag.UserId, commentId = commentFlag.Comment.Id }, 
                 commentFlag);
         }
+
+        ///<summary>
+        /// Get all comments with flag
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("query-with-flag")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<CommentDetailReadWithFlagDTO>))]
+        public async Task<IActionResult> GetAllCommentsWithFlag([FromQuery] CommentQueryWithFlag query)
+        {
+            var commentPaginatedDto = await _commentService.QueryCommentWithFlagAsync(query);
+
+            return ResponseFactory.PaginatedOk(commentPaginatedDto);
+        }
     }
 }

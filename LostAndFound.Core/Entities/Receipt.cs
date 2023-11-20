@@ -15,11 +15,9 @@ namespace LostAndFound.Core.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public string ReceiverId { get; set; }
+        public string? ReceiverId { get; set; }
 
-        [Required]
-        public string SenderId { get; set; }
+        public string? SenderId { get; set; }
 
         [Required]
         [ForeignKey("Item")]
@@ -34,5 +32,7 @@ namespace LostAndFound.Core.Entities
         public ReceiptType ReceiptType { get; set; }
 
         public virtual Media Media {  get; set; }
+
+        public virtual Item? Item { get; set; }
     }
 }

@@ -158,5 +158,61 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(comments.ToList());
         }
+
+        public async Task<IEnumerable<Comment>> QueryCommentWithFlagAsync(CommentQueryWithFlag query, bool trackChanges = false)
+        {
+            IQueryable<Comment> comments = _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.CommentFlags)
+                .Where(c => c.IsActive == true && c.DeletedDate == null)
+                .AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                comments = comments.AsNoTracking();
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.CommentUserId))
+            {
+                comments = comments.Where(c => c.CommentUserId == query.CommentUserId);
+            }
+
+            if (query.PostId > 0)
+            {
+                comments = comments.Where(c => c.PostId == query.PostId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.CommentContent))
+            {
+                comments = comments.Where(c => c.CommentContent.ToLower().Contains(query.CommentContent.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.CommentPath))
+            {
+                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
+            }
+
+            if (query.FromDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate >= query.FromDate);
+            }
+
+            if (query.ToDate != null)
+            {
+                comments = comments.Where(p => p.CreatedDate <= query.ToDate);
+            }
+
+            if (query.FlagCount > 0)
+            {
+                comments = comments.Where(c => c.CommentFlags.Count() >= query.FlagCount);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                comments = comments.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(comments.ToList());
+        }
     }
 }

@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<CommentReadDTO> ReplyToCommentAsync(string userId, int commentId, CommentWriteDTO commentWriteDTO);
         Task<CommentReadDTO> UpdateCommentDetailsAsync(int commentId, CommentUpdateDTO commentUpdateDTO);
         Task<bool> CheckCommentAuthorAsync(int commentId, string userId);
+        Task<PaginatedResponse<CommentDetailReadWithFlagDTO>> QueryCommentWithFlagAsync(CommentQueryWithFlag query);
     }
 }

@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -204,6 +207,25 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Comment>(commentId);
 
             return comment.CommentUserId == userId ? true : false;
+        }
+
+        public async Task<PaginatedResponse<CommentDetailReadWithFlagDTO>> QueryCommentWithFlagAsync(CommentQueryWithFlag query)
+        {
+            var comments = await _commentRepository.QueryCommentWithFlagAsync(query);
+            var result = new List<CommentDetailReadWithFlagDTO>();
+
+            foreach (var c in comments)
+            {
+                var r = _mapper.Map<CommentDetailReadWithFlagDTO>(c);
+                r.WrongInformationCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.WrongInformation && f.IsActive == true).Count();
+                r.SpamCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.Spam && f.IsActive == true).Count();
+                r.ViolatedUserCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.ViolatedUser && f.IsActive == true).Count();
+                r.OthersCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.Others && f.IsActive == true).Count();
+                r.TotalCount = c.CommentFlags.Where(f => f.IsActive == true).Count();
+                result.Add(r);
+            }
+
+            return PaginatedResponse<CommentDetailReadWithFlagDTO>.FromEnumerableWithMapping(result, query, _mapper);
         }
     }
 }

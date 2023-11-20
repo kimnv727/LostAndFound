@@ -26,6 +26,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return _context.Items
                 .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -38,6 +39,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return _context.Items
                 .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -51,6 +53,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var items = _context.Items
                 .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -70,6 +73,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var items = _context.Items
                 .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -89,6 +93,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -176,6 +181,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -254,6 +260,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
@@ -338,6 +345,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var items = _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims)
@@ -359,6 +367,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var items = _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims)
@@ -381,6 +390,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             //Item founder can get all claims of the item they created
             var item = await _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims.Where(ic => ic.ClaimStatus == true))
@@ -397,6 +407,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             //Member can only get their own claim
             var item = await _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))
@@ -413,6 +424,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var item = await _context.Items
                             .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims)
@@ -441,6 +453,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var items = _context.Items
                 .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))

@@ -4,14 +4,16 @@ using LostAndFound.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LostAndFound.API.Migrations
 {
     [DbContext(typeof(LostAndFoundDbContext))]
-    partial class LostAndFoundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231120082657_ChangeReceiptTableType")]
+    partial class ChangeReceiptTableType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -614,8 +616,6 @@ namespace LostAndFound.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("ReceiptImage");
 
                     b.ToTable("Receipts");
@@ -1169,19 +1169,11 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Receipt", b =>
                 {
-                    b.HasOne("LostAndFound.Core.Entities.Item", "Item")
-                        .WithMany("Receipts")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LostAndFound.Core.Entities.Media", "Media")
                         .WithMany()
                         .HasForeignKey("ReceiptImage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Item");
 
                     b.Navigation("Media");
                 });
@@ -1320,8 +1312,6 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("ItemFlags");
 
                     b.Navigation("ItemMedias");
-
-                    b.Navigation("Receipts");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Location", b =>

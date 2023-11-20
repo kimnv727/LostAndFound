@@ -8,8 +8,12 @@ namespace LostAndFound.Core.Enums
 {
     public enum ReceiptType
     {
-        INSTORGE,
+        /*INSTORGE,
         OUTSTORAGE,
-        GIVEAWAY
+        GIVEAWAY*/
+        IN_STORAGE,
+        RETURN_OUT_STORAGE,
+        RETURN_USER_TO_USER,
+        GIVEAWAY_OUT_STORAGE
     }
 }

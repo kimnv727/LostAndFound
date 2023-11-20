@@ -25,9 +25,18 @@ namespace LostAndFound.Infrastructure.DTOs.Receipt
         
         public Guid? ReceiptImage { get; set; }
 
-        [DefaultValue(ReceiptType.INSTORGE)]
-        public ReceiptType ReceiptType { get; set; }
+        [DefaultValue(ReceiptTypeQuery.ALL)]
+        public ReceiptTypeQuery ReceiptType { get; set; }
 
-        
+        public enum ReceiptTypeQuery
+        {
+            ALL,
+            IN_STORAGE,
+            RETURN_OUT_STORAGE,
+            RETURN_USER_TO_USER,
+            GIVEAWAY_OUT_STORAGE
+        }
+
+
     }
 }

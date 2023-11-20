@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LostAndFound.Infrastructure.DTOs.Receipt.ReceiptQuery;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
@@ -57,14 +58,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 switch (query.ReceiptType)
                 {
-                    case ReceiptType.OUTSTORAGE:
-                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.OUTSTORAGE);
+                    case ReceiptTypeQuery.IN_STORAGE:
+                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.IN_STORAGE);
                         break;
-                    case ReceiptType.INSTORGE:
-                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.INSTORGE);
+                    case ReceiptTypeQuery.RETURN_OUT_STORAGE:
+                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE);
                         break;
-                    case ReceiptType.GIVEAWAY:
-                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.GIVEAWAY);
+                    case ReceiptTypeQuery.RETURN_USER_TO_USER:
+                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.RETURN_USER_TO_USER);
+                        break;
+                    case ReceiptTypeQuery.GIVEAWAY_OUT_STORAGE:
+                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.GIVEAWAY_OUT_STORAGE);
                         break;
                 }
             }

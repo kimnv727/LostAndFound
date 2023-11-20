@@ -18,6 +18,8 @@ using LostAndFound.Core.Exceptions.ItemClaim;
 using System.Linq;
 using AutoMapper.Configuration.Annotations;
 using F23.StringSimilarity;
+using LostAndFound.Infrastructure.DTOs.Receipt;
+using LostAndFound.Infrastructure.DTOs.Media;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -33,10 +35,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly ICabinetRepository _cabinetRepository;
         private readonly IItemClaimRepository _itemClaimRepository;
         private readonly IPostRepository _postRepository;
+        private readonly IMediaService _mediaService;
+        private readonly IReceiptRepository _receiptRepository;
+        private readonly AwsCredentials _awsCredentials;
 
         public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository,
             ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService,
-            ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository, IPostRepository postRepository)
+            ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository, IPostRepository postRepository,
+            IMediaService mediaService, AwsCredentials awsCredentials, IReceiptRepository receiptRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -48,6 +54,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _cabinetRepository = cabinetRepository;
             _itemClaimRepository = itemClaimRepository;
             _postRepository = postRepository;
+            _mediaService = mediaService;
+            _awsCredentials = awsCredentials;
+            _receiptRepository = receiptRepository;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
@@ -70,10 +79,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             foreach (var i in items)
             {
                 var r = _mapper.Map<ItemDetailWithFlagReadDTO>(i);
-                r.BlurryCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.BLURRY).Count();
-                r.WrongCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.WRONG).Count();
-                r.InapproriateCount = i.ItemFlags.Where(p => p.ItemFlagReason == ItemFlagReason.INAPPROPRIATE).Count();
-                r.TotalCount = i.ItemFlags.Count();
+                r.BlurryCount = i.ItemFlags.Where(f => f.ItemFlagReason == ItemFlagReason.BLURRY && f.IsActive == true).Count();
+                r.WrongCount = i.ItemFlags.Where(f => f.ItemFlagReason == ItemFlagReason.WRONG && f.IsActive == true).Count();
+                r.InapproriateCount = i.ItemFlags.Where(f => f.ItemFlagReason == ItemFlagReason.INAPPROPRIATE && f.IsActive == true).Count();
+                r.TotalCount = i.ItemFlags.Where(f => f.IsActive == true).Count();
                 result.Add(r);
             }
 
@@ -108,7 +117,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             var item = _mapper.Map<Item>(itemWriteDTO);
-            item.ItemStatus = ItemStatus.PENDING;
+            if(user.RoleId == 3)
+            {
+                item.ItemStatus = ItemStatus.ACTIVE;
+            }
+            else
+            {
+                item.ItemStatus = ItemStatus.PENDING;
+            }
             item.FoundUserId = user.Id;
             item.FoundDate = DateTime.Now.ToVNTime();
 
@@ -364,7 +380,145 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 return null;
             }
-            
+        }
+
+        public async Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO)
+        {
+            //Check if user exist
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            //check if Cabinet exists
+            var cabinet = await _cabinetRepository.FindCabinetByIdAsync(writeDTO.CabinetId);
+            if (cabinet == null)
+            {
+                throw new EntityWithIDNotFoundException<Cabinet>(writeDTO.CabinetId);
+            }
+
+            //var item = _mapper.Map<Item>(itemWriteDTO);
+            var item = new Item()
+            {
+                Name = writeDTO.Name,
+                Description = writeDTO.Description,
+                CategoryId = writeDTO.CategoryId,
+                LocationId = writeDTO.LocationId,
+                CabinetId = writeDTO.CabinetId,
+                ItemStatus = ItemStatus.ACTIVE
+            };
+
+            item.FoundUserId = user.Id;
+            item.FoundDate = DateTime.Now.ToVNTime();
+            item.IsInStorage = true;
+
+            await _itemRepository.AddAsync(item);
+            await _unitOfWork.CommitAsync();
+
+            //Add Media
+            await _itemMediaService.UploadItemMedias(userId, item.Id, writeDTO.ItemMedias);
+            await _unitOfWork.CommitAsync();
+
+            //Create Receipt
+            var result = await _mediaService.UploadFileAsync(writeDTO.ReceiptMedia, _awsCredentials);
+
+            //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
+            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            {
+                ReceiverId = userId,
+                SenderId = null,
+                ItemId = item.Id,
+                ReceiptType = ReceiptType.IN_STORAGE,
+                Media = new MediaWriteDTO()
+                {
+                    Name = writeDTO.ReceiptMedia.FileName,
+                    Description = "Receipt image for item Id = " + item.Id,
+                    Url = result.Url,
+                }
+            };
+
+            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            await _receiptRepository.AddAsync(receipt);
+            await _unitOfWork.CommitAsync();
+
+            var returnResult = _mapper.Map<ItemReadWithReceiptDTO>(item);
+            returnResult.ReceiptId = receipt.Id;
+            returnResult.ReceiverId = receipt.ReceiverId;
+            returnResult.SenderId = receipt.SenderId;
+            returnResult.ReceiptCreatedDate = receipt.CreatedDate;
+            returnResult.ReceiptImage = receipt.ReceiptImage;
+            returnResult.ReceiptType = receipt.ReceiptType;
+
+            return returnResult;
+        }
+
+        public async Task<ItemReadWithReceiptDTO> TransferAnItemIntoStorageAsync(string userId, ItemUpdateTransferToStorageDTO updateDTO)
+        {
+            //Check if user exist
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            //Check if item exist
+            var item = await _itemRepository.FindItemByIdAsync(updateDTO.ItemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(updateDTO.ItemId);
+            }
+            //check item status
+            if(item.IsInStorage == true)
+            {
+                //throw error here
+                throw new Exception("This item is already in storage");
+            }
+
+            //check if Cabinet exists
+            var cabinet = await _cabinetRepository.FindCabinetByIdAsync(updateDTO.CabinetId);
+            if (cabinet == null)
+            {
+                throw new EntityWithIDNotFoundException<Cabinet>(updateDTO.CabinetId);
+            }
+
+            item.ItemStatus = ItemStatus.ACTIVE;
+            item.IsInStorage = true;
+            item.CabinetId = updateDTO.CabinetId;
+
+            await _unitOfWork.CommitAsync();
+
+            //Create Receipt
+            var result = await _mediaService.UploadFileAsync(updateDTO.ReceiptMedia, _awsCredentials);
+
+            //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
+            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            {
+                ReceiverId = userId,
+                SenderId = item.FoundUserId,
+                ItemId = item.Id,
+                ReceiptType = ReceiptType.IN_STORAGE,
+                Media = new MediaWriteDTO()
+                {
+                    Name = updateDTO.ReceiptMedia.FileName,
+                    Description = "Receipt image for item Id = " + item.Id,
+                    Url = result.Url,
+                }
+            };
+
+            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            await _receiptRepository.AddAsync(receipt);
+            await _unitOfWork.CommitAsync();
+
+            var returnResult = _mapper.Map<ItemReadWithReceiptDTO>(item);
+            returnResult.ReceiptId = receipt.Id;
+            returnResult.ReceiverId = receipt.ReceiverId;
+            returnResult.SenderId = receipt.SenderId;
+            returnResult.ReceiptCreatedDate = receipt.CreatedDate;
+            returnResult.ReceiptImage = receipt.ReceiptImage;
+            returnResult.ReceiptType = receipt.ReceiptType;
+
+            return returnResult;
         }
     }
 }

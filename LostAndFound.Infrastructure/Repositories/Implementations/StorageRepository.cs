@@ -88,6 +88,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public async Task<IEnumerable<Storage>> ListAllStoragesAsync()
+        {
+            IQueryable<Storage> storages = _context.Storages
+                .Include(s => s.Campus)
+                .Include(s => s.Cabinets)
+                .Where(s => s.IsActive == true)
+                .OrderBy(s => s.Location);
+
+            return await Task.FromResult(storages.ToList());
+        }
+
         public async Task<IEnumerable<Storage>> QueryStorageAsync(StorageQuery query, bool trackChanges = false)
         {
             IQueryable<Storage> storages = _context.Storages

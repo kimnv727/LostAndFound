@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace LostAndFound.Infrastructure.DTOs.Storage
         public string Location { get; set; }
         public string CampusName { get; set; }
         public bool IsActive { get; set; }
+        [JsonProperty("mainStorageManager")]
         public string MainStorageManagerId { get; set; }
         public DateTime CreatedDate { get; set; }
     }

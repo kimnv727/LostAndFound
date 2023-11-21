@@ -24,5 +24,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Storage>> FindAllStoragesByCampusIdIncludeCabinetsAsync(int campusId);
         Task<IEnumerable<Storage>> FindAllStoragesByCampusIdIgnoreStatusIncludeCabinetsAsync(int campusId);
         Task<IEnumerable<Storage>> QueryStorageAsync(StorageQuery query, bool trackChanges = false);
+        Task<IEnumerable<Storage>> ListAllStoragesAsync();
     }
 }

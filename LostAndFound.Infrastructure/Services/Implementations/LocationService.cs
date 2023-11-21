@@ -20,12 +20,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILocationRepository _locationRepository;
+        private readonly IStorageRepository _storageRepository;
 
-        public LocationService(IMapper mapper, IUnitOfWork unitOfWork, ILocationRepository locationRepository)
+        public LocationService(IMapper mapper, IUnitOfWork unitOfWork, ILocationRepository locationRepository, IStorageRepository storageRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _locationRepository = locationRepository;
+            _storageRepository = storageRepository;
         }
 
         public async Task<PaginatedResponse<LocationReadDTO>> QueryLocationWithPaginationAsync(LocationQuery query)
@@ -174,6 +176,20 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (Location == null)
             {
                 throw new EntityWithIDNotFoundException<Location>(LocationId);
+            }
+
+            //Check Storage with this Location
+            var storages = await _storageRepository.FindAllStoragesByCampusIdIgnoreStatusAsync(Location.PropertyId);
+            if(storages.Count() > 0)
+            {
+                foreach(var s in storages)
+                {
+                    if(s.Location == Location.LocationName)
+                    {
+                        s.Location = LocationWriteDTO.LocationName;
+                        await _unitOfWork.CommitAsync();
+                    }
+                }
             }
 
             _mapper.Map(LocationWriteDTO, Location);

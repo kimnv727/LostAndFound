@@ -5,6 +5,7 @@ using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.Storage;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Storage;
+using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
@@ -185,6 +186,22 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         {
             var storages = await _storageRepository.QueryStorageAsync(query);
 
+            //get storage Manager
+            var userQuery = new UserQuery();
+            userQuery.Role = UserQuery.RoleSearch.Storage_Manager;
+            var storageManagers = await _userRepository.QueryUserAsync(userQuery);
+
+            foreach(var m in storageManagers)
+            {
+                foreach(var s in storages)
+                {
+                    if(s.MainStorageManagerId == m.Id)
+                    {
+                        s.MainStorageManagerId = m.Email;
+                    }
+                }
+            }
+
             return PaginatedResponse<StorageReadIncludeCabinetsDTO>.FromEnumerableWithMapping(storages, query, _mapper);
         }
 
@@ -247,6 +264,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             var storageReadDTO = _mapper.Map<StorageReadDTO>(storage);
             return storageReadDTO;
+        }
+
+        public async Task<IEnumerable<StorageReadDTO>> ListAllStoragesAsync()
+        {
+            //Get Storages
+            var storages = await _storageRepository.ListAllStoragesAsync();
+
+            return _mapper.Map<List<StorageReadDTO>>(storages);
         }
     }
 }

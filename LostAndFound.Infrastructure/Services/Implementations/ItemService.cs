@@ -20,6 +20,7 @@ using AutoMapper.Configuration.Annotations;
 using F23.StringSimilarity;
 using LostAndFound.Infrastructure.DTOs.Receipt;
 using LostAndFound.Infrastructure.DTOs.Media;
+using LostAndFound.Core.Exceptions.Item;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -471,12 +472,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //check item status
             if(item.IsInStorage == true)
             {
-                //TODO:throw error here
-                throw new Exception("This item is already in storage");
+                throw new ItemAlreadyInStorageException();
             }
             if(item.ItemStatus != ItemStatus.PENDING && item.ItemStatus != ItemStatus.ACTIVE)
             {
-                throw new Exception("Wrong status");
+                throw new ItemNotActiveOrPendingException();
             }
 
             //check if Cabinet exists

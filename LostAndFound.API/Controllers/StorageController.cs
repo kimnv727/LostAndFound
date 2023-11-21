@@ -229,5 +229,21 @@ namespace LostAndFound.API.Controllers
         {
             return ResponseFactory.Ok(await _storageService.UpdateStorageStatusAsync(storageId));
         }
+
+        /// <summary>
+        /// Get all storages no paginated (only Active)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("list-all")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<StorageReadDTO[]>))]
+        public async Task<IActionResult> ListAllStorages()
+        {
+            var result = await _storageService.ListAllStoragesAsync();
+
+            return ResponseFactory.Ok(result);
+        }
     }
 }

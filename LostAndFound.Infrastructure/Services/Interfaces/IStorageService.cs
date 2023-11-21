@@ -22,5 +22,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<PaginatedResponse<StorageReadIncludeCabinetsDTO>> QueryStorageAsync(StorageQuery query);
         Task<StorageReadDTO> CreateStorageAsync(StorageWriteDTO storageWriteDTO);
         Task<StorageReadDTO> UpdateStorageDetailsAsync(int storageId, StorageUpdateDTO storageUpdateDTO);
+        Task<IEnumerable<StorageReadDTO>> ListAllStoragesAsync();
     }
 }

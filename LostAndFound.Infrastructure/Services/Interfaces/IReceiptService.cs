@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task DeleteReceiptAsync(int receiptId);
         public Task<IEnumerable<ReceiptReadDTO>> ListAllAsync();
         public Task<ReceiptReadDTO> FindReceiptByIdAsync(int receiptId);
+        public Task<IEnumerable<ReceiptReadDTO>> GetAllReceiptsByItemIdAsync(int itemId);
     }
 }

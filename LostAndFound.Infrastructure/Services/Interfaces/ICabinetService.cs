@@ -14,6 +14,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<CabinetReadDTO> GetCabinetByIdAsync(int id);
         Task<CabinetReadDTO> GetCabinetByIdIgnoreStatusAsync(int id);
         Task<IEnumerable<CabinetReadDTO>> GetAllCabinetsByStorageIdAsync(int storageId);
+        Task<IEnumerable<CabinetReadDTO>> ListAllCabinetsAsync();
         Task<IEnumerable<CabinetReadDTO>> GetAllCabinetsByStorageIdIgnoreStatusAsync(int storageId);
         Task<PaginatedResponse<CabinetReadDTO>> QueryCabinetAsync(CabinetQuery query);
         Task<CabinetReadDTO> CreateCabinetAsync(CabinetWriteDTO cabinetWriteDTO);

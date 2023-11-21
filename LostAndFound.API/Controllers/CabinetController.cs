@@ -161,5 +161,21 @@ namespace LostAndFound.API.Controllers
         {
             return ResponseFactory.Ok(await _cabinetService.UpdateCabinetStatusAsync(cabinetId));
         }
+
+        /// <summary>
+        /// Get all cabinets no paginated (only Active)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("list-all")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<CabinetReadDTO[]>))]
+        public async Task<IActionResult> ListAllCabinets()
+        {
+            var result = await _cabinetService.ListAllCabinetsAsync();
+
+            return ResponseFactory.Ok(result);
+        }
     }
 }

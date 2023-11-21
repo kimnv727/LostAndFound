@@ -1,4 +1,5 @@
 ﻿using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace LostAndFound.Infrastructure.DTOs.Cabinet
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public ICollection<ItemReadDTO> Items { get; set; }
+        public virtual StorageReadDTO Storage { get; set; }
     }
 }

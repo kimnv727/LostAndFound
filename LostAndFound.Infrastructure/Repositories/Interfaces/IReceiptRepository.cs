@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Receipt>> QueryReceiptAsync(ReceiptQuery query, bool trackChanges = false);
         public Task<Receipt> GetReceiptByIdAsync(int receiptId);
         public Task<IEnumerable<Receipt>> GetAllWithMediaAsync();
+        public Task<IEnumerable<Receipt>> GetAllWithItemIdAsync(int itemId);
     }
 }

@@ -93,11 +93,22 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public Task<Receipt> GetReceiptByIdAsync(int receiptId)
+        public async Task<Receipt> GetReceiptByIdAsync(int receiptId)
         {
-            return _context.Receipts
+            return await _context.Receipts
                 .Include(r => r.Media)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
+        }
+
+        public async Task<IEnumerable<Receipt>> GetAllWithItemIdAsync(int itemId)
+        {
+
+            IQueryable<Receipt> receipts = _context.Receipts
+                .Include(r => r.Media)
+                .Include(r => r.Item)
+                .Where(r => r.ItemId == itemId).OrderBy(r => r.CreatedDate);
+
+            return await Task.FromResult(receipts.ToList());
         }
     }
 }

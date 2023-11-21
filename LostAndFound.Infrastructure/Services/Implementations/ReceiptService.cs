@@ -134,5 +134,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ReceiptReadDTO>(receipt);
         }
 
+        public async Task<IEnumerable<ReceiptReadDTO>> GetAllReceiptsByItemIdAsync(int itemId)
+        {
+            //Get Item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+            //Get Receipts
+            var receipts = await _receiptRepository.GetAllWithItemIdAsync(itemId);
+
+            return _mapper.Map<List<ReceiptReadDTO>>(receipts);
+        }
     }
 }

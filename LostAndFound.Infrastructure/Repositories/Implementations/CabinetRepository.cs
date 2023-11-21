@@ -23,6 +23,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
+                .Include(c => c.Storage)
                 .Where(c => c.StorageId == storageId && c.IsActive == true).OrderBy(c => c.Name);
 
             return await Task.FromResult(cabinets.ToList());
@@ -32,6 +33,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
+                .Include(c => c.Storage)
                 .Where(c => c.StorageId == storageId).OrderBy(c => c.Name);
 
             return await Task.FromResult(cabinets.ToList());
@@ -41,6 +43,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Cabinets
                 .Include(c => c.Items)
+                .Include(c => c.Storage)
                 .FirstOrDefaultAsync(c => c.Id == id && c.IsActive == true);
         }
 
@@ -48,13 +51,26 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Cabinets
                 .Include(c => c.Items)
+                .Include(c => c.Storage)
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<IEnumerable<Cabinet>> ListAllCabinetsAsync()
+        {
+            IQueryable<Cabinet> cabinets = _context.Cabinets
+                .Include(c => c.Items)
+                .Include(c => c.Storage)
+                .Where(c => c.IsActive == true)
+                .OrderBy(c => c.Name);
+
+            return await Task.FromResult(cabinets.ToList());
         }
 
         public async Task<IEnumerable<Cabinet>> QueryCabinetAsync(CabinetQuery query, bool trackChanges = false)
         {
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
+                .Include(c => c.Storage)
                 .AsSplitQuery();
 
             if (!trackChanges)

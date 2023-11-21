@@ -115,6 +115,21 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(receipt);
         }
 
+        /// <summary>
+        /// Get all receipt by itemId 
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        [HttpGet("get-all-by-item/{itemId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReceiptReadDTO[]>))]
+        public async Task<IActionResult> GetAllCabinetsByStorageId(int itemId)
+        {
+            var result = await _receiptService.GetAllReceiptsByItemIdAsync(itemId);
 
+            return ResponseFactory.Ok(result);
+        }
     }
 }

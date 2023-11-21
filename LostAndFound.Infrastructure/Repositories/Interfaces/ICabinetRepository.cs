@@ -19,6 +19,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<Cabinet> FindCabinetByIdIgnoreStatusAsync(int id);
         Task<IEnumerable<Cabinet>> FindAllCabinetsByStorageIdAsync(int storageId);
         Task<IEnumerable<Cabinet>> FindAllCabinetsByStorageIdIgnoreStatusAsync(int storageId);
+        Task<IEnumerable<Cabinet>> ListAllCabinetsAsync();
         Task<IEnumerable<Cabinet>> QueryCabinetAsync(CabinetQuery query, bool trackChanges = false);
     }
 }

@@ -116,6 +116,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<CabinetReadDTO>>(cabinets);
         }
 
+        public async Task<IEnumerable<CabinetReadDTO>> ListAllCabinetsAsync()
+        {
+            //Get Cabinets
+            var cabinets = await _cabinetRepository.ListAllCabinetsAsync();
+
+            return _mapper.Map<List<CabinetReadDTO>>(cabinets);
+        }
+
         public async Task<CabinetReadDTO> GetCabinetByIdAsync(int id)
         {
             var cabinet = await _cabinetRepository.FindCabinetByIdAsync(id);

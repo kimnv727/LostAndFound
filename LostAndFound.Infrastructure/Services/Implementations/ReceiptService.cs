@@ -92,11 +92,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<User>(receiptCreateDTO.ReceiverId);
             }
-            var sender = await _userRepository.FindUserByID(receiptCreateDTO.SenderId);
-            if (sender == null)
+
+            var sender = receiptCreateDTO.SenderId;
+
+            if (!string.IsNullOrEmpty(sender))
             {
-                throw new EntityWithIDNotFoundException<User>(receiptCreateDTO.SenderId);
+                var check = await _userRepository.FindUserByID(receiptCreateDTO.SenderId);
+                if (check == null)
+                {
+                        throw new EntityWithIDNotFoundException<User>(check);                   
+                }
             }
+
             var item = await _itemRepository.FindItemByIdAsync(receiptCreateDTO.ItemId);
             if (item == null)
             {

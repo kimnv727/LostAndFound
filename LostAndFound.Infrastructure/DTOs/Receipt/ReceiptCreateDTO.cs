@@ -15,8 +15,7 @@ namespace LostAndFound.Infrastructure.DTOs.Receipt
     {
         [Required]
         public string ReceiverId { get; set; }
-
-        [Required]
+        
         public string SenderId { get; set; }
 
         [Required]

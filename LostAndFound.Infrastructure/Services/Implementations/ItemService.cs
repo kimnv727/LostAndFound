@@ -471,8 +471,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //check item status
             if(item.IsInStorage == true)
             {
-                //throw error here
+                //TODO:throw error here
                 throw new Exception("This item is already in storage");
+            }
+            if(item.ItemStatus != ItemStatus.PENDING && item.ItemStatus != ItemStatus.ACTIVE)
+            {
+                throw new Exception("Wrong status");
             }
 
             //check if Cabinet exists

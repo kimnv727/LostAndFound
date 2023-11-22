@@ -11,7 +11,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int LocationId { get; set; }
         public int CategoryId { get; set; }
 
-        public int CabinetId { get; set; }
+        public int? CabinetId { get; set; }
         public ItemStatus ItemStatus { get; set; }
 
     }

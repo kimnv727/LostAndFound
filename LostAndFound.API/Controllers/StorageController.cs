@@ -184,7 +184,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<StorageReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreateStorage([FromForm] StorageWriteDTO writeDTO)
+        public async Task<IActionResult> CreateStorage(StorageWriteDTO writeDTO)
         {
             var result = await _storageService.CreateStorageAsync(writeDTO);
 

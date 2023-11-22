@@ -17,6 +17,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<User> FindUserByEmail(string email);
         Task<bool> IsDuplicatedEmail(string email);
         Task<bool> IsDuplicatedPhoneNumber(string phoneNumber);
+        Task<IEnumerable<User>> FindAllStorageManagersAsync();
+        Task<IEnumerable<User>> FindAllStorageManagersByCampusIdAsync(int campusId);
         Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false);
         Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQueryIgnoreStatus query, bool trackChanges = false);
         Task<IEnumerable<User>> QueryUserIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query, bool trackChanges = false);

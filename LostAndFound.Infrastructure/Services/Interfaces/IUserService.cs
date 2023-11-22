@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.User;
@@ -21,5 +22,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<UserDetailsReadDTO> UpdateUserPasswordAndSendEmailAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO);
         Task<bool> CheckUserExisted(string userId);
         Task<UserDetailsReadDTO> ChangeUserVerifyStatusAsync(UserVerifyStatusUpdateDTO updateDto);
+        Task<IEnumerable<UserDetailsReadDTO>> ListAllStorageManagersAsync();
+        Task<IEnumerable<UserDetailsReadDTO>> ListAllStorageManagersByCampusIdAsync(int campusId);
     }
 }

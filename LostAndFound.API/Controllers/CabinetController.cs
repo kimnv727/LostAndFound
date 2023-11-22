@@ -116,7 +116,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ApiCreatedResponse<CabinetReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
-        public async Task<IActionResult> CreateCabinet([FromForm] CabinetWriteDTO writeDTO)
+        public async Task<IActionResult> CreateCabinet(CabinetWriteDTO writeDTO)
         {
             var result = await _cabinetService.CreateCabinetAsync(writeDTO);
 

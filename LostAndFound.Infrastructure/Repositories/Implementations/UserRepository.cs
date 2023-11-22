@@ -20,6 +20,30 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
         }
 
+        public async Task<IEnumerable<User>> FindAllStorageManagersAsync()
+        {
+            IQueryable<User> users = _context.Users
+                .Include(u => u.Campus)
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == 3 && u.IsActive == true);
+
+            return await Task.FromResult(users.ToList());
+        }
+
+        public async Task<IEnumerable<User>> FindAllStorageManagersByCampusIdAsync(int campusId)
+        {
+            IQueryable<User> users = _context.Users
+                .Include(u => u.Campus)
+                .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
+                .ThenInclude(um => um.Media)
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == 3 && u.IsActive == true && u.CampusId == campusId);
+
+            return await Task.FromResult(users.ToList());
+        }
+
         public async Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false)
         {
             IQueryable<User> users = _context.Users

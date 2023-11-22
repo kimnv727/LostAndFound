@@ -290,5 +290,38 @@ namespace LostAndFound.API.Controllers
 
             return File(result, "image/bmp");
         }
+
+        /// <summary>
+        /// Get all Storage Managers no paginated (only Active)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("list-all-storage-managers")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO[]>))]
+        public async Task<IActionResult> ListAllStorageManagers()
+        {
+            var result = await _userService.ListAllStorageManagersAsync();
+
+            return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// Get all Storage Managers no paginated (only Active)
+        /// </summary>
+        /// <param name="campusId"></param>
+        /// <returns></returns>
+        [HttpGet("list-all-storage-managers-by-campus")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO[]>))]
+        public async Task<IActionResult> ListAllStorageManagersByCampusId(int campusId)
+        {
+            var result = await _userService.ListAllStorageManagersByCampusIdAsync(campusId);
+
+            return ResponseFactory.Ok(result);
+        }
     }
 }

@@ -11,6 +11,7 @@ using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
 using LostAndFound.Core.Entities;
+using System.Collections.Generic;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -268,6 +269,29 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
             
             return _mapper.Map<UserDetailsReadDTO>(user);
+        }
+
+        public async Task<IEnumerable<UserDetailsReadDTO>> ListAllStorageManagersAsync()
+        {
+            //Get Storage Managers
+            var users = await _userRepository.FindAllStorageManagersAsync();
+
+            return _mapper.Map<List<UserDetailsReadDTO>>(users);
+        }
+
+        public async Task<IEnumerable<UserDetailsReadDTO>> ListAllStorageManagersByCampusIdAsync(int campusId)
+        {
+            //check Campus
+            var campus = await _campusRepository.FindCampusByIdAsync(campusId);
+
+            if (campus == null)
+            {
+                throw new EntityWithIDNotFoundException<Campus>(campusId);
+            }
+            //Get Storage Managers
+            var users = await _userRepository.FindAllStorageManagersByCampusIdAsync(campusId);
+
+            return _mapper.Map<List<UserDetailsReadDTO>>(users);
         }
     }
 }

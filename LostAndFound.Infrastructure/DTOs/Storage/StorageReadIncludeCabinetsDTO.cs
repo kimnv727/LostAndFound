@@ -1,4 +1,5 @@
 ﻿using LostAndFound.Infrastructure.DTOs.Cabinet;
+using LostAndFound.Infrastructure.DTOs.Property;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace LostAndFound.Infrastructure.DTOs.Storage
         [JsonProperty("mainStorageManager")]
         public string MainStorageManagerId { get; set; }
         public DateTime CreatedDate { get; set; }
+        public virtual CampusReadDTO Campus { get; set; }
         public ICollection<CabinetReadDTO> Cabinets { get; set; }
     }
 }

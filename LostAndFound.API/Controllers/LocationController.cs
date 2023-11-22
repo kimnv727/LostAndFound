@@ -81,6 +81,21 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// List all locations by campusId
+        /// </summary>
+        /// <param name="campusId"></param>
+        /// <returns></returns>
+        [HttpGet("all-by-campus")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<LocationReadDTO>>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ListAllByCampusId(int campusId)
+        {
+            var locations = await _locationService.ListAllByCampusIdAsync(campusId);
+            return ResponseFactory.Ok(locations);
+        }
+
+        /// <summary>
         /// Get Location By Id
         /// </summary>
         /// <returns></returns>

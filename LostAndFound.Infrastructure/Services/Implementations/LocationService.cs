@@ -21,13 +21,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILocationRepository _locationRepository;
         private readonly IStorageRepository _storageRepository;
+        private readonly ICampusRepository _campusRepository;
 
-        public LocationService(IMapper mapper, IUnitOfWork unitOfWork, ILocationRepository locationRepository, IStorageRepository storageRepository)
+        public LocationService(IMapper mapper, IUnitOfWork unitOfWork, ILocationRepository locationRepository, IStorageRepository storageRepository,
+            ICampusRepository campusRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _locationRepository = locationRepository;
             _storageRepository = storageRepository;
+            _campusRepository = campusRepository;
         }
 
         public async Task<PaginatedResponse<LocationReadDTO>> QueryLocationWithPaginationAsync(LocationQuery query)
@@ -45,6 +48,19 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         public async Task<IEnumerable<LocationReadDTO>> ListAllWithCampusSortedByFloorAsync()
         {
             var locations = await _locationRepository.GetAllWithCampusSortedByFloorAsync();
+            return _mapper.Map<List<LocationReadDTO>>(locations);
+        }
+
+        public async Task<IEnumerable<LocationReadDTO>> ListAllByCampusIdAsync(int campusId)
+        {
+            var campus = await _campusRepository.FindCampusByIdAsync(campusId);
+
+            if (campus == null)
+            {
+                throw new EntityWithIDNotFoundException<Campus>(campusId);
+            }
+
+            var locations = await _locationRepository.GetAllByCampusIdAsync(campusId);
             return _mapper.Map<List<LocationReadDTO>>(locations);
         }
 

@@ -358,14 +358,13 @@ namespace LostAndFound.API.Controllers
         /// Flag an item
         /// </summary>
         /// <param name="itemId"></param>
-        /// <param name="reason">Reason for the flag</param>
         /// <returns></returns>
         [HttpPost("flag-an-item/{itemId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> FlagAnItem(int itemId, ItemFlagReason reason)
+        public async Task<IActionResult> FlagAnItem(int itemId, [FromForm] ItemFlagReason reason)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 

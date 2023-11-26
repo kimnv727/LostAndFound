@@ -118,6 +118,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
             }
+            if (query.Floor >= 0)
+            {
+                items = items.Where(i => i.Location.Floor == query.Floor);
+            }
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
                 items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
@@ -207,6 +211,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
             }
+            if (query.Floor >= 0)
+            {
+                items = items.Where(i => i.Location.Floor == query.Floor);
+            }
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
                 items = items.Where(i => i.Name.ToLower().Contains(query.Name.ToLower()));
@@ -286,6 +294,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.LocationId > 0)
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
+            }
+            if (query.Floor >= 0)
+            {
+                items = items.Where(i => i.Location.Floor == query.Floor);
             }
             if (!string.IsNullOrWhiteSpace(query.Name))
             {

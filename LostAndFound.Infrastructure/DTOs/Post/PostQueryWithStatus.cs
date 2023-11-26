@@ -13,6 +13,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string PostContent { get; set; }
         
         public int PostLocationId { get; set; }
+        public int PostLocationFloor { get; set; }
         public int?[] PostCategoryId { get; set; }
         public int PostCategoryGroupId { get; set; }
 

@@ -101,6 +101,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
             }
+            if (query.PostLocationFloor >= 0)
+            {
+                posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
+            }
 
             if (query.FromDate != null)
             {
@@ -174,7 +178,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
             }
-            
+            if (query.PostLocationFloor >= 0)
+            {
+                posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
+            }
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.PENDING)
@@ -272,7 +279,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
             }
-
+            if (query.PostLocationFloor >= 0)
+            {
+                posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
+            }
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithStatusExcludePendingAndRejected.PostStatusQuery.CLOSED)
@@ -363,7 +373,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.PostLocationId == query.PostLocationId);
             }
-
+            if (query.PostLocationFloor >= 0)
+            {
+                posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
+            }
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithFlag.PostStatusQuery.CLOSED)

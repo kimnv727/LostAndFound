@@ -325,7 +325,6 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Get Post Bookmark Detail
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="postId"></param>
         /// <returns></returns>
         [HttpGet("get-post-bookmark")]
@@ -333,9 +332,10 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<PostBookmarkReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetPostBookmark(string userId, int postId)
+        public async Task<IActionResult> GetPostBookmark(int postId)
         {
-            var postBookmark = await _postBookmarkService.GetPostBookmark(userId, postId);
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var postBookmark = await _postBookmarkService.GetPostBookmark(stringId, postId);
 
             return ResponseFactory.Ok(postBookmark);
         }

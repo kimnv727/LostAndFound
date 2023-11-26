@@ -23,15 +23,23 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Post>> FindBookmarkPostsByUserIdAsync(string userId)
         {
-            IQueryable<PostBookmark> postBookmarks = _context.PostBookmarks.Where(pb => pb.UserId == userId && pb.IsActive == true);
-            IQueryable<Post> posts = postBookmarks.Select(bp => bp.Post);
+            var postBookmarksId = _context.PostBookmarks.Where(pb => pb.UserId == userId && pb.IsActive == true).Select(pb => pb.PostId).ToList();
+            var posts = _context.Posts
+                .Where(p => postBookmarksId.Contains(p.Id) && p.PostStatus != Core.Enums.PostStatus.DELETED)
+                .Include(p => p.Category)
+                .Include(p => p.Location)
+                .Include(p => p.User)
+                .ThenInclude(p => p.Campus)
+                .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
+                .ThenInclude(pm => pm.Media);
 
             return await Task.FromResult(posts.ToList());
         }
         
         public async Task<PostBookmark> FindPostBookmarkAsync(int postId, string userId)
         {
-            return await _context.PostBookmarks.Include(pb => pb.Post).FirstOrDefaultAsync(pb => pb.PostId == postId && pb.UserId == userId);
+            return await _context.PostBookmarks.Include(pb => pb.Post)
+                .FirstOrDefaultAsync(pb => pb.PostId == postId && pb.UserId == userId);
         }
     }
 }

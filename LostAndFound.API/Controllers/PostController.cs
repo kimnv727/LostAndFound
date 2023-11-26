@@ -374,7 +374,7 @@ namespace LostAndFound.API.Controllers
             
             return ResponseFactory.CreatedAt(nameof(GetPostBookmark), 
                 nameof(PostController), 
-                new { userId = postBookmark.UserId, postId = postBookmark.Post.Id }, 
+                new { userId = postBookmark.UserId, postId = postBookmark.PostId }, 
                 postBookmark);
         }
         

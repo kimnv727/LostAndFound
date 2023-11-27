@@ -91,12 +91,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
             }
-            
-            if (query.PostCategoryId > 0)
+
+            /*if (query.PostCategoryId > 0)
             {
                 posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
+            }*/
+
+            if (query.PostCategoryId != null)
+            {
+                posts = posts.Where(p => query.PostCategoryId.Contains(p.PostCategoryId));
             }
-            
+
             if (query.PostLocationId > 0)
             {
                 posts = posts.Where(p => p.PostLocationId == query.PostLocationId);

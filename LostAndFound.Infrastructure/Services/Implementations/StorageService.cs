@@ -207,7 +207,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task<StorageReadDTO> UpdateStorageDetailsAsync(int storageId, StorageUpdateDTO storageUpdateDTO)
         {
-            var storage = await _storageRepository.FindStorageByIdAsync(storageId);
+            var storage = await _storageRepository.FindStorageByIdIgnoreStatusAsync(storageId);
             if (storage == null)
             {
                 throw new EntityWithIDNotFoundException<Storage>(storageId);

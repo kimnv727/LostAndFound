@@ -171,9 +171,10 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateItemStatus([Required] int itemId, ItemStatus itemStatus)
         {
-            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            //TODO: Check role for user updating own item
+            /*string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             string[] roles = { "Manager", "Storage Manager" };
-            await _firebaseAuthService.CheckUserRoles(userId, roles);
+            await _firebaseAuthService.CheckUserRoles(userId, roles);*/
 
             var item = await _itemService.UpdateItemStatus(itemId, itemStatus);
             

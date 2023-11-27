@@ -5,6 +5,7 @@ using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Post;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Post;
@@ -146,6 +147,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Post>(postId);
             }
+
+            //check Post active
+            if (post.PostStatus != PostStatus.ACTIVE)
+            {
+                throw new PostNotActiveException();
+            }
+
             //Map Comment 
             var comment = _mapper.Map<Comment>(commentWriteDTO);
             comment.IsActive = true;

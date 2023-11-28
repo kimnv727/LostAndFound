@@ -33,6 +33,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Where(i => itemBookmarksId.Contains(i.Id) && i.ItemStatus != Core.Enums.ItemStatus.DELETED)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
+                .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))
                 .Include(i => i.User)
                 .ThenInclude(i => i.Campus)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))

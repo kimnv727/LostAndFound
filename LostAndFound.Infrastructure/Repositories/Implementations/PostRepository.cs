@@ -23,6 +23,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
@@ -34,6 +35,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.Comments)
@@ -46,6 +48,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
@@ -61,6 +64,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
@@ -138,6 +142,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
@@ -238,6 +243,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
@@ -331,6 +337,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostFlags)
@@ -452,6 +459,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var posts = _context.Posts
                 .Include(p => p.User)
+                .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
                 .Include(p => p.PostFlags)

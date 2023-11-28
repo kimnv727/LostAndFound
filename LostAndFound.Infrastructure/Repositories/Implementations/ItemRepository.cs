@@ -32,6 +32,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Include(i => i.ItemClaims)
+                .Include(i => i.Cabinet)
                 .FirstOrDefaultAsync(i => i.Id == ItemId);
         }
 
@@ -45,6 +46,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Include(i => i.ItemClaims)
+                .Include(i => i.Cabinet)
                 .FirstOrDefaultAsync
                 (i => i.Name.ToLower().Contains(Name.ToLower()));
         }
@@ -59,6 +61,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Include(i => i.ItemClaims)
+                .Include(i => i.Cabinet)
                 .AsSplitQuery();
 
             items = items.Where(i => i.Location.Floor == floorNumber)
@@ -79,6 +82,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Include(i => i.ItemClaims)
+                .Include(i => i.Cabinet)
                 .AsSplitQuery();
 
             items = items
@@ -99,6 +103,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
                             .AsSplitQuery();
 
             if (!trackChanges)
@@ -192,6 +197,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
@@ -279,6 +285,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
@@ -372,6 +379,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemClaims)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
@@ -395,6 +403,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Category)
                             .Include(i => i.Location)
                             .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .AsSplitQuery();
@@ -417,6 +426,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemClaims.Where(ic => ic.ClaimStatus == true))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
@@ -434,6 +444,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
@@ -451,6 +462,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(u => u.Campus)
                             .Include(i => i.Category)
                             .Include(i => i.Location)
+                            .Include(i => i.Cabinet)
                             .Include(i => i.ItemClaims)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
@@ -480,6 +492,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
+                .Include(i => i.Cabinet)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Where(i => i.ItemStatus == ItemStatus.ACTIVE && i.LocationId == locationId && i.CategoryId == categoryId)

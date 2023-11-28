@@ -134,6 +134,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.CategoryId == query.CategoryId);
             }*/
+            if (query.CategoryGroupId > 0)
+            {
+                items = items.Where(i => i.Category.CategoryGroupId == query.CategoryGroupId);
+            }
             if (query.CategoryId != null)
             {
                 items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
@@ -227,6 +231,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.CategoryId == query.CategoryId);
             }*/
+            if (query.CategoryGroupId > 0)
+            {
+                items = items.Where(i => i.Category.CategoryGroupId == query.CategoryGroupId);
+            }
             if (query.CategoryId != null)
             {
                 items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
@@ -311,6 +319,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.CategoryId == query.CategoryId);
             }*/
+            if (query.CategoryGroupId > 0)
+            {
+                items = items.Where(i => i.Category.CategoryGroupId == query.CategoryGroupId);
+            }
             if (query.CategoryId != null)
             {
                 items = items.Where(i => query.CategoryId.Contains(i.CategoryId));

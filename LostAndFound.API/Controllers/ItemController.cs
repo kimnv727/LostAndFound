@@ -400,16 +400,16 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Get item bookmark details
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="itemId"></param>
         /// <returns></returns>
         [HttpGet("get-item-bookmark")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ItemFlagReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetItemBookmark(string userId, int itemId)
+        public async Task<IActionResult> GetItemBookmark(int itemId)
         {
-            var itemFlag = await _itemBookmarkService.GetItemBookmark(userId, itemId);
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var itemFlag = await _itemBookmarkService.GetItemBookmark(stringId, itemId);
 
             return ResponseFactory.Ok(itemFlag);
         }

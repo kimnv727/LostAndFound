@@ -27,6 +27,8 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public int[] CategoryId { get; set; }
 
+        public int CategoryGroupId { get; set; }
+
         public int CabinetId { get; set; }
 
         public bool IsInStorage { get; set; }

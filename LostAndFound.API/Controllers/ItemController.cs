@@ -29,6 +29,7 @@ using LostAndFound.Core.Exceptions.ItemClaim;
 using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.ItemFlag;
 using LostAndFound.API.Extensions;
+using LostAndFound.Infrastructure.DTOs.Receipt;
 
 namespace LostAndFound.API.Controllers
 {
@@ -308,8 +309,6 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.NoContent();
         }
 
-
-
         /// <summary>
         /// Count total flags of an item
         /// </summary>
@@ -495,7 +494,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Accept a claim (Will disable any other claims)
+        /// Accept a claim
         /// </summary>
         /// <returns></returns>
         [HttpPost("accept")]
@@ -509,11 +508,32 @@ namespace LostAndFound.API.Controllers
             //Check if current user is Item founder
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
+                await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.ReceiverId);
             }
             else throw new ItemFounderNotMatchException();
 
             return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Accept a claim then create receipt
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("accept-with-receipt")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> AcceptAClaimAndCreateReceiptAsync([FromForm] MakeClaimWithReceiptDTO makeClaimWithReceiptDTO)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            //Check if current user is Item founder
+            if (await _itemService.CheckItemFounderAsync(makeClaimWithReceiptDTO.ItemId, currentUserId))
+            {
+                return ResponseFactory.Ok<ReceiptReadDTO>(await _itemService.AcceptAClaimAndCreateReceiptAsync(makeClaimWithReceiptDTO.ItemId, makeClaimWithReceiptDTO.ReceiverId, makeClaimWithReceiptDTO.ReceiptMedia));
+            }
+            else throw new ItemFounderNotMatchException();
+
         }
 
         /// <summary>
@@ -530,7 +550,7 @@ namespace LostAndFound.API.Controllers
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
+                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.ReceiverId);
             }
             else throw new ItemFounderNotMatchException();
             return ResponseFactory.NoContent();

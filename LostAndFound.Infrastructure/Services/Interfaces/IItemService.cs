@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using LostAndFound.Infrastructure.DTOs.Common;
+using Microsoft.AspNetCore.Http;
+using LostAndFound.Infrastructure.DTOs.Receipt;
 
 namespace LostAndFound.Infrastructure.Services.Interfaces
 {
@@ -35,6 +37,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<IEnumerable<ItemReadDTO>> ListItemsSortByFloorNumberAsync();
         public Task UpdateClaimStatusAsync(int itemId, string userId);
         public Task AcceptAClaimAsync(int itemId, string userId);
+        public Task<ReceiptReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia);
         public Task DenyAClaimAsync(int itemId, string userId);
         Task<ItemReadDTO> RecommendMostRelatedItemAsync(int postId);
         public Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO);

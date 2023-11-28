@@ -21,6 +21,7 @@ using F23.StringSimilarity;
 using LostAndFound.Infrastructure.DTOs.Receipt;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Core.Exceptions.Item;
+using Microsoft.AspNetCore.Http;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
 {
@@ -287,24 +288,22 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task AcceptAClaimAsync(int itemId, string userId)
+        public async Task AcceptAClaimAsync(int itemId, string receiverId)
         {
             /*
-            Accept a claim:
             + Change item status to RETURNED
-            + Set all claims to status = false, except for the claimer
-            + Set "get items with claims for member" to query for status=returned if member claimed it
+            + Set all claims to status = false, except for the claim maker
             */
 
-            //Check userId 
-            var user = await _userRepository.FindUserByID(userId);
+            //Check userId of claim maker
+            var user = await _userRepository.FindUserByID(receiverId);
             if (user == null)
             {
-                throw new EntityWithIDNotFoundException<User>(userId);
+                throw new EntityWithIDNotFoundException<User>(receiverId);
             }
 
             //Check if claim status = true
-            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
+            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, receiverId);
             if(check == null)
             {
                 throw new NoSuchClaimException();
@@ -329,12 +328,87 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var claimsOfThisItem = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
             foreach (var claim in claimsOfThisItem)
             {
-                if (claim.UserId != userId)
+                if (claim.UserId != receiverId)
                 {
                     claim.ClaimStatus = false;
                     await _unitOfWork.CommitAsync();
                 }
             }
+        }
+
+        public async Task<ReceiptReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia)
+        {
+            /*
+            + Make a receipt
+            + Change item status to RETURNED
+            + Set all claims to status = false, except for the claim maker
+            */
+
+            //Check userId of claim maker
+            var user = await _userRepository.FindUserByID(receiverId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(receiverId);
+            }
+
+            //Check if claim status = true
+            var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, receiverId);
+            if (check == null)
+            {
+                throw new NoSuchClaimException();
+            }
+            if (check.ClaimStatus == false)
+            {
+                throw new CannotAcceptDisabledClaimException();
+            }
+
+            //Get item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+
+            //Create a receipt
+            var result = await _mediaService.UploadFileAsync(receiptMedia, _awsCredentials);
+
+            //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
+            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            {
+                ReceiverId = receiverId,
+                SenderId = item.FoundUserId,
+                ItemId = item.Id,
+                ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                Media = new MediaWriteDTO()
+                {
+                    Name = receiptMedia.FileName,
+                    Description = "Receipt image for item Id = " + item.Id,
+                    Url = result.Url,
+                }
+            };
+
+            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            await _receiptRepository.AddAsync(receipt);
+            await _unitOfWork.CommitAsync();
+
+            var returnResult = _mapper.Map<ReceiptReadDTO>(receipt);
+
+            //Change item status to RETURNED
+            await UpdateItemStatus(itemId, ItemStatus.RETURNED);
+            await _unitOfWork.CommitAsync();
+
+            //Set all claims of this item to status = false
+            var claimsOfThisItem = await _itemClaimRepository.GetAllClaimsByItemIdAsync(itemId);
+            foreach (var claim in claimsOfThisItem)
+            {
+                if (claim.UserId != receiverId)
+                {
+                    claim.ClaimStatus = false;
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            return returnResult;
         }
 
         public async Task DenyAClaimAsync(int itemId, string userId)

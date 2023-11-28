@@ -19,7 +19,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public int LocationId { get; set; }
 
-        public int Floor { get; set; }
+        public int? Floor { get; set; }
 
         public string Name { get; set; }
 

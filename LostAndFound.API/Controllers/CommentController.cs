@@ -255,7 +255,7 @@ namespace LostAndFound.API.Controllers
             var commentCheck = await _commentService.GetCommentByIdAsync(commentId);
             if (stringId == commentCheck.CommentUserId)
             {
-                throw new UnauthorizedException();
+                throw new NotPermittedException("You are not permitted to access this function");
             }
 
             //Flag a comment

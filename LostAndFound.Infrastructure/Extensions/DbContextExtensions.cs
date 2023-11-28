@@ -84,13 +84,28 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Users
+                List<UserMedia> userMedias1 = new List<UserMedia>();
+                UserMedia userMedia1 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfAdmin.png",
+                        Description = "Avatar of Admin Account",
+                        URL = "https://files.catbox.moe/05jiq7.png?fbclid=IwAR0d2x-q19sCGIvjAoZVqwt5xzEtHe72ONjqWTs-RkLdTx4fEI2ERIL7oOM",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMedias1.Add(userMedia1);
+
                 User adminUser = new User()
                 {
-                    Id = "n8pJOw1SeoXexNsGwGCDq9GQ8SV2",
-                    Email = "admin@fpt.edu.vn",
-                    Password = "",
+                    Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
+                    Email = "abc123@fpt.edu.vn",
+                    Password = "123456",
+                    Avatar= "https://files.catbox.moe/05jiq7.png?fbclid=IwAR0d2x-q19sCGIvjAoZVqwt5xzEtHe72ONjqWTs-RkLdTx4fEI2ERIL7oOM",
                     IsActive = true,
-                    FirstName = "Test",
+                    FirstName = "Account",
                     LastName = "Admin",
                     Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
@@ -98,43 +113,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "ADMIN",
                     CampusId = 1,
                     RoleId = 1,
-                    CreatedDate = DateTime.Now.ToVNTime()
-                };
-                context.Users.Add(adminUser);
-                context.SaveChanges();
-
-                List<UserMedia> userMedias1 = new List<UserMedia>();
-                UserMedia userMedia1 = new UserMedia()
-                {
-                    Media = new Media()
-                    {
-                        Name = "AvatarOfUser1.png",
-                        Description = "Avatar of User1 Account",
-                        URL = "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
-                        CreatedDate = DateTime.Now.ToVNTime(),
-                    },
-                    MediaType = UserMediaType.AVATAR
-                };
-                userMedias1.Add(userMedia1);
-                User user = new User()
-                {
-                    Id = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
-                    Email = "abc456@fpt.edu.vn",
-                    Password = "",
-                    Avatar= "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
-                    IsActive = true,
-                    FirstName = "Test",
-                    LastName = "User",
-                    Gender = Gender.Male,
-                    VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
-                    Phone = "0808080808",
-                    SchoolId = "SE111111",
-                    CampusId = 1,
-                    RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime(),
                     UserMedias = userMedias1
                 };
-                context.Users.Add(user);
+                context.Users.Add(adminUser);
                 context.SaveChanges();
 
                 List<UserMedia> userMedias2 = new List<UserMedia>();
@@ -142,112 +124,190 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Media = new Media()
                     {
-                        Name = "AvatarOfUser2.png",
-                        Description = "Avatar of User2 Account",
-                        URL = "https://pbs.twimg.com/media/F9nsg-2a0AA0WCc?format=jpg&name=large",
+                        Name = "AvatarOfManager1.png",
+                        Description = "Avatar of Manager1 Account",
+                        URL = "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
-                UserMedia userMediaCCID2 = new UserMedia()
+                UserMedia managerMediaCCID1 = new UserMedia()
                 {
                     Media = new Media()
                     {
-                        Name = "CCIDOfUser2.png",
-                        Description = "CCID of User2 Account",
-                        URL = "https://pbs.twimg.com/media/F9FHQzNagAAy6NU?format=jpg&name=large",
+                        Name = "FrontCCIDOfManager1.png",
+                        Description = "Front CCID of Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD
                 };
-                UserMedia userMediaStudentCard2 = new UserMedia()
+                UserMedia managerMediaCCID2 = new UserMedia()
                 {
                     Media = new Media()
                     {
-                        Name = "StudentCardOfUser2.png",
-                        Description = "Student Card of User2 Account",
-                        URL = "https://pbs.twimg.com/media/F9FHQzObcAAgyyK?format=jpg&name=large",
+                        Name = "BackCCIDOfManager2.png",
+                        Description = "Back CCID of Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.STUDENT_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
                 };
                 userMedias2.Add(userMedia2);
-                userMedias2.Add(userMediaCCID2);
-                userMedias2.Add(userMediaStudentCard2);
-                User user2 = new User()
+                userMedias2.Add(managerMediaCCID1);
+                userMedias2.Add(managerMediaCCID2);
+
+                User user = new User()
                 {
-                    Id = "eK9abWwxluYzbScdsQ8dx2zWnxD3",
-                    Email = "aruurara@gmail.com",
-                    Password = "",
-                    Avatar = "https://pbs.twimg.com/media/F9nsg-2a0AA0WCc?format=jpg&name=large",
+                    Id = "nUe7uARvmIOY00Y314ztH4BKAHw2",
+                    Email = "kimnv125@gmail.com",
+                    Password = "123456",
+                    Avatar= "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
                     IsActive = true,
-                    FirstName = "aruurara",
-                    LastName = "あるうらら",
-                    Gender = Gender.Female,
-                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
-                    Phone = "0909090909",
-                    SchoolId = "SE121212",
+                    FirstName = "Manager",
+                    LastName = "Account",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0808080808",
+                    SchoolId = "Manager1",
                     CampusId = 1,
-                    RoleId = 4,
+                    RoleId = 2,
                     CreatedDate = DateTime.Now.ToVNTime(),
                     UserMedias = userMedias2
                 };
-                context.Users.Add(user2);
+                context.Users.Add(user);
                 context.SaveChanges();
 
-
-                List<UserMedia> managerMedias = new List<UserMedia>();
-                UserMedia managerMedia = new UserMedia()
+                List<UserMedia> userMedias3 = new List<UserMedia>();
+                UserMedia userMedia3 = new UserMedia()
                 {
                     Media = new Media()
                     {
-                        Name = "AvatarOfManager.png",
-                        Description = "Avatar of Manager Account",
-                        URL = "https://pbs.twimg.com/media/F94XNNBWcAAnOqX?format=jpg&name=medium",
+                        Name = "AvatarOfStorageManager1.png",
+                        Description = "Avatar of Storage Manager1 Account",
+                        URL = "https://pbs.twimg.com/profile_images/1091963888021602305/9440xgqT_400x400.jpg",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
-                managerMedias.Add(managerMedia);
-                User managerUser = new User()
+                UserMedia managerMediaCCID3 = new UserMedia()
                 {
-                    Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
-                    Email = "abc123@fpt.edu.vn",
-                    Password = "",
-                    Avatar = "https://pbs.twimg.com/media/F94XNNBWcAAnOqX?format=jpg&name=medium",
-                    IsActive = true,
-                    FirstName = "Test",
-                    LastName = "Manager",
-                    Gender = Gender.Male,
-                    VerifyStatus = UserVerifyStatus.VERIFIED,
-                    Phone = "0909090909",
-                    SchoolId = "MANAGER",
-                    CampusId = 1,
-                    RoleId = 2,
-                    CreatedDate = DateTime.Now.ToVNTime(),
-                    UserMedias = managerMedias,
+                    Media = new Media()
+                    {
+                        Name = "FrontCCIDOfStorageManager1.png",
+                        Description = "Front CCID of Storage Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
                 };
-                context.Users.Add(managerUser);
-                context.SaveChanges();
-
-                User storageManagerUser = new User()
+                UserMedia managerMediaCCID4 = new UserMedia()
                 {
-                    Id = "UXFjz04VvING1SxKxcfIZQQhVCo1",
-                    Email = "def123@fpt.edu.vn",
-                    Password = "",
+                    Media = new Media()
+                    {
+                        Name = "BackCCIDOfStorageManager2.png",
+                        Description = "Back CCID of Storage Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                };
+                userMedias3.Add(userMedia3);
+                userMedias3.Add(managerMediaCCID3);
+                userMedias3.Add(managerMediaCCID4);
+
+                User user2 = new User()
+                {
+                    Id = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
+                    Email = "gglcolab001@gmail.com",
+                    Password = "123456",
+                    Avatar = "https://pbs.twimg.com/profile_images/1091963888021602305/9440xgqT_400x400.jpg",
                     IsActive = true,
-                    FirstName = "Test",
-                    LastName = "Storage Manager",
-                    Gender = Gender.Male,
-                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    FirstName = "Storage Manager",
+                    LastName = "Account",
+                    Gender = Gender.Female,
+                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
                     Phone = "0909090909",
-                    SchoolId = "MANAGER",
+                    SchoolId = "StorageManager",
                     CampusId = 1,
                     RoleId = 3,
-                    CreatedDate = DateTime.Now.ToVNTime()
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    UserMedias = userMedias3
                 };
-                context.Users.Add(storageManagerUser);
+                context.Users.Add(user2);
                 context.SaveChanges();
+
+                List<UserMedia> userMedias4 = new List<UserMedia>();
+                UserMedia userMedia4 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfUser1.png",
+                        Description = "Avatar of User 1 Account",
+                        URL = "https://pbs.twimg.com/media/F_-LOp5bAAAaR_O?format=jpg&name=large",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                UserMedia userMediaCCID5 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "FrontCCIDOfUser1.png",
+                        Description = "Front CCID of User Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                };
+                UserMedia userMediaCCID6 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "BackCCIDOfUser2.png",
+                        Description = "Back CCID of User Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                };
+                UserMedia userMediaStudent7 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "StudentCardOfUser.png",
+                        Description = "Back CCID of User Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.STUDENT_CARD
+                };
+                userMedias4.Add(userMedia4);
+                userMedias4.Add(userMediaCCID5);
+                userMedias4.Add(userMediaCCID6);
+                userMedias4.Add(userMediaStudent7);
+
+                User user3 = new User()
+                {
+                    Id = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    Email = "kimnvse150529@fpt.edu.vn",
+                    Password = "123456",
+                    Avatar = "https://pbs.twimg.com/media/F_-LOp5bAAAaR_O?format=jpg&name=large",
+                    IsActive = true,
+                    FirstName = "Storage Manager",
+                    LastName = "Account",
+                    Gender = Gender.Female,
+                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
+                    Phone = "0909090909",
+                    SchoolId = "StorageManager",
+                    CampusId = 1,
+                    RoleId = 4,
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    UserMedias = userMedias4
+                };
+                context.Users.Add(user3);
+                context.SaveChanges();
+
 
                 #endregion
 
@@ -281,6 +341,40 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { PropertyId = 1, LocationName = "Room 025", Floor = 0, IsActive = true });
                     locations.Add(new Location() { PropertyId = 1, LocationName = "Eating Area", Floor = 0, IsActive = true });
                     locations.Add(new Location() { PropertyId = 1, LocationName = "7Eleven", Floor = 0, IsActive = true });
+                    #endregion
+
+                    #region Floor 1
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 101", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 102", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 103", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 104", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 105", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 106", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 107", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 108", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 109", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 110", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 111", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 112", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 113", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 114", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 115", Floor = 1, IsActive = true });
+                    #endregion
+
+                    #region Floor 2
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 201", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 202", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 203", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 204", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 205", Floor = 2, IsActive = true });
+                    #endregion
+
+                    #region Floor 3
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 301", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 302", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 303", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 304", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { PropertyId = 1, LocationName = "Room 305", Floor = 3, IsActive = true });
                     #endregion
 
                 foreach (var l in locations)
@@ -337,6 +431,14 @@ namespace LostAndFound.Infrastructure.Extensions
                     Description = "Clothes, belts and the likes",
                 };
                 context.CategoryGroups.Add(clothing);
+                context.SaveChanges();
+
+                CategoryGroup personalBelonging = new CategoryGroup()
+                {
+                    Name = "Personal Belonging",
+                    Description = "Bottle of Water, Meal and the likes",
+                };
+                context.CategoryGroups.Add(personalBelonging);
                 context.SaveChanges();
                 #endregion
 
@@ -473,40 +575,40 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.Categories.Add(studentCard);
                 context.SaveChanges();
 
-                Category underwear = new Category()
+                Category bottleOfWater = new Category()
                 {
-                    Name = "Underwear",
-                    Description = "Okay bro, but how?",
+                    Name = "Bottle of Water",
+                    Description = "Bottle of Water",
                     IsSensitive = true,
                     Value = ItemValue.Low,
-                    CategoryGroupId = 6,
+                    CategoryGroupId = 7,
                 };
-                context.Categories.Add(underwear);
+                context.Categories.Add(bottleOfWater);
                 context.SaveChanges();
 
-                Category swimsuit = new Category()
+                Category helmet = new Category()
                 {
-                    Name = "Swimsuit",
-                    Description = "You swim in lotus lake or something? Why is this here?",
+                    Name = "Helmet",
+                    Description = "Helmet",
                     IsSensitive = true,
                     Value = ItemValue.Low,
-                    CategoryGroupId = 6,
+                    CategoryGroupId = 7,
                 };
-                context.Categories.Add(swimsuit);
+                context.Categories.Add(helmet);
                 context.SaveChanges();
                 #endregion
 
                 #region Add Items
 
-                    #region Item 1
-                    List<ItemMedia> medias1 = new List<ItemMedia>();
+                #region Item 1
+                List<ItemMedia> medias1 = new List<ItemMedia>();
                     ItemMedia itemMedia1 = new ItemMedia()
                     {
                         Media = new Media()
                         {
                             Name = "Item1.png",
                             Description="Item 1 Image",
-                            URL= "https://pbs.twimg.com/media/F2Gk22ZbMAAL3qf?format=jpg&name=large",
+                            URL= "https://haloshop.vn/image/cache/catalog/products/apple/macbook/macbook-pro-2020-13-inch-chip-m1-gray-00-700x700.jpg",
                             CreatedDate = DateTime.Now.ToVNTime(),
                         }
                     };
@@ -516,7 +618,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         {
                             Name = "Item1.png",
                             Description = "Item 1 2nd Image",
-                            URL = "https://pbs.twimg.com/media/F63opCAaMAA1RCN?format=jpg&name=large",
+                            URL = "https://cdn.tgdd.vn/Products/Images/44/231244/grey-1-org.jpg",
                             CreatedDate = DateTime.Now.ToVNTime(),
                         }
                     };
@@ -529,7 +631,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         LocationId = 1,
                         CategoryId = 1,
                         CreatedDate = DateTime.Now.ToVNTime(),
-                        FoundUserId = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
+                        FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                         ItemStatus = ItemStatus.PENDING,
                         IsInStorage = false,
                         FoundDate = DateTime.Now.ToVNTime(),
@@ -547,7 +649,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         {
                             Name = "Item2.png",
                             Description = "Item 2 Image",
-                            URL = "https://pbs.twimg.com/media/F0Hyt75aAAAm6IC?format=jpg&name=large",
+                            URL = "https://zshop.vn/blogs/wp-content/uploads/2022/07/Canon_EOS_R7_hands-on_angled_hands-768x576.jpeg",
                             CreatedDate = DateTime.Now.ToVNTime(),
                         }
                     };
@@ -560,9 +662,9 @@ namespace LostAndFound.Infrastructure.Extensions
                         LocationId = 26,
                         CategoryId = 2,
                         CreatedDate = DateTime.Now.ToVNTime(),
-                        FoundUserId = "NOEOH77CAtd5VgEniFBLGGZz8sM2",
+                        FoundUserId = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
                         ItemStatus = ItemStatus.ACTIVE,
-                        IsInStorage = false,
+                        IsInStorage = true,
                         FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias2,
                     };
@@ -577,7 +679,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     CampusId = 1,
                     Location = "Copper Drum Lobby",
-                    MainStorageManagerId = "UXFjz04VvING1SxKxcfIZQQhVCo1",
+                    MainStorageManagerId = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Storages.Add(storage1);
@@ -586,7 +688,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     CampusId = 1,
                     Location = "Back Gate",
-                    MainStorageManagerId = "UXFjz04VvING1SxKxcfIZQQhVCo1",
+                    MainStorageManagerId = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Storages.Add(storage2);

@@ -100,13 +100,13 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User adminUser = new User()
                 {
-                    Id = "FLtIEJvuMgfg58u4sXhzxPn9qr73",
+                    Id = "G3KbI9nWz2gRoWRwsJc9r8jErbT2",
                     Email = "abc123@fpt.edu.vn",
                     Password = "",
                     Avatar= "https://files.catbox.moe/05jiq7.png?fbclid=IwAR0d2x-q19sCGIvjAoZVqwt5xzEtHe72ONjqWTs-RkLdTx4fEI2ERIL7oOM",
                     IsActive = true,
-                    FirstName = "Account",
-                    LastName = "Admin",
+                    FirstName = "Admin",
+                    LastName = "Account",
                     Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0101010101",
@@ -159,7 +159,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User user = new User()
                 {
-                    Id = "FblXIShy0FgOszFZEVHU7MDsmTE3",
+                    Id = "iTOIMxgSC5Vq74EZMMDJrLtncoH2",
                     Email = "gglcolab002@gmail.com",
                     Password = "",
                     Avatar= "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
@@ -218,7 +218,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User user2 = new User()
                 {
-                    Id = "m29au2RYpWUw3OGTCEN0lzgzR8I2",
+                    Id = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                     Email = "gglcolab001@gmail.com",
                     Password = "",
                     Avatar = "https://pbs.twimg.com/profile_images/1091963888021602305/9440xgqT_400x400.jpg",
@@ -662,7 +662,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         LocationId = 26,
                         CategoryId = 2,
                         CreatedDate = DateTime.Now.ToVNTime(),
-                        FoundUserId = "m29au2RYpWUw3OGTCEN0lzgzR8I2",
+                        FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                         ItemStatus = ItemStatus.ACTIVE,
                         IsInStorage = true,
                         FoundDate = DateTime.Now.ToVNTime(),
@@ -679,7 +679,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     CampusId = 1,
                     Location = "Copper Drum Lobby",
-                    MainStorageManagerId = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
+                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Storages.Add(storage1);
@@ -688,7 +688,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     CampusId = 1,
                     Location = "Back Gate",
-                    MainStorageManagerId = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
+                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.Storages.Add(storage2);

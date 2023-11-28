@@ -23,11 +23,16 @@ namespace LostAndFound.API.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly ICommentFlagService _commentFlagService;
+        private readonly IFirebaseAuthService _firebaseAuthService;
+        private readonly IUserService _userService;
 
-        public CommentController(ICommentService commentService, ICommentFlagService commentFlagService)
+        public CommentController(ICommentService commentService, ICommentFlagService commentFlagService, IFirebaseAuthService firebaseAuthService,
+            IUserService userService)
         {
             _commentService = commentService;
             _commentFlagService = commentFlagService;
+            _firebaseAuthService = firebaseAuthService;
+            _userService = userService;
         }
         
         /// <summary>
@@ -179,11 +184,17 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> DeleteComment([Required] int commentId)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+
             var commentCheck = await _commentService.GetCommentByIdAsync(commentId);
-            if (stringId != commentCheck.CommentUserId)
+            var currentUser = await _userService.GetUserAsync(stringId);
+            if(currentUser.RoleName != "Admin" && currentUser.RoleName != "Manager")
             {
-                throw new UnauthorizedException();
+                if (stringId != commentCheck.CommentUserId)
+                {
+                    throw new NotPermittedException("You are not permitted to delete this comment!");
+                }
             }
+            
             await _commentService.DeleteCommentAsync(commentId);
             return ResponseFactory.NoContent();
         }

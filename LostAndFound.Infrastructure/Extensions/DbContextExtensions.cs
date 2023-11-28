@@ -159,8 +159,8 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User user = new User()
                 {
-                    Id = "nUe7uARvmIOY00Y314ztH4BKAHw2",
-                    Email = "kimnv125@gmail.com",
+                    Id = "FblXIShy0FgOszFZEVHU7MDsmTE3",
+                    Email = "gglcolab002@gmail.com",
                     Password = "123456",
                     Avatar= "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
                     IsActive = true,
@@ -218,7 +218,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User user2 = new User()
                 {
-                    Id = "wTxHB0WlcMYBSX2VzejbHf0ijvx1",
+                    Id = "m29au2RYpWUw3OGTCEN0lzgzR8I2",
                     Email = "gglcolab001@gmail.com",
                     Password = "123456",
                     Avatar = "https://pbs.twimg.com/profile_images/1091963888021602305/9440xgqT_400x400.jpg",

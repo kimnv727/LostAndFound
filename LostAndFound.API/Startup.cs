@@ -156,12 +156,6 @@ namespace LostAndFound.API
 
             app.UseAuthorization();
 
-            //app.UseCheckPostAuthorMiddleware();
-
-            //app.UseCheckItemFounderMiddleware(); //TODO: Test run when Kim finish item controller
-
-            //app.UseCheckCommentAuthorMiddleware(); //TODO: Test run it
-
             app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>

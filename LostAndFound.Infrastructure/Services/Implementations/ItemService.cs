@@ -173,6 +173,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
 
+            if(itemUpdateDTO.CabinetId == 0)
+            {
+                itemUpdateDTO.CabinetId = null;
+            }
+
             _mapper.Map(itemUpdateDTO, item);
 
             await _unitOfWork.CommitAsync();

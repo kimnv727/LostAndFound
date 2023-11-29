@@ -48,6 +48,6 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount { get; set; }
         public LocationReadDTO Location { get; set; }
-        public CabinetReadDTO Cabinet { get; set; }
+        public CabinetWithoutItemReadDTO Cabinet { get; set; }
     }
 }

@@ -160,6 +160,7 @@ namespace LostAndFound.Infrastructure.Profiles
 
             //Cabinet
             CreateMap<Cabinet, CabinetReadDTO>();
+            CreateMap<Cabinet, CabinetWithoutItemReadDTO>();
             CreateMap<CabinetWriteDTO, Cabinet>();
             CreateMap<CabinetUpdateDTO, Cabinet>();
 

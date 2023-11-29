@@ -33,6 +33,6 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public Guid ReceiptImage { get; set; }
         public ReceiptType ReceiptType { get; set; }
         public LocationReadDTO Location { get; set; }
-        public CabinetReadDTO Cabinet { get; set; }
+        public CabinetWithoutItemReadDTO Cabinet { get; set; }
     }
 }

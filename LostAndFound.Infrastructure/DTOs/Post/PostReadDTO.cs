@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.PostMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
@@ -21,6 +22,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public int CategoryId { get; set; }
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
+        public LocationReadDTO Location { get; set; }
         public UserReadDTO User { get; set; }
         public ICollection<PostMediaLiteReadDTO> PostMedias { get; set; }
     }

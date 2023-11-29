@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Cabinet;
 using LostAndFound.Infrastructure.DTOs.ItemClaim;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
+using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
 
@@ -45,5 +47,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int InapproriateCount { get; set; }
         [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount { get; set; }
+        public LocationReadDTO Location { get; set; }
+        public CabinetReadDTO Cabinet { get; set; }
     }
 }

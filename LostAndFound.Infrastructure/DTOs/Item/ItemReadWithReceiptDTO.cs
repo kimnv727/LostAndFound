@@ -1,5 +1,7 @@
 ﻿using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Cabinet;
 using LostAndFound.Infrastructure.DTOs.ItemMedia;
+using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.Media;
 using Newtonsoft.Json;
 using System;
@@ -30,5 +32,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public DateTime ReceiptCreatedDate { get; set; }
         public Guid ReceiptImage { get; set; }
         public ReceiptType ReceiptType { get; set; }
+        public LocationReadDTO Location { get; set; }
+        public CabinetReadDTO Cabinet { get; set; }
     }
 }

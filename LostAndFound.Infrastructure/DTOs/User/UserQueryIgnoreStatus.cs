@@ -15,7 +15,8 @@ namespace LostAndFound.Infrastructure.DTOs.User
         {
             All,
             Male,
-            Female
+            Female,
+            Others
         }
         [DefaultValue(GenderSearch.All)]
         public GenderSearch Gender { get; set; }

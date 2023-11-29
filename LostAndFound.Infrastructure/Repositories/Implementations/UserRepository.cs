@@ -79,6 +79,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     users = users.Where(u => u.Gender == Gender.Female);
                 }
+                else if (query.Gender == UserQuery.GenderSearch.Others)
+                {
+                    users = users.Where(u => u.Gender == Gender.Others);
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(query.Email))
@@ -178,6 +182,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 else if (query.Gender == UserQueryIgnoreStatus.GenderSearch.Female)
                 {
                     users = users.Where(u => u.Gender == Gender.Female);
+                }
+                else if (query.Gender == UserQueryIgnoreStatus.GenderSearch.Others)
+                {
+                    users = users.Where(u => u.Gender == Gender.Others);
                 }
             }
 
@@ -306,6 +314,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 else if (query.Gender == UserQueryIgnoreStatusWithoutWaitingVerified.GenderSearch.Female)
                 {
                     users = users.Where(u => u.Gender == Gender.Female);
+                }
+                else if (query.Gender == UserQueryIgnoreStatusWithoutWaitingVerified.GenderSearch.Others)
+                {
+                    users = users.Where(u => u.Gender == Gender.Others);
                 }
             }
 

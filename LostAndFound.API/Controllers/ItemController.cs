@@ -465,11 +465,6 @@ namespace LostAndFound.API.Controllers
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
 
-            //Check role
-            //Cant claim if not user
-            string[] roles = { "User" };
-            await _firebaseAuthService.CheckUserRoles(userId, roles);
-
             await _itemClaimService.ClaimAnItemAsync(itemId, userId);
 
             return ResponseFactory.NoContent();
@@ -508,7 +503,7 @@ namespace LostAndFound.API.Controllers
             //Check if current user is Item founder
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.ReceiverId);
+                await _itemService.AcceptAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
 
@@ -550,7 +545,7 @@ namespace LostAndFound.API.Controllers
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.ReceiverId);
+                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
             return ResponseFactory.NoContent();

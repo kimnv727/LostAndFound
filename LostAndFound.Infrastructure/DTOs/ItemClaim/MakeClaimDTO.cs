@@ -10,7 +10,7 @@ namespace LostAndFound.Infrastructure.DTOs.ItemClaim
     public class MakeClaimDTO
     {
         [Required]
-        public string ReceiverId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ItemId { get; set; }

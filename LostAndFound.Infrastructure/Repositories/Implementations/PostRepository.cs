@@ -18,7 +18,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public PostRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        //TODO: should we make item closed to outdated appear on top?
+        //TODO: will change location later
         public async Task<Post> FindPostByIdAsync(int id)
         {
             return await _context.Posts
@@ -26,6 +26,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -38,6 +39,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -51,6 +53,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE);
@@ -67,6 +70,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
@@ -145,6 +149,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .AsSplitQuery();
@@ -246,6 +251,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus != PostStatus.PENDING && p.PostStatus != PostStatus.REJECTED)
@@ -340,6 +346,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -462,6 +469,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(u => u.Campus)
                 .Include(p => p.Category)
                 .Include(p => p.Location)
+                .ThenInclude(l => l.Property)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)

@@ -267,7 +267,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> ChangeUserVerifyStatus([Required]UserVerifyStatusUpdateDTO updateDTO)
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            string[] roles = { "Manager", "Storage Manager" };
+            string[] roles = { "Manager", "Storage Manager", "Admin" };
             await _firebaseAuthService.CheckUserRoles(stringId, roles);
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 

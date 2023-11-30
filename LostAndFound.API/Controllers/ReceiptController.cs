@@ -74,14 +74,14 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<ReceiptReadDTO> CreateReceiptAsync([FromForm] ReceiptCreateDTO receiptCreateDTO, [Required] IFormFile image)
+        public async Task<IActionResult> CreateReceiptAsync([FromForm] ReceiptCreateDTO receiptCreateDTO, [Required] IFormFile image)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             string[] roles = { "User", "Storage Manager" };
             await _firebaseAuthService.CheckUserRoles(userId, roles);
 
             var receipt = await _receiptService.CreateReceiptAsync(receiptCreateDTO, image);
-            return _mapper.Map<ReceiptReadDTO>(receipt);
+            return ResponseFactory.Ok(_mapper.Map<ReceiptReadDTO>(receipt));
         }
 
         /// <summary>

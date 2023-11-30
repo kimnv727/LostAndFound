@@ -176,8 +176,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(itemUpdateDTO.CabinetId == 0)
             {
                 itemUpdateDTO.CabinetId = null;
-            }
+            }          
 
+            if (item.ItemStatus == ItemStatus.REJECTED)
+            {
+                item.ItemStatus = ItemStatus.PENDING;
+            }
+            else
+            {
+                item.ItemStatus = ItemStatus.ACTIVE;
+            }
             _mapper.Map(itemUpdateDTO, item);
 
             await _unitOfWork.CommitAsync();

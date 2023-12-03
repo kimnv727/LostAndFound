@@ -13,7 +13,8 @@ namespace LostAndFound.Infrastructure.DTOs.ItemClaim
     {
         public int ItemId { get; set; }
         public string UserId { get; set; }
-        public bool ClaimStatus { get; set; }
+        public ClaimStatus ClaimStatus { get; set; }
+        public bool IsActive { get; set; }
         public DateTime ClaimDate { get; set; }
 
         /*public ItemReadDTO Item { get; set; } 

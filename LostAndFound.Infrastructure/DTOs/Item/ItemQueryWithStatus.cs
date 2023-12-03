@@ -47,7 +47,20 @@ namespace LostAndFound.Infrastructure.DTOs.Item
             REJECTED
         }
 
-        public DateTime FoundDate { get; set; }
+        public string? FoundDateFrom { get; set; }
+        public string? FoundDateTo { get; set; }
+
+        [DefaultValue(CampusLocationQuery.ALL)]
+        public CampusLocationQuery CampusLocation { get; set; }
+
+        public enum CampusLocationQuery
+        {
+            ALL,
+            HO_CHI_MINH,
+            DA_NANG,
+            HA_NOI,
+            CAN_THO
+        }
 
         public DateTime CreatedDate { get; set; }
         public string OrderBy { get; set; } = "Id DESC";

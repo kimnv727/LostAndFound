@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Property;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
@@ -46,6 +47,25 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     campuses = campuses.Where(p => p.IsActive == false);
                     break;
             }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                if (query.CampusLocation == CampusQuery.CampusLocationSearch.HO_CHI_MINH)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.HO_CHI_MINH);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.DA_NANG)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.DA_NANG);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.HA_NOI)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.HA_NOI);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.CAN_THO)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.CAN_THO);
+                }
+            }
 
             return await Task.FromResult(campuses.ToList());
         }
@@ -79,6 +99,26 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(query.Address))
             {
                 campuses = campuses.Where(p => p.Address.ToLower().Contains(query.Address.ToLower()));
+            }
+
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                if (query.CampusLocation == CampusQuery.CampusLocationSearch.HO_CHI_MINH)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.HO_CHI_MINH);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.DA_NANG)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.DA_NANG);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.HA_NOI)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.HA_NOI);
+                }
+                else if (query.CampusLocation == CampusQuery.CampusLocationSearch.CAN_THO)
+                {
+                    campuses = campuses.Where(c => c.CampusLocation == CampusLocation.CAN_THO);
+                }
             }
 
             return await Task.FromResult(campuses.ToList());

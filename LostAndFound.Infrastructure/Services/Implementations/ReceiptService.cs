@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
+using LostAndFound.Core.Exceptions.Authenticate;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Location;
@@ -128,6 +130,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             };
 
             var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            receipt.IsActive = true;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 
@@ -146,6 +149,29 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var receipts = await _receiptRepository.GetAllWithItemIdAsync(itemId);
 
             return _mapper.Map<List<ReceiptReadDTO>>(receipts);
+        }
+
+        public async Task<ReceiptReadDTO> RevokeReceipt(int receiptId)
+        {
+            var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
+            if (receipt == null)
+            {
+                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
+            }
+
+            //check if receipt is return type
+            if(receipt.ReceiptType != ReceiptType.RETURN_OUT_STORAGE && receipt.ReceiptType != ReceiptType.RETURN_USER_TO_USER)
+            {
+                throw new NotPermittedException("Receipt of this type cannot be revoked!");
+            }
+            //change receipt isActive to false
+            receipt.IsActive = false;
+            //get item and change their status back to Active
+            var item = await _itemRepository.FindItemByIdAsync(receipt.ItemId);
+            item.ItemStatus = ItemStatus.ACTIVE;
+
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<ReceiptReadDTO>(receipt);
         }
     }
 }

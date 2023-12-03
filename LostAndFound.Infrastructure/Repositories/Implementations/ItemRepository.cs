@@ -178,9 +178,40 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         break;
                 }
             }
-            if (query.FoundDate > DateTime.MinValue)
+            /*if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.FoundDateFrom))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundDateTo))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case ItemQueryWithStatus.CampusLocationQuery.ALL:
+                        break;
+                    case ItemQueryWithStatus.CampusLocationQuery.HO_CHI_MINH:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case ItemQueryWithStatus.CampusLocationQuery.DA_NANG:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.DA_NANG);
+                        break;
+                    case ItemQueryWithStatus.CampusLocationQuery.CAN_THO:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.CAN_THO);
+                        break;
+                    case ItemQueryWithStatus.CampusLocationQuery.HA_NOI:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HA_NOI);
+                        break;
+                    default:
+                        break;
+                }
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
@@ -267,9 +298,40 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         break;
                 }
             }
-            if (query.FoundDate > DateTime.MinValue)
+            /*if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.FoundDateFrom))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundDateTo))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case ItemQueryIgnoreStatusExcludePendingRejected.CampusLocationQuery.ALL:
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.CampusLocationQuery.HO_CHI_MINH:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.CampusLocationQuery.DA_NANG:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.DA_NANG);
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.CampusLocationQuery.CAN_THO:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.CAN_THO);
+                        break;
+                    case ItemQueryIgnoreStatusExcludePendingRejected.CampusLocationQuery.HA_NOI:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HA_NOI);
+                        break;
+                    default:
+                        break;
+                }
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
@@ -333,6 +395,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.CategoryId == query.CategoryId);
             }*/
+            if (!string.IsNullOrWhiteSpace(query.FoundDateFrom))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundDateTo))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
+            }
             if (query.CategoryGroupId > 0)
             {
                 items = items.Where(i => i.Category.CategoryGroupId == query.CategoryGroupId);
@@ -361,9 +431,40 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(p => p.ItemFlags.Count() >= query.FlagCount);
             }
-            if (query.FoundDate > DateTime.MinValue)
+            /*if (query.FoundDate > DateTime.MinValue)
             {
                 items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.FoundDateFrom))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.FoundDateTo))
+            {
+                items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case ItemQueryWithFlag.CampusLocationQuery.ALL:
+                        break;
+                    case ItemQueryWithFlag.CampusLocationQuery.HO_CHI_MINH:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case ItemQueryWithFlag.CampusLocationQuery.DA_NANG:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.DA_NANG);
+                        break;
+                    case ItemQueryWithFlag.CampusLocationQuery.CAN_THO:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.CAN_THO);
+                        break;
+                    case ItemQueryWithFlag.CampusLocationQuery.HA_NOI:
+                        items = items.Where(i => i.Location.Property.CampusLocation == CampusLocation.HA_NOI);
+                        break;
+                    default:
+                        break;
+                }
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
@@ -393,7 +494,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(im => im.Media)
                             .AsSplitQuery();
 
-            items = items.Where(i => i.ItemClaims.Any(ic => ic.ClaimStatus == true));
+            items = items.Where(i => i.ItemClaims.Any(ic => ic.IsActive == true));
 
             //Sort by claim date desceding 
             items = items.OrderByDescending(i => i.ItemClaims.Max(ic => ic.ClaimDate));
@@ -418,7 +519,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .AsSplitQuery();
 
             
-            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.ClaimStatus == true));
+            items = items.Where(i => i.ItemClaims.Any(ic => ic.UserId.Equals(userId) && ic.IsActive == true));
 
             //Sort by claim date desceding 
             items = items.OrderByDescending(i => i.ItemClaims.Max(ic => ic.ClaimDate));
@@ -437,7 +538,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Location)
                             .ThenInclude(l => l.Property)
                             .Include(i => i.Cabinet)
-                            .Include(i => i.ItemClaims.Where(ic => ic.ClaimStatus == true))
+                            .Include(i => i.ItemClaims.Where(ic => ic.IsActive == true))
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .FirstOrDefaultAsync(i => i.Id == itemId && i.FoundUserId == userId);

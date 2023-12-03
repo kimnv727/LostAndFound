@@ -22,6 +22,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public string LocationLocationName { get; set; }
         public string CategoryName { get; set; }
         public int CabinetId { get; set; }
+        public string? FoundDate { get; set; }
         public bool IsInStorage { get; set; }
         public ItemStatus ItemStatus { get; set; }
         public DateTime CreatedDate { get; set; }

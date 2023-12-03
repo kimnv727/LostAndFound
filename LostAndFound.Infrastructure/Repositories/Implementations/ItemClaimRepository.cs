@@ -35,7 +35,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var claims = _context.ItemClaims
                 .AsSplitQuery()
-                .Where(ic => ic.ClaimStatus == true)
+                .Where(ic => ic.IsActive == true)
                 .Include(ic => ic.User)
                 .Include(ic => ic.Item)
                 .Where(ic => ic.ItemId == itemId)
@@ -51,7 +51,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .AsSplitQuery()
                 .Include(ic => ic.User)
                 .Include(ic => ic.Item)
-                .Where(ic => ic.ItemId == itemId && ic.ClaimStatus == true)
+                .Where(ic => ic.ItemId == itemId && ic.IsActive == true)
                 .OrderByDescending(i => i.ClaimDate)
                 .ToList());
         }
@@ -96,10 +96,30 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     claims = claims.Where(ic => ic.UserId == query.UserId);
                 }
-                if (query.ClaimStatus == true)
+                if (Enum.IsDefined(query.ClaimStatus))
                 {
-                    claims = query.ClaimStatus == true ? claims.Where(ic => ic.ClaimStatus == true) 
-                                                       : claims.Where(ic => ic.ClaimStatus == false);
+                    switch (query.ClaimStatus)
+                    {
+
+                        case ItemClaimQuery.ClaimStatusQuery.ALL:
+                            break;
+                        case ItemClaimQuery.ClaimStatusQuery.PENDING:
+                            claims = claims.Where(ic => ic.ClaimStatus == ClaimStatus.PENDING);
+                            break;
+                        case ItemClaimQuery.ClaimStatusQuery.ACCEPTED:
+                            claims = claims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED);
+                            break;
+                        case ItemClaimQuery.ClaimStatusQuery.DENIED:
+                            claims = claims.Where(ic => ic.ClaimStatus == ClaimStatus.DENIED);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (query.IsActive == true)
+                {
+                    claims = query.IsActive == true ? claims.Where(ic => ic.IsActive == true) 
+                                                       : claims.Where(ic => ic.IsActive == false);
                 }
                 if (query.ClaimDate > DateTime.MinValue)
                 {

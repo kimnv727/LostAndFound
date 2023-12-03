@@ -26,8 +26,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             var postBookmarksId = _context.PostBookmarks.Where(pb => pb.UserId == userId && pb.IsActive == true).Select(pb => pb.PostId).ToList();
             var posts = _context.Posts
                 .Where(p => postBookmarksId.Contains(p.Id) && p.PostStatus != Core.Enums.PostStatus.DELETED)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
                 .Include(p => p.User)
                 .ThenInclude(p => p.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))

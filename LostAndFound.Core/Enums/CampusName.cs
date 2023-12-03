@@ -1,9 +1,0 @@
-namespace LostAndFound.Core.Enums
-{
-    public enum CampusName
-    {
-        HO_CHI_MINH_CAMPUS,
-        DA_NANG_CAMPUS,
-        HA_NOI_CAMPUS
-    }
-}

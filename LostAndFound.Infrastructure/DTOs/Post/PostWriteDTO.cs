@@ -16,11 +16,10 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         [StringLength(Int32.MaxValue, MinimumLength = 1)]
         public string PostContent { get; set; }
 
-        [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
-        public int PostLocationId { get; set; }
-
-        [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
-        public int PostCategoryId { get; set; }
+        public string? PostLocation { get; set; }
+        public string? PostCategory { get; set; }
+        public string? LostDateFrom { get; set; }
+        public string? LostDateTo { get; set; }
 
         [Required]
         public IFormFile[] Medias { get; set; }

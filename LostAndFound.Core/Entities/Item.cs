@@ -35,7 +35,7 @@ namespace LostAndFound.Core.Entities
         //Status = Pending / Active / Returned / Closed
         public ItemStatus ItemStatus { get; set; }
 
-        public DateTime? FoundDate { get; set; }
+        public string? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
         

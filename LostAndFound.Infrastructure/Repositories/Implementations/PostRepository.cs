@@ -24,9 +24,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -37,9 +37,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -51,9 +51,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE);
@@ -68,9 +68,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
@@ -95,17 +95,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
-            if (query.PostCategoryGroupId > 0)
+            /*if (query.PostCategoryGroupId > 0)
             {
                 posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
-            }
+            }*/
 
             /*if (query.PostCategoryId > 0)
             {
                 posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
             }*/
 
-            if (query.PostCategoryId != null)
+            /*if (query.PostCategoryId != null)
             {
                 posts = posts.Where(p => query.PostCategoryId.Contains(p.PostCategoryId));
             }
@@ -127,8 +127,50 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ToDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate <= query.ToDate);
+            }*/
+
+            //Fix later
+            /*if (query.PostCategoryName != null)
+            {
+                //posts = posts.Where(p => query.PostCategoryName.Any(val => p.PostCategory.Contains(val)));
+                posts = posts.Where(p => query.PostCategoryName.Any(p.PostCategory.Contains));
             }
-            
+            if (query.PostLocationName != null)
+            {
+                //posts = posts.Where(p => query.PostLocationName.Any(val => p.PostLocation.Contains(val)));
+                posts = posts.Where(p => query.PostLocationName.Any(p.PostLocation.Contains));
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case PostQuery.CampusLocationQuery.ALL:
+                        break;
+                    case PostQuery.CampusLocationQuery.HO_CHI_MINH:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQuery.CampusLocationQuery.DA_NANG:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQuery.CampusLocationQuery.CAN_THO:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQuery.CampusLocationQuery.HA_NOI:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
@@ -147,9 +189,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .AsSplitQuery();
@@ -174,15 +216,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
-            if (query.PostCategoryGroupId > 0)
+            /*if (query.PostCategoryGroupId > 0)
             {
                 posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
             }
 
-            /*if (query.PostCategoryId > 0)
+            *//*if (query.PostCategoryId > 0)
             {
                 posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
-            }*/
+            }*//*
 
             if (query.PostCategoryId != null)
             {
@@ -196,7 +238,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.PostLocationFloor >= 0)
             {
                 posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
-            }
+            }*/
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithStatus.PostStatusQuery.PENDING)
@@ -220,8 +262,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     posts = posts.Where(p => p.PostStatus == PostStatus.REJECTED);
                 }
             }
-            
-            if (query.FromDate != null)
+
+            /*if (query.FromDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate >= query.FromDate);
             }
@@ -229,8 +271,50 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ToDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate <= query.ToDate);
+            }*/
+
+            //Fix later
+            /*if (query.PostCategoryName != null)
+            {
+                //posts = posts.Where(p => query.PostCategoryName.Any(val => p.PostCategory.Contains(val)));
+                posts = posts.Where(p => query.PostCategoryName.Any(p.PostCategory.Contains));
             }
-            
+            if (query.PostLocationName != null)
+            {
+                //posts = posts.Where(p => query.PostLocationName.Any(val => p.PostLocation.Contains(val)));
+                posts = posts.Where(p => query.PostLocationName.Any(p.PostLocation.Contains));
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case PostQueryWithStatus.CampusLocationQuery.ALL:
+                        break;
+                    case PostQueryWithStatus.CampusLocationQuery.HO_CHI_MINH:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatus.CampusLocationQuery.DA_NANG:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatus.CampusLocationQuery.CAN_THO:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatus.CampusLocationQuery.HA_NOI:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
@@ -249,9 +333,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus != PostStatus.PENDING && p.PostStatus != PostStatus.REJECTED)
@@ -277,15 +361,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
-            if (query.PostCategoryGroupId > 0)
+            /*if (query.PostCategoryGroupId > 0)
             {
                 posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
             }
 
-            /*if (query.PostCategoryId > 0)
+            *//*if (query.PostCategoryId > 0)
             {
                 posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
-            }*/
+            }*//*
 
             if (query.PostCategoryId != null)
             {
@@ -299,7 +383,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.PostLocationFloor >= 0)
             {
                 posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
-            }
+            }*/
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithStatusExcludePendingAndRejected.PostStatusQuery.CLOSED)
@@ -316,7 +400,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
 
-            if (query.FromDate != null)
+            /*if (query.FromDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate >= query.FromDate);
             }
@@ -324,8 +408,50 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ToDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate <= query.ToDate);
-            }
+            }*/
 
+            //Fix later
+           /* if (query.PostCategoryName != null)
+            {
+                //posts = posts.Where(p => query.PostCategoryName.Any(val => p.PostCategory.Contains(val)));
+                posts = posts.Where(p => query.PostCategoryName.Any(p.PostCategory.Contains));
+            }
+            if (query.PostLocationName != null)
+            {
+                //posts = posts.Where(p => query.PostLocationName.Any(val => p.PostLocation.Contains(val)));
+                posts = posts.Where(p => query.PostLocationName.Any(p.PostLocation.Contains));
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+            }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
+
+                    case PostQueryWithStatusExcludePendingAndRejected.CampusLocationQuery.ALL:
+                        break;
+                    case PostQueryWithStatusExcludePendingAndRejected.CampusLocationQuery.HO_CHI_MINH:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatusExcludePendingAndRejected.CampusLocationQuery.DA_NANG:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatusExcludePendingAndRejected.CampusLocationQuery.CAN_THO:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithStatusExcludePendingAndRejected.CampusLocationQuery.HA_NOI:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
@@ -344,9 +470,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -373,15 +499,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
-            if (query.PostCategoryGroupId > 0)
+            /*if (query.PostCategoryGroupId > 0)
             {
                 posts = posts.Where(p => p.Category.CategoryGroupId == query.PostCategoryGroupId);
             }
 
-            /*if (query.PostCategoryId > 0)
+            *//*if (query.PostCategoryId > 0)
             {
                 posts = posts.Where(p => p.PostCategoryId == query.PostCategoryId);
-            }*/
+            }*//*
 
             if (query.PostCategoryId != null)
             {
@@ -395,7 +521,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.PostLocationFloor >= 0)
             {
                 posts = posts.Where(p => p.Location.Floor == query.PostLocationFloor);
-            }
+            }*/
             if (Enum.IsDefined(query.PostStatus))
             {
                 if (query.PostStatus == PostQueryWithFlag.PostStatusQuery.CLOSED)
@@ -412,7 +538,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
 
-            if (query.FromDate != null)
+            /*if (query.FromDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate >= query.FromDate);
             }
@@ -420,13 +546,54 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ToDate != null)
             {
                 posts = posts.Where(p => p.CreatedDate <= query.ToDate);
+            }*/
+            //Fix later
+            /*if (query.PostCategoryName != null)
+            {
+                //posts = posts.Where(p => query.PostCategoryName.Any(val => p.PostCategory.Contains(val)));
+                posts = posts.Where(p => query.PostCategoryName.Any(p.PostCategory.Contains));
+            }
+            if (query.PostLocationName != null)
+            {
+                //posts = posts.Where(p => query.PostLocationName.Any(val => p.PostLocation.Contains(val)));
+                posts = posts.Where(p => query.PostLocationName.Any(p.PostLocation.Contains));
+            }*/
+            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+            }
+            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            {
+                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
             }
 
             if (query.FlagCount > 0)
             {
                 posts = posts.Where(p => p.PostFlags.Count() >= query.FlagCount);
             }
+            if (Enum.IsDefined(query.CampusLocation))
+            {
+                switch (query.CampusLocation)
+                {
 
+                    case PostQueryWithFlag.CampusLocationQuery.ALL:
+                        break;
+                    case PostQueryWithFlag.CampusLocationQuery.HO_CHI_MINH:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithFlag.CampusLocationQuery.DA_NANG:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithFlag.CampusLocationQuery.CAN_THO:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    case PostQueryWithFlag.CampusLocationQuery.HA_NOI:
+                        posts = posts.Where(p => p.User.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(query.SearchText.ToLower()) || p.PostContent.ToLower().Contains(query.SearchText.ToLower()));
@@ -467,13 +634,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             var posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                .Include(p => p.Category)
-                .Include(p => p.Location)
-                .ThenInclude(l => l.Property)
+                //.Include(p => p.Category)
+                //.Include(p => p.Location)
+                //.ThenInclude(l => l.Property)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
-                .Where(p => p.PostStatus == PostStatus.ACTIVE && p.PostLocationId == locationId && p.PostCategoryId == categoryId)
+                //.Where(p => p.PostStatus == PostStatus.ACTIVE && p.PostLocationId == locationId && p.PostCategoryId == categoryId)
                 .AsSplitQuery();
 
             posts = posts

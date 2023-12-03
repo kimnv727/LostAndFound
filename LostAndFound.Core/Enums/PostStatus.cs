@@ -6,6 +6,7 @@ namespace LostAndFound.Core.Enums
         ACTIVE,
         DELETED,
         CLOSED,
-        REJECTED
+        REJECTED,
+        EXPIRED
     }
 }

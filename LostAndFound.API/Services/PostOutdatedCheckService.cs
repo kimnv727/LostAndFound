@@ -51,7 +51,7 @@ namespace LostAndFound.API.Services
                             //4 months -> outdated
                             if (DateTime.Now >= post.CreatedDate.AddDays(120))
                             {
-                                post.PostStatus = PostStatus.CLOSED;
+                                post.PostStatus = PostStatus.EXPIRED;
                             }
                         }
                         catch

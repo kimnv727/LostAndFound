@@ -33,7 +33,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         //Status = Pending / Active / Returned / Closed / Rejected
         public ItemStatus ItemStatus { get; set; }
 
-        public DateTime? FoundDate { get; set; }
+        public string? FoundDate { get; set; }
         
         public DateTime CreatedDate { get; set; }
 

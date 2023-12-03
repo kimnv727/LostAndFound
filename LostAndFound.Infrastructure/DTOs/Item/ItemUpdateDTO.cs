@@ -13,6 +13,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public int? CabinetId { get; set; }
         //public ItemStatus? ItemStatus { get; set; }
+        public string? FoundDate { get; set; }
 
     }
 }

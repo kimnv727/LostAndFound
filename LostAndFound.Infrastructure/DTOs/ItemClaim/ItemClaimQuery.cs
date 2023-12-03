@@ -13,7 +13,17 @@ namespace LostAndFound.Infrastructure.DTOs.ItemClaim
     {
         public int ItemId { get; set; }
         public string UserId { get; set; }
-        public bool ClaimStatus { get; set; }
+        [DefaultValue(ClaimStatusQuery.ALL)]
+        public ClaimStatusQuery ClaimStatus { get; set; }
+
+        public enum ClaimStatusQuery
+        {
+            ALL,
+            PENDING,
+            ACCEPTED,
+            DENIED
+        }
+        public bool IsActive { get; set; }
         public DateTime ClaimDate { get; set; }
         public string OrderBy { get; set; } = "ClaimDate DESC";
     }

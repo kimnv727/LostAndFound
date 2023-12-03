@@ -7,14 +7,16 @@ namespace LostAndFound.Core.Enums
         RETURNED,
         CLOSED,
         REJECTED,
-        DELETED
+        DELETED,
+        EXPIRED
         /*
              pending: item chờ admin duyệt
              active: chờ người claim hoặc báo tìm đc
              returned: đã có claim & trả lại
-             closed: ko ai nhận & hết thời gian giữ
+             closed: người dùng tự đóng
              rejected: admin không approve item
-             deleted: manager nuke the item
+             deleted: manager nuke the item,
+             expired: hết thời gian giữ
         */
     }
 }

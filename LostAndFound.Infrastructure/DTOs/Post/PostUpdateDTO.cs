@@ -11,9 +11,9 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         [Required]
         [StringLength(Int32.MaxValue, MinimumLength = 1)]
         public string PostContent { get; set; }
-        [Required]
-        public int PostLocationId { get; set; }
-        [Required]
-        public int PostCategoryId { get; set; }
+        public string? PostLocation { get; set; }
+        public string? PostCategory { get; set; }
+        public string? LostDateFrom { get; set; }
+        public string? LostDateTo { get; set; }
     }
 }

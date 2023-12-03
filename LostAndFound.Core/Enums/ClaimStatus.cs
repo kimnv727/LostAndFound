@@ -8,8 +8,8 @@ namespace LostAndFound.Core.Enums
 {
     public enum ClaimStatus
     {
-        ALL,
-        UNCLAIMED,
-        CLAIMED
+        PENDING,
+        ACCEPTED,
+        DENIED
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LostAndFound.Core.Entities.Common;
+using LostAndFound.Core.Enums;
 
 namespace LostAndFound.Core.Entities
 {
@@ -16,6 +17,9 @@ namespace LostAndFound.Core.Entities
         
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        public CampusLocation CampusLocation { get; set; }
         
         [Required]
         public bool? IsActive { get; set; }

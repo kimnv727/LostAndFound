@@ -97,17 +97,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
             //If Claim record exists & status == true ==> User already claimed it
-            if (check != null && check.ClaimStatus == true)
+            if (check != null && check.IsActive == true)
             {
                 throw new DuplicateItemClaimException();
             }
             //If Claim record exists & status == false ==> User has unclaimed it
-            else if (check != null && check.ClaimStatus == false)
+            else if (check != null && check.IsActive == false)
             {
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
-                itemClaimWriteDTO.ClaimStatus = true;
+                itemClaimWriteDTO.ClaimStatus = ClaimStatus.PENDING;
+                itemClaimWriteDTO.IsActive = true;
                 itemClaimWriteDTO.ClaimDate = DateTime.Now.ToVNTime();
 
                 _mapper.Map(itemClaimWriteDTO, check);
@@ -118,7 +119,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
                 itemClaimWriteDTO.UserId = userId;
                 itemClaimWriteDTO.ItemId = itemId;
-                itemClaimWriteDTO.ClaimStatus = true;
+                itemClaimWriteDTO.ClaimStatus = ClaimStatus.PENDING;
+                itemClaimWriteDTO.IsActive = true;
                 itemClaimWriteDTO.ClaimDate = DateTime.Now.ToVNTime();
 
                 var claim = _mapper.Map<ItemClaim>(itemClaimWriteDTO);
@@ -151,7 +153,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             ItemClaimWriteDTO itemClaimWriteDTO = new ItemClaimWriteDTO();
             itemClaimWriteDTO.UserId = userId;
             itemClaimWriteDTO.ItemId = itemId;
-            itemClaimWriteDTO.ClaimStatus = false;
+            itemClaimWriteDTO.ClaimStatus = ClaimStatus.PENDING;
+            itemClaimWriteDTO.IsActive = false;
             itemClaimWriteDTO.ClaimDate = DateTime.MinValue;
 
             _mapper.Map(itemClaimWriteDTO, claim);

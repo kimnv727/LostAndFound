@@ -23,13 +23,14 @@ namespace LostAndFound.API.Extensions
 
             //get message
             var message = "𝐓𝐢𝐭𝐥𝐞: " + post.Title + " \n" + "𝐂𝐨𝐧𝐭𝐞𝐧𝐭: " + post.PostContent + " \n";
-            if(post.LocationLocationName != null)
+
+            if (post.PostLocation != null)
             {
-                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: " + post.LocationLocationName + " (" + post.Location.Property.Name + ")";
+                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: " + post.PostLocation.Replace("|", ", ") + " (" + post.User.CampusName + ")";
             }
-            if (post.CategoryName != null)
+            if (post.PostCategory != null)
             {
-                message = message + " \n" + "𝐈𝐭𝐞𝐦 𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐲: " + post.CategoryName;
+                message = message + " \n" + "𝐈𝐭𝐞𝐦 𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐲: " + post.PostCategory.Replace("|", ", ");
             }
             //add link to user web app (placeholder for now)
             message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "www.google.com";

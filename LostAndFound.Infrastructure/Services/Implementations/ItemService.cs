@@ -127,8 +127,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 item.ItemStatus = ItemStatus.PENDING;
             }
+            
             item.FoundUserId = user.Id;
-            item.FoundDate = DateTime.Now.ToVNTime();
+            item.FoundDate = itemWriteDTO.FoundDate;
 
             await _itemRepository.AddAsync(item);
             await _unitOfWork.CommitAsync();
@@ -306,7 +307,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new NoSuchClaimException();
             }
 
-            claim.ClaimStatus = !claim.ClaimStatus;
+            claim.IsActive = !claim.IsActive;
             await _unitOfWork.CommitAsync();
         }
 
@@ -330,11 +331,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new NoSuchClaimException();
             }
-            if (check.ClaimStatus == false)
+            if (check.IsActive == false)
             {
                 throw new CannotAcceptDisabledClaimException();
             }
-
+            //Change Claim to ACCEPTED
+            check.ClaimStatus = ClaimStatus.ACCEPTED;
+            await _unitOfWork.CommitAsync();
             //Get item and change item status to RETURNED
             var item = await _itemRepository.FindItemByIdAsync(itemId);
             if (item == null)
@@ -352,7 +355,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 if (claim.UserId != receiverId)
                 {
-                    claim.ClaimStatus = false;
+                    //claim.IsActive = false;
+                    claim.ClaimStatus = ClaimStatus.DENIED;
                     await _unitOfWork.CommitAsync();
                 }
             }
@@ -379,11 +383,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new NoSuchClaimException();
             }
-            if (check.ClaimStatus == false)
+            if (check.IsActive == false)
             {
                 throw new CannotAcceptDisabledClaimException();
             }
-
+            //Change Claim to ACCEPTED
+            check.ClaimStatus = ClaimStatus.ACCEPTED;
+            await _unitOfWork.CommitAsync();
             //Get item
             var item = await _itemRepository.FindItemByIdAsync(itemId);
             if (item == null)
@@ -410,6 +416,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             };
 
             var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            receipt.IsActive = true;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 
@@ -425,7 +432,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 if (claim.UserId != receiverId)
                 {
-                    claim.ClaimStatus = false;
+                    //claim.IsActive = false;
+                    claim.ClaimStatus = ClaimStatus.DENIED;
                     await _unitOfWork.CommitAsync();
                 }
             }
@@ -440,7 +448,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var item = await _itemRepository.FindItemByIdAsync(itemId) ?? throw new EntityWithIDNotFoundException<Item>(itemId);
             //Set this claim to status = false
             var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId) ?? throw new EntityNotFoundException<ItemClaim>();
-            claim.ClaimStatus = false;
+            //claim.IsActive = false;
+            claim.ClaimStatus = ClaimStatus.DENIED;
             await _unitOfWork.CommitAsync();
         }
 
@@ -454,7 +463,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             //Get Related Item
-            if(post.PostCategoryId != null && post.PostLocationId != null)
+            /*if(post.PostCategoryId != null && post.PostLocationId != null)
             {
                 var items = await _itemRepository.GetItemsByLocationAndCategoryAsync((int)post.PostLocationId, (int)post.PostCategoryId);
 
@@ -476,7 +485,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             else
             {
                 return null;
-            }
+            }*/
+
+            return null;
         }
 
         public async Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO)
@@ -503,11 +514,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 CategoryId = writeDTO.CategoryId,
                 LocationId = writeDTO.LocationId,
                 CabinetId = writeDTO.CabinetId,
-                ItemStatus = ItemStatus.ACTIVE
+                ItemStatus = ItemStatus.ACTIVE,
+                FoundDate = writeDTO.FoundDate
             };
 
             item.FoundUserId = user.Id;
-            item.FoundDate = DateTime.Now.ToVNTime();
             item.IsInStorage = true;
 
             await _itemRepository.AddAsync(item);

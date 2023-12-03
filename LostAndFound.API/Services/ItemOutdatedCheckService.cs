@@ -51,7 +51,7 @@ namespace LostAndFound.API.Services
                             //4 months -> outdated
                             if (DateTime.Now >= item.CreatedDate.AddDays(120))
                             {
-                                item.ItemStatus = ItemStatus.CLOSED;
+                                item.ItemStatus = ItemStatus.EXPIRED;
                             }
                         }
                         catch

@@ -31,6 +31,8 @@ namespace LostAndFound.Core.Entities
         [Required]
         public ReceiptType ReceiptType { get; set; }
 
+        public bool IsActive { get; set; }
+
         public virtual Media Media {  get; set; }
 
         public virtual Item? Item { get; set; }

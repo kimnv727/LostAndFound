@@ -58,6 +58,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT HCM Campus",
                     Address = "FPT HCM Campus",
+                    CampusLocation = CampusLocation.HO_CHI_MINH
                 };
                 context.Campuses.Add(campus);
 
@@ -65,6 +66,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT Da Nang Campus",
                     Address = "FPT Da Nang Campus",
+                    CampusLocation = CampusLocation.DA_NANG
                 };
                 context.Campuses.Add(campus2);
 
@@ -72,6 +74,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT Ha Noi Campus",
                     Address = "FPT Ha Noi Campus",
+                    CampusLocation = CampusLocation.HA_NOI
                 };
                 context.Campuses.Add(campus3);
 
@@ -79,6 +82,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT HCM Nha Van Hoa",
                     Address = "FPT HCM Nha Van Hoa",
+                    CampusLocation = CampusLocation.HO_CHI_MINH
                 };
                 context.Campuses.Add(campus4);
                 #endregion
@@ -634,7 +638,9 @@ namespace LostAndFound.Infrastructure.Extensions
                         FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                         ItemStatus = ItemStatus.PENDING,
                         IsInStorage = false,
-                        FoundDate = DateTime.Now.ToVNTime(),
+                        //TODO: fix
+                        FoundDate = "This is Found Date",
+                        //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias1,
                     };
                     context.Items.Add(item1);
@@ -665,7 +671,9 @@ namespace LostAndFound.Infrastructure.Extensions
                         FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                         ItemStatus = ItemStatus.ACTIVE,
                         IsInStorage = true,
-                        FoundDate = DateTime.Now.ToVNTime(),
+                        //TODO: fix
+                        FoundDate = "This is Found Date",
+                        //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias2,
                     };
                     context.Items.Add(item2);

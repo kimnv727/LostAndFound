@@ -15,15 +15,18 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string PostUserId { get; set; }
         public string Title { get; set; }
         public string PostContent { get; set; }
-        [JsonProperty(PropertyName = "locationName")]
+        /*[JsonProperty(PropertyName = "locationName")]
         public string LocationLocationName { get; set; }
         public int LocationId { get; set; }
         public string CategoryName { get; set; }
-        public int CategoryId { get; set; }
+        public int CategoryId { get; set; }*/
+        public string? PostLocation { get; set; }
+        public string? PostCategory { get; set; }
+        public string? LostDateFrom { get; set; }
+        public string? LostDateTo { get; set; }
         public PostStatus PostStatus { get; set; }
         public DateTime CreatedDate { get; set; }
         public UserReadDTO User { get; set; }
-        public LocationReadDTO Location { get; set; }
         public ICollection<PostMediaReadDTO> PostMedias { get; set; }
         public ICollection<CommentReadDTO> Comments { get; set; }
     }

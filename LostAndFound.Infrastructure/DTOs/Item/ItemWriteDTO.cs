@@ -18,6 +18,8 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public int? CabinetId { get; set; }
 
         //public ItemStatus ItemStatus { get; set; }
+        //On Front will be a dropdown 
+        public string? FoundDate { get; set; }
 
         [Required]
         public IFormFile[] Medias { get; set; }

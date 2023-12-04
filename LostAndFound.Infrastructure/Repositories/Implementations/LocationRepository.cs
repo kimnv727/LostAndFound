@@ -127,5 +127,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(locations.ToList());
         }
+
+        public async Task<IEnumerable<Location>> GetAllWithCampusByIdArrayAsync(int[] locationIds)
+        {
+            var locations = _context
+                .Locations
+                .Include(l => l.Property)
+                .Where(l => locationIds.Contains(l.Id))
+                .AsSplitQuery();
+
+            locations = locations.AsNoTracking();
+
+            return await Task.FromResult(locations.ToList());
+        }
     }
 }

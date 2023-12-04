@@ -17,7 +17,7 @@ namespace LostAndFound.Infrastructure.DTOs.ItemClaim
         public bool IsActive { get; set; }
         public DateTime ClaimDate { get; set; }
 
-        /*public ItemReadDTO Item { get; set; } 
-        public UserReadDTO User { get; set; }*/
+        /*public ItemReadDTO Item { get; set; } */
+        public virtual UserReadDTO User { get; set; }
     }
 }

@@ -26,6 +26,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Receipt>> QueryReceiptAsync(ReceiptQuery query, bool trackChanges = false)
         {
             IQueryable<Receipt> receipts = _context.Receipts
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
                 .Include(r => r.Media)
                 .AsSplitQuery();
 
@@ -89,6 +97,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Receipt>> GetAllWithMediaAsync()
         {
             return await  _context.Receipts
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
                 .Include(r => r.Media)
                 .ToListAsync();
         }
@@ -96,6 +112,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Receipt> GetReceiptByIdAsync(int receiptId)
         {
             return await _context.Receipts
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
                 .Include(r => r.Media)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
@@ -104,8 +128,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
 
             IQueryable<Receipt> receipts = _context.Receipts
-                .Include(r => r.Media)
                 .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
+                .Include(r => r.Media)
                 .Where(r => r.ItemId == itemId).OrderBy(r => r.CreatedDate);
 
             return await Task.FromResult(receipts.ToList());

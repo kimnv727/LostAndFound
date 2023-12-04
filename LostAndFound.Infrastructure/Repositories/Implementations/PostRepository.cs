@@ -18,7 +18,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public PostRepository(LostAndFoundDbContext context) : base(context)
         {
         }
-        //TODO: will change location later
+
         public async Task<Post> FindPostByIdAsync(int id)
         {
             return await _context.Posts
@@ -65,7 +65,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Post>> QueryPostAsync(PostQuery query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts
+            IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
                 //.Include(p => p.Category)
@@ -77,7 +77,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (!trackChanges)
             {
-                posts = posts.AsNoTracking();
+                queriedPosts = queriedPosts.AsNoTracking();
+            }
+
+            //Query Posts with Category and Location first
+            IQueryable<Post> posts = null;
+            if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    foreach (var pc in query.PostCategory)
+                    {
+                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
+                        if (result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    foreach (var pl in query.PostLocation)
+                    {
+                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
+                        if (result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                posts = queriedPosts;
             }
 
             if (!string.IsNullOrWhiteSpace(query.PostUserId))
@@ -186,7 +220,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Post>> QueryPostWithStatusAsync(PostQueryWithStatus query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts
+            IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
                 //.Include(p => p.Category)
@@ -198,7 +232,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (!trackChanges)
             {
-                posts = posts.AsNoTracking();
+                queriedPosts = queriedPosts.AsNoTracking();
+            }
+
+            //Query Posts with Category and Location first
+            IQueryable<Post> posts = null;
+            if(query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if(query.PostCategory != null)
+                {
+                    foreach(var pc in query.PostCategory)
+                    {
+                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
+                        if(result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    foreach (var pl in query.PostLocation)
+                    {
+                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
+                        if (result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                posts = queriedPosts;
             }
 
             if (!string.IsNullOrWhiteSpace(query.PostUserId))
@@ -330,7 +398,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Post>> QueryPostWithStatusExcludePendingAndRejectedAsync(PostQueryWithStatusExcludePendingAndRejected query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts
+            IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
                 //.Include(p => p.Category)
@@ -343,7 +411,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (!trackChanges)
             {
-                posts = posts.AsNoTracking();
+                queriedPosts = queriedPosts.AsNoTracking();
+            }
+
+            //Query Posts with Category and Location first
+            IQueryable<Post> posts = null;
+            if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    foreach (var pc in query.PostCategory)
+                    {
+                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
+                        if (result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    foreach (var pl in query.PostLocation)
+                    {
+                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
+                        if (result != null)
+                        {
+                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                posts = queriedPosts;
             }
 
             if (!string.IsNullOrWhiteSpace(query.PostUserId))

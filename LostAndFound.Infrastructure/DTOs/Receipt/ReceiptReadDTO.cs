@@ -1,7 +1,10 @@
 ﻿using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Common;
+using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.Media;
+using LostAndFound.Infrastructure.DTOs.User;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +33,8 @@ namespace LostAndFound.Infrastructure.DTOs.Receipt
         public bool IsActive { get; set; }
 
         public virtual MediaLiteReadDTO Media { get; set; }
+        /*[JsonProperty(PropertyName = "receiverUser")]
+        public virtual UserReadDTO ItemItemClaimsUser { get; set; }*/
+        public virtual ItemReadDTO Item { get; set; }
     }
 }

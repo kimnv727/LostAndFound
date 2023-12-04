@@ -112,14 +112,16 @@ namespace LostAndFound.API.Authentication
                         RoleId = 4,
                         //User School Id
                         SchoolId = "",
-                        Campus = null,
+                        //Placeholder to HCM for now
+                        //Campus = null,
+                        CampusId = 1,
                         VerifyStatus = UserVerifyStatus.VERIFIED,
                         CreatedDate = DateTime.Now.ToVNTime()
                     };
                     
                     await _userRepository.AddAsync(newUser);
                     await _unitOfWork.CommitAsync();
-                    
+
                     UserMedia userMedia = new UserMedia()
                     {
                         UserId = uid,
@@ -128,7 +130,8 @@ namespace LostAndFound.API.Authentication
                             Name = "GoogleAvatar",
                             Description = "Avatar of " + email,
                             URL = avatar,
-                        }
+                        },
+                        MediaType = UserMediaType.AVATAR
                     };
                     await _userMediaRepository.AddAsync(userMedia);
                     await _unitOfWork.CommitAsync();
@@ -153,7 +156,9 @@ namespace LostAndFound.API.Authentication
                         RoleId = 4,
                         //User School Id
                         SchoolId = "",
-                        Campus = null,
+                        //Placeholder to HCM for now
+                        //Campus = null,
+                        CampusId = 1,
                         VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                         CreatedDate = DateTime.Now.ToVNTime()
                     };
@@ -169,7 +174,8 @@ namespace LostAndFound.API.Authentication
                             Name = "GoogleAvatar",
                             Description = "Avatar of " + email,
                             URL = avatar,
-                        }
+                        },
+                        MediaType = UserMediaType.AVATAR
                     };
                     await _userMediaRepository.AddAsync(userMedia);
                     await _unitOfWork.CommitAsync();

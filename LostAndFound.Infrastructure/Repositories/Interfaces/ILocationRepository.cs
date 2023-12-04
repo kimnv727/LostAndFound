@@ -21,5 +21,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Location>> GetAllWithCampusAsync();
         public Task<IEnumerable<Location>> GetAllWithCampusSortedByFloorAsync();
         public Task<IEnumerable<Location>> GetAllByCampusIdAsync(int campusId);
+        public Task<IEnumerable<Location>> GetAllWithCampusByIdArrayAsync(int[] locationIds);
     }
 }

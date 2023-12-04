@@ -24,16 +24,26 @@ namespace LostAndFound.API.Extensions
             //get message
             var message = "𝐓𝐢𝐭𝐥𝐞: " + post.Title + " \n" + "𝐂𝐨𝐧𝐭𝐞𝐧𝐭: " + post.PostContent + " \n";
 
-            if (post.PostLocation != null)
+            if (post.PostLocationList != null)
             {
-                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: " + post.PostLocation.Replace("|", ", ") + " (" + post.User.CampusName + ")";
+                message = message + " \n" + "𝐋𝐨𝐬𝐭 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: ";
+                foreach(var l in post.PostLocationList)
+                {
+                    message = message + l.LocationName + ", ";
+                }
+                message = message.Substring(message.Length - 2);
+                message = message + " (" + post.User.CampusName + ")";
             }
-            if (post.PostCategory != null)
+            if (post.PostCategoryList != null)
             {
-                message = message + " \n" + "𝐈𝐭𝐞𝐦 𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐲: " + post.PostCategory.Replace("|", ", ");
+                message = message + " \n" + "𝐈𝐭𝐞𝐦 𝐂𝐚𝐭𝐞𝐠𝐨𝐫𝐲: ";
+                foreach (var c in post.PostCategoryList)
+                {
+                    message = message + c.Name + ", ";
+                }
+                message = message.Substring(message.Length - 2);
             }
-            //add link to user web app (placeholder for now)
-            message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "www.google.com";
+            message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "https://lnf-user.web.app/";
 
 
             if (post.PostMedias.Count > 0)

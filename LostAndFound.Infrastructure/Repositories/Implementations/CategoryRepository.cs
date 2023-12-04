@@ -120,5 +120,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(categories.ToList());
         }
+
+        public async Task<IEnumerable<Category>> GetAllWithGroupsByIdArrayAsync(int[] categoryIds)
+        {
+            var result = _context.Categories
+                .Where(c => categoryIds.Contains(c.Id))
+                .Include(c => c.CategoryGroup)
+                .AsSplitQuery();
+            result = result.AsNoTracking();
+
+            return await Task.FromResult(result.ToList());
+        }
     }
 }

@@ -30,6 +30,9 @@ namespace LostAndFound.Core.Entities
         public virtual User User { get; set; }
         //public virtual Location Location { get; set; }
         //public virtual Category Category { get; set; }
+        //public virtual int[] PostCategoryList => Array.ConvertAll(this.PostCategory.Split('|'), int.Parse);
+        //public virtual int[] PostCategoryList { get { return Array.ConvertAll(this.PostCategory.Split('|'), int.Parse); } }
+        //public virtual int[] PostLocationList { get { return Array.ConvertAll(this.PostLocation.Split('|'), int.Parse); } }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<PostMedia> PostMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }

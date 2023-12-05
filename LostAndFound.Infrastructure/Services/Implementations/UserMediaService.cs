@@ -11,6 +11,7 @@ using LostAndFound.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Services.Implementations
@@ -75,7 +76,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<UserMediaReadDTO>(userMedia);
         }
 
-        public async Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, string schoolId, IFormFile ccid, IFormFile studentCard)
+        public async Task<ICollection<UserMediaReadDTO>> UploadUserCredentialForVerification(string userId, string schoolId, IFormFile ccidFront, IFormFile ccidBack, IFormFile studentCard)
         {
             var user = await _userRepository.FindUserByID(userId);
             if (user == null)
@@ -85,7 +86,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             if(user.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
             {
-                throw new UserAlreadyVerifiedException(); //TODO: <<Exception>>: say the user already verified, so they are not allowed to use this
+                throw new UserAlreadyVerifiedException();
             }
 
             //Deactivate old credential images 
@@ -97,21 +98,39 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             await _unitOfWork.CommitAsync();
 
+            //check file extension
+            CheckMediaExtensions(Path.GetExtension(ccidFront.FileName));
+            CheckMediaExtensions(Path.GetExtension(ccidBack.FileName));
+            CheckMediaExtensions(Path.GetExtension(studentCard.FileName));
+
             //Update User SchoolId (Student ID and such)
             user.SchoolId = schoolId;
 
             //Upload images
-            var ccidResult = await _mediaService.UploadFileAsync(ccid, _awsCredentials);
+            var ccidFrontResult = await _mediaService.UploadFileAsync(ccidFront, _awsCredentials);
+            var ccidBackResult = await _mediaService.UploadFileAsync(ccidBack, _awsCredentials);
             var studentCardResult = await _mediaService.UploadFileAsync(studentCard, _awsCredentials);
             UserMedia ccidMedia = new UserMedia()
             {
                 UserId = userId,
-                MediaType = Core.Enums.UserMediaType.IDENTIFICATION_CARD,
+                MediaType = Core.Enums.UserMediaType.IDENTIFICATION_CARD_FRONT,
                 Media = new Media()
                 {
-                    Name = ccid.FileName,
+                    Name = ccidFront.FileName,
                     Description = "CCID of " + user.Email,
-                    URL = ccidResult.Url,
+                    URL = ccidFrontResult.Url,
+                }
+            };
+
+            UserMedia ccidMediaBack = new UserMedia()
+            {
+                UserId = userId,
+                MediaType = Core.Enums.UserMediaType.IDENTIFICATION_CARD_BACK,
+                Media = new Media()
+                {
+                    Name = ccidBack.FileName,
+                    Description = "CCID of " + user.Email,
+                    URL = ccidBackResult.Url,
                 }
             };
 
@@ -129,6 +148,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             //Save in db
             await _userMediaRepository.AddAsync(ccidMedia);
+            await _userMediaRepository.AddAsync(ccidMediaBack);
             await _userMediaRepository.AddAsync(studentCardMedia);
             await _unitOfWork.CommitAsync();
 
@@ -139,9 +159,24 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //return the the 2 credentials images
             List<UserMediaReadDTO> credentials = new List<UserMediaReadDTO>();
             credentials.Add(_mapper.Map<UserMediaReadDTO>(ccidMedia));
+            credentials.Add(_mapper.Map<UserMediaReadDTO>(ccidMediaBack));
             credentials.Add(_mapper.Map<UserMediaReadDTO>(studentCardMedia));
 
             return credentials;
+        }
+
+        private void CheckMediaExtensions(string ext)
+        {
+            if (ext.Equals(".png") ||
+                ext.Equals(".jpeg") ||
+                ext.Equals(".jpg") ||
+                ext.Equals(".jfif"))
+            {
+            }
+            else
+            {
+                throw new InvalidFileFormatException("images");
+            }
         }
     }
 }

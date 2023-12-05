@@ -144,7 +144,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
                 UserMedia managerMediaCCID2 = new UserMedia()
                 {
@@ -155,7 +155,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
                 userMedias2.Add(userMedia2);
                 userMedias2.Add(managerMediaCCID1);
@@ -203,7 +203,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
                 UserMedia managerMediaCCID4 = new UserMedia()
                 {
@@ -214,7 +214,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
                 userMedias3.Add(userMedia3);
                 userMedias3.Add(managerMediaCCID3);
@@ -262,7 +262,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
                 UserMedia userMediaCCID6 = new UserMedia()
                 {
@@ -273,7 +273,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
-                    MediaType = UserMediaType.IDENTIFICATION_CARD
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
                 UserMedia userMediaStudent7 = new UserMedia()
                 {

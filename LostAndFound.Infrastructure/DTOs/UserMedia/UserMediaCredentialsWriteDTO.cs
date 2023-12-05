@@ -8,7 +8,9 @@ namespace LostAndFound.Infrastructure.DTOs.UserMedia
         [Required]
         public string SchoolId { get; set; }
         [Required]
-        public IFormFile CCID { get; set; }
+        public IFormFile CCIDFront { get; set; }
+        [Required]
+        public IFormFile CCIDBack { get; set; }
         [Required]
         public IFormFile StudentCard { get; set; }
     }

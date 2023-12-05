@@ -249,7 +249,8 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserCredentialForVerification(stringId, 
                 userMediaCredentialsWriteDTO.SchoolId, 
-                userMediaCredentialsWriteDTO.CCID, 
+                userMediaCredentialsWriteDTO.CCIDFront, 
+                userMediaCredentialsWriteDTO.CCIDBack,
                 userMediaCredentialsWriteDTO.StudentCard);
             return ResponseFactory.Ok(result);
         }

@@ -7,7 +7,7 @@ namespace LostAndFound.Infrastructure.DTOs.Location
     {
         public int LocationId { get; set; }
         public string LocationName { get; set; }
-        public int PropertyId { get; set; }
+        public int CampusId { get; set; }
         public enum ActiveStatus
         {
             All,
@@ -16,7 +16,7 @@ namespace LostAndFound.Infrastructure.DTOs.Location
         }
         [DefaultValue(ActiveStatus.All)]
         public ActiveStatus Status { get; set; }
-        public string PropertyName { get; set; }
+        public string CampusName { get; set; }
         public int Floor { get; set; }
     }
 }

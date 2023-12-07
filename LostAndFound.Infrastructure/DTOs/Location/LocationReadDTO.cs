@@ -7,13 +7,13 @@ namespace LostAndFound.Infrastructure.DTOs.Location
     {
         public int Id { get; set; }
         
-        public int PropertyId { get; set; }
+        public int CampusId { get; set; }
         
         public string LocationName { get; set; }
         
         public int Floor { get; set; }
         public bool? IsActive { get; set; }
 
-        public CampusLiteReadDTO Property { get; set; }
+        public CampusLiteReadDTO Campus { get; set; }
     }
 }

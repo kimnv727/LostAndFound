@@ -23,7 +23,7 @@ namespace LostAndFound.Core.Entities
         [Required]
         public bool? IsActive { get; set; }
         
-        public virtual Campus Property { get; set; }  
+        public virtual Campus Campus { get; set; }  
         public ICollection<Item> Items { get; set; }
         public ICollection<Post> Posts { get;set; }
     }

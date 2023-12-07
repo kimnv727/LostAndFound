@@ -22,7 +22,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Locations
                 .Include(l => l.Items)
                 .Include(l => l.Posts)
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
         }
 
@@ -31,7 +31,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return _context.Locations
                 .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
                 .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .FirstOrDefaultAsync
                 (l => l.LocationName == Name);
         }
@@ -40,7 +40,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var locations = _context
                 .Locations
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .AsSplitQuery();
             locations = locations.AsNoTracking();
             return await Task.FromResult(locations.ToList());
@@ -50,7 +50,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var locations = _context
                 .Locations
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .AsSplitQuery();
 
             //Sort by floor then by name
@@ -66,7 +66,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Location>> GetAllByCampusIdAsync(int campusId)
         {
             var locations = _context.Locations
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .Where(l => l.PropertyId == campusId)
                 .AsSplitQuery();
 
@@ -84,7 +84,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Location> locations = _context.Locations
                 .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
                 .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .AsSplitQuery();
 
             if (!trackChanges)
@@ -96,17 +96,17 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 locations = locations.Where(l => l.Id == query.LocationId);
             }
-            if (query.PropertyId > 0)
+            if (query.CampusId > 0)
             {
-                locations = locations.Where(l => l.Property.Id == query.PropertyId);
+                locations = locations.Where(l => l.Campus.Id == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.LocationName))
             {
                 locations = locations.Where(l => l.LocationName.ToLower().Contains(query.LocationName.ToLower()));
             }
-            if (!string.IsNullOrWhiteSpace(query.PropertyName))
+            if (!string.IsNullOrWhiteSpace(query.CampusName))
             {
-                locations = locations.Where(l => l.Property.Name.ToLower().Contains(query.PropertyName.ToLower()));
+                locations = locations.Where(l => l.Campus.Name.ToLower().Contains(query.CampusName.ToLower()));
             }
             if (Enum.IsDefined(query.Status))
             {
@@ -132,7 +132,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var locations = _context
                 .Locations
-                .Include(l => l.Property)
+                .Include(l => l.Campus)
                 .Where(l => locationIds.Contains(l.Id))
                 .AsSplitQuery();
 

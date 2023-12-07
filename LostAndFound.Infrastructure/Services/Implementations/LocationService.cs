@@ -195,7 +195,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
 
             //Check Storage with this Location
-            var storages = await _storageRepository.FindAllStoragesByCampusIdIgnoreStatusAsync(Location.PropertyId);
+            var storages = await _storageRepository.FindAllStoragesByCampusIdIgnoreStatusAsync(Location.CampusId);
             if(storages.Count() > 0)
             {
                 foreach(var s in storages)

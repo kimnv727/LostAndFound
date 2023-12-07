@@ -67,7 +67,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var locations = _context.Locations
                 .Include(l => l.Campus)
-                .Where(l => l.PropertyId == campusId)
+                .Where(l => l.CampusId == campusId)
                 .AsSplitQuery();
 
             //Sort by floor then by name

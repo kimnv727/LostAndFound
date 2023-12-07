@@ -11,8 +11,8 @@ namespace LostAndFound.Core.Entities
         [Key]
         public int Id { get; set; }
         
-        [ForeignKey("Property")]
-        public int PropertyId { get; set; }
+        [ForeignKey("Campus")]
+        public int CampusId { get; set; }
         
         [Required]
         public string LocationName { get; set; }

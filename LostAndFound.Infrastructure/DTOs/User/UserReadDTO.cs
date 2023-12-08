@@ -1,5 +1,6 @@
 using System;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Property;
 
 namespace LostAndFound.Infrastructure.DTOs.User
 {

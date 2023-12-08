@@ -41,7 +41,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var campuses = await _CampusRepository.GetAllWithLocationsAsync();
             return _mapper.Map<List<CampusReadDTO>>(campuses.ToList());
         }
-        
+
+        public async Task<IEnumerable<CampusReadDTO>> ListWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
+        {
+            var campuses = await _CampusRepository.GetWithLocationsByCampusLocationAsync(campusLocation);
+            return _mapper.Map<List<CampusReadDTO>>(campuses.ToList());
+        }
+
         public async Task<PaginatedResponse<CampusReadDTO>> QueryCampusIgnoreStatusAsync(CampusQuery query)
         {
             var campuses = await _CampusRepository.QueryCampusIgnoreStatusAsync(query);

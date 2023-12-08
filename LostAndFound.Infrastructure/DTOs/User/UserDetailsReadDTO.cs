@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Property;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
 using Newtonsoft.Json;
 
@@ -38,5 +39,6 @@ namespace LostAndFound.Infrastructure.DTOs.User
         public DateTime CreatedDate{ get; set; }
 
         public ICollection<UserMediaLiteReadDTO> UserMedias { get; set; }
+        public virtual CampusLiteReadDTO Campus { get; set; }
     }
 }

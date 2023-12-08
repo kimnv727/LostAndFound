@@ -16,11 +16,14 @@ namespace LostAndFound.API.Controllers
     [ApiController]
     public class CampusController : Controller
     {
-        private readonly ICampusService _CampusService;
-        
-        public CampusController(ICampusService CampusService)
+        private readonly ICampusService _campusService;
+        private readonly IUserService _userService;
+
+        public CampusController(ICampusService campusService, IUserService userService)
         {
-            _CampusService = CampusService;
+            _campusService = campusService;
+            _userService = userService;
+
         }
 
         /// <summary>
@@ -31,7 +34,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<CampusReadDTO>>))]
         public async Task<IActionResult> Query([FromQuery] CampusQuery query)
         {
-            var paginatedCampusDTO = await _CampusService.QueryCampusAsync(query);
+            var paginatedCampusDTO = await _campusService.QueryCampusAsync(query);
             return ResponseFactory.PaginatedOk(paginatedCampusDTO);
         }
 
@@ -43,8 +46,22 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<CampusReadDTO>>))]
         public async Task<IActionResult> ListAll()
         {
-            var campusDTO = await _CampusService.ListAllWithLocationsAsync();
+            var campusDTO = await _campusService.ListAllWithLocationsAsync();
             return ResponseFactory.Ok(campusDTO);
+        }
+
+        /// <summary>
+        /// List all Campuses by Campus Location
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all-by-campus-location")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<CampusReadDTO>>))]
+        public async Task<IActionResult> ListAllByCampusLocation()
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var user = await _userService.GetUserAsync(userId);
+            var campuses = await _campusService.ListWithLocationsByCampusLocationAsync(user.Campus.CampusLocation);
+            return ResponseFactory.Ok(campuses);
         }
 
         /// <summary>
@@ -55,7 +72,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> FindCampusByID([Required] int CampusId)
         {
-            var campus = await _CampusService.GetCampusByIdAsync(CampusId);
+            var campus = await _campusService.GetCampusByIdAsync(CampusId);
             return ResponseFactory.Ok(campus);
         }
         
@@ -69,7 +86,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ChangeCampusStatus([Required] int CampusId)
         {
-            return ResponseFactory.Ok(await _CampusService.ChangeCampusStatusAsync(CampusId));
+            return ResponseFactory.Ok(await _campusService.ChangeCampusStatusAsync(CampusId));
         }
         
         ///<summary>
@@ -82,7 +99,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateCampusDetailsAsync(int CampusId, CampusWriteDTO CampusWriteDTO)
         {
-            var campus = await _CampusService.UpdateCampusDetailsAsync(CampusId, CampusWriteDTO);
+            var campus = await _campusService.UpdateCampusDetailsAsync(CampusId, CampusWriteDTO);
             return ResponseFactory.Ok(campus);
         }
         
@@ -98,7 +115,7 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> CreateCampus(CampusWriteDTO CampusWriteDTO)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _CampusService.CreateCampusAsync(userId, CampusWriteDTO);
+            var result = await _campusService.CreateCampusAsync(userId, CampusWriteDTO);
 
             return ResponseFactory.Ok(result);
         }
@@ -112,7 +129,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> DeleteCampus([Required] int CampusId)
         {
-            await _CampusService.DeleteCampusAsync(CampusId);
+            await _campusService.DeleteCampusAsync(CampusId);
             return ResponseFactory.NoContent();
         }
         

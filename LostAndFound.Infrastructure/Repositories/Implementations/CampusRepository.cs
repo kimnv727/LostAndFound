@@ -137,5 +137,15 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(p => p.Locations)
                 .FirstOrDefaultAsync(p => p.Name.ToLower().Contains(PropertyName.ToLower()));
         }
+
+        public async Task<IEnumerable<Campus>> GetWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
+        {
+            var campuses = _context.Campuses
+                .Include(c => c.Locations)
+                .Where(c => c.CampusLocation == campusLocation)
+                .AsSplitQuery();
+            campuses = campuses.AsNoTracking();
+            return await Task.FromResult(campuses.ToList());
+        }
     }
 }

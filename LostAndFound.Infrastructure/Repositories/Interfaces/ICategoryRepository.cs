@@ -24,5 +24,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Category>> GetAllWithGroupsAsync();
 
         public Task<IEnumerable<Category>> GetAllWithGroupsByIdArrayAsync(int[] categoryIds);
+
+        public Task<IEnumerable<Category>> GetAllByGroupIdAsync(int categroupId);
     }
 }

@@ -63,6 +63,21 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(category);
         }
 
+        /// <summary>
+        /// List all categories by Group Id
+        /// </summary>
+        /// <param name="categoryGroupId"></param>
+        /// <returns></returns>
+        [HttpGet("all/{categoryGroupId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> ListAllByGroupId([Required] int categoryGroupId)
+        {
+            var categoryDTO = await _categoryService.ListAllByGroupIdAsync(categoryGroupId);
+
+            return ResponseFactory.Ok(categoryDTO);
+        }
+
         /*/// <summary>
         /// Get Category by name
         /// </summary>
@@ -75,7 +90,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(category);
         }*/
-        
+
         ///<summary>
         /// Create new category
         /// </summary>

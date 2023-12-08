@@ -11,6 +11,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<PaginatedResponse<CategoryReadDTO>> QueryCategoryAsync(CategoryQuery query);
         public Task<CategoryReadDTO> ChangeCategoryStatusAsync(int id);
         public Task<IEnumerable<CategoryReadDTO>> ListAllWithGroupAsync();
+        public Task<IEnumerable<CategoryReadDTO>> ListAllByGroupIdAsync(int categoryGroupId);
         public Task<CategoryReadDTO> FindCategoryByIdAsync(int categoryId);
         /*public Task<CategoryReadDTO> FindCategoryByNameAsync(string categoryName);*/
         public Task DeleteCategoryAsync(int categoryId);

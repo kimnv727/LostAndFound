@@ -19,13 +19,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryGroupRepository;
         private readonly IUserRepository _userRepository;
 
-        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork, ICategoryRepository categoryRepository, IUserRepository userRepository)
+        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork, ICategoryRepository categoryRepository, 
+            IUserRepository userRepository, ICategoryRepository categoryGroupRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;
+            _categoryGroupRepository = categoryGroupRepository;
             _userRepository = userRepository;
         }
 
@@ -39,6 +42,20 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         public async Task<IEnumerable<CategoryReadDTO>> ListAllWithGroupAsync()
         {
             var categories = await _categoryRepository.GetAllWithGroupsAsync();
+
+            return _mapper.Map<List<CategoryReadDTO>>(categories);
+        }
+
+        public async Task<IEnumerable<CategoryReadDTO>> ListAllByGroupIdAsync(int categoryGroupId)
+        {
+            var group = await _categoryGroupRepository.FindAsync(categoryGroupId);
+
+            if (group == null)
+            {
+                throw new EntityWithIDNotFoundException<CategoryGroup>(categoryGroupId);
+            }
+
+            var categories = await _categoryRepository.GetAllByGroupIdAsync(categoryGroupId);
 
             return _mapper.Map<List<CategoryReadDTO>>(categories);
         }

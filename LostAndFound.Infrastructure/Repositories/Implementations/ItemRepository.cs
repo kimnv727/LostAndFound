@@ -124,9 +124,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
             }
-            if (query.LocationId > 0)
+            /*if (query.LocationId > 0)
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
+            }*/
+            if (query.LocationId != null)
+            {
+                items = items.Where(i => query.LocationId.Contains(i.LocationId));
             }
             if (query.Floor >= 0)
             {
@@ -254,9 +258,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
             }
-            if (query.LocationId > 0)
+            /*if (query.LocationId > 0)
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
+            }*/
+            if (query.LocationId != null)
+            {
+                items = items.Where(i => query.LocationId.Contains(i.LocationId));
             }
             if (query.Floor >= 0)
             {
@@ -375,9 +383,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundUserId.ToLower().Contains(query.FoundUserId.ToLower()));
             }
-            if (query.LocationId > 0)
+            /*if (query.LocationId > 0)
             {
                 items = items.Where(i => i.LocationId == query.LocationId);
+            }*/
+            if (query.LocationId != null)
+            {
+                items = items.Where(i => query.LocationId.Contains(i.LocationId));
             }
             if (query.Floor >= 0)
             {

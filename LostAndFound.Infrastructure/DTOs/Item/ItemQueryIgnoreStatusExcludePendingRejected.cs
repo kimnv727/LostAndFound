@@ -11,7 +11,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public string FoundUserId { get; set; }
 
-        public int LocationId { get; set; }
+        public int[] LocationId { get; set; }
 
         public int? Floor { get; set; }
 

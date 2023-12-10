@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LostAndFound.API.Controllers
 {
+    //TODO: IMPORTANT -> Update user Name and avatar on firebase after update profile on front
     //TODO: add check Campus when login with email and password -> still have campus when login -> if new then use it to create new User -> If not then use it to check
     //TODO: also add propertyId when create new manager
     //TODO: also trim SchoolId to add when create

@@ -98,6 +98,21 @@ namespace LostAndFound.API.Authentication
                 //check email
                 if (email.Contains("fpt.edu.vn") || email.Contains("fe.edu.vn"))
                 {
+                    //create media
+                    List<UserMedia> userMedias = new List<UserMedia>();
+                    UserMedia userMedia = new UserMedia()
+                    {
+                        UserId = uid,
+                        Media = new Media()
+                        {
+                            Name = "GoogleAvatar",
+                            Description = "Avatar of " + email,
+                            URL = avatar,
+                            CreatedDate = DateTime.Now.ToVNTime()
+                        },
+                        MediaType = UserMediaType.AVATAR
+                    };
+                    userMedias.Add(userMedia);
                     //create verified User
                     var newUser = new User()
                     {
@@ -108,7 +123,8 @@ namespace LostAndFound.API.Authentication
                         Avatar = avatar,
                         FirstName = name,
                         LastName = " ",
-                        Gender = null,
+                        //default male
+                        Gender = 0,
                         Phone = phone,
                         //User role
                         RoleId = 4,
@@ -117,13 +133,13 @@ namespace LostAndFound.API.Authentication
                         //CampusId = 1,
                         CampusId = campusId,
                         VerifyStatus = UserVerifyStatus.VERIFIED,
-                        CreatedDate = DateTime.Now.ToVNTime()
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                        UserMedias = userMedias
                     };
-                    
                     await _userRepository.AddAsync(newUser);
                     await _unitOfWork.CommitAsync();
 
-                    UserMedia userMedia = new UserMedia()
+                    /*UserMedia userMedia = new UserMedia()
                     {
                         UserId = uid,
                         Media = new Media()
@@ -135,12 +151,27 @@ namespace LostAndFound.API.Authentication
                         MediaType = UserMediaType.AVATAR
                     };
                     await _userMediaRepository.AddAsync(userMedia);
-                    await _unitOfWork.CommitAsync();
+                    await _unitOfWork.CommitAsync();*/
 
                     return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
                 }
                 else
                 {
+                    //create media
+                    List<UserMedia> userMedias = new List<UserMedia>();
+                    UserMedia userMedia = new UserMedia()
+                    {
+                        UserId = uid,
+                        Media = new Media()
+                        {
+                            Name = "GoogleAvatar",
+                            Description = "Avatar of " + email,
+                            URL = avatar,
+                            CreatedDate = DateTime.Now.ToVNTime()
+                        },
+                        MediaType = UserMediaType.AVATAR
+                    };
+                    userMedias.Add(userMedia);
                     //create unverified User
                     var newUser = new User()
                     {
@@ -151,7 +182,8 @@ namespace LostAndFound.API.Authentication
                         Avatar = avatar,
                         FirstName = name,
                         LastName = " ",
-                        Gender = null,
+                        //default male
+                        Gender = 0,
                         Phone = phone,
                         //User role
                         RoleId = 4,
@@ -160,13 +192,14 @@ namespace LostAndFound.API.Authentication
                         //CampusId = 1,
                         CampusId = campusId,
                         VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
-                        CreatedDate = DateTime.Now.ToVNTime()
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                        UserMedias = userMedias
                     };
                     
                     await _userRepository.AddAsync(newUser);
                     await _unitOfWork.CommitAsync();
                     
-                    UserMedia userMedia = new UserMedia()
+                    /*UserMedia userMedia = new UserMedia()
                     {
                         UserId = uid,
                         Media = new Media()
@@ -178,7 +211,7 @@ namespace LostAndFound.API.Authentication
                         MediaType = UserMediaType.AVATAR
                     };
                     await _userMediaRepository.AddAsync(userMedia);
-                    await _unitOfWork.CommitAsync();
+                    await _unitOfWork.CommitAsync();*/
 
                     return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
                 }

@@ -481,7 +481,7 @@ namespace LostAndFound.API.Controllers
             
             return ResponseFactory.CreatedAt(nameof(GetPostFlag), 
                 nameof(PostController), 
-                new { userId = postFlag.UserId, postId = postFlag.Post.Id }, 
+                new { userId = postFlag.UserId, postId = postFlag.PostId }, 
                 postFlag);
         }
 

@@ -29,14 +29,18 @@ namespace LostAndFound.API.Controllers
         private readonly IUserMediaService _userMediaService;
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly FirestoreProvider _firestoreProvider;
+        private readonly INotificationService _notificationService;
+        private readonly IUserDeviceService _userDeviceService;
 
         public UserController(IUserService userService, IUserMediaService userMediaService, IFirebaseAuthService firebaseAuthService
-            , FirestoreProvider firestoreProvider)
+            , FirestoreProvider firestoreProvider, INotificationService notificationService, IUserDeviceService userDeviceService)
         {
             _userService = userService;
             _userMediaService = userMediaService;
             _firebaseAuthService = firebaseAuthService;
             _firestoreProvider = firestoreProvider;
+            _notificationService = notificationService;
+            _userDeviceService = userDeviceService;
         }
 
         ///<summary>
@@ -273,6 +277,13 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(stringId, roles);
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
+            //Noti
+            if(updateDTO.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, updateDTO.UserId, "Your Account Status has been Verified!",
+                "Your Account Status has been Verified!", Core.Enums.NotificationType.UserVerifyStatus);
+            }
             return ResponseFactory.Ok(result);
         }
 

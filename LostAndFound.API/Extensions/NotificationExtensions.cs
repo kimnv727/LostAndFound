@@ -16,6 +16,59 @@ namespace LostAndFound.API.Extensions
 {
     public static class NotificationExtensions
     {
+        public static async Task Notify(IUserDeviceService userDeviceService, INotificationService notificationService,
+            string userId, string notificationTitle, string notificationContent, NotificationType notificationType)
+        {
+            //get user's all device tokens
+            var userDevices = await userDeviceService.GetUserDevicesOfUserAsync(userId);
+            if (userDevices.Count() > 0)
+            {
+                List<string> tokensList = new List<string>();
+                foreach (var ud in userDevices)
+                {
+                    tokensList.Add(ud.Token);
+                }
+
+                //Create notification to send
+                var multicastMessage = new FirebaseAdmin.Messaging.MulticastMessage
+                {
+                    Tokens = tokensList,
+                    Notification = new FirebaseAdmin.Messaging.Notification
+                    {
+                        Title = notificationTitle,
+                        Body = notificationContent,
+                    },
+                    Data = new Dictionary<string, string>
+                    {
+                        { "notificationType", ((int)NotificationType.Chat).ToString() },
+                        { "createdDate", DateTime.Now.ToVNTime().ToString() }
+                    }
+                };
+                try
+                {
+                    //Send notification
+                    var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
+                    await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, userDeviceService);
+
+                    if (response.SuccessCount > 0)
+                    {
+                        //Store notification in db
+                        var notificationWriteDTO = new NotificationWriteDTO
+                        {
+                            Title = notificationTitle,
+                            Content = notificationContent,
+                            NotificationType = notificationType
+                        };
+                        await notificationService.CreateNotification(notificationWriteDTO, userId);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.InnerException.ToString());
+                }
+            }
+        }
+
         public static async Task NotifyChatToUser(IUserDeviceService userDeviceService, INotificationService notificationService,
             string userId, string notificationTitle, string notificationContent)
         {
@@ -201,7 +254,7 @@ namespace LostAndFound.API.Extensions
                         {
                             Title = notificationTitle,
                             Content = notificationContent,
-                            NotificationType = NotificationType.OwnItemClaim
+                            NotificationType = NotificationType.ItemClaim
                         };
                         await notificationService.CreateNotification(notificationWriteDTO, userId);
                     }

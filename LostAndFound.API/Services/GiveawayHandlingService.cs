@@ -1,6 +1,7 @@
 ﻿using LostAndFound.API.Extensions;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -101,12 +102,28 @@ namespace LostAndFound.API.Services
                                 gp.IsActive = false;
                                 gp.IsWinner = true;
                                 //call noti api
+                                var noti = new PushNotification
+                                {
+                                    UserId = gp.UserId,
+                                    Title = "You win the Giveaway for Item named " + fg.Item.Name,
+                                    Content = "You win the Giveaway for Item named " + fg.Item.Name + ". Congratulation!",
+                                    NotificationType = NotificationType.GiveawayResult
+                                };
+                                await giveawayRepository.PushNotificationForGiveawayResult(noti);
                             }
                             else
                             {
                                 gp.IsActive = false;
                                 gp.IsWinner = false;
                                 //call noti api
+                                var noti = new PushNotification
+                                {
+                                    UserId = gp.UserId,
+                                    Title = "You do not win the Giveaway for Item named " + fg.Item.Name,
+                                    Content = "You do not win the Giveaway for Item named " + fg.Item.Name + ". Good luck next time!",
+                                    NotificationType = NotificationType.GiveawayResult
+                                };
+                                await giveawayRepository.PushNotificationForGiveawayResult(noti);
                             }
                         }
                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());

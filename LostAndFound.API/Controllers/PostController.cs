@@ -29,10 +29,14 @@ namespace LostAndFound.API.Controllers
         private readonly IPostFlagService _postFlagService;
         private readonly FacebookCredentials _facebookCredentials;
         private readonly IItemService _itemService;
+        private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
+        private readonly IUserDeviceService _userDeviceService;
 
         public PostController(IPostService postService, IPostMediaService postMediaService,
             IPostBookmarkService postBookmarkService, IPostFlagService postFlagService, 
-            FacebookCredentials facebookCredentials, IItemService itemService)
+            FacebookCredentials facebookCredentials, IItemService itemService,
+            INotificationService notificationService, IUserService userService, IUserDeviceService userDeviceService)
         {
             _postService = postService;
             _postMediaService = postMediaService;
@@ -40,6 +44,9 @@ namespace LostAndFound.API.Controllers
             _postFlagService = postFlagService;
             _facebookCredentials = facebookCredentials;
             _itemService = itemService;
+            _notificationService = notificationService;
+            _userService = userService;
+            _userDeviceService = userDeviceService;
         }
 
         /// <summary>
@@ -227,6 +234,27 @@ namespace LostAndFound.API.Controllers
             }
             await _postService.UpdatePostStatusAsync(postId, postStatus);
             var post = await _postService.GetPostByIdAsync(postId);
+
+            //Noti
+            if(postStatusExcludePending == PostStatusExcludePending.ACTIVE)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, post.PostUserId, "Your Post with ID " + postId + " has been Verified!",
+                "Your Post with ID " + postId + " has been Verified!", NotificationType.PostVerifiedStatus);
+            }
+            else if (postStatusExcludePending == PostStatusExcludePending.REJECTED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, post.PostUserId, "Your Post with ID " + postId + " has been Rejected!",
+                "Your Post with ID " + postId + " has been Rejected!", NotificationType.PostVerifiedStatus);
+            }
+            else if (postStatusExcludePending == PostStatusExcludePending.DELETED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, post.PostUserId, "Your Post with ID " + postId + " has been taken down!",
+                "Your Post with ID " + postId + " has been taken down!", NotificationType.OwnPostTakenDown);
+            }
+
             return ResponseFactory.Ok(post);
         }
         

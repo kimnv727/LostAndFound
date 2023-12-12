@@ -46,10 +46,14 @@ namespace LostAndFound.API.Controllers
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly ICabinetService _cabinetService;
         private readonly IPostService _postService;
+        private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
+        private readonly IUserDeviceService _userDeviceService;
 
         public ItemController(IItemService itemService, IItemMediaService itemMediaService, IItemFlagService itemFlagService, 
             IItemBookmarkService itemBookmarkService, ICategoryRepository categoryRepository, IItemClaimService itemClaimService, 
-            IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService, IPostService postService)
+            IFirebaseAuthService firebaseAuthService, ICabinetService cabinetService, IPostService postService,
+            INotificationService notificationService, IUserService userService, IUserDeviceService userDeviceService)
         {
             _itemService = itemService;
             _itemMediaService = itemMediaService;
@@ -60,6 +64,9 @@ namespace LostAndFound.API.Controllers
             _firebaseAuthService = firebaseAuthService;
             _cabinetService = cabinetService;
             _postService = postService;
+            _notificationService = notificationService;
+            _userService = userService;
+            _userDeviceService = userDeviceService;
         }
 
         /// <summary>
@@ -178,7 +185,27 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(userId, roles);*/
 
             var item = await _itemService.UpdateItemStatus(itemId, itemStatus);
-            
+
+            //Noti
+            if (itemStatus == ItemStatus.ACTIVE)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, item.User.Id, "Your Item with Name " + item.Name + " has been Verified!",
+                "Your Item with Name " + item.Name + " has been Verified!", NotificationType.ItemVerifyStatus);
+            }
+            else if (itemStatus == ItemStatus.REJECTED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, item.User.Id, "Your Item with Name " + item.Name + " has been Rejected!",
+                "Your Item with Name " + item.Name + " has been Rejected!", NotificationType.ItemVerifyStatus);
+            }
+            else if (itemStatus == ItemStatus.DELETED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, item.User.Id, "Your Item with Name " + item.Name + " has been taken down!",
+                "Your Item with Name " + item.Name + " has been taken down!", NotificationType.ItemVerifyStatus);
+            }
+
             return ResponseFactory.Ok(item);
         }
 
@@ -194,8 +221,8 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO updateDTO)
         {
-
-            var item = await _itemService.UpdateItemDetailsAsync(itemId, updateDTO);
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var item = await _itemService.UpdateItemDetailsAsync(itemId, updateDTO, stringId);
 
             return ResponseFactory.Ok(item);
         }
@@ -467,6 +494,13 @@ namespace LostAndFound.API.Controllers
 
             await _itemClaimService.ClaimAnItemAsync(itemId, userId);
 
+            //Get Item for Noti
+            var item = await _itemService.FindItemByIdAsync(itemId);
+            //Noti
+            await NotificationExtensions
+            .NotifyItemClaimedToUser(_userDeviceService, _notificationService, item.User.Id, "New Claim",
+            "Someone has claim your Item " + item.Name);
+
             return ResponseFactory.NoContent();
         }
 
@@ -507,6 +541,13 @@ namespace LostAndFound.API.Controllers
             }
             else throw new ItemFounderNotMatchException();
 
+            //Get Item for Noti
+            var item = await _itemService.FindItemByIdAsync(makeClaimDTO.ItemId);
+            //Noti
+            await NotificationExtensions
+            .NotifyItemClaimedToUser(_userDeviceService, _notificationService, makeClaimDTO.UserId, "Your Claim has been Accepted!",
+            "Your claim on Item " + item.Name + " has been Accepted!");
+
             return ResponseFactory.NoContent();
         }
 
@@ -525,7 +566,16 @@ namespace LostAndFound.API.Controllers
             //Check if current user is Item founder
             if (await _itemService.CheckItemFounderAsync(makeClaimWithReceiptDTO.ItemId, currentUserId))
             {
-                return ResponseFactory.Ok<ReceiptReadDTO>(await _itemService.AcceptAClaimAndCreateReceiptAsync(makeClaimWithReceiptDTO.ItemId, makeClaimWithReceiptDTO.ReceiverId, makeClaimWithReceiptDTO.ReceiptMedia));
+                //Get result
+                var result = await _itemService.AcceptAClaimAndCreateReceiptAsync(makeClaimWithReceiptDTO.ItemId, makeClaimWithReceiptDTO.ReceiverId, makeClaimWithReceiptDTO.ReceiptMedia);
+                //Get Item for Noti
+                var item = await _itemService.FindItemByIdAsync(makeClaimWithReceiptDTO.ItemId);
+                //Noti
+                await NotificationExtensions
+                .NotifyItemClaimedToUser(_userDeviceService, _notificationService, makeClaimWithReceiptDTO.ReceiverId, "Your Claim has been Accepted!",
+                "Your claim on Item " + item.Name + " has been Accepted!");
+
+                return ResponseFactory.Ok<ReceiptReadDTO>(result);
             }
             else throw new ItemFounderNotMatchException();
 
@@ -548,6 +598,14 @@ namespace LostAndFound.API.Controllers
                 await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
+
+            //Get Item for Noti
+            var item = await _itemService.FindItemByIdAsync(makeClaimDTO.ItemId);
+            //Noti
+            await NotificationExtensions
+            .NotifyChatToUser(_userDeviceService, _notificationService, makeClaimDTO.UserId, "Your Claim has been Denied!",
+            "Your claim on Item " + item.Name + " has been Denied!");
+
             return ResponseFactory.NoContent();
         }
 

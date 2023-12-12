@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LostAndFound.API.Attributes;
+using LostAndFound.API.Extensions;
 using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Authenticate;
@@ -25,14 +26,20 @@ namespace LostAndFound.API.Controllers
         private readonly ICommentFlagService _commentFlagService;
         private readonly IFirebaseAuthService _firebaseAuthService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
+        private readonly IPostService _postService;
+        private readonly IUserDeviceService _userDeviceService;
 
         public CommentController(ICommentService commentService, ICommentFlagService commentFlagService, IFirebaseAuthService firebaseAuthService,
-            IUserService userService)
+            IUserService userService, INotificationService notificationService, IPostService postService, IUserDeviceService userDeviceService)
         {
             _commentService = commentService;
             _commentFlagService = commentFlagService;
             _firebaseAuthService = firebaseAuthService;
             _userService = userService;
+            _notificationService = notificationService;
+            _postService = postService;
+            _userDeviceService = userDeviceService;
         }
         
         /// <summary>
@@ -116,6 +123,13 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _commentService.CreateCommentAsync(stringId, postId, writeDTO);
+
+            //get Post
+            var post = await _postService.GetPostByIdAsync(postId);
+            //Noti
+            await NotificationExtensions
+            .NotifyCommentRepliedToUser(_userDeviceService, _notificationService, post.PostUserId, "Your Post with ID " + postId + " has new Comment!",
+            "Your Post with ID " + postId + " has new Comment!");
 
             return ResponseFactory.CreatedAt(
                 (nameof(GetComment)), 

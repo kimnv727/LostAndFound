@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
+using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.Repositories.Interfaces.Common;
 
@@ -20,5 +21,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task UpdateGiveawayRange(Giveaway[] giveaway);
         public Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways();
         public Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways();
+        Task PushNotificationForGiveawayResult(PushNotification notification);
     }
 }

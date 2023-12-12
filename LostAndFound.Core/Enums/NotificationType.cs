@@ -2,7 +2,9 @@ namespace LostAndFound.Core.Enums
 {
     public enum NotificationType
     {
-        OwnItemClaim,
+        ItemClaim,
+        PostVerifiedStatus,
+        ItemVerifyStatus,
         OwnItemTakenDown,
         OwnPostTakenDown,
         OwnCommentTakenDown,
@@ -12,6 +14,7 @@ namespace LostAndFound.Core.Enums
         GiveawayResult,
         RecommendItem,
         RecommendPost,
+        UserVerifyStatus,
         Generic
     }
 }

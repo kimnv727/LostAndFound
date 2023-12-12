@@ -173,7 +173,7 @@ namespace LostAndFound.API.Controllers
                             await NotificationExtensions
                                     .NotifyChatToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();
-                        case NotificationType.OwnItemClaim:
+                        case NotificationType.ItemClaim:
                             await NotificationExtensions
                                     .NotifyItemClaimedToUser(_userDeviceService, _notificationService, notification.UserId, notification.Title, notification.Content);
                             return Ok();

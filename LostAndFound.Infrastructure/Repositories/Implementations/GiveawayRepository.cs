@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
+using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.DTOs.Post;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
@@ -155,6 +159,38 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Where(g => g.GiveawayStatus == GiveawayStatus.NOTSTARTED);
 
             return await Task.FromResult(giveaways.ToList());
+        }
+
+        public async Task PushNotificationForGiveawayResult(PushNotification notification)
+        {
+            string baseUrl = "https://lostandfound.io.vn/api/notifications/push";
+            using (var httpClient = new HttpClient())
+            {
+                /*httpClient.DefaultRequestHeaders
+                    .Accept
+                    .Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));*/
+
+                var request = new HttpRequestMessage
+                {
+                    Method = new HttpMethod("POST"),
+                    RequestUri = new Uri(baseUrl),
+                };
+
+                request.Content = JsonContent.Create(new { userId = notification.UserId, title = notification.Title,
+                content = notification.Content, notificationType = notification.NotificationType});
+
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                /*if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    JObject jObj = JObject.Parse(result);
+
+                    return jObj["id_token"].ToString();
+                }
+
+                return null;*/
+            }
         }
     }
 }

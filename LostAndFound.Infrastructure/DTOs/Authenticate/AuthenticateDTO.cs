@@ -8,5 +8,6 @@ namespace LostAndFound.Infrastructure.DTOs.Authenticate
         public string Avatar { get; set; }
         public string Phone { get; set; }
 /*        public string DeviceToken { get; set; }*/
+        public int CampusId { get; set; }
     }
 }

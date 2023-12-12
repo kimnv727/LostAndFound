@@ -78,7 +78,7 @@ namespace LostAndFound.API.Controllers
             //TODO: if pass Campus here then create new user with campus in it
             //create new User for Google Login
             var result = await _authService.Authenticate(authenticateRequest.Uid, authenticateRequest.Email, 
-                authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone);
+                authenticateRequest.Name, authenticateRequest.Avatar, authenticateRequest.Phone, authenticateRequest.CampusId);
 
             /*//check user device existed -> if not create new
             var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(authenticateRequest.DeviceToken);

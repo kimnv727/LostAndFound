@@ -83,7 +83,9 @@ namespace LostAndFound.API.Authentication
         }
         
         public async Task<UserDetailAuthenticateReadDTO> Authenticate(string uid, string email, string name,
-            string avatar, string phone)
+            string avatar, string phone
+            , int campusId
+            )
         {
             //Check if user existed in DB -> If not then create (For GoogleLogin user)
             var user = await _userRepository.FindUserByID(uid);
@@ -112,9 +114,8 @@ namespace LostAndFound.API.Authentication
                         RoleId = 4,
                         //User School Id
                         SchoolId = "",
-                        //Placeholder to HCM for now
-                        //Campus = null,
-                        CampusId = 1,
+                        //CampusId = 1,
+                        CampusId = campusId,
                         VerifyStatus = UserVerifyStatus.VERIFIED,
                         CreatedDate = DateTime.Now.ToVNTime()
                     };
@@ -156,9 +157,8 @@ namespace LostAndFound.API.Authentication
                         RoleId = 4,
                         //User School Id
                         SchoolId = "",
-                        //Placeholder to HCM for now
-                        //Campus = null,
-                        CampusId = 1,
+                        //CampusId = 1,
+                        CampusId = campusId,
                         VerifyStatus = UserVerifyStatus.NOT_VERIFIED,
                         CreatedDate = DateTime.Now.ToVNTime()
                     };

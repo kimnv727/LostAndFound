@@ -166,7 +166,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ItemDetailReadDTO>(item);
         }
 
-        public async Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO)
+        public async Task<ItemReadDTO> UpdateItemDetailsAsync(int itemId, ItemUpdateDTO itemUpdateDTO, string userId)
         {
             var item = await _itemRepository.FindItemByIdAsync(itemId);
             if (item == null)
@@ -177,9 +177,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(itemUpdateDTO.CabinetId == 0)
             {
                 itemUpdateDTO.CabinetId = null;
-            }          
+            }
 
-            if (item.ItemStatus == ItemStatus.REJECTED)
+            //get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (item.ItemStatus == ItemStatus.REJECTED && user.RoleId != 3)
             {
                 item.ItemStatus = ItemStatus.PENDING;
             }

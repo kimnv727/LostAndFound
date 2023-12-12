@@ -639,7 +639,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         ItemStatus = ItemStatus.PENDING,
                         IsInStorage = false,
                         //TODO: fix
-                        FoundDate = "This is Found Date",
+                        FoundDate = "2023-10-10|Slot 1",
                         //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias1,
                     };
@@ -672,7 +672,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         ItemStatus = ItemStatus.ACTIVE,
                         IsInStorage = true,
                         //TODO: fix
-                        FoundDate = "This is Found Date",
+                        FoundDate = "2023-11-11|Slot 3",
                         //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias2,
                     };
@@ -737,6 +737,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     context.Cabinets.Add(c);
                     context.SaveChanges();
                 }
+                #endregion
+
+                #region Misc
+                item2.CabinetId = 2;
                 #endregion
 
                 context.SaveChanges();

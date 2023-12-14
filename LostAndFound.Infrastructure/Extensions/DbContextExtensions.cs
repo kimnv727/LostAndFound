@@ -80,11 +80,19 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Campus campus4 = new Campus
                 {
+                    Name = "FPT Can tho Campus",
+                    Address = "FPT Can tho Campus",
+                    CampusLocation = CampusLocation.CAN_THO
+                };
+                context.Campuses.Add(campus4);
+
+                Campus campus5 = new Campus
+                {
                     Name = "FPT HCM Nha Van Hoa",
                     Address = "FPT HCM Nha Van Hoa",
                     CampusLocation = CampusLocation.HO_CHI_MINH
                 };
-                context.Campuses.Add(campus4);
+                context.Campuses.Add(campus5);
                 #endregion
 
                 #region Add Users

@@ -22,7 +22,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return _context.Categories
                 .Include(c => c.CategoryGroup)
                 .Include(c => c.Items)
-                .Include(c => c.Posts)
+                //.Include(c => c.Posts)
                 .FirstOrDefaultAsync(i => i.Id == categoryId);
         }
         
@@ -31,7 +31,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return _context.Categories
                 .Include(c => c.CategoryGroup)
                 .Include(c => c.Items)
-                .Include(c => c.Posts)
+                //.Include(c => c.Posts)
                 .FirstOrDefaultAsync
                 (i => i.Name.ToLower() == (categoryName.ToLower()));
         }

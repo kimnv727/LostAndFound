@@ -70,7 +70,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(cg => cg.Categories)
                 .ThenInclude(c => c.Items)
                 .Include(cg => cg.Categories)
-                .ThenInclude(c => c.Posts)
+                //.ThenInclude(c => c.Posts)
                 .FirstOrDefaultAsync(cg => cg.Id == categoryGroupId);
         }
 
@@ -80,7 +80,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(cg => cg.Categories)
                 .ThenInclude(c => c.Items)
                 .Include(cg => cg.Categories)
-                .ThenInclude(c => c.Posts)
+                //.ThenInclude(c => c.Posts)
                 .FirstOrDefaultAsync(cg => cg.Name.ToLower().Contains(categoryGroupName.ToLower()));
         }
     }

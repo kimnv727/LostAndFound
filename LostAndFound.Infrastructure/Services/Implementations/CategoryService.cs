@@ -110,7 +110,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
 
-                foreach (var post in category.Posts)
+                /*foreach (var post in category.Posts)
                 {
                     if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
                         post.PostStatus == Core.Enums.PostStatus.PENDING ||
@@ -118,7 +118,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     {
                         throw new CategoryStillHaveItemOrPostException();
                     }
-                }
+                }*/
             }
 
             _categoryRepository.Delete(category);
@@ -158,7 +158,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
 
-                foreach (var post in category.Posts)
+                /*foreach (var post in category.Posts)
                 {
                     if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
                         post.PostStatus == Core.Enums.PostStatus.PENDING ||
@@ -166,7 +166,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     {
                         throw new CategoryStillHaveItemOrPostException();
                     }
-                }
+                }*/
             }
 
             category.IsActive = !category.IsActive;

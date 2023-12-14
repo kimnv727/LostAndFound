@@ -21,7 +21,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Locations
                 .Include(l => l.Items)
-                .Include(l => l.Posts)
+                //.Include(l => l.Posts)
                 .Include(l => l.Campus)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
         }
@@ -30,7 +30,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return _context.Locations
                 .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
-                .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
+                //.Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
                 .Include(l => l.Campus)
                 .FirstOrDefaultAsync
                 (l => l.LocationName == Name);
@@ -83,7 +83,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             
             IQueryable<Location> locations = _context.Locations
                 .Include(l => l.Items.Where(i => i.ItemStatus == Core.Enums.ItemStatus.PENDING || i.ItemStatus == Core.Enums.ItemStatus.ACTIVE))
-                .Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
+                //.Include(l => l.Posts.Where(p => p.PostStatus == Core.Enums.PostStatus.PENDING || p.PostStatus == Core.Enums.PostStatus.ACTIVE))
                 .Include(l => l.Campus)
                 .AsSplitQuery();
 

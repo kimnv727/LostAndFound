@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LostAndFound.API.Migrations
 {
     [DbContext(typeof(LostAndFoundDbContext))]
-    [Migration("20231214015941_DropColumnInPostTable")]
-    partial class DropColumnInPostTable
+    [Migration("20231214043950_FixPostTableRelationship")]
+    partial class FixPostTableRelationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -501,17 +501,11 @@ namespace LostAndFound.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LostDateFrom")
                         .HasColumnType("nvarchar(max)");
@@ -543,10 +537,6 @@ namespace LostAndFound.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("PostUserId");
 
@@ -1111,14 +1101,6 @@ namespace LostAndFound.API.Migrations
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Post", b =>
                 {
-                    b.HasOne("LostAndFound.Core.Entities.Category", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("LostAndFound.Core.Entities.Location", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("LostAndFound.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("PostUserId");
@@ -1310,8 +1292,6 @@ namespace LostAndFound.API.Migrations
             modelBuilder.Entity("LostAndFound.Core.Entities.Category", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.CategoryGroup", b =>
@@ -1343,8 +1323,6 @@ namespace LostAndFound.API.Migrations
             modelBuilder.Entity("LostAndFound.Core.Entities.Location", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Media", b =>

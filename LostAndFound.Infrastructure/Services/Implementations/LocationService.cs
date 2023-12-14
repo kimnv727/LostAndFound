@@ -135,7 +135,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
 
-                foreach (var post in location.Posts)
+                /*foreach (var post in location.Posts)
                 {
                     if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
                         post.PostStatus == Core.Enums.PostStatus.PENDING ||
@@ -143,7 +143,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     {
                         throw new LocationStillHaveItemOrPostException();
                     }
-                }
+                }*/
             }
 
             _locationRepository.Delete(location);
@@ -169,7 +169,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
 
-                foreach (var post in location.Posts)
+                /*foreach (var post in location.Posts)
                 {
                     if (post.PostStatus == Core.Enums.PostStatus.ACTIVE ||
                         post.PostStatus == Core.Enums.PostStatus.PENDING ||
@@ -177,7 +177,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     {
                         throw new LocationStillHaveItemOrPostException();
                     }
-                }
+                }*/
             }
 
             location.IsActive = !location.IsActive;

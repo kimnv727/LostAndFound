@@ -199,6 +199,12 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.UpdateUserDetailsAsync(stringId, updateDTO);
 
+            var check = await _firestoreProvider.GetUser(stringId);
+            if (check)
+            {
+                await _firestoreProvider.UpdateUserDisplayName(stringId, updateDTO.FirstName.Trim() + " " + updateDTO.LastName.Trim());
+            }
+
             return ResponseFactory.Ok(result);
         }
         
@@ -215,6 +221,12 @@ namespace LostAndFound.API.Controllers
         public async Task<IActionResult> UpdateUserDetailsAsync([Required]string id, [Required]UserUpdateDTO updateDTO)
         {
             var user = await _userService.UpdateUserDetailsAsync(id, updateDTO);
+
+            var check = await _firestoreProvider.GetUser(id);
+            if (check)
+            {
+                await _firestoreProvider.UpdateUserDisplayName(id, updateDTO.FirstName.Trim() + " " + updateDTO.LastName.Trim());
+            }
 
             return ResponseFactory.Ok(user);
         }
@@ -234,6 +246,12 @@ namespace LostAndFound.API.Controllers
         {
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userMediaService.UploadUserAvatar(avatar, stringId);
+
+            var check = await _firestoreProvider.GetUser(stringId);
+            if (check)
+            {
+                await _firestoreProvider.UpdateUserPhotoUrl(stringId, result.Media.Url);
+            }
 
             return ResponseFactory.Ok(result);
         }
@@ -278,11 +296,18 @@ namespace LostAndFound.API.Controllers
             var result = await _userService.ChangeUserVerifyStatusAsync(updateDTO);
 
             //Noti
-            if(updateDTO.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
+            //if(updateDTO.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
+            if (result.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
             {
                 await NotificationExtensions
                 .Notify(_userDeviceService, _notificationService, updateDTO.UserId, "Your Account Status has been Verified!",
                 "Your Account Status has been Verified!", Core.Enums.NotificationType.UserVerifyStatus);
+            }
+            if (result.VerifyStatus == Core.Enums.UserVerifyStatus.NOT_VERIFIED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, updateDTO.UserId, "Your Account Verification Request has been Rejected!",
+                "Your Account Verification Request has been Rejected! Please update your credentials again!", Core.Enums.NotificationType.UserVerifyStatus);
             }
             return ResponseFactory.Ok(result);
         }

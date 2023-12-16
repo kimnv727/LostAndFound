@@ -84,7 +84,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithAttributeNotFoundException<User>(nameof(User.Id), userId);
             }
 
-            if(user.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
+            if (user.VerifyStatus == Core.Enums.UserVerifyStatus.VERIFIED)
             {
                 throw new UserAlreadyVerifiedException();
             }

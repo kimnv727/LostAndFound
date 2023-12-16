@@ -91,6 +91,12 @@ namespace LostAndFound.API.Authentication
             var user = await _userRepository.FindUserByID(uid);
             if (user != null)
             {
+                //check if user has same campus
+                if(user.CampusId != campusId)
+                {
+                    throw new WrongCampusException();
+                }
+
                 return _mapper.Map<UserDetailAuthenticateReadDTO>(user);
             }
             else

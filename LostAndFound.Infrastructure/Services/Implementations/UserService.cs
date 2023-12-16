@@ -153,7 +153,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             
             _mapper.Map(updateDTO, user);
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<UserDetailsReadDTO>(user);
+            var newUser = await _userRepository.FindUserByID(id);
+            return _mapper.Map<UserDetailsReadDTO>(newUser);
         }
 
         public async Task<UserDetailsReadDTO> UpdateUserPasswordAsync(string userId, UserUpdatePasswordDTO updatePasswordDTO)

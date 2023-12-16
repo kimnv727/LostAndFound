@@ -21,7 +21,7 @@ namespace LostAndFound.Infrastructure.DTOs.User
 
         //public string Avatar{ get; set; }
         //TODO: check unique SchoolId or not? Also when login screen do we let them choose Campus?
-        public string? SchoolId{ get; set; }
-        //public Campus? Campus { get; set; }
+        //public string? SchoolId{ get; set; }
+        public int? CampusId { get; set; }
     }
 }

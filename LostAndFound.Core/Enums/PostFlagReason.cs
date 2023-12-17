@@ -2,9 +2,8 @@ namespace LostAndFound.Core.Enums
 {
     public enum PostFlagReason
     {
-        WrongInformation,
-        ViolatedUser,
-        Spam,
-        Others
+        FALSE_INFORMATION,
+        VIOLATED_USER_POLICIES,
+        SPAM
     }
 }

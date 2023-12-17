@@ -66,10 +66,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 TotalCount = 0
             };
             //Count
-            response.WrongInformationCount = result.Where(r => r.PostFlagReason == PostFlagReason.WrongInformation).Count();
-            response.SpamCount = result.Where(r => r.PostFlagReason == PostFlagReason.Spam).Count();
-            response.ViolatedUserCount = result.Where(r => r.PostFlagReason == PostFlagReason.ViolatedUser).Count();
-            response.OthersCount = result.Where(r => r.PostFlagReason == PostFlagReason.Others).Count();
+            response.WrongInformationCount = result.Where(r => r.PostFlagReason == PostFlagReason.FALSE_INFORMATION).Count();
+            response.SpamCount = result.Where(r => r.PostFlagReason == PostFlagReason.SPAM).Count();
+            response.ViolatedUserCount = result.Where(r => r.PostFlagReason == PostFlagReason.VIOLATED_USER_POLICIES).Count();
+            //response.OthersCount = result.Where(r => r.PostFlagReason == PostFlagReason.Others).Count();
             response.TotalCount = result.Count();
             /*foreach (var flag in result)
             {

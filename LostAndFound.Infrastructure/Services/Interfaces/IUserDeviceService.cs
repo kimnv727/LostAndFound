@@ -7,6 +7,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IUserDeviceService
     {
         Task<UserDeviceReadDTO> CreateUserDevice(UserDeviceWriteDTO userDeviceWriteDTO);
+        Task<UserDeviceReadDTO> UpdateUserDevice(string userId, string fcmToken);
         Task<UserDeviceReadDTO> GetUserDeviceByTokenAsync(string fcmToken);
         Task<IEnumerable<UserDeviceReadDTO>> GetUserDevicesOfUserAsync(string userId);
         Task DeleteUserDeviceAsync(string fcmToken);

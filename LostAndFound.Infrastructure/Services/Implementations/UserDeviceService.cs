@@ -42,7 +42,42 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var userDeviceReadDTO = _mapper.Map<UserDeviceReadDTO>(userDevice);
             return userDeviceReadDTO;
         }
-        
+
+        public async Task<UserDeviceReadDTO> UpdateUserDevice(string userId, string fcmToken)
+        {
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            /*//Update User Device
+            var userDevice = await _userDeviceRepository.FindUserDeviceByTokenAsync(fcmToken);
+            if (userDevice != null)
+            {
+                userDevice.UserId = userId;
+            }
+            await _unitOfWork.CommitAsync();*/
+
+            //Del first
+            var result = await _userDeviceRepository.FindUserDeviceByTokenAsync(fcmToken);
+            if (result != null)
+            {
+                _userDeviceRepository.Delete(result);
+                await _unitOfWork.CommitAsync();
+            }
+            //Then Add
+            var userDevice = new UserDevice
+            {
+                UserId = userId,
+                Token = fcmToken
+            };
+            await _userDeviceRepository.AddAsync(userDevice);
+            await _unitOfWork.CommitAsync();
+            var userDeviceReadDTO = _mapper.Map<UserDeviceReadDTO>(userDevice);
+            return userDeviceReadDTO;
+        }
+
         public async Task<UserDeviceReadDTO> GetUserDeviceByTokenAsync(string fcmToken)
         {
             var userDevice = await _userDeviceRepository.FindUserDeviceByTokenAsync(fcmToken);

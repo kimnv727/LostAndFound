@@ -49,7 +49,7 @@ namespace LostAndFound.API.Controllers
             string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _userService.GetUserAsync(stringId);
             
-            //check user device existed -> if not create new
+            //check user device existed -> if not create new -> if existed overide if same token
             var userDevice = await _userDeviceService.GetUserDeviceByTokenAsync(userDeviceToken);
             if (userDevice == null)
             {
@@ -59,6 +59,10 @@ namespace LostAndFound.API.Controllers
                     UserId = stringId
                 };
                 await _userDeviceService.CreateUserDevice(userDeviceWriteDTO);
+            }
+            else if(userDevice != null)
+            {
+                await _userDeviceService.UpdateUserDevice(stringId, userDeviceToken);
             }
             
             return ResponseFactory.Ok(result);

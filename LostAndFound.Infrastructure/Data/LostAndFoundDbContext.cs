@@ -98,6 +98,7 @@ namespace LostAndFound.Infrastructure.Data
             modelBuilder.Entity<ItemBookmark>().HasKey(ib => new { ib.ItemId, ib.UserId });
             modelBuilder.Entity<GiveawayParticipant>().HasKey(gp => new { gp.GiveawayId, gp.UserId });
             modelBuilder.Entity<ItemClaim>().HasKey(ic => new { ic.ItemId, ic.UserId });
+            modelBuilder.Entity<UserDevice>().HasKey(ud => new { ud.Token, ud.UserId });
             
             modelBuilder.Entity<Role>()
                 .Property(b => b.IsActive)

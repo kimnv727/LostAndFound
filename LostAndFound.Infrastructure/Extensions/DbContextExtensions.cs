@@ -165,9 +165,21 @@ namespace LostAndFound.Infrastructure.Extensions
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
+                UserMedia managerMediaStudentCard = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "StudentCardOfManager2.png",
+                        Description = "Student Card of Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.STUDENT_CARD
+                };
                 userMedias2.Add(userMedia2);
                 userMedias2.Add(managerMediaCCID1);
                 userMedias2.Add(managerMediaCCID2);
+                userMedias2.Add(managerMediaStudentCard);
 
                 User user = new User()
                 {
@@ -224,9 +236,21 @@ namespace LostAndFound.Infrastructure.Extensions
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
+                UserMedia managerMediaStudentCard2 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "StudentCardOfManager2.png",
+                        Description = "Student Card of Manager Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.STUDENT_CARD
+                };
                 userMedias3.Add(userMedia3);
                 userMedias3.Add(managerMediaCCID3);
                 userMedias3.Add(managerMediaCCID4);
+                userMedias3.Add(managerMediaStudentCard2);
 
                 User user2 = new User()
                 {

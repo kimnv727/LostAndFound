@@ -739,12 +739,31 @@ namespace LostAndFound.API.Controllers
         {
 
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
-            if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+            
+            //get item
+            var item = await _itemService.FindItemByIdAsync(itemId);
+            //if item is in Storage
+            if (item.IsInStorage)
             {
-                var claims = await _itemClaimService.GetClaimsWithUserByItemIdAsync(itemId);
-                return ResponseFactory.Ok(claims);
+                //get user to check if they are manager
+                var user = await _userService.GetUserAsync(currentUserId);
+                if(user.RoleName == "Storage Manager")
+                {
+                    //allow
+                    var claims = await _itemClaimService.GetClaimsWithUserByItemIdAsync(itemId);
+                    return ResponseFactory.Ok(claims);
+                }
+                else throw new ItemFounderNotMatchException();
             }
-            else throw new ItemFounderNotMatchException();
+            else
+            {
+                if (await _itemService.CheckItemFounderAsync(itemId, currentUserId))
+                {
+                    var claims = await _itemClaimService.GetClaimsWithUserByItemIdAsync(itemId);
+                    return ResponseFactory.Ok(claims);
+                }
+                else throw new ItemFounderNotMatchException();
+            }
         }
 
         ///<summary>

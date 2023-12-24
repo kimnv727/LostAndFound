@@ -50,7 +50,7 @@ namespace LostAndFound.API.Extensions
                     var response = await FirebaseCloudMessageSender.SendMulticastAsync(multicastMessage);
                     await InvalidFcmTokenCollector.HandleMulticastBatchResponse(response, tokensList!, userDeviceService);
 
-                    if (response.SuccessCount > 0)
+                    if (response.SuccessCount > 0 && notificationType != NotificationType.Chat)
                     {
                         //Store notification in db
                         var notificationWriteDTO = new NotificationWriteDTO
@@ -106,13 +106,14 @@ namespace LostAndFound.API.Extensions
                     if (response.SuccessCount > 0)
                     {
                         //Store notification in db
-                        var notificationWriteDTO = new NotificationWriteDTO
+                        //Do not store chat notification
+                        /*var notificationWriteDTO = new NotificationWriteDTO
                         {
                             Title = notificationTitle,
                             Content = notificationContent,
                             NotificationType = NotificationType.Chat
                         };
-                        await notificationService.CreateNotification(notificationWriteDTO, userId);
+                        await notificationService.CreateNotification(notificationWriteDTO, userId);*/
                     }
                 }
                 catch (Exception e)

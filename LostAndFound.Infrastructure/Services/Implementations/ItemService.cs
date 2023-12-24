@@ -185,10 +185,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 item.ItemStatus = ItemStatus.PENDING;
             }
-            else
+            /*else
             {
                 item.ItemStatus = ItemStatus.ACTIVE;
-            }
+            }*/
             _mapper.Map(itemUpdateDTO, item);
 
             await _unitOfWork.CommitAsync();

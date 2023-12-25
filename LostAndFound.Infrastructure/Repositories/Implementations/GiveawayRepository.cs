@@ -129,6 +129,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.WAITING_RESULT);
                 }
+                else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.DISABLED)
+                {
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.DISABLED);
+                }
             }
             
             if (!string.IsNullOrWhiteSpace(query.OrderBy))

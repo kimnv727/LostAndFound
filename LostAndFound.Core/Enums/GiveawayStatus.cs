@@ -5,6 +5,7 @@ namespace LostAndFound.Core.Enums
         NOT_STARTED,
         ONGOING,
         WAITING_RESULT,
-        CLOSED
+        CLOSED,
+        DISABLED
     }
 }

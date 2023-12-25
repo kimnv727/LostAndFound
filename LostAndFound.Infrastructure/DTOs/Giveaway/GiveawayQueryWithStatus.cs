@@ -16,7 +16,8 @@ namespace LostAndFound.Infrastructure.DTOs.Giveaway
             NOT_STARTED,
             ONGOING,
             WAITING_RESULT,
-            CLOSED
+            CLOSED, 
+            DISABLED
         }
         [DefaultValue(GiveawayStatusQuery.All)]
         public GiveawayStatusQuery GiveawayStatus { get; set; }

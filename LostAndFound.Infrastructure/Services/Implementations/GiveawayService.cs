@@ -87,7 +87,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             //Map Giveaway
             var giveaway = _mapper.Map<Giveaway>(giveawayWriteDTO);
-            giveaway.GiveawayStatus = GiveawayStatus.NOTSTARTED;
+            giveaway.GiveawayStatus = GiveawayStatus.NOT_STARTED;
             //Add Giveaway
             await _giveawayRepository.AddAsync(giveaway);
             await _unitOfWork.CommitAsync();

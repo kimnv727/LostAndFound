@@ -34,7 +34,7 @@ namespace LostAndFound.API.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromHours(1));
+            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
             _logger!.LogInformation("Timer for giveaway status check started.");
             return Task.CompletedTask;
         }
@@ -57,7 +57,7 @@ namespace LostAndFound.API.Services
                     {
                         try
                         {
-                            if (DateTime.Now >= giveaway.StartAt && giveaway.GiveawayStatus == GiveawayStatus.NOTSTARTED)
+                            if (DateTime.Now >= giveaway.StartAt && giveaway.GiveawayStatus == GiveawayStatus.NOT_STARTED)
                             {
                                 giveaway.GiveawayStatus = GiveawayStatus.ONGOING;
                             }

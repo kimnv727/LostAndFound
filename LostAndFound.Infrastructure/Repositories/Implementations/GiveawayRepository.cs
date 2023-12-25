@@ -113,9 +113,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (Enum.IsDefined(query.GiveawayStatus))
             {
-                if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.NOTSTARTED)
+                if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.NOT_STARTED)
                 {
-                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.NOTSTARTED);
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED);
                 }
                 else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.ONGOING)
                 {
@@ -125,9 +125,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.CLOSED);
                 }
-                else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.WAITINGRESULT)
+                else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.WAITING_RESULT)
                 {
-                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.WAITINGRESULT);
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.WAITING_RESULT);
                 }
             }
             
@@ -156,7 +156,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways()
         {
             var giveaways = _context.Giveaways
-                .Where(g => g.GiveawayStatus == GiveawayStatus.NOTSTARTED);
+                .Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED);
 
             return await Task.FromResult(giveaways.ToList());
         }

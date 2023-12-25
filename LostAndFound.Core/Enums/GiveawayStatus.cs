@@ -2,9 +2,9 @@ namespace LostAndFound.Core.Enums
 {
     public enum GiveawayStatus
     {
-        NOTSTARTED,
+        NOT_STARTED,
         ONGOING,
-        WAITINGRESULT,
+        WAITING_RESULT,
         CLOSED
     }
 }

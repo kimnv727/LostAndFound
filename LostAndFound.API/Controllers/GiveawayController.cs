@@ -119,9 +119,9 @@ namespace LostAndFound.API.Controllers
         /// <summary>
         /// Update giveaway detail
         /// </summary>
-        /// <param name="postId"></param>
+        /// <param name="giveawayId"></param>
         /// <returns></returns>
-        [HttpPut("{postId}")]
+        [HttpPut("{giveawayId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<GiveawayReadDTO>))]

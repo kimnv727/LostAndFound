@@ -111,7 +111,7 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.CreatedAt(
                 (nameof(GetGiveawayById)), 
-                nameof(PostController), 
+                nameof(GiveawayController), 
                 new { giveawayId = result.Id }, 
                 result);
         }

@@ -130,6 +130,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             
             item.FoundUserId = user.Id;
             item.FoundDate = itemWriteDTO.FoundDate;
+            if(user.RoleId == 3)
+            {
+                item.IsInStorage = true;
+            }
 
             await _itemRepository.AddAsync(item);
             await _unitOfWork.CommitAsync();
@@ -517,11 +521,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 LocationId = writeDTO.LocationId,
                 CabinetId = writeDTO.CabinetId,
                 ItemStatus = ItemStatus.ACTIVE,
-                FoundDate = writeDTO.FoundDate
+                FoundDate = writeDTO.FoundDate,
+                FoundUserId = user.Id,
+                IsInStorage = true
             };
 
-            item.FoundUserId = user.Id;
-            item.IsInStorage = true;
+            /*item.FoundUserId = user.Id;
+            item.IsInStorage = true;*/
 
             await _itemRepository.AddAsync(item);
             await _unitOfWork.CommitAsync();

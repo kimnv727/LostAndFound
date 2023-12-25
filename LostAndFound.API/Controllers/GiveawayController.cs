@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using LostAndFound.API.ResponseWrapper;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
 using LostAndFound.Infrastructure.DTOs.GiveawayParticipant;
+using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -218,6 +220,20 @@ namespace LostAndFound.API.Controllers
                 nameof(GiveawayController), 
                 new { userId = giveawayParticipant.User.Id, giveawayId = giveawayParticipant.GiveawayId }, 
                 giveawayParticipant);
+        }
+
+        /// <summary>
+        /// List items suitable for Giveaway
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-suitable-items-for-giveaway")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> ListItemsSortByFloorNumber()
+        {
+            var items = await _giveawayService.ListItemsSuitableForGiveawayAsync();
+
+            return ResponseFactory.Ok(items);
         }
     }
 }

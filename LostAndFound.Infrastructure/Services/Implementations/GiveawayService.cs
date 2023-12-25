@@ -7,6 +7,7 @@ using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
+using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
@@ -110,6 +111,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _mapper.Map(giveawayUpdateDTO, giveaway);
             await _unitOfWork.CommitAsync();
             return _mapper.Map<GiveawayReadDTO>(giveaway);
+        }
+
+        public async Task<IEnumerable<ItemReadDTO>> ListItemsSuitableForGiveawayAsync()
+        {
+            var items = await _giveawayRepository.GetAllItemsSuitableForGiveaway();
+
+            return _mapper.Map<List<ItemReadDTO>>(items);
         }
     }
 }

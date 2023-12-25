@@ -8,7 +8,8 @@ namespace LostAndFound.Core.Enums
         CLOSED,
         REJECTED,
         DELETED,
-        EXPIRED
+        EXPIRED, 
+        GAVEAWAY
         /*
              pending: item chờ admin duyệt
              active: chờ người claim hoặc báo tìm đc

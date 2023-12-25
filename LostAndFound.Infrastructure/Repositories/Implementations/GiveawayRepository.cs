@@ -192,5 +192,28 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 return null;*/
             }
         }
+
+        public async Task<IEnumerable<Item>> GetAllItemsSuitableForGiveaway()
+        {
+            var items = _context.Items
+                .Include(i => i.User)
+                .ThenInclude(u => u.Campus)
+                .Include(i => i.Category)
+                .Include(i => i.Location)
+                .ThenInclude(l => l.Campus)
+                .Include(i => i.Cabinet)
+                .ThenInclude(c => c.Storage)
+                .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Where(i => i.ItemStatus == ItemStatus.EXPIRED && i.IsInStorage == true && i.Category.Value == ItemValue.Low && i.Category.IsSensitive == false)
+                .AsSplitQuery();
+
+            items = items
+                .OrderBy(i => i.CreatedDate);
+
+            items = items.AsNoTracking();
+
+            return await Task.FromResult(items.ToList());
+        }
     }
 }

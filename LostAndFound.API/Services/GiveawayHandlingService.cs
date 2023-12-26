@@ -34,7 +34,7 @@ namespace LostAndFound.API.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
+            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromDays(1));
             _logger!.LogInformation("Timer for giveaway status check started.");
             return Task.CompletedTask;
         }
@@ -75,11 +75,12 @@ namespace LostAndFound.API.Services
                     {
                         try
                         {
-                            if (DateTime.Now >= giveaway.EndAt)
+                            if (DateTime.Now >= giveaway.EndAt && giveaway.GiveawayStatus == GiveawayStatus.ONGOING)
                             {
+                                //Waiting result kinda not needed
                                 giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
+                                finishedGiveaways.Add(giveaway);
                             }
-                            finishedGiveaways.Add(giveaway);
 
                         }
                         catch
@@ -123,7 +124,7 @@ namespace LostAndFound.API.Services
                                     Content = "You do not win the Giveaway for Item named " + fg.Item.Name + ". Good luck next time!",
                                     NotificationType = NotificationType.GiveawayResult
                                 };
-                                await giveawayRepository.PushNotificationForGiveawayResult(noti);
+                                 await giveawayRepository.PushNotificationForGiveawayResult(noti);
                             }
                         }
                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());

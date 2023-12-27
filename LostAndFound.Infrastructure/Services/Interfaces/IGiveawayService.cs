@@ -14,6 +14,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<GiveawayDetailWithParticipantsReadDTO> GetGiveawayIncludeParticipantsByIdAsync(int giveawayId);
         Task<PaginatedResponse<GiveawayReadDTO>> QueryGiveawayAsync(GiveawayQuery query);
         Task<PaginatedResponse<GiveawayReadDTO>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query);
+        Task<PaginatedResponse<GiveawayReadDTO>> QueryGiveawayExcludeNotStartedAsync(GiveawayQueryExcludeNotStarted query);
         Task<GiveawayReadDTO> CreateGiveawayAsync(GiveawayWriteDTO giveawayWriteDTO);
         Task<GiveawayReadDTO> UpdateGiveawayDetailsAsync(int giveawayId, GiveawayUpdateDTO giveawayUpdateDTO);
         Task<IEnumerable<ItemReadDTO>> ListItemsSuitableForGiveawayAsync();

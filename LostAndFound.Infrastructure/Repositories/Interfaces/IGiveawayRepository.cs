@@ -15,12 +15,14 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IDelete<Giveaway>
     {
         Task<Giveaway> FindGiveawayByIdAsync(int id);
-        Task<Giveaway> FindGiveawayIncludeParticipantssAsync(int id);
+        Task<Giveaway> FindGiveawayIncludeParticipantsAsync(int id);
         Task<IEnumerable<Giveaway>> QueryGiveawayAsync(GiveawayQuery query, bool trackChanges = false);
+        Task<IEnumerable<Giveaway>> QueryGiveawayExcludeNotstartedAsync(GiveawayQueryExcludeNotStarted query, bool trackChanges = false);
         Task<IEnumerable<Giveaway>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query, bool trackChanges = false);
         public Task UpdateGiveawayRange(Giveaway[] giveaway);
         public Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways();
         public Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways();
+        public Task<IEnumerable<Giveaway>> GetAllWaitingGiveaways();
         Task PushNotificationForGiveawayResult(PushNotification notification);
         public Task<IEnumerable<Item>> GetAllItemsSuitableForGiveaway();
     }

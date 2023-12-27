@@ -15,7 +15,7 @@ namespace LostAndFound.Infrastructure.DTOs.Giveaway
             All,
             NOT_STARTED,
             ONGOING,
-            WAITING_RESULT,
+            REWARD_DISTRIBUTION_IN_PROGRESS,
             CLOSED, 
             DISABLED
         }

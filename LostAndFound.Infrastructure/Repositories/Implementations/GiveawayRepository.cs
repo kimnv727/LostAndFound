@@ -28,13 +28,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Giveaway> FindGiveawayByIdAsync(int id)
         {
             return await _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public async Task<Giveaway> FindGiveawayIncludeParticipantssAsync(int id)
+        public async Task<Giveaway> FindGiveawayIncludeParticipantsAsync(int id)
         {
             return await _context.Giveaways
                 .Include(g => g.Item)
@@ -48,6 +49,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> QueryGiveawayAsync(GiveawayQuery query, bool trackChanges = false)
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -89,6 +91,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query, bool trackChanges = false)
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -133,9 +136,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.CLOSED);
                 }
-                else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.WAITING_RESULT)
+                else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.REWARD_DISTRIBUTION_IN_PROGRESS)
                 {
-                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.WAITING_RESULT);
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS);
                 }
                 else if (query.GiveawayStatus == GiveawayQueryWithStatus.GiveawayStatusQuery.DISABLED)
                 {
@@ -143,6 +146,48 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
             
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                giveaways = giveaways.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(giveaways.ToList());
+        }
+
+        public async Task<IEnumerable<Giveaway>> QueryGiveawayExcludeNotstartedAsync(GiveawayQueryExcludeNotStarted query, bool trackChanges = false)
+        {
+            IQueryable<Giveaway> giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Where(g => g.GiveawayStatus != GiveawayStatus.NOT_STARTED).AsSplitQuery();
+
+            if (!trackChanges)
+            {
+                giveaways = giveaways.AsNoTracking();
+            }
+
+            if (query.ItemCategoryGroupId > 0)
+            {
+                giveaways = giveaways.Where(g => g.Item.Category.CategoryGroupId == query.ItemCategoryGroupId);
+            }
+
+            if (query.ItemCategoryId > 0)
+            {
+                giveaways = giveaways.Where(g => g.Item.CategoryId == query.ItemCategoryId);
+            }
+
+            if (query.StartAt != null)
+            {
+                giveaways = giveaways.Where(g => g.StartAt >= query.StartAt);
+            }
+
+            if (query.EndAt != null)
+            {
+                giveaways = giveaways.Where(g => g.EndAt <= query.EndAt);
+            }
+
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
                 giveaways = giveaways.OrderBy(query.OrderBy);
@@ -160,6 +205,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways()
         {
             var giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -171,10 +217,23 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways()
         {
             var giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
                 .Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED);
+
+            return await Task.FromResult(giveaways.ToList());
+        }
+
+        public async Task<IEnumerable<Giveaway>> GetAllWaitingGiveaways()
+        {
+            var giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Where(g => g.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS);
 
             return await Task.FromResult(giveaways.ToList());
         }

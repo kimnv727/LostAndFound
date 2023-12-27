@@ -8,5 +8,6 @@ namespace LostAndFound.Infrastructure.DTOs.GiveawayParticipant
         public UserReadDTO User { get; set; }
         public bool IsActive { get; set; }
         public bool IsWinner { get; set; }
+        public bool IsChosenAsWinner { get; set; }
     }
 }

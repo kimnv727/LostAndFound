@@ -4,7 +4,7 @@ namespace LostAndFound.Core.Enums
     {
         NOT_STARTED,
         ONGOING,
-        WAITING_RESULT,
+        REWARD_DISTRIBUTION_IN_PROGRESS,
         CLOSED,
         DISABLED
     }

@@ -94,7 +94,23 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.PaginatedOk(giveawayPaginatedDto);
         }
-        
+
+        ///<summary>
+        /// Get all giveaways exclude not started
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("query-exclude-notstarted")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<GiveawayReadDTO>))]
+        public async Task<IActionResult> GetAllGiveawaysExcludeNotstarted([FromQuery] GiveawayQueryExcludeNotStarted query)
+        {
+            var giveawayPaginatedDto = await _giveawayService.QueryGiveawayExcludeNotStartedAsync(query);
+
+            return ResponseFactory.PaginatedOk(giveawayPaginatedDto);
+        }
+
         ///<summary>
         /// Create new giveaway
         /// </summary>

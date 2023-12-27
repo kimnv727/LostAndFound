@@ -31,14 +31,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Notification>> FindUnreadNotificationsOfUserAsync(string userId)
         {
-            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId && n.IsRead == false);
+            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId && n.IsRead == false && n.NotificationType != Core.Enums.NotificationType.Chat);
 
             return await Task.FromResult(notifications.ToList());
         }
         
         public async Task<IEnumerable<Notification>> FindAllNotificationsOfUserAsync(string userId)
         {
-            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId);
+            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId && n.NotificationType != Core.Enums.NotificationType.Chat);
 
             return await Task.FromResult(notifications.ToList());
         }

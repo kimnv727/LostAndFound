@@ -16,6 +16,7 @@ namespace LostAndFound.Core.Entities
         [Key, Column(Order = 1)]
         public string UserId { get; set; }
         public bool IsActive { get; set; }
+        public bool IsChosenAsWinner { get; set; } = false;
         public bool IsWinner { get; set; } = false;
         public DateTime CreatedDate { get; set; }
         

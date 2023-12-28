@@ -18,6 +18,7 @@ namespace LostAndFound.API.Extensions
                         //&& !context.Request.Method.Equals("GET")
                         || context.Request.Path.StartsWithSegments("/auth/logout")
                         || context.Request.Path.StartsWithSegments("/auth/authenticate")
+                        || context.Request.Path.StartsWithSegments("/api/campuses/all")
                         ,
                 appBuilder =>
                 {

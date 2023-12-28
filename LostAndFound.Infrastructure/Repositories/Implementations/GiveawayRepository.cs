@@ -32,6 +32,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
@@ -43,6 +47,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(im => im.Media)
                 .Include(g => g.GiveawayParticipants)
                 .ThenInclude(gp => gp.User)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
@@ -53,6 +61,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .Where(g => g.GiveawayStatus == GiveawayStatus.ONGOING).AsSplitQuery();
 
             if (!trackChanges)
@@ -95,6 +107,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .AsSplitQuery();
 
             if (!trackChanges)
@@ -161,6 +177,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .Where(g => g.GiveawayStatus != GiveawayStatus.NOT_STARTED && g.GiveawayStatus != GiveawayStatus.DISABLED).AsSplitQuery();
 
             if (!trackChanges)
@@ -225,6 +245,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .Where(g => g.GiveawayStatus == GiveawayStatus.ONGOING);
 
             return await Task.FromResult(giveaways.ToList());
@@ -237,6 +261,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED);
 
             return await Task.FromResult(giveaways.ToList());
@@ -249,6 +277,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
                 .Where(g => g.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS);
 
             return await Task.FromResult(giveaways.ToList());

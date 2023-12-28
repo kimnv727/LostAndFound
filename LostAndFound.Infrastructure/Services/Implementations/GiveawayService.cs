@@ -195,7 +195,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Map Giveaway
             var giveaway = _mapper.Map<Giveaway>(giveawayWriteDTO);
 
-            if(giveaway.StartAt > DateTime.Now)
+            if(giveaway.StartAt <= DateTime.Now)
             {
                 giveaway.GiveawayStatus = GiveawayStatus.ONGOING;
             }

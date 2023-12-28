@@ -161,7 +161,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
-                .Where(g => g.GiveawayStatus != GiveawayStatus.NOT_STARTED).AsSplitQuery();
+                .Where(g => g.GiveawayStatus != GiveawayStatus.NOT_STARTED && g.GiveawayStatus != GiveawayStatus.DISABLED).AsSplitQuery();
 
             if (!trackChanges)
             {
@@ -176,6 +176,22 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ItemCategoryId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.CategoryId == query.ItemCategoryId);
+            }
+
+            if (Enum.IsDefined(query.GiveawayStatus))
+            {
+                if (query.GiveawayStatus == GiveawayQueryExcludeNotStarted.GiveawayStatusQuery.ONGOING)
+                {
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.ONGOING);
+                }
+                else if (query.GiveawayStatus == GiveawayQueryExcludeNotStarted.GiveawayStatusQuery.CLOSED)
+                {
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.CLOSED);
+                }
+                else if (query.GiveawayStatus == GiveawayQueryExcludeNotStarted.GiveawayStatusQuery.REWARD_DISTRIBUTION_IN_PROGRESS)
+                {
+                    giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS);
+                }
             }
 
             if (query.StartAt != null)

@@ -198,7 +198,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -220,6 +220,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                items = items.Where(i => i.Location.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
@@ -323,7 +327,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -345,6 +349,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                items = items.Where(i => i.Location.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
@@ -461,7 +469,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -483,6 +491,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                items = items.Where(i => i.Location.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {

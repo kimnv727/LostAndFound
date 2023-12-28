@@ -58,7 +58,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT HCM Campus",
                     Address = "FPT HCM Campus",
-                    CampusLocation = CampusLocation.HO_CHI_MINH
+                    //CampusLocation = CampusLocation.HO_CHI_MINH
                 };
                 context.Campuses.Add(campus);
 
@@ -66,7 +66,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT Da Nang Campus",
                     Address = "FPT Da Nang Campus",
-                    CampusLocation = CampusLocation.DA_NANG
+                    //CampusLocation = CampusLocation.DA_NANG
                 };
                 context.Campuses.Add(campus2);
 
@@ -74,7 +74,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT Ha Noi Campus",
                     Address = "FPT Ha Noi Campus",
-                    CampusLocation = CampusLocation.HA_NOI
+                    //CampusLocation = CampusLocation.HA_NOI
                 };
                 context.Campuses.Add(campus3);
 
@@ -82,17 +82,17 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "FPT Can tho Campus",
                     Address = "FPT Can tho Campus",
-                    CampusLocation = CampusLocation.CAN_THO
+                    //CampusLocation = CampusLocation.CAN_THO
                 };
                 context.Campuses.Add(campus4);
 
-                Campus campus5 = new Campus
+                /*Campus campus5 = new Campus
                 {
                     Name = "FPT HCM Nha Van Hoa",
                     Address = "FPT HCM Nha Van Hoa",
                     CampusLocation = CampusLocation.HO_CHI_MINH
                 };
-                context.Campuses.Add(campus5);
+                context.Campuses.Add(campus5);*/
                 #endregion
 
                 #region Add Users
@@ -414,20 +414,20 @@ namespace LostAndFound.Infrastructure.Extensions
                     #endregion
 
                 #region NVH
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 506", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 507", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 508", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 509", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 510", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 511", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 512", Floor = 5, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 606", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 607", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 608", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 609", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 610", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 611", Floor = 6, IsActive = true });
-                locations.Add(new Location() { CampusId = 5, LocationName = "Room 612", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 506 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 507 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 508 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 509 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 510 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 511 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 512 (NVH)", Floor = 5, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 606 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 607 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 608 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 609 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 610 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 611 (NVH)", Floor = 6, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room 612 (NVH)", Floor = 6, IsActive = true });
                 #endregion
 
                 foreach (var l in locations)

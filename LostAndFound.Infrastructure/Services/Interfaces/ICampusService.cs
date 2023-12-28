@@ -11,7 +11,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     {
         public Task<PaginatedResponse<CampusReadDTO>> QueryCampusAsync(CampusQuery query);
         public Task<IEnumerable<CampusReadDTO>> ListAllWithLocationsAsync();
-        public Task<IEnumerable<CampusReadDTO>> ListWithLocationsByCampusLocationAsync(CampusLocation campusLocation);
+        //public Task<IEnumerable<CampusReadDTO>> ListWithLocationsByCampusLocationAsync(CampusLocation campusLocation);
         public Task<CampusReadDTO> GetCampusByIdAsync(int CampusId);
         public Task<CampusReadDTO> CreateCampusAsync(string userId, CampusWriteDTO CampusWriteDTO);
         public Task<CampusReadDTO> UpdateCampusDetailsAsync(int CampusId, CampusWriteDTO CampusWriteDTO);

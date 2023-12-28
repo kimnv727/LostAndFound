@@ -42,11 +42,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<CampusReadDTO>>(campuses.ToList());
         }
 
-        public async Task<IEnumerable<CampusReadDTO>> ListWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
+/*        public async Task<IEnumerable<CampusReadDTO>> ListWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
         {
             var campuses = await _CampusRepository.GetWithLocationsByCampusLocationAsync(campusLocation);
             return _mapper.Map<List<CampusReadDTO>>(campuses.ToList());
-        }
+        }*/
 
         public async Task<PaginatedResponse<CampusReadDTO>> QueryCampusIgnoreStatusAsync(CampusQuery query)
         {

@@ -9,7 +9,7 @@ namespace LostAndFound.Infrastructure.DTOs.Property
         public string Name { get; set; }
         public string Address { get; set; }
         public bool? IsActive { get; set; }
-        public enum CampusLocationSearch
+        /*public enum CampusLocationSearch
         {
             ALL,
             HO_CHI_MINH,
@@ -18,6 +18,6 @@ namespace LostAndFound.Infrastructure.DTOs.Property
             CAN_THO
         }
         [DefaultValue(CampusLocationSearch.ALL)]
-        public CampusLocationSearch CampusLocation { get; set; }
+        public CampusLocationSearch CampusLocation { get; set; }*/
     }
 }

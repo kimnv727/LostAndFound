@@ -18,8 +18,8 @@ namespace LostAndFound.Core.Entities
         [Required]
         public string Address { get; set; }
 
-        [Required]
-        public CampusLocation CampusLocation { get; set; }
+/*        [Required]
+        public CampusLocation CampusLocation { get; set; }*/
         
         [Required]
         public bool? IsActive { get; set; }

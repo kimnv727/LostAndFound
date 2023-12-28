@@ -182,7 +182,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -204,6 +204,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                posts = posts.Where(p => p.User.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -360,7 +364,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -382,6 +386,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                posts = posts.Where(p => p.User.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -531,7 +539,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -553,6 +561,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                posts = posts.Where(p => p.User.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -673,7 +685,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 posts = posts.Where(p => p.PostFlags.Count() >= query.FlagCount);
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 switch (query.CampusLocation)
                 {
@@ -695,6 +707,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     default:
                         break;
                 }
+            }*/
+            if (query.CampusId > 0)
+            {
+                posts = posts.Where(p => p.User.CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {

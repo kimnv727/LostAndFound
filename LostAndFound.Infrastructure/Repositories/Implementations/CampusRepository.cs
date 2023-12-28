@@ -47,7 +47,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     campuses = campuses.Where(p => p.IsActive == false);
                     break;
             }
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 if (query.CampusLocation == CampusQuery.CampusLocationSearch.HO_CHI_MINH)
                 {
@@ -65,7 +65,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     campuses = campuses.Where(c => c.CampusLocation == CampusLocation.CAN_THO);
                 }
-            }
+            }*/
 
             return await Task.FromResult(campuses.ToList());
         }
@@ -101,7 +101,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 campuses = campuses.Where(p => p.Address.ToLower().Contains(query.Address.ToLower()));
             }
 
-            if (Enum.IsDefined(query.CampusLocation))
+            /*if (Enum.IsDefined(query.CampusLocation))
             {
                 if (query.CampusLocation == CampusQuery.CampusLocationSearch.HO_CHI_MINH)
                 {
@@ -119,7 +119,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     campuses = campuses.Where(c => c.CampusLocation == CampusLocation.CAN_THO);
                 }
-            }
+            }*/
 
             return await Task.FromResult(campuses.ToList());
         }
@@ -138,7 +138,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .FirstOrDefaultAsync(p => p.Name.ToLower().Contains(PropertyName.ToLower()));
         }
 
-        public async Task<IEnumerable<Campus>> GetWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
+        /*public async Task<IEnumerable<Campus>> GetWithLocationsByCampusLocationAsync(CampusLocation campusLocation)
         {
             var campuses = _context.Campuses
                 .Include(c => c.Locations)
@@ -146,6 +146,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .AsSplitQuery();
             campuses = campuses.AsNoTracking();
             return await Task.FromResult(campuses.ToList());
-        }
+        }*/
     }
 }

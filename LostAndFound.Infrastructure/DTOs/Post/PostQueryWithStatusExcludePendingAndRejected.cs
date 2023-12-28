@@ -31,7 +31,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public int?[] PostLocation { get; set; }
         public string? LostDateFrom { get; set; }
         public string? LostDateTo { get; set; }
-        [DefaultValue(CampusLocationQuery.ALL)]
+        public int CampusId { get; set; }
+        /*[DefaultValue(CampusLocationQuery.ALL)]
         public CampusLocationQuery CampusLocation { get; set; }
 
         public enum CampusLocationQuery
@@ -41,7 +42,7 @@ namespace LostAndFound.Infrastructure.DTOs.Post
             DA_NANG,
             HA_NOI,
             CAN_THO
-        }
+        }*/
         /*public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }*/
         public string SearchText { get; set; }

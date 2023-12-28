@@ -50,7 +50,7 @@ namespace LostAndFound.API.Controllers
             return ResponseFactory.Ok(campusDTO);
         }
 
-        /// <summary>
+/*        /// <summary>
         /// List all Campuses by Campus Location
         /// </summary>
         /// <returns></returns>
@@ -62,7 +62,7 @@ namespace LostAndFound.API.Controllers
             var user = await _userService.GetUserAsync(userId);
             var campuses = await _campusService.ListWithLocationsByCampusLocationAsync(user.Campus.CampusLocation);
             return ResponseFactory.Ok(campuses);
-        }
+        }*/
 
         /// <summary>
         /// Find campus by Id

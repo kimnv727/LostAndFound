@@ -42,7 +42,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
         public string? FoundDateFrom { get; set; }
         public string? FoundDateTo { get; set; }
 
-        [DefaultValue(CampusLocationQuery.ALL)]
+        /*[DefaultValue(CampusLocationQuery.ALL)]
         public CampusLocationQuery CampusLocation { get; set; }
 
         public enum CampusLocationQuery
@@ -52,7 +52,8 @@ namespace LostAndFound.Infrastructure.DTOs.Item
             DA_NANG,
             HA_NOI,
             CAN_THO
-        }
+        }*/
+        public int CampusId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string OrderBy { get; set; } = "Id DESC";
 

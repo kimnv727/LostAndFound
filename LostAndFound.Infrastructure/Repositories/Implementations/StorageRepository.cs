@@ -22,6 +22,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Storage> storages = _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Where(s => s.CampusId == campusId && s.IsActive == true).OrderBy(s => s.Location);
 
             return await Task.FromResult(storages.ToList());
@@ -31,6 +32,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Storage> storages = _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Where(s => s.CampusId == campusId).OrderBy(s => s.Location);
 
             return await Task.FromResult(storages.ToList());
@@ -42,6 +44,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Where(s => s.CampusId == campusId)
                 .Include(s => s.Campus)
                 .Include(s => s.Cabinets)
+                .Include(s => s.User)
                 .OrderBy(s => s.Location);
 
             return await Task.FromResult(storages.ToList());
@@ -52,6 +55,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Storage> storages = _context.Storages
                 .Where(s => s.CampusId == campusId && s.IsActive == true)
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .OrderBy(s => s.Location);
 
@@ -62,6 +66,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == id && s.IsActive == true);
         }
 
@@ -69,6 +74,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -76,6 +82,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .FirstOrDefaultAsync(s => s.Id == id && s.IsActive == true);
         }
@@ -85,6 +92,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Storages
                 .Include(s => s.Campus)
                 .Include(s => s.Cabinets)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -92,6 +100,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Storage> storages = _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Include(s => s.Cabinets)
                 .Where(s => s.IsActive == true)
                 .OrderBy(s => s.Location);
@@ -103,6 +112,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Storage> storages = _context.Storages
                 .Include(s => s.Campus)
+                .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .AsSplitQuery();
 

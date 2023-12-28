@@ -19,10 +19,10 @@ namespace LostAndFound.Core.Entities
 
         [Required]
         public DateTime CreatedDate { get; set; }
-        public ViolationStatus Status { get; set; }
+        public ReportStatus Status { get; set; }
 
-        public ViolationCategory Category { get; set; }
+        public ReportCategory Category { get; set; }
 
-        public virtual ICollection<UserViolationReport> UserViolationReports { get; set; }
+        public virtual ICollection<UserReport> UserViolationReports { get; set; }
     }
 }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.ViolationReport
 {
-    public class UserViolationReportDetailDTO
+    public class UserReportDetailDTO
     {
         public UserBriefDetailDTO User { get; set; }
 
-        public ViolationType Type { get; set; }
+        public ReportType Type { get; set; }
     }
 }

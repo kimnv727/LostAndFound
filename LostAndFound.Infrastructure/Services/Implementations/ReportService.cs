@@ -38,7 +38,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     throw new CreateReportException();
 
                 var r = _mapper.Map<Report>(report.ViolationReport);
-                r.Status = Core.Enums.ViolationStatus.PENDING;
+                r.Status = Core.Enums.ReportStatus.PENDING;
 
                 await _violationReportRepository.AddAsync(r);
                 await _unitOfWork.CommitAsync();
@@ -46,18 +46,18 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 var reportId = await _violationReportRepository.GetLastestCreatedReportIdAsync();
 
                 await _userViolationReportRepository.AddAsync(
-                    new UserViolationReport
+                    new UserReport
                     {
                         UserId = userId,
                         ReportId = reportId,
-                        Type = Core.Enums.ViolationType.SENT,
+                        Type = Core.Enums.ReportType.SENT,
                     });
                 await _userViolationReportRepository.AddAsync(
-                    new UserViolationReport
+                    new UserReport
                     {
                         UserId = report.ReportedUserId,
                         ReportId = reportId,
-                        Type = Core.Enums.ViolationType.RECEIVED,
+                        Type = Core.Enums.ReportType.RECEIVED,
                     });
                 await _unitOfWork.CommitAsync();
                 return _mapper.Map<ReportReadDTO>

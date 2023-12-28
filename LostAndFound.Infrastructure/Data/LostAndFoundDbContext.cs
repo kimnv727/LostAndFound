@@ -32,16 +32,13 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<User> Users { get; set; }
         //Role table
         public virtual DbSet<Role> Roles { get; set; }
-        //Token table
-        public virtual DbSet<Token> Tokens { get; set; }
-        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         //Media table
         public virtual DbSet<Media> Medias { get; set; }
         public virtual DbSet<UserMedia> UserMedias { get; set; }
         public virtual DbSet<PostMedia> PostMedias { get; set; }
         public virtual DbSet<ItemMedia> ItemMedias { get; set; }
         //Violation report table
-        public virtual DbSet<UserViolationReport> UserViolationReports { get; set; }
+        public virtual DbSet<UserReport> UserReports { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         //Item table
         public virtual DbSet<Item> Items { get; set; }
@@ -87,7 +84,7 @@ namespace LostAndFound.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserViolationReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
+            modelBuilder.Entity<UserReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
             modelBuilder.Entity<UserMedia>().HasKey(um => new { um.UserId, um.MediaId });
             modelBuilder.Entity<ItemMedia>().HasKey(im => new { im.ItemId, im.MediaId });
             modelBuilder.Entity<PostMedia>().HasKey(pm => new { pm.PostId, pm.MediaId });
@@ -127,11 +124,6 @@ namespace LostAndFound.Infrastructure.Data
                 .Property(u => u.IsActive)
                 .HasDefaultValue(true);
 
-            modelBuilder.Entity<Token>()
-                .HasOne(rt => rt.RefreshToken)
-                .WithOne(t => t.Token)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Notification>()
                 .Property(n => n.IsRead)
                 .HasDefaultValue(false);
@@ -156,6 +148,12 @@ namespace LostAndFound.Infrastructure.Data
                 .HasOne(i => i.Cabinet)
                 .WithMany(c => c.Items)
                 .HasForeignKey(i => i.CabinetId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Storage>()
+                .HasOne(s => s.User)
+                .WithMany(u => u.Storages)
+                .HasForeignKey(s => s.MainStorageManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.SaveEnumsAsString();

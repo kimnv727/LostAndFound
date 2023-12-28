@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
-    public class UserViolationReportRepository : GenericRepository<UserViolationReport>, IUserViolationReportRepository
+    public class UserViolationReportRepository : GenericRepository<UserReport>, IUserViolationReportRepository
     {
         public UserViolationReportRepository(LostAndFoundDbContext context) : base(context)
         {

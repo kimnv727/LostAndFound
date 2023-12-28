@@ -91,7 +91,7 @@ namespace LostAndFound.Infrastructure.Profiles
             //Violation Report Mapping
             CreateMap<ReportWriteDTO, Report>();
             CreateMap<Report, ReportReadDTO>();
-            CreateMap<UserViolationReport, UserViolationReportDetailDTO>();
+            CreateMap<UserReport, UserReportDetailDTO>();
             
             //Post Mapping
             CreateMap<Post, PostReadDTO>();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Enums
 {
-    public enum ViolationCategory
+    public enum ReportCategory
     {
         USER_VIOLATION,
         MANAGER_VIOLATION,

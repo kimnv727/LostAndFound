@@ -19,11 +19,13 @@ namespace LostAndFound.Core.Entities
         [ForeignKey("Campus")]
         public int CampusId { get; set; }
         public bool IsActive { get; set; }
+        [ForeignKey("User")]
         public string MainStorageManagerId { get; set; }
         public DateTime CreatedDate { get; set; }
 
         //Foreign key tables
         public ICollection<Cabinet> Cabinets { get; set; }
         public virtual Campus Campus { get; set; }
+        public virtual User User { get; set; }
     }
 }

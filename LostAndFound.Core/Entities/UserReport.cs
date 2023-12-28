@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LostAndFound.Core.Entities
 {
-    public class UserViolationReport
+    public class UserReport
     {
         [Required]
         [ForeignKey("User")]
@@ -17,7 +17,7 @@ namespace LostAndFound.Core.Entities
         [Key, Column(Order = 1)]
         public int ReportId { get; set; }
 
-        public ViolationType Type { get; set; }
+        public ReportType Type { get; set; }
 
         public virtual User User { get; set; }
 

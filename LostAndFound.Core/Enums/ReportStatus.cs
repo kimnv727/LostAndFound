@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Enums
 {
-    public enum ViolationType
+    public enum ReportStatus
     {
-        SENT,
-        RECEIVED,
+        PENDING,
+        RESOLVED,
     }
 }

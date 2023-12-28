@@ -16,6 +16,6 @@ namespace LostAndFound.Infrastructure.DTOs.ViolationReport
         [Required]
         public string Content { get; set; }
 
-        public ViolationCategory Category { get; set; }
+        public ReportCategory Category { get; set; }
     }
 }

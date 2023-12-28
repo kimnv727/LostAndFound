@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
-    public interface IUserViolationReportRepository : IAddAsync<UserViolationReport>
+    public interface IUserViolationReportRepository : IAddAsync<UserReport>
     {
     }
 }

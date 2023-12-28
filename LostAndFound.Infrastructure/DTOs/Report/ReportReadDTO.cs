@@ -18,10 +18,10 @@ namespace LostAndFound.Infrastructure.DTOs.ViolationReport
 
         public DateTime CreatedDate { get; set; }
 
-        public ViolationStatus Status { get; set; }
+        public ReportStatus Status { get; set; }
 
-        public ViolationCategory Category { get; set; }
+        public ReportCategory Category { get; set; }
 
-        public IEnumerable<UserViolationReportDetailDTO> UserViolationReports { get; set; }
+        public IEnumerable<UserReportDetailDTO> UserViolationReports { get; set; }
     }
 }

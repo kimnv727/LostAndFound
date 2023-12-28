@@ -31,6 +31,7 @@ namespace LostAndFound.Core.Entities
         public DateTime? DeletedDate { get; set; }
         public virtual Role Role { get; set; }
         public virtual Campus Campus { get; set; }
+        public virtual ICollection<Storage> Storages { get; set; }
         public ICollection<UserMedia> UserMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }
         public ICollection<PostFlag> PostFlags { get; set; }

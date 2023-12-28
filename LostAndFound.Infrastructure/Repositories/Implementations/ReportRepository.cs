@@ -46,22 +46,22 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 if (query.Category == ViolationQueryCategory.USER_VIOLATION)
                     violations = violations
-                        .Where(vr => vr.Category == ViolationCategory.USER_VIOLATION);
+                        .Where(vr => vr.Category == ReportCategory.USER_VIOLATION);
 
                 if (query.Category == ViolationQueryCategory.MANAGER_VIOLATION)
                     violations = violations
-                        .Where(vr => vr.Category == ViolationCategory.MANAGER_VIOLATION);
+                        .Where(vr => vr.Category == ReportCategory.MANAGER_VIOLATION);
             }
 
             if (Enum.IsDefined(query.Status))
             {
                 if (query.Status == ViolationQueryStatus.PENDING)
                     violations = violations
-                        .Where(vr => vr.Status == ViolationStatus.PENDING);
+                        .Where(vr => vr.Status == ReportStatus.PENDING);
 
                 if (query.Status == ViolationQueryStatus.RESOLVED)
                     violations = violations
-                        .Where(vr => vr.Status == ViolationStatus.RESOLVED);
+                        .Where(vr => vr.Status == ReportStatus.RESOLVED);
             }
 
             return await Task.FromResult(violations.ToList());

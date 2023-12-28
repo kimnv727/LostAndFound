@@ -1,4 +1,5 @@
 ﻿using LostAndFound.Infrastructure.DTOs.Property;
+using LostAndFound.Infrastructure.DTOs.User;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace LostAndFound.Infrastructure.DTOs.Storage
         public string Location { get; set; }
         public string CampusName { get; set; }
         public bool IsActive { get; set; }
-        [JsonProperty("mainStorageManager")]
+        [JsonProperty("mainStorageManagerId")]
         public string MainStorageManagerId { get; set; }
         public DateTime CreatedDate { get; set; }
         public virtual CampusReadDTO Campus { get; set; }
+        [JsonProperty("mainStorageManager")]
+        public virtual UserReadDTO User { get; set; }
     }
 }

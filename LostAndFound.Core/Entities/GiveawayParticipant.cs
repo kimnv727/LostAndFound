@@ -5,7 +5,7 @@ using LostAndFound.Core.Entities.Common;
 
 namespace LostAndFound.Core.Entities
 {
-    public class GiveawayParticipant : CreatedEntity
+    public class GiveawayParticipant : ICreatedEntity
     {
         [Required]
         [ForeignKey("Giveaway")]

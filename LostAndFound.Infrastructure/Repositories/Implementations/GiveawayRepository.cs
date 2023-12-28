@@ -288,6 +288,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> GetAllItemsSuitableForGiveaway()
         {
+            var itemsAlreadyInGiveawayId = _context.Giveaways.Where(g => g.GiveawayStatus != GiveawayStatus.DISABLED).Select(g => g.ItemId).ToList();
+
             var items = _context.Items
                 .Include(i => i.User)
                 .ThenInclude(u => u.Campus)
@@ -298,7 +300,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ThenInclude(c => c.Storage)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
-                .Where(i => i.ItemStatus == ItemStatus.EXPIRED && i.IsInStorage == true && i.Category.Value == ItemValue.Low && i.Category.IsSensitive == false)
+                .Where(i => i.ItemStatus == ItemStatus.EXPIRED && i.IsInStorage == true && i.Category.Value == ItemValue.Low
+                && i.Category.IsSensitive == false && !itemsAlreadyInGiveawayId.Contains(i.Id))
                 .AsSplitQuery();
 
             items = items

@@ -5,6 +5,7 @@ using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Giveaway;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
 using LostAndFound.Infrastructure.DTOs.Item;
@@ -35,11 +36,32 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
         public async Task UpdateGiveawayStatusAsync(int giveawayId, GiveawayStatus giveawayStatus)
         {
+            var isAvailable = false;
             var giveaway = await _giveawayRepository.FindGiveawayByIdAsync(giveawayId);
             if (giveaway == null)
             {
                 throw new EntityWithIDNotFoundException<Giveaway>(giveawayId);
             }
+
+            var itemList = await _giveawayRepository.GetAllItemsSuitableForGiveaway();
+
+            if(giveaway.GiveawayStatus == GiveawayStatus.DISABLED && giveawayStatus == GiveawayStatus.NOT_STARTED)
+            {
+                foreach(var item in itemList)
+                {
+                    if(item.Id == giveaway.ItemId)
+                    {
+                        isAvailable = true;
+                        break;
+                    }
+                }
+
+                if(isAvailable == false)
+                {
+                    throw new ItemAlreadyExistedInOtherGiveaway();
+                }
+            }
+
             giveaway.GiveawayStatus = giveawayStatus;
             await _unitOfWork.CommitAsync();
         }
@@ -197,10 +219,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Giveaway>(giveawayId);
             }
-            //Check if it is OnGoing
-            if (giveaway.GiveawayStatus == GiveawayStatus.ONGOING)
+            //Check if it is not started
+            if (giveaway.GiveawayStatus == GiveawayStatus.NOT_STARTED && giveaway.GiveawayStatus == GiveawayStatus.DISABLED)
             {
-                throw new Exception("Cannot update ONGOING Giveaway");
+                throw new CanOnlyUpdateNotStartedGiveawayException();
             }
             _mapper.Map(giveawayUpdateDTO, giveaway);
             await _unitOfWork.CommitAsync();

@@ -17,7 +17,6 @@ namespace LostAndFound.Infrastructure.DTOs.Giveaway
         public int ParticipantsCount { get; set; }
         public ItemReadDTO Item { get; set; }
         public UserReadDTO? WinnerUser { get; set; }
-        public ICollection<UserReadDTO> Participants { get; set; }
         public ICollection<GiveawayParticipantReadDTO> GiveawayParticipants { get; set; }
     }
 }

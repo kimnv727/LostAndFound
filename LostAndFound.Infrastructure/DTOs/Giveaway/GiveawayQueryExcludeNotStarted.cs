@@ -19,6 +19,7 @@ namespace LostAndFound.Infrastructure.DTOs.Giveaway
         }
         [DefaultValue(GiveawayStatusQuery.All)]
         public GiveawayStatusQuery GiveawayStatus { get; set; }
+        public int CampusId { get; set; }
         public string OrderBy { get; set; } = "StartAt Desc";
     }
 }

@@ -92,6 +92,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 giveaways = giveaways.Where(g => g.EndAt <= query.EndAt);
             }
 
+            if (query.CampusId > 0)
+            {
+                giveaways = giveaways.Where(g => g.Item.Location.CampusId == query.CampusId);
+            }
+
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
                 giveaways = giveaways.OrderBy(query.OrderBy);
@@ -161,7 +166,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     giveaways = giveaways.Where(g => g.GiveawayStatus == GiveawayStatus.DISABLED);
                 }
             }
-            
+
+            if (query.CampusId > 0)
+            {
+                giveaways = giveaways.Where(g => g.Item.Location.CampusId == query.CampusId);
+            }
+
             if (!string.IsNullOrWhiteSpace(query.OrderBy))
             {
                 giveaways = giveaways.OrderBy(query.OrderBy);
@@ -222,6 +232,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.EndAt != null)
             {
                 giveaways = giveaways.Where(g => g.EndAt <= query.EndAt);
+            }
+
+            if (query.CampusId > 0)
+            {
+                giveaways = giveaways.Where(g => g.Item.Location.CampusId == query.CampusId);
             }
 
             if (!string.IsNullOrWhiteSpace(query.OrderBy))

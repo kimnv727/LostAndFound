@@ -368,7 +368,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
         }
 
-        public async Task<ReceiptReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia)
+        public async Task<TransferRecordReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia)
         {
             /*
             + Make a receipt
@@ -407,7 +407,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _mediaService.UploadFileAsync(receiptMedia, _awsCredentials);
 
             //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
-            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
             {
                 ReceiverId = receiverId,
                 SenderId = item.FoundUserId,
@@ -421,12 +421,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             };
 
-            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             receipt.IsActive = true;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 
-            var returnResult = _mapper.Map<ReceiptReadDTO>(receipt);
+            var returnResult = _mapper.Map<TransferRecordReadDTO>(receipt);
 
             //Change item status to RETURNED
             await UpdateItemStatus(itemId, ItemStatus.RETURNED);
@@ -540,7 +540,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _mediaService.UploadFileAsync(writeDTO.ReceiptMedia, _awsCredentials);
 
             //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
-            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
             {
                 ReceiverId = userId,
                 SenderId = null,
@@ -554,7 +554,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             };
 
-            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 
@@ -611,7 +611,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _mediaService.UploadFileAsync(updateDTO.ReceiptMedia, _awsCredentials);
 
             //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
-            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
             {
                 ReceiverId = userId,
                 SenderId = item.FoundUserId,
@@ -625,7 +625,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             };
 
-            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 

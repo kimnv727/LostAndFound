@@ -575,7 +575,7 @@ namespace LostAndFound.API.Controllers
                 .NotifyItemClaimedToUser(_userDeviceService, _notificationService, makeClaimWithReceiptDTO.ReceiverId, "Your Claim has been Accepted!",
                 "Your claim on Item " + item.Name + " has been Accepted!");
 
-                return ResponseFactory.Ok<ReceiptReadDTO>(result);
+                return ResponseFactory.Ok<TransferRecordReadDTO>(result);
             }
             else throw new ItemFounderNotMatchException();
 

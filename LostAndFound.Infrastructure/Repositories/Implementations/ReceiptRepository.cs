@@ -13,19 +13,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static LostAndFound.Infrastructure.DTOs.Receipt.ReceiptQuery;
+using static LostAndFound.Infrastructure.DTOs.Receipt.TransferRecordQuery;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
-    public class ReceiptRepository : GenericRepository<Receipt>, IReceiptRepository
+    public class ReceiptRepository : GenericRepository<TransferRecord>, IReceiptRepository
     {
         public ReceiptRepository(LostAndFoundDbContext context) : base(context)
         {
         }
 
-        public async Task<IEnumerable<Receipt>> QueryReceiptAsync(ReceiptQuery query, bool trackChanges = false)
+        public async Task<IEnumerable<TransferRecord>> QueryReceiptAsync(TransferRecordQuery query, bool trackChanges = false)
         {
-            IQueryable<Receipt> receipts = _context.Receipts
+            IQueryable<TransferRecord> receipts = _context.TransferRecords
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
                         .ThenInclude(ic => ic.User)
@@ -94,9 +94,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(receipts.ToList());
         }
 
-        public async Task<IEnumerable<Receipt>> GetAllWithMediaAsync()
+        public async Task<IEnumerable<TransferRecord>> GetAllWithMediaAsync()
         {
-            return await  _context.Receipts
+            return await  _context.TransferRecords
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
                         .ThenInclude(ic => ic.User)
@@ -109,9 +109,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public async Task<Receipt> GetReceiptByIdAsync(int receiptId)
+        public async Task<TransferRecord> GetReceiptByIdAsync(int receiptId)
         {
-            return await _context.Receipts
+            return await _context.TransferRecords
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
                         .ThenInclude(ic => ic.User)
@@ -124,10 +124,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
 
-        public async Task<IEnumerable<Receipt>> GetAllWithItemIdAsync(int itemId)
+        public async Task<IEnumerable<TransferRecord>> GetAllWithItemIdAsync(int itemId)
         {
 
-            IQueryable<Receipt> receipts = _context.Receipts
+            IQueryable<TransferRecord> receipts = _context.TransferRecords
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
                         .ThenInclude(ic => ic.User)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.Receipt
 {
-    public class ReceiptQuery : PaginatedQuery
+    public class TransferRecordQuery : PaginatedQuery
     {
         public int Id { get; set; }
 

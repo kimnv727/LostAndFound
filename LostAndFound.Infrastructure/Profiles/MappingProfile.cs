@@ -165,8 +165,8 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<CabinetUpdateDTO, Cabinet>();
 
             //Receipt
-            CreateMap<Receipt, ReceiptReadDTO>();
-            CreateMap<ReceiptWriteDTO, Receipt>();
+            CreateMap<TransferRecord, TransferRecordReadDTO>();
+            CreateMap<TransferRecordWriteDTO, TransferRecord>();
 
         }
     }

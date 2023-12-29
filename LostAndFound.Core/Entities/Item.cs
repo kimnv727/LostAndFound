@@ -46,6 +46,6 @@ namespace LostAndFound.Core.Entities
         public ICollection<ItemMedia> ItemMedias { get; set; }
         public ICollection<ItemClaim> ItemClaims { get; set; }
         public ICollection<ItemFlag> ItemFlags { get; set; }
-        public ICollection<Receipt> Receipts { get; set; }
+        public ICollection<TransferRecord> Receipts { get; set; }
     }
 }

@@ -79,7 +79,7 @@ namespace LostAndFound.Infrastructure.Data
         //Storage table
         public virtual DbSet<Storage> Storages { get; set; }
         //Receipt table
-        public virtual DbSet<Receipt> Receipts { get; set; }
+        public virtual DbSet<TransferRecord> TransferRecords { get; set; }
         //Campus table (rename of Property table)
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

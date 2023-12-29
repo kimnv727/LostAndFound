@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
     public interface IReceiptRepository :
-        IGetAllAsync<Receipt>,
-        IAddAsync<Receipt>,
-        IUpdate<Receipt>,
-        IDelete<Receipt>
+        IGetAllAsync<TransferRecord>,
+        IAddAsync<TransferRecord>,
+        IUpdate<TransferRecord>,
+        IDelete<TransferRecord>
     {
-        public Task<IEnumerable<Receipt>> QueryReceiptAsync(ReceiptQuery query, bool trackChanges = false);
-        public Task<Receipt> GetReceiptByIdAsync(int receiptId);
-        public Task<IEnumerable<Receipt>> GetAllWithMediaAsync();
-        public Task<IEnumerable<Receipt>> GetAllWithItemIdAsync(int itemId);
+        public Task<IEnumerable<TransferRecord>> QueryReceiptAsync(TransferRecordQuery query, bool trackChanges = false);
+        public Task<TransferRecord> GetReceiptByIdAsync(int receiptId);
+        public Task<IEnumerable<TransferRecord>> GetAllWithMediaAsync();
+        public Task<IEnumerable<TransferRecord>> GetAllWithItemIdAsync(int itemId);
     }
 }

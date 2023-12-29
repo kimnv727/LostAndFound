@@ -28,9 +28,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> FindItemBookmarksByUserIdAsync(string userId)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  userId);
             var itemBookmarksId = _context.ItemBookMarks.Where(ib => ib.UserId == userId && ib.IsActive == true).Select(ib => ib.ItemId).ToList();
             var items = _context.Items
-                .Where(i => itemBookmarksId.Contains(i.Id) && i.ItemStatus != Core.Enums.ItemStatus.DELETED)
+                .Where(i => itemBookmarksId.Contains(i.Id) && i.ItemStatus != Core.Enums.ItemStatus.DELETED && i.Location.CampusId == user.CampusId)
                 .Include(i => i.Category)
                 .Include(i => i.Location)
                 .Include(i => i.ItemClaims.Where(ic => ic.UserId == userId))

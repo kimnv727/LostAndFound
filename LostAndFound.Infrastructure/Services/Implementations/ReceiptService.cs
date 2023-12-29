@@ -41,29 +41,29 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _mediaRepository = mediaRepository;
         }
 
-        public async Task<PaginatedResponse<ReceiptReadDTO>> QueryReceiptAsync(ReceiptQuery query)
+        public async Task<PaginatedResponse<TransferRecordReadDTO>> QueryReceiptAsync(TransferRecordQuery query)
         {
             var receipts = await _receiptRepository.QueryReceiptAsync(query);
             //
-            return PaginatedResponse<ReceiptReadDTO>.FromEnumerableWithMapping(receipts, query, _mapper);
+            return PaginatedResponse<TransferRecordReadDTO>.FromEnumerableWithMapping(receipts, query, _mapper);
         }
 
-        public async Task<IEnumerable<ReceiptReadDTO>> ListAllAsync()
+        public async Task<IEnumerable<TransferRecordReadDTO>> ListAllAsync()
         {
             var receipts = await _receiptRepository.GetAllWithMediaAsync();
             //
-            return _mapper.Map<List<ReceiptReadDTO>>(receipts);
+            return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
         }
 
-        public async Task<ReceiptReadDTO> FindReceiptByIdAsync(int receiptId)
+        public async Task<TransferRecordReadDTO> FindReceiptByIdAsync(int receiptId)
         {
             var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
             if (receipt == null)
             {
-                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
+                throw new EntityWithIDNotFoundException<TransferRecord>(receiptId);
             }
 
-            return _mapper.Map<ReceiptReadDTO>(receipt);
+            return _mapper.Map<TransferRecordReadDTO>(receipt);
         }
 
         public async Task DeleteReceiptAsync(int receiptId)
@@ -71,7 +71,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
             if(receipt == null)
             {
-                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
+                throw new EntityWithIDNotFoundException<TransferRecord>(receiptId);
             }
 
             var image = await _mediaRepository.FindMediaByIdAsync(receipt.ReceiptImage);
@@ -86,7 +86,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<ReceiptReadDTO> CreateReceiptAsync(ReceiptCreateDTO receiptCreateDTO,  IFormFile image)
+        public async Task<TransferRecordReadDTO> CreateReceiptAsync(TransferRecordCreateDTO receiptCreateDTO,  IFormFile image)
         {
             //Check null for receiver,sender & item 
             var receiver = await _userRepository.FindUserByID(receiptCreateDTO.ReceiverId);
@@ -115,7 +115,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var result = await _mediaService.UploadFileAsync(image, _awsCredentials);
 
             //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
-            ReceiptWriteDTO receiptWriteDTO = new ReceiptWriteDTO()
+            TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
             {
                 ReceiverId = receiptCreateDTO.ReceiverId,
                 SenderId = receiptCreateDTO.SenderId,
@@ -129,15 +129,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             };
 
-            var receipt = _mapper.Map<Receipt>(receiptWriteDTO);
+            var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             receipt.IsActive = true;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 
-            return _mapper.Map<ReceiptReadDTO>(receipt);
+            return _mapper.Map<TransferRecordReadDTO>(receipt);
         }
 
-        public async Task<IEnumerable<ReceiptReadDTO>> GetAllReceiptsByItemIdAsync(int itemId)
+        public async Task<IEnumerable<TransferRecordReadDTO>> GetAllReceiptsByItemIdAsync(int itemId)
         {
             //Get Item
             var item = await _itemRepository.FindItemByIdAsync(itemId);
@@ -148,15 +148,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Get Receipts
             var receipts = await _receiptRepository.GetAllWithItemIdAsync(itemId);
 
-            return _mapper.Map<List<ReceiptReadDTO>>(receipts);
+            return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
         }
 
-        public async Task<ReceiptReadDTO> RevokeReceipt(int receiptId)
+        public async Task<TransferRecordReadDTO> RevokeReceipt(int receiptId)
         {
             var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
             if (receipt == null)
             {
-                throw new EntityWithIDNotFoundException<Receipt>(receiptId);
+                throw new EntityWithIDNotFoundException<TransferRecord>(receiptId);
             }
 
             //check if receipt is return type
@@ -171,7 +171,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             item.ItemStatus = ItemStatus.ACTIVE;
 
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<ReceiptReadDTO>(receipt);
+            return _mapper.Map<TransferRecordReadDTO>(receipt);
         }
     }
 }

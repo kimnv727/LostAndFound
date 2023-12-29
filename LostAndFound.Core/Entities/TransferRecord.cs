@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Receipt : ICreatedEntity
+    public class TransferRecord : ICreatedEntity
     {
         [Key]
         public int Id { get; set; }

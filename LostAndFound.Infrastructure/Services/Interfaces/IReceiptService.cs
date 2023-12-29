@@ -13,12 +13,12 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IReceiptService
     {
-        public Task<PaginatedResponse<ReceiptReadDTO>> QueryReceiptAsync(ReceiptQuery query);
-        public Task<ReceiptReadDTO> CreateReceiptAsync(ReceiptCreateDTO receiptCreateDTO, IFormFile image);
+        public Task<PaginatedResponse<TransferRecordReadDTO>> QueryReceiptAsync(TransferRecordQuery query);
+        public Task<TransferRecordReadDTO> CreateReceiptAsync(TransferRecordCreateDTO receiptCreateDTO, IFormFile image);
         public Task DeleteReceiptAsync(int receiptId);
-        public Task<IEnumerable<ReceiptReadDTO>> ListAllAsync();
-        public Task<ReceiptReadDTO> FindReceiptByIdAsync(int receiptId);
-        public Task<IEnumerable<ReceiptReadDTO>> GetAllReceiptsByItemIdAsync(int itemId);
-        public Task<ReceiptReadDTO> RevokeReceipt(int receiptId);
+        public Task<IEnumerable<TransferRecordReadDTO>> ListAllAsync();
+        public Task<TransferRecordReadDTO> FindReceiptByIdAsync(int receiptId);
+        public Task<IEnumerable<TransferRecordReadDTO>> GetAllReceiptsByItemIdAsync(int itemId);
+        public Task<TransferRecordReadDTO> RevokeReceipt(int receiptId);
     }
 }

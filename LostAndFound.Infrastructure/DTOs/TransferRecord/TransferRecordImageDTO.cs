@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.Receipt
 {
-    public class ReceiptImageDTO
+    public class TransferRecordImageDTO
     {
         public int ItemId { get; set; }
         public IFormFile ReceiptImage { get; set; }

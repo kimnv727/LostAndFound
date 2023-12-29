@@ -23,9 +23,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Post>> FindBookmarkPostsByUserIdAsync(string userId)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var postBookmarksId = _context.PostBookmarks.Where(pb => pb.UserId == userId && pb.IsActive == true).Select(pb => pb.PostId).ToList();
             var posts = _context.Posts
-                .Where(p => postBookmarksId.Contains(p.Id) && p.PostStatus != Core.Enums.PostStatus.DELETED)
+                .Where(p => postBookmarksId.Contains(p.Id) && p.PostStatus != Core.Enums.PostStatus.DELETED && p.User.CampusId == user.CampusId)
                 //.Include(p => p.Category)
                 //.Include(p => p.Location)
                 .Include(p => p.User)

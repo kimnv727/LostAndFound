@@ -43,7 +43,7 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> Query([FromQuery] ReceiptQuery query)
+        public async Task<IActionResult> Query([FromQuery] TransferRecordQuery query)
         {
             var paginatedReceiptDTO = await _receiptService.QueryReceiptAsync(query);
 
@@ -56,7 +56,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpGet("all")]
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<ReceiptReadDTO>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<IEnumerable<TransferRecordReadDTO>>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> ListAll()
         {
@@ -74,14 +74,14 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> CreateReceiptAsync([FromForm] ReceiptCreateDTO receiptCreateDTO, [Required] IFormFile image)
+        public async Task<IActionResult> CreateReceiptAsync([FromForm] TransferRecordCreateDTO receiptCreateDTO, [Required] IFormFile image)
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             string[] roles = { "User", "Storage Manager" };
             await _firebaseAuthService.CheckUserRoles(userId, roles);
 
             var receipt = await _receiptService.CreateReceiptAsync(receiptCreateDTO, image);
-            return ResponseFactory.Ok(_mapper.Map<ReceiptReadDTO>(receipt));
+            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace LostAndFound.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("id/{receiptId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReceiptReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> GetReceiptByIdAsync([Required] int receiptId)
         {
@@ -124,7 +124,7 @@ namespace LostAndFound.API.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReceiptReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadDTO[]>))]
         public async Task<IActionResult> GetAllCabinetsByStorageId(int itemId)
         {
             var result = await _receiptService.GetAllReceiptsByItemIdAsync(itemId);

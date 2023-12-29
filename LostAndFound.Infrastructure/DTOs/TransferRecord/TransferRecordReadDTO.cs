@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.DTOs.Receipt
 {
-    public class ReceiptReadDTO 
+    public class TransferRecordReadDTO 
     {
         public int Id { get; set; }
 

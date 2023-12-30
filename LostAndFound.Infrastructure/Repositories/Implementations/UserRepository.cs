@@ -27,6 +27,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
+                .Include(u => u.Storages)
                 .Where(u => u.RoleId == 3 && u.IsActive == true);
 
             return await Task.FromResult(users.ToList());
@@ -39,6 +40,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
+                .Include(u => u.Storages)
                 .Where(u => u.RoleId == 3 && u.IsActive == true && u.CampusId == campusId);
 
             return await Task.FromResult(users.ToList());
@@ -51,6 +53,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
+                .Include(u => u.Storages)
                 .Where(u => u.IsActive == true && u.RoleId != 1)
                 .AsSplitQuery();
 
@@ -152,6 +155,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<User> users = _context.Users
                 .Include(u => u.Campus)
+                .Include(u => u.Storages)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -284,6 +288,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<User> users = _context.Users
                 .Include(u => u.Campus)
+                .Include(u => u.Storages)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -412,6 +417,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return _context.Users
                 .Include(u => u.Campus)
+                .Include(u => u.Storages)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Include(u => u.Role)
@@ -422,6 +428,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return _context.Users
                 .Include(u => u.Campus)
+                .Include(u => u.Storages)
                 .Include(u => u.UserMedias.Where(um => um.Media.IsActive == true && um.Media.DeletedDate == null && um.MediaType != UserMediaType.AVATAR))
                 .ThenInclude(um => um.Media)
                 .Where(u => u.IsActive == true)

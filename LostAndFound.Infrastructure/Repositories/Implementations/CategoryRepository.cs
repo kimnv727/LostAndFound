@@ -124,10 +124,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Category>> GetAllWithGroupsByIdArrayAsync(int[] categoryIds)
         {
             var result = _context.Categories
-                .Where(c => categoryIds.Contains(c.Id))
-                .Include(c => c.CategoryGroup)
-                .AsSplitQuery();
-            result = result.AsNoTracking();
+                .Where(c => categoryIds.Contains(c.Id));
 
             return await Task.FromResult(result.ToList());
         }

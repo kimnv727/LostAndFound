@@ -24,9 +24,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -37,9 +37,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.Comments)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -51,9 +51,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE);
@@ -68,9 +68,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE).AsSplitQuery();
@@ -82,30 +82,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             //Query Posts with Category and Location first
             IQueryable<Post> posts = null;
-            if (query.PostCategory != null || query.PostLocation != null)
+            if (query.PostCategory != null && query.PostLocation != null)
             {
                 //Query Category First
                 if (query.PostCategory != null)
                 {
-                    foreach (var pc in query.PostCategory)
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
-                        if (result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
                 //Query Location second
                 if (query.PostLocation != null)
                 {
-                    foreach (var pl in query.PostLocation)
+                    posts = posts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                }
+            }
+            else if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
-                        if (result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    var result = queriedPosts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
             }
@@ -160,9 +171,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .AsSplitQuery();
@@ -174,30 +185,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             //Query Posts with Category and Location first
             IQueryable<Post> posts = null;
-            if(query.PostCategory != null || query.PostLocation != null)
+            if(query.PostCategory != null && query.PostLocation != null)
             {
                 //Query Category First
-                if(query.PostCategory != null)
+                if (query.PostCategory != null)
                 {
-                    foreach(var pc in query.PostCategory)
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
-                        if(result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
                 //Query Location second
                 if (query.PostLocation != null)
                 {
-                    foreach (var pl in query.PostLocation)
+                    posts = posts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                }
+            }
+            else if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
-                        if (result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    var result = queriedPosts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
             }
@@ -276,9 +298,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .Where(p => p.PostStatus != PostStatus.PENDING && p.PostStatus != PostStatus.REJECTED)
@@ -291,30 +313,41 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             //Query Posts with Category and Location first
             IQueryable<Post> posts = null;
-            if (query.PostCategory != null || query.PostLocation != null)
+            if (query.PostCategory != null && query.PostLocation != null)
             {
                 //Query Category First
                 if (query.PostCategory != null)
                 {
-                    foreach (var pc in query.PostCategory)
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostCategory.Contains("|" + pc + "|"));
-                        if (result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
                 //Query Location second
                 if (query.PostLocation != null)
                 {
-                    foreach (var pl in query.PostLocation)
+                    posts = posts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                }
+            }
+            else if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
                     {
-                        var result = queriedPosts.Where(p => p.PostLocation.Contains("|" + pl + "|"));
-                        if (result != null)
-                        {
-                            posts = posts == null ? posts = result : posts.Concat(result).Distinct();
-                        }
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    var result = queriedPosts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
                     }
                 }
             }
@@ -382,12 +415,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Post>> QueryPostWithFlagAsync(PostQueryWithFlag query, bool trackChanges = false)
         {
-            IQueryable<Post> posts = _context.Posts
+            IQueryable<Post> queriedPosts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
@@ -396,7 +429,52 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (!trackChanges)
             {
-                posts = posts.AsNoTracking();
+                queriedPosts = queriedPosts.AsNoTracking();
+            }
+
+            //Query Posts with Category and Location first
+            IQueryable<Post> posts = null;
+            if (query.PostCategory != null && query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    posts = posts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                }
+            }
+            else if (query.PostCategory != null || query.PostLocation != null)
+            {
+                //Query Category First
+                if (query.PostCategory != null)
+                {
+                    var result = queriedPosts.Where(p => p.Categories.Any(c => query.PostCategory.Contains(c.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+                //Query Location second
+                if (query.PostLocation != null)
+                {
+                    var result = queriedPosts.Where(p => p.Locations.Any(l => query.PostLocation.Contains(l.Id)));
+                    if (result != null)
+                    {
+                        posts = posts == null ? posts = result : posts.Concat(result).Distinct();
+                    }
+                }
+            }
+            else
+            {
+                posts = queriedPosts;
             }
 
             if (!string.IsNullOrWhiteSpace(query.PostUserId))
@@ -464,6 +542,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Post> FindPostByIdAndUserId(int id, string userId)
         {
             return await _context.Posts
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)
                 .SingleOrDefaultAsync(p => p.Id == id && p.PostUserId == userId);
@@ -478,6 +559,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Post>> GetAllActivePosts()
         {
             var posts = _context.Posts
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Where(p => p.PostStatus == PostStatus.ACTIVE);
 
             return await Task.FromResult(posts.ToList());
@@ -488,9 +572,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             var posts = _context.Posts
                 .Include(p => p.User)
                 .ThenInclude(u => u.Campus)
-                //.Include(p => p.Category)
-                //.Include(p => p.Location)
-                //.ThenInclude(l => l.Property)
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .ThenInclude(l => l.Campus)
                 .Include(p => p.PostFlags)
                 .Include(p => p.PostMedias.Where(pm => pm.Media.IsActive == true && pm.Media.DeletedDate == null))
                 .ThenInclude(pm => pm.Media)

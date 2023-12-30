@@ -81,7 +81,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     readDto.ParticipantsCount++;
                 }
                 //only closed giveaway has winner
-                if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                //if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                //also have supposed giveaway -> just to check QR
+                if (p.IsWinner == true && p.IsChosenAsWinner == true 
+                    && (giveaway.GiveawayStatus == GiveawayStatus.CLOSED || giveaway.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS))
                 {
                     var winner = await _userRepository.FindUserByID(p.UserId);
                     readDto.WinnerUser = _mapper.Map<UserReadDTO>(winner);
@@ -106,7 +109,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     readDto.ParticipantsCount++;
                 }
                 //only closed giveaway has winner
-                if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                //if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                //also have supposed giveaway -> just to check QR
+                if (p.IsWinner == true && p.IsChosenAsWinner == true
+                    && (giveaway.GiveawayStatus == GiveawayStatus.CLOSED || giveaway.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS))
                 {
                     var winner = await _userRepository.FindUserByID(p.UserId);
                     readDto.WinnerUser = _mapper.Map<UserReadDTO>(winner);
@@ -128,7 +134,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         r.ParticipantsCount++;
                     }
                     //only closed giveaway has winner
-                    if (p.IsWinner == true && p.IsChosenAsWinner == true && r.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //also have supposed giveaway -> just to check QR
+                    if (p.IsWinner == true && p.IsChosenAsWinner == true
+                        && (r.GiveawayStatus == GiveawayStatus.CLOSED || r.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS))
                     {
                         r.WinnerUser = _mapper.Map<UserReadDTO>(p.User);
                     }
@@ -152,7 +161,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         r.ParticipantsCount++;
                     }
                     //only closed giveaway has winner
-                    if (p.IsWinner == true && p.IsChosenAsWinner == true && r.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //also have supposed giveaway -> just to check QR
+                    if (p.IsWinner == true && p.IsChosenAsWinner == true
+                        && (r.GiveawayStatus == GiveawayStatus.CLOSED || r.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS))
                     {
                         r.WinnerUser = _mapper.Map<UserReadDTO>(p.User);
                     }
@@ -174,7 +186,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         r.ParticipantsCount++;
                     }
                     //only closed giveaway has winner
-                    if (p.IsWinner == true && p.IsChosenAsWinner == true && r.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //if (p.IsWinner == true && p.IsChosenAsWinner == true && giveaway.GiveawayStatus == GiveawayStatus.CLOSED)
+                    //also have supposed giveaway -> just to check QR
+                    if (p.IsWinner == true && p.IsChosenAsWinner == true
+                        && (r.GiveawayStatus == GiveawayStatus.CLOSED || r.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS))
                     {
                         r.WinnerUser = _mapper.Map<UserReadDTO>(p.User);
                     }

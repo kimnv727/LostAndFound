@@ -85,32 +85,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Post>(postId);
             }
 
-            var result = _mapper.Map<PostDetailWithCommentsReadDTO>(post);
-            //get CategoryList
-            if (result.PostCategoryIdList != null)
-            {
-                var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(result.PostCategoryIdList);
-                List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                foreach (var c in cateList)
-                {
-                    list.Add(_mapper.Map<CategoryReadDTO>(c));
-                }
-                result.PostCategoryList = list;
-            }
-            //get LocationList
-            if (result.PostLocationIdList != null)
-            {
-                var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(result.PostLocationIdList);
-                List<LocationReadDTO> list = new List<LocationReadDTO>();
-                foreach (var l in locationList)
-                {
-                    list.Add(_mapper.Map<LocationReadDTO>(l));
-                }
-                result.PostLocationList = list;
-            }
-
-            return result;
-            //return _mapper.Map<PostDetailWithCommentsReadDTO>(post);
+            return _mapper.Map<PostDetailWithCommentsReadDTO>(post);
         }
         
         public async Task<IEnumerable<PostReadDTO>> GetPostByUserIdAsync(string userId)
@@ -124,139 +99,28 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Get Posts
             var posts = await _postRepository.FindAllPostsByUserIdAsync(userId);
 
-            var returnList = _mapper.Map<PaginatedResponse<PostReadDTO>>(posts);
-            foreach (var r in returnList)
-            {
-                //get CategoryList
-                if (r.PostCategoryIdList != null)
-                {
-                    var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(r.PostCategoryIdList);
-                    List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                    foreach (var c in cateList)
-                    {
-                        list.Add(_mapper.Map<CategoryReadDTO>(c));
-                    }
-                    r.PostCategoryList = list;
-                }
-                //get LocationList
-                if (r.PostLocationIdList != null)
-                {
-                    var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(r.PostLocationIdList);
-                    List<LocationReadDTO> list = new List<LocationReadDTO>();
-                    foreach (var l in locationList)
-                    {
-                        list.Add(_mapper.Map<LocationReadDTO>(l));
-                    }
-                    r.PostLocationList = list;
-                }
-            }
-            return returnList;
-
-            //return _mapper.Map<PaginatedResponse<PostReadDTO>>(posts);
+            return _mapper.Map<PaginatedResponse<PostReadDTO>>(posts);
         }
 
         public async Task<PaginatedResponse<PostReadDTO>> QueryPostAsync(PostQuery query)
         {
             var posts = await _postRepository.QueryPostAsync(query);
             
-            var returnList = PaginatedResponse<PostReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
-            foreach(var r in returnList)
-            {
-                //get CategoryList
-                if (r.PostCategoryIdList != null)
-                {
-                    var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(r.PostCategoryIdList);
-                    List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                    foreach (var c in cateList)
-                    {
-                        list.Add(_mapper.Map<CategoryReadDTO>(c));
-                    }
-                    r.PostCategoryList = list;
-                }
-                //get LocationList
-                if (r.PostLocationIdList != null)
-                {
-                    var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(r.PostLocationIdList);
-                    List<LocationReadDTO> list = new List<LocationReadDTO>();
-                    foreach (var l in locationList)
-                    {
-                        list.Add(_mapper.Map<LocationReadDTO>(l));
-                    }
-                    r.PostLocationList = list;
-                }
-            }
-            return returnList;
-            //return PaginatedResponse<PostReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
+            return PaginatedResponse<PostReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
         }
 
         public async Task<PaginatedResponse<PostDetailReadDTO>> QueryPostWithStatusAsync(PostQueryWithStatus query)
         {
             var posts = await _postRepository.QueryPostWithStatusAsync(query);
 
-            var returnList = PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
-            foreach (var r in returnList)
-            {
-                //get CategoryList
-                if (r.PostCategoryIdList != null)
-                {
-                    var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(r.PostCategoryIdList);
-                    List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                    foreach (var c in cateList)
-                    {
-                        list.Add(_mapper.Map<CategoryReadDTO>(c));
-                    }
-                    r.PostCategoryList = list;
-                }
-                //get LocationList
-                if (r.PostLocationIdList != null)
-                {
-                    var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(r.PostLocationIdList);
-                    List<LocationReadDTO> list = new List<LocationReadDTO>();
-                    foreach (var l in locationList)
-                    {
-                        list.Add(_mapper.Map<LocationReadDTO>(l));
-                    }
-                    r.PostLocationList = list;
-                }
-            }
-            return returnList;
-
-            //return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
+            return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
         }
 
         public async Task<PaginatedResponse<PostDetailReadDTO>> QueryPostWithStatusExcludePendingAndRejectedAsync(PostQueryWithStatusExcludePendingAndRejected query)
         {
             var posts = await _postRepository.QueryPostWithStatusExcludePendingAndRejectedAsync(query);
 
-            var returnList = PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
-            foreach (var r in returnList)
-            {
-                //get CategoryList
-                if (r.PostCategoryIdList != null)
-                {
-                    var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(r.PostCategoryIdList);
-                    List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                    foreach (var c in cateList)
-                    {
-                        list.Add(_mapper.Map<CategoryReadDTO>(c));
-                    }
-                    r.PostCategoryList = list;
-                }
-                //get LocationList
-                if (r.PostLocationIdList != null)
-                {
-                    var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(r.PostLocationIdList);
-                    List<LocationReadDTO> list = new List<LocationReadDTO>();
-                    foreach (var l in locationList)
-                    {
-                        list.Add(_mapper.Map<LocationReadDTO>(l));
-                    }
-                    r.PostLocationList = list;
-                }
-            }
-            return returnList;
-
-            //return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
+            return PaginatedResponse<PostDetailReadDTO>.FromEnumerableWithMapping(posts, query, _mapper);
         }
 
         public async Task<PaginatedResponse<PostDetailWithFlagReadDTO>> QueryPostWithFlagAsync(PostQueryWithFlag query)
@@ -275,35 +139,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 result.Add(r);
             }
 
-            var returnList = PaginatedResponse<PostDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);
-            foreach (var r in returnList)
-            {
-                //get CategoryList
-                if (r.PostCategoryIdList != null)
-                {
-                    var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(r.PostCategoryIdList);
-                    List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                    foreach (var c in cateList)
-                    {
-                        list.Add(_mapper.Map<CategoryReadDTO>(c));
-                    }
-                    r.PostCategoryList = list;
-                }
-                //get LocationList
-                if (r.PostLocationIdList != null)
-                {
-                    var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(r.PostLocationIdList);
-                    List<LocationReadDTO> list = new List<LocationReadDTO>();
-                    foreach (var l in locationList)
-                    {
-                        list.Add(_mapper.Map<LocationReadDTO>(l));
-                    }
-                    r.PostLocationList = list;
-                }
-            }
-            return returnList;
-
-            //return PaginatedResponse<PostDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);
+            return PaginatedResponse<PostDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);
         }
 
         public async Task<PostDetailReadDTO> CreatePostAsync(string userId, PostWriteDTO postWriteDTO)
@@ -318,6 +154,23 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var post = _mapper.Map<Post>(postWriteDTO);
             post.PostUserId = userId;
             post.PostStatus = PostStatus.PENDING;
+
+            //Add Location & Category
+            //Get Location
+            if (!string.IsNullOrWhiteSpace(postWriteDTO.PostLocation))
+            {
+                var locationIdList = Array.ConvertAll(postWriteDTO.PostLocation.Substring(1, postWriteDTO.PostLocation.Length - 2).Split('|'), int.Parse);
+                var locationObjectList = await _locationRepository.GetAllWithCampusByIdArrayAsync(locationIdList);
+                post.Locations = (ICollection<Location>)locationObjectList; 
+            }
+            //Get Category
+            if (!string.IsNullOrWhiteSpace(postWriteDTO.PostCategory))
+            {
+                var categoryIdList = Array.ConvertAll(postWriteDTO.PostCategory.Substring(1, postWriteDTO.PostCategory.Length - 2).Split('|'), int.Parse);
+                var categoryObjectList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(categoryIdList);
+                post.Categories = (ICollection<Category>)categoryObjectList;
+            }
+
             //Add Post
             await _postRepository.AddAsync(post);
             await _unitOfWork.CommitAsync();
@@ -327,28 +180,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
 
             var result = _mapper.Map<PostDetailReadDTO>(post);
-            //get CategoryList
-            if (result.PostCategoryIdList != null)
-            {
-                var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(result.PostCategoryIdList);
-                List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                foreach (var c in cateList)
-                {
-                    list.Add(_mapper.Map<CategoryReadDTO>(c));
-                }
-                result.PostCategoryList = list;
-            }
-            //get LocationList
-            if (result.PostLocationIdList != null)
-            {
-                var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(result.PostLocationIdList);
-                List<LocationReadDTO> list = new List<LocationReadDTO>();
-                foreach (var l in locationList)
-                {
-                    list.Add(_mapper.Map<LocationReadDTO>(l));
-                }
-                result.PostLocationList = list;
-            }
 
             return result;
         }
@@ -361,38 +192,33 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Post>(postId);
             }
             _mapper.Map(postUpdateDTO, post);
-            if(post.PostStatus == PostStatus.REJECTED)
+
+            //Clear old
+            post.Locations.Clear();
+            post.Categories.Clear();
+            //Add new
+            //Get Location
+            if (!string.IsNullOrWhiteSpace(postUpdateDTO.PostLocation))
+            {
+                var locationIdList = Array.ConvertAll(postUpdateDTO.PostLocation.Substring(1, postUpdateDTO.PostLocation.Length - 2).Split('|'), int.Parse);
+                var locationObjectList = await _locationRepository.GetAllWithCampusByIdArrayAsync(locationIdList);
+                post.Locations = (ICollection<Location>)locationObjectList;
+            }
+            //Get Category
+            if (!string.IsNullOrWhiteSpace(postUpdateDTO.PostCategory))
+            {
+                var categoryIdList = Array.ConvertAll(postUpdateDTO.PostCategory.Substring(1, postUpdateDTO.PostCategory.Length - 2).Split('|'), int.Parse);
+                var categoryObjectList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(categoryIdList);
+                post.Categories = (ICollection<Category>)categoryObjectList;
+            }
+
+            if (post.PostStatus == PostStatus.REJECTED)
             {
                 post.PostStatus = PostStatus.PENDING;
             }
             await _unitOfWork.CommitAsync();
 
-            var result = _mapper.Map<PostDetailReadDTO>(post);
-            //get CategoryList
-            if (result.PostCategoryIdList != null)
-            {
-                var cateList = await _categoryRepository.GetAllWithGroupsByIdArrayAsync(result.PostCategoryIdList);
-                List<CategoryReadDTO> list = new List<CategoryReadDTO>();
-                foreach (var c in cateList)
-                {
-                    list.Add(_mapper.Map<CategoryReadDTO>(c));
-                }
-                result.PostCategoryList = list;
-            }
-            //get LocationList
-            if (result.PostLocationIdList != null)
-            {
-                var locationList = await _locationRepository.GetAllWithCampusByIdArrayAsync(result.PostLocationIdList);
-                List<LocationReadDTO> list = new List<LocationReadDTO>();
-                foreach (var l in locationList)
-                {
-                    list.Add(_mapper.Map<LocationReadDTO>(l));
-                }
-                result.PostLocationList = list;
-            }
-
-            return result;
-            //return _mapper.Map<PostDetailReadDTO>(post);
+            return _mapper.Map<PostDetailReadDTO>(post);
         }
 
         public async Task<bool> CheckPostAuthorAsync(int postId, string userId)

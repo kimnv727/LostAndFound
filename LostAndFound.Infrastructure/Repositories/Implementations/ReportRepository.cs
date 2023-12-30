@@ -33,7 +33,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             (ReportQuery query, bool trackChanges = false)
         {
             IQueryable<Report> violations = _context.Reports
-                .Include(vr => vr.UserViolationReports)
+                .Include(vr => vr.UserReports)
                 .ThenInclude(uvr => uvr.User).AsSplitQuery();
 
             if (trackChanges)
@@ -70,7 +70,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Report> GetReportByIdAsync(int id)
         {
             return await _context.Reports
-                .Include(vr => vr.UserViolationReports)
+                .Include(vr => vr.UserReports)
                 .ThenInclude(uvr => uvr.User).SingleOrDefaultAsync(vr => vr.Id == id);
         }
     }

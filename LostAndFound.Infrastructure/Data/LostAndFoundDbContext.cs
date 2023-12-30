@@ -156,6 +156,14 @@ namespace LostAndFound.Infrastructure.Data
                 .HasForeignKey(s => s.MainStorageManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Post>()
+                .HasMany(p => p.Locations)
+                .WithMany(l => l.Posts);
+
+            modelBuilder.Entity<Post>()
+                .HasMany(p => p.Categories)
+                .WithMany(c => c.Posts);
+
             modelBuilder.SaveEnumsAsString();
         }
 

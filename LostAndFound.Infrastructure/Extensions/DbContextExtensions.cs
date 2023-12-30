@@ -851,7 +851,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "Bottle of Water",
                     Description = "Bottle of Water",
-                    IsSensitive = true,
+                    IsSensitive = false,
                     Value = ItemValue.Low,
                     CategoryGroupId = 7,
                 };
@@ -862,7 +862,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Name = "Helmet",
                     Description = "Helmet",
-                    IsSensitive = true,
+                    IsSensitive = false,
                     Value = ItemValue.Low,
                     CategoryGroupId = 7,
                 };
@@ -966,6 +966,14 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 postMedias1.Add(postMedia1);
 
+                ICollection<Location> postLoca1 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 5),
+                    context.Locations.FirstOrDefault(l => l.Id == 6)
+                };
+                ICollection<Category> postCate1 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 13)
+                };
+
                 Post post1 = new Post()
                 {
                     Title = "Mat 1 binh nuoc the thao mau xam",
@@ -973,11 +981,13 @@ namespace LostAndFound.Infrastructure.Extensions
                     PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                     LostDateFrom = "2023-12-17",
                     LostDateTo = "null",
-                    PostLocation = "|5|6|",
-                    PostCategory = "|13|",
+                    //PostLocation = "|5|6|",
+                    //PostCategory = "|13|",
                     CreatedDate = DateTime.Now.ToVNTime(),
                     PostStatus = PostStatus.ACTIVE,
                     PostMedias = postMedias1,
+                    Locations = postLoca1,
+                    Categories = postCate1
                 };
                 context.Posts.Add(post1);
                 context.SaveChanges();
@@ -997,6 +1007,12 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 postMedias2.Add(postMedia2);
 
+                ICollection<Location> postLoca2 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 10)
+                };
+                ICollection<Category> postCate2 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 9)
+                };
                 Post post2 = new Post()
                 {
                     Title = "Mat 1 con chuot logitach mau do",
@@ -1004,12 +1020,15 @@ namespace LostAndFound.Infrastructure.Extensions
                     PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                     LostDateFrom = "2023-12-16",
                     LostDateTo = "null",
-                    PostLocation = "|10|",
-                    PostCategory = "|9|",
+                    //PostLocation = "|10|",
+                    //PostCategory = "|9|",
                     CreatedDate = DateTime.Now.ToVNTime(),
                     PostStatus = PostStatus.PENDING,
                     PostMedias = postMedias2,
+                    Locations = postLoca2,
+                    Categories = postCate2
                 };
+
                 context.Posts.Add(post2);
                 context.SaveChanges();
                 #endregion

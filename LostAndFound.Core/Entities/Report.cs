@@ -23,6 +23,6 @@ namespace LostAndFound.Core.Entities
 
         public ReportCategory Category { get; set; }
 
-        public virtual ICollection<UserReport> UserViolationReports { get; set; }
+        public virtual ICollection<UserReport> UserReports { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace LostAndFound.Core.Entities
         public ItemValue Value { get; set; }
         public virtual CategoryGroup CategoryGroup { get; set; }
         public ICollection<Item> Items { get; set; }
-        //public ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        //public virtual ICollection<PostCategory> PostCategories { get; set; }
     }
 }

@@ -412,7 +412,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 ReceiverId = receiverId,
                 SenderId = item.FoundUserId,
                 ItemId = item.Id,
-                ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                ReceiptType = item.IsInStorage == true ? ReceiptType.RETURN_OUT_STORAGE : ReceiptType.RETURN_USER_TO_USER,
                 Media = new MediaWriteDTO()
                 {
                     Name = receiptMedia.FileName,
@@ -457,43 +457,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //claim.IsActive = false;
             claim.ClaimStatus = ClaimStatus.DENIED;
             await _unitOfWork.CommitAsync();
-        }
-
-        public async Task<ItemReadDTO> RecommendMostRelatedItemAsync(int postId)
-        {
-            //Get Post
-            var post = await _postRepository.FindPostByIdAsync(postId);
-            if (post == null)
-            {
-                throw new EntityWithIDNotFoundException<Post>(postId);
-            }
-
-            //Get Related Item
-            /*if(post.PostCategoryId != null && post.PostLocationId != null)
-            {
-                var items = await _itemRepository.GetItemsByLocationAndCategoryAsync((int)post.PostLocationId, (int)post.PostCategoryId);
-
-                //String similarity
-                if (items.Count() > 0)
-                {
-                    var jw = new JaroWinkler();
-                    foreach (var i in items)
-                    {
-                        if (jw.Similarity(post.Title, i.Name) > 0.8 && jw.Similarity(post.PostContent, i.Description) > 0.8)
-                        {
-                            return _mapper.Map<ItemReadDTO>(i);
-                        }
-                    }
-                }
-
-                return null;
-            }
-            else
-            {
-                return null;
-            }*/
-
-            return null;
         }
 
         public async Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO)

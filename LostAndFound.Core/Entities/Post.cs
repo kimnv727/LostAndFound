@@ -17,8 +17,8 @@ namespace LostAndFound.Core.Entities
         public string Title { get; set; }
         [Required]
         public string PostContent { get; set; }
-        public string? PostLocation { get; set; }
-        public string? PostCategory { get; set; }
+        //public string? PostLocation { get; set; }
+        //public string? PostCategory { get; set; }
         public string? LostDateFrom { get; set; }
         public string? LostDateTo { get; set; }
         public PostStatus PostStatus { get; set; }
@@ -37,5 +37,7 @@ namespace LostAndFound.Core.Entities
         public ICollection<PostMedia> PostMedias { get; set; }
         public ICollection<PostBookmark> PostBookmarks { get; set; }
         public ICollection<PostFlag> PostFlags { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace LostAndFound.Core.Entities
         
         public virtual Campus Campus { get; set; }  
         public ICollection<Item> Items { get; set; }
-        //public ICollection<Post> Posts { get;set; }
+        public virtual ICollection<Post> Posts { get;set; }
+        //public virtual ICollection<PostLocation> PostLocations { get; set; }
     }
 }

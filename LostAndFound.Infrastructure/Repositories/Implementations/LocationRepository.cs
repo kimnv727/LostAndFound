@@ -132,11 +132,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var locations = _context
                 .Locations
-                .Include(l => l.Campus)
-                .Where(l => locationIds.Contains(l.Id))
-                .AsSplitQuery();
-
-            locations = locations.AsNoTracking();
+                .Where(l => locationIds.Contains(l.Id));
 
             return await Task.FromResult(locations.ToList());
         }

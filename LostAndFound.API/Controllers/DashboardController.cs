@@ -26,15 +26,16 @@ namespace LostAndFound.API.Controllers
         /// Get Dashboard data by month
         /// </summary>
         /// <param name="month"></param>
+        /// <param name="year"></param>
         /// <returns></returns>
-        [HttpGet("{month}")]
+        [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<DashboardReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetDashboardDataByMonth(DateTime month)
+        public async Task<IActionResult> GetDashboardDataByMonth(int month, int year)
         {
-            var data = await _dashboardService.GetDashboardDataByMonthAsync(month);
+            var data = await _dashboardService.GetDashboardDataByMonthAsync(month + 1, year);
 
             return ResponseFactory.Ok(data);
         }

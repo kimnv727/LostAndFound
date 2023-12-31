@@ -179,7 +179,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<TransferRecordReadDTO>(receipt);
         }
 
-        public async Task<TransferRecordReadDTO> CreateReceiptForGiveawayAsync(TransferRecordGiveawayCreateDTO receiptCreateDTO, IFormFile image)
+        public async Task<TransferRecordReadDTO> CreateReceiptForGiveawayAsync(string currentUserId, TransferRecordGiveawayCreateDTO receiptCreateDTO, IFormFile image)
         {
             //Check null for receiver,sender & item 
             var receiver = await _userRepository.FindUserByID(receiptCreateDTO.ReceiverId);
@@ -214,7 +214,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
             {
                 ReceiverId = receiptCreateDTO.ReceiverId,
-                //SenderId = receiptCreateDTO.SenderId,
+                SenderId = currentUserId,
                 ItemId = item.Id,
                 ReceiptType = ReceiptType.GIVEAWAY_OUT_STORAGE,
                 Media = new MediaWriteDTO()
@@ -229,6 +229,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             receipt.IsActive = true;
             //closed giveaway
             giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
+            giveaway.Item.ItemStatus = ItemStatus.GAVEAWAY;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 

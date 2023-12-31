@@ -447,5 +447,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Users.FirstOrDefaultAsync(u =>
                     u.Phone.ToLower().Trim() == phoneNumber.ToLower().Trim()) != null;
         }
+
+        public async Task<IEnumerable<User>> CountNewlyCreatedMember(int month, int year)
+        {
+            var result = _context.Users.Where(u => u.CreatedDate.Month == month && u.CreatedDate.Year == year
+            && u.RoleId == 4);
+
+            return await Task.FromResult(result.ToList());
+        }
     }
 }

@@ -99,7 +99,7 @@ namespace LostAndFound.API.Controllers
             string[] roles = { "Storage Manager" };
             await _firebaseAuthService.CheckUserRoles(userId, roles);
 
-            var receipt = await _receiptService.CreateReceiptForGiveawayAsync(receiptCreateDTO, image);
+            var receipt = await _receiptService.CreateReceiptForGiveawayAsync(userId, receiptCreateDTO, image);
             return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
         }
 

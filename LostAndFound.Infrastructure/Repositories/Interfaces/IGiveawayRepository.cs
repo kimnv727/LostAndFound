@@ -25,5 +25,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Giveaway>> GetAllWaitingGiveaways();
         Task PushNotificationForGiveawayResult(PushNotification notification);
         public Task<IEnumerable<Item>> GetAllItemsSuitableForGiveaway();
+        public Task<IEnumerable<Giveaway>> CountFinishedGiveaways(int month, int year);
     }
 }

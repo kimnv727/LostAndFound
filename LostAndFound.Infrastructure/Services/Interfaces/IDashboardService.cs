@@ -9,6 +9,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IDashboardService
     {
-        public Task<DashboardReadDTO> GetDashboardDataByMonthAsync(DateTime date);
+        public Task<DashboardReadDTO> GetDashboardDataByMonthAsync(int month, int year);
     }
 }

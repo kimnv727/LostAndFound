@@ -38,14 +38,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<GiveawayParticipant> RandomizeGiveawayWinnerAsync(int giveawayId)
         {
-            IEnumerable<GiveawayParticipant> giveawayParticipants = _context.GiveawayParticipants.Where(gp => gp.GiveawayId == giveawayId && gp.IsChosenAsWinner == false && gp.IsWinner == false);
+            IEnumerable<GiveawayParticipant> giveawayParticipants = _context.GiveawayParticipants.Where(gp => gp.GiveawayId == giveawayId && gp.IsActive == true && gp.IsChosenAsWinner == false && gp.IsWinner == false);
 
-            var myList = giveawayParticipants.ToList();
-            var rng = new Random();
-            var randomIndex = rng.Next(0, myList.Count);
-            var randomParticipant = myList[randomIndex];
+            if(giveawayParticipants.Count() > 0)
+            {
+                var myList = giveawayParticipants.ToList();
+                var rng = new Random();
+                var randomIndex = rng.Next(0, myList.Count);
+                var randomParticipant = myList[randomIndex];
 
-            return randomParticipant;
+                return randomParticipant;
+            }
+
+            return null;
         }
 
         public async Task UpdateGiveawayParticipantRange(GiveawayParticipant[] giveawayParticipant)

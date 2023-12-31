@@ -28,7 +28,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<Giveaway> FindGiveawayByIdAsync(int id)
         {
             return await _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -45,7 +45,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.Cabinet)
@@ -57,7 +57,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> QueryGiveawayAsync(GiveawayQuery query, bool trackChanges = false)
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -108,7 +108,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> QueryGiveawayWithStatusAsync(GiveawayQueryWithStatus query, bool trackChanges = false)
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -183,7 +183,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> QueryGiveawayExcludeNotstartedAsync(GiveawayQueryExcludeNotStarted query, bool trackChanges = false)
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -256,7 +256,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllOngoingGiveaways()
         {
             var giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -272,7 +272,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllNotStartedGiveaways()
         {
             var giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -288,7 +288,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Giveaway>> GetAllWaitingGiveaways()
         {
             var giveaways = _context.Giveaways
-                .Include(g => g.GiveawayParticipants)
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -357,6 +357,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             items = items.AsNoTracking();
 
             return await Task.FromResult(items.ToList());
+        }
+
+        public async Task<IEnumerable<Giveaway>> CountFinishedGiveaways(int month, int year)
+        {
+            var result = _context.Giveaways.Where(g => ((DateTime)g.EndAt).Month == month && ((DateTime)g.EndAt).Year == year
+            && g.GiveawayStatus == GiveawayStatus.CLOSED);
+            return await Task.FromResult(result.ToList());
         }
     }
 }

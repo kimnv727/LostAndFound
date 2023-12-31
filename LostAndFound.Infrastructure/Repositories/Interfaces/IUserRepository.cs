@@ -22,5 +22,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<User>> QueryUserAsync(UserQuery query, bool trackChanges = false);
         Task<IEnumerable<User>> QueryUserIgnoreStatusAsync(UserQueryIgnoreStatus query, bool trackChanges = false);
         Task<IEnumerable<User>> QueryUserIgnoreStatusWithoutWaitingVerifiedAsync(UserQueryIgnoreStatusWithoutWaitingVerified query, bool trackChanges = false);
+        Task<IEnumerable<User>> CountNewlyCreatedMember(int month, int year);
     }
 }

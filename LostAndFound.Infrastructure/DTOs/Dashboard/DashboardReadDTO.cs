@@ -12,7 +12,7 @@ namespace LostAndFound.Infrastructure.DTOs.Dashboard
         public ItemReturn ItemReturn { get; set; }
         public int PostCreated { get; set; }
         public int NewUsers { get; set; }
-        public int TotalUsers { get; set; }
+        //public int TotalUsers { get; set; }
         public int FinishedGiveaways { get; set; }
         public Data[] LineDataItem { get; set; }
         public Data[] LineDataPost { get; set; }
@@ -37,7 +37,7 @@ namespace LostAndFound.Infrastructure.DTOs.Dashboard
         public string ItemName { get; set; }
         public string ItemCategory { get; set; }
         public string User { get; set; }
-        public string ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
     }
 
     public class PopularCategory

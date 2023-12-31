@@ -141,5 +141,26 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(receipts.ToList());
         }
+
+        public async Task<IEnumerable<TransferRecord>> GetLatestTenOfAMonthAsync(int month, int year)
+        {
+
+            IQueryable<TransferRecord> receipts = _context.TransferRecords
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
+                .Include(r => r.Media)
+                .Where(r => r.CreatedDate.Month == month && r.CreatedDate.Year == year 
+                && (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER))
+                .OrderByDescending(r => r.CreatedDate)
+                .Take(10);
+
+            return await Task.FromResult(receipts.ToList());
+        }
     }
 }

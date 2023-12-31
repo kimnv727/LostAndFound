@@ -23,5 +23,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task UpdatePostRange(Post[] post);
         public Task<IEnumerable<Post>> GetAllActivePosts();
         public Task<IEnumerable<Post>> GetPostsByLocationAndCategoryAsync(int locationId, int categoryId);
+        public Task<IEnumerable<Post>> CountNewlyCreatedPost(int month, int year);
     }
 }

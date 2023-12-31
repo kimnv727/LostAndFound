@@ -588,5 +588,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             return await Task.FromResult(posts.ToList());
         }
+
+        public async Task<IEnumerable<Post>> CountNewlyCreatedPost(int month, int year)
+        {
+            var result = _context.Posts.Where(p => p.CreatedDate.Month == month && p.CreatedDate.Year == year
+            && p.PostStatus != PostStatus.REJECTED && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING);
+            return await Task.FromResult(result.ToList());
+        }
     }
 }

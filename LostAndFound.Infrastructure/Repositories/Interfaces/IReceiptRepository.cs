@@ -19,5 +19,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<TransferRecord> GetReceiptByIdAsync(int receiptId);
         public Task<IEnumerable<TransferRecord>> GetAllWithMediaAsync();
         public Task<IEnumerable<TransferRecord>> GetAllWithItemIdAsync(int itemId);
+        public Task<IEnumerable<TransferRecord>> GetLatestTenOfAMonthAsync(int month, int year);
     }
 }

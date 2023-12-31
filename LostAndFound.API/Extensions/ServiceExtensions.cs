@@ -59,6 +59,7 @@ namespace LostAndFound.API.Extensions
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<ICabinetService, CabinetService>();
             services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IDashboardService, DashboardService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

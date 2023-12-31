@@ -78,7 +78,8 @@ namespace LostAndFound.API.Services
                             if (DateTime.Now >= giveaway.EndAt && giveaway.GiveawayStatus == GiveawayStatus.ONGOING)
                             {
                                 
-                                if(giveaway.GiveawayParticipants.Where(gp => gp.IsActive == true && gp.IsWinner == false).Count() > 0)
+                                if(giveaway.GiveawayParticipants.Where(gp => gp.IsActive == true && gp.IsChosenAsWinner == false)
+                                    .Count() > 0)
                                 {
                                     giveaway.GiveawayStatus = GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS;
                                     finishedGiveaways.Add(giveaway);
@@ -158,30 +159,39 @@ namespace LostAndFound.API.Services
                                 var result = await giveawayRepository.FindGiveawayIncludeParticipantsAsync(giveaway.Id);
                                 var winner = await giveawayParticipantRepository.RandomizeGiveawayWinnerAsync(giveaway.Id);
                                 List<GiveawayParticipant> giveawayParticipants = result.GiveawayParticipants.ToList();
-                                foreach (var gp in giveawayParticipants)
+                                if(giveawayParticipants.Where(gp => gp.IsActive == true && gp.IsChosenAsWinner == false).Count() > 0)
                                 {
-                                    if(gp.IsChosenAsWinner == true && gp.IsWinner == true)
+                                    foreach (var gp in giveawayParticipants)
                                     {
-                                        gp.IsWinner = false;
-                                    }
-                                    if (gp.UserId == winner.UserId)
-                                    {
-                                        //gp.IsActive = false;
-                                        gp.IsWinner = true;
-                                        gp.IsChosenAsWinner = true;
-                                        //call noti api
-                                        var noti = new PushNotification
+                                        if (gp.IsChosenAsWinner == true && gp.IsWinner == true)
                                         {
-                                            UserId = gp.UserId,
-                                            Title = "You win the Giveaway for Item named " + giveaway.Item.Name,
-                                            Content = "You win the Giveaway for Item named " + giveaway.Item.Name + ". Congratulation!",
-                                            NotificationType = NotificationType.GiveawayResult
-                                        };
-                                        await giveawayRepository.PushNotificationForGiveawayResult(noti);
-                                        //also send mail
+                                            gp.IsWinner = false;
+                                        }
+                                        if (gp.UserId == winner.UserId)
+                                        {
+                                            //gp.IsActive = false;
+                                            gp.IsWinner = true;
+                                            gp.IsChosenAsWinner = true;
+                                            //call noti api
+                                            var noti = new PushNotification
+                                            {
+                                                UserId = gp.UserId,
+                                                Title = "You win the Giveaway for Item named " + giveaway.Item.Name,
+                                                Content = "You win the Giveaway for Item named " + giveaway.Item.Name + ". Congratulation!",
+                                                NotificationType = NotificationType.GiveawayResult
+                                            };
+                                            await giveawayRepository.PushNotificationForGiveawayResult(noti);
+                                            //also send mail
+                                        }
                                     }
+                                    await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
                                 }
-                                await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
+                                else
+                                {
+                                    //Closed because no more participants left
+                                    giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
+                                }
+                                
                             }
                             else if(giveaway.Item.ItemStatus == ItemStatus.GAVEAWAY)
                             {

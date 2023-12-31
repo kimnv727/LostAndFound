@@ -85,6 +85,25 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// Create new receipt for giveaway
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("giveaway")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> CreateReceiptForGiveawayAsync([FromForm] TransferRecordGiveawayCreateDTO receiptCreateDTO, [Required] IFormFile image)
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            string[] roles = { "Storage Manager" };
+            await _firebaseAuthService.CheckUserRoles(userId, roles);
+
+            var receipt = await _receiptService.CreateReceiptForGiveawayAsync(receiptCreateDTO, image);
+            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
+        }
+
+        /// <summary>
         /// Delete a receipt and its media
         /// </summary>
         /// <returns></returns>

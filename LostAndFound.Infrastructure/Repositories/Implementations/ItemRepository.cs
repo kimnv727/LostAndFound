@@ -676,6 +676,33 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             && i.ItemStatus != ItemStatus.REJECTED && i.ItemStatus != ItemStatus.DELETED && i.ItemStatus != ItemStatus.PENDING);
             return await Task.FromResult(result.ToList());
         }
+
+        public async Task<IEnumerable<DTOs.Dashboard.Data>> GetItemCountsInDateRanges(int month, int year)
+        {
+            //get number of days
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            var result = new List<DTOs.Dashboard.Data>();
+
+            for (int j = 0; j <= 8; j++)
+            {
+                var data = new DTOs.Dashboard.Data();
+                data.x = (j * 3 + 3).ToString() + "/" + month.ToString() + "/" + year.ToString();
+                data.y = _context.Items.Where(i => (i.CreatedDate.Day >= j * 3 + 1 && i.CreatedDate.Day <= j * 3 + 3)
+                && i.CreatedDate.Month == month && i.CreatedDate.Year == year
+                && i.ItemStatus != ItemStatus.REJECTED && i.ItemStatus != ItemStatus.DELETED && i.ItemStatus != ItemStatus.PENDING).Count();
+
+                result.Add(data);
+            }
+
+            var lastData = new DTOs.Dashboard.Data();
+            lastData.x = (daysInMonth).ToString() + "/" + month.ToString() + "/" + year.ToString();
+            lastData.y = _context.Items.Where(i => (i.CreatedDate.Day >= 28 && i.CreatedDate.Day <= daysInMonth)
+                && i.CreatedDate.Month == month && i.CreatedDate.Year == year
+                && i.ItemStatus != ItemStatus.REJECTED && i.ItemStatus != ItemStatus.DELETED && i.ItemStatus != ItemStatus.PENDING).Count();
+            result.Add(lastData);
+
+            return result;
+        }
     }
 
 

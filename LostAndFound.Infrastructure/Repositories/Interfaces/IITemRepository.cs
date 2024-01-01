@@ -30,5 +30,6 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Item>> GetAllActiveItems();
         public Task<IEnumerable<Item>> GetItemsByLocationAndCategoryAsync(int locationId, int categoryId);
         public Task<IEnumerable<Item>> CountNewlyCreatedItem(int month, int year);
+        public Task<IEnumerable<DTOs.Dashboard.Data>> GetItemCountsInDateRanges(int month, int year);
     }
 }

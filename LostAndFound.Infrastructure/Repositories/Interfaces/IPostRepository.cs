@@ -24,5 +24,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<IEnumerable<Post>> GetAllActivePosts();
         public Task<IEnumerable<Post>> GetPostsByLocationAndCategoryAsync(int locationId, int categoryId);
         public Task<IEnumerable<Post>> CountNewlyCreatedPost(int month, int year);
+        public Task<Dictionary<Category, int>> GetTop10CategoryEntryCountByMonth(int month, int year);
+        public Task<IEnumerable<DTOs.Dashboard.Data>> GetPostCountsInDateRanges(int month, int year);
     }
 }

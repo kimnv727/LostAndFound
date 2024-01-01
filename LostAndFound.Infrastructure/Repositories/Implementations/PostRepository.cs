@@ -595,5 +595,51 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             && p.PostStatus != PostStatus.REJECTED && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING);
             return await Task.FromResult(result.ToList());
         }
+
+        public async Task<Dictionary<Category, int>> GetTop10CategoryEntryCountByMonth(int month, int year)
+        {
+            var top10CategoryEntryCounts = _context.Categories
+                .Include(c => c.CategoryGroup)
+                .Select(category => new
+                {
+                    Category = category,
+                    EntryCount = category.Items.Count(i => i.CreatedDate.Month == month && i.CreatedDate.Year == year 
+                    && i.ItemStatus != ItemStatus.DELETED && i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED)
+                                 + category.Posts.Count(p => p.CreatedDate.Month == month && p.CreatedDate.Year == year
+                    && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING && p.PostStatus != PostStatus.REJECTED)
+                })
+                .OrderByDescending(x => x.EntryCount)
+                .Take(10)
+                .ToDictionary(x => x.Category, x => x.EntryCount);
+
+            return top10CategoryEntryCounts;
+        }
+
+        public async Task<IEnumerable<DTOs.Dashboard.Data>> GetPostCountsInDateRanges(int month, int year)
+        {
+            //get number of days
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            var result = new List<DTOs.Dashboard.Data>();
+
+            for (int i = 0; i <= 8; i++)
+            {
+                var data = new DTOs.Dashboard.Data();
+                data.x = (i * 3 + 3).ToString() + "/" + month.ToString() + "/" + year.ToString();
+                data.y = _context.Posts.Where(p => (p.CreatedDate.Day >= i*3 + 1 && p.CreatedDate.Day <= i*3 +3)
+                && p.CreatedDate.Month == month && p.CreatedDate.Year == year
+                && p.PostStatus != PostStatus.REJECTED && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING).Count();
+
+                result.Add(data);
+            }
+
+            var lastData = new DTOs.Dashboard.Data();
+            lastData.x = (daysInMonth).ToString() + "/" + month.ToString() + "/" + year.ToString();
+            lastData.y = _context.Posts.Where(p => (p.CreatedDate.Day >= 28 && p.CreatedDate.Day <= daysInMonth)
+                && p.CreatedDate.Month == month && p.CreatedDate.Year == year
+                && p.PostStatus != PostStatus.REJECTED && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING).Count();
+            result.Add(lastData);
+
+            return result;
+        }
     }
 }

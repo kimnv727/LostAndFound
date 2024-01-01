@@ -41,10 +41,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Initilize ReadDTO
             var readDTO = new DashboardReadDTO() {
                 ItemReturn = new ItemReturn(),
-                Transactions = new Transaction[10],
-                LineDataItem = new DTOs.Dashboard.Data[10],
-                LineDataPost = new DTOs.Dashboard.Data[10],
-                PopularCategories = new DTOs.Dashboard.PopularCategory[10]
+                Transactions = new List<Transaction>(),
+                LineDataItem = new List<DTOs.Dashboard.Data>(),
+                LineDataPost = new List<DTOs.Dashboard.Data>(),
+                PopularCategories = new List<PopularCategory>()
             };
 
             //Get Item Found
@@ -77,7 +77,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             //Get Last 10 Item Return of specific month
             var receiptList = await _receiptRepository.GetLatestTenOfAMonthAsync(month, year);
-            if(receiptList.Count() > 10)
+            if(receiptList.Count() > 0)
             {
                 var transactions = new List<Transaction>();
                 foreach(var r in receiptList)
@@ -93,18 +93,28 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     };
                     transactions.Add(t);
                 }
-                readDTO.Transactions = transactions.ToArray();
+                readDTO.Transactions = transactions;
             }
 
-            //Get Array of Dates
-            int daysInMonth = DateTime.DaysInMonth(year, month);
+            //Get Line Data for Item
+            readDTO.LineDataItem = (List<DTOs.Dashboard.Data>)await _itemRepository.GetItemCountsInDateRanges(month, year);
 
-            DateTime[] arrayOfDates = new DateTime[daysInMonth];
+            //Get Line Data for Post
+            readDTO.LineDataPost = (List<DTOs.Dashboard.Data>)await _postRepository.GetPostCountsInDateRanges(month, year);
 
-            for (int day = 1; day <= daysInMonth; day++)
+            //Get top 10 Popular Category of that month
+            var categoryDictionary = await _postRepository.GetTop10CategoryEntryCountByMonth(month, year);
+            if (categoryDictionary.Count > 0)
             {
-                DateTime newDate = new DateTime(year, month, day);
-                arrayOfDates[day - 1] = newDate;
+                foreach (var c in categoryDictionary)
+                {
+                    readDTO.PopularCategories.Add(new PopularCategory
+                    {
+                        CategoryName = c.Key.Name,
+                        GroupCategoryName = c.Key.CategoryGroup.Name,
+                        Amount = c.Value.ToString()
+                    });
+                }
             }
 
             return readDTO;

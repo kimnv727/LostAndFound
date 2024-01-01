@@ -14,10 +14,10 @@ namespace LostAndFound.Infrastructure.DTOs.Dashboard
         public int NewUsers { get; set; }
         //public int TotalUsers { get; set; }
         public int FinishedGiveaways { get; set; }
-        public Data[] LineDataItem { get; set; }
-        public Data[] LineDataPost { get; set; }
-        public Transaction[] Transactions { get; set; }
-        public PopularCategory[] PopularCategories { get; set; }
+        public List<Data> LineDataItem { get; set; }
+        public List<Data> LineDataPost { get; set; }
+        public List<Transaction> Transactions { get; set; }
+        public List<PopularCategory> PopularCategories { get; set; }
     }
 
     public class ItemReturn

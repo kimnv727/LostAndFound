@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,9 +34,9 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<DashboardReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> GetDashboardDataByMonth(int month, int year)
+        public async Task<IActionResult> GetDashboardDataByMonth([Required] int month, [Required] int year)
         {
-            var data = await _dashboardService.GetDashboardDataByMonthAsync(month + 1, year);
+            var data = await _dashboardService.GetDashboardDataByMonthAsync(month, year);
 
             return ResponseFactory.Ok(data);
         }

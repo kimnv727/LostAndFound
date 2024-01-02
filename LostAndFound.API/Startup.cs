@@ -35,6 +35,7 @@ using LostAndFound.API.Services;
 using System.Text.Json;
 using LostAndFound.API.Extensions.FirestoreService;
 using Google.Cloud.Firestore;
+using LostAndFound.Infrastructure.DTOs.Email;
 
 namespace LostAndFound.API
 {
@@ -59,6 +60,10 @@ namespace LostAndFound.API
             FacebookCredentials facebookCredentials = new FacebookCredentials();
             Configuration.Bind("FacebookCredentials", facebookCredentials);
             services.AddSingleton(facebookCredentials);
+
+            EmailServiceConfigDTO emailServiceConfig = new EmailServiceConfigDTO();
+            Configuration.Bind("EmailServiceConfig", emailServiceConfig);
+            services.AddSingleton(emailServiceConfig);
 
             services.AddCors();
             services.AddControllers();

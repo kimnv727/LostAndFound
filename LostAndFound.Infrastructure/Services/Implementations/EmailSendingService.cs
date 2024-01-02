@@ -34,6 +34,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                 {
+                    smtp.UseDefaultCredentials = false;
                     smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
                         _emailServiceConfigDto.EmailPassword);
                     smtp.EnableSsl = true;

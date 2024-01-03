@@ -703,6 +703,86 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
+        public async Task<IEnumerable<Item>> GetRecommendItemsByUserId(string userId)
+        {
+            var posts = _context.Posts.Where(p => p.PostUserId == userId && p.PostStatus != PostStatus.CLOSED
+            && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING).Take(5).ToList();
+
+            if(posts.Count() > 0)
+            {
+                var categories = posts.SelectMany(p => p.Categories)
+                                      .GroupBy(c => c.Id)
+                                      .Select(group => group.First())
+                                      .Select(c => c.Id)
+                                      .ToList();
+                var locations = posts.SelectMany(p => p.Locations)
+                                      .GroupBy(l => l.Id)
+                                      .Select(group => group.First())
+                                      .Select(l => l.Id)
+                                      .ToList();
+
+                if(categories.Count() > 0 && locations.Count() > 0)
+                {
+                    var items = _context.Items
+                            .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .ThenInclude(l => l.Campus)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
+                            .ThenInclude(c => c.Storage)
+                            .ThenInclude(s => s.User)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Where(i => categories.Contains(i.CategoryId) && locations.Contains(i.LocationId))
+                            .AsSplitQuery();
+
+                    return await Task.FromResult(items.ToList());
+                }
+                else if (categories.Count() > 0)
+                {
+                    var items = _context.Items
+                            .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .ThenInclude(l => l.Campus)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
+                            .ThenInclude(c => c.Storage)
+                            .ThenInclude(s => s.User)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Where(i => categories.Contains(i.CategoryId))
+                            .AsSplitQuery();
+
+                    return await Task.FromResult(items.ToList());
+                }
+                else if (locations.Count() > 0)
+                {
+                    var items = _context.Items
+                            .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .ThenInclude(l => l.Campus)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
+                            .ThenInclude(c => c.Storage)
+                            .ThenInclude(s => s.User)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .Where(i => locations.Contains(i.LocationId))
+                            .AsSplitQuery();
+
+                    return await Task.FromResult(items.ToList());
+                }
+            }
+
+            return null;
+        }
+
         //For item founder, returns an item and all its claims
         public async Task<Item> GetAllClaimsOfAnItemForFounder(string userId, int itemId)
         {

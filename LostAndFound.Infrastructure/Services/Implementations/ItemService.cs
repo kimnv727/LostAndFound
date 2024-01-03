@@ -116,6 +116,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<ItemReadDTO>>(items);
         }
 
+        public async Task<IEnumerable<ItemReadDTO>> GetRecommendItemsByUserId(string userId)
+        {
+            var items = await _itemRepository.GetRecommendItemsByUserId(userId);
+
+            return _mapper.Map<List<ItemReadDTO>>(items);
+        }
+
         public async Task<ItemReadDTO> CreateItemAsync(string userId, ItemWriteDTO itemWriteDTO)
         {
             //Check if user exist

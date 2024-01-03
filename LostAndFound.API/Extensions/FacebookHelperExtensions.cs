@@ -31,7 +31,7 @@ namespace LostAndFound.API.Extensions
                 {
                     message = message + l.LocationName + ", ";
                 }
-                message = message.Substring(message.Length - 2);
+                message = message.Substring(0, message.Length - 2);
                 message = message + " (" + post.User.CampusName + ")";
             }
             if (post.PostCategoryList != null)
@@ -41,11 +41,11 @@ namespace LostAndFound.API.Extensions
                 {
                     message = message + c.Name + ", ";
                 }
-                message = message.Substring(message.Length - 2);
+                message = message.Substring(0, message.Length - 2);
             }
             message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "https://lnf-user.web.app/";
 
-
+            string privacyValue = "EVERYONE";
             if (post.PostMedias.Count > 0)
             {
                 //get image url
@@ -56,7 +56,7 @@ namespace LostAndFound.API.Extensions
                     var request = new HttpRequestMessage
                     {
                         Method = new HttpMethod("POST"),
-                        RequestUri = new Uri(_baseUrl + $"/{facebookCredentials.PageId}/photos?message={message}&access_token={facebookCredentials.AccessKey}&url={url}"),
+                        RequestUri = new Uri(_baseUrl + $"/{facebookCredentials.PageId}/photos?message={message}&access_token={facebookCredentials.AccessKey}&url={url}&privacy={{\"value\":\"{privacyValue}\"}}"),
                     };
 
                     HttpResponseMessage response = await httpClient.SendAsync(request);
@@ -73,15 +73,15 @@ namespace LostAndFound.API.Extensions
             }
             else
             {
-                //get link (placeholder)
-                var link = "www.google.com";
+                //get link
+                var link = "https://lnf-user.web.app/";
 
                 using (var httpClient = new HttpClient())
                 {
                     var request = new HttpRequestMessage
                     {
                         Method = new HttpMethod("POST"),
-                        RequestUri = new Uri(_baseUrl + $"/{facebookCredentials.PageId}/feed?message={message}&access_token={facebookCredentials.AccessKey}&link={link}"),
+                        RequestUri = new Uri(_baseUrl + $"/{facebookCredentials.PageId}/feed?message={message}&access_token={facebookCredentials.AccessKey}&privacy={{\"value\":\"{privacyValue}\"}}"),
                     };
 
                     HttpResponseMessage response = await httpClient.SendAsync(request);

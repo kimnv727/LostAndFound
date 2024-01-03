@@ -154,6 +154,21 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// List items recommended for each users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-recommended")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> ListRecommendedItems()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var paginatedItemDTO = await _itemService.GetRecommendItemsByUserId(stringId);
+
+            return ResponseFactory.Ok(paginatedItemDTO);
+        }
+
+        /// <summary>
         /// Find Item By Id
         /// </summary>
         /// <returns></returns>

@@ -36,6 +36,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<ItemReadWithClaimStatusDTO> GetAnItemWithClaimsForManager(int itemId);
         public Task<ItemReadDTO> UpdateItemCabinet(int itemId, int cabinetId);
         public Task<IEnumerable<ItemReadDTO>> ListItemsSortByFloorNumberAsync();
+        public Task<IEnumerable<ItemReadDTO>> GetRecommendItemsByUserId(string userId);
         public Task UpdateClaimStatusAsync(int itemId, string userId);
         public Task AcceptAClaimAsync(int itemId, string userId);
         public Task<TransferRecordReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia);

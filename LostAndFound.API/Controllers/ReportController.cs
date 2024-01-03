@@ -48,7 +48,7 @@ namespace LostAndFound.API.Controllers
             var result = await _reportService.CreateReportAsync(stringId, writeDTO);
 
             return ResponseFactory.CreatedAt(nameof(GetReport)
-                , nameof(ReportController), new { id = result.Id }
+                , nameof(ReportController), new { reportId = result.Id }
                 , result);
         }
 

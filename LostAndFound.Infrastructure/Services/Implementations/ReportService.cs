@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.Item;
 using LostAndFound.Core.Exceptions.ViolationReport;
@@ -64,22 +65,24 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
 
             //AddMedia
-            await _reportMediaService.UploadReportMedias(userId, report.Id, writeDTO.Medias);
-            await _unitOfWork.CommitAsync();
-
+            if (writeDTO.Medias != null)
+            {
+                await _reportMediaService.UploadReportMedias(userId, report.Id, writeDTO.Medias);
+                await _unitOfWork.CommitAsync();
+            }
             var result = _mapper.Map<ReportReadDTO>(report);
 
             return result;
         }
 
-        public async Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatusUpdateDTO updateDTO)
+        public async Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatus reportStatus)
         {
             var report = await _reportRepository.GetReportByIdAsync(reportId);
             if (report == null)
             {
                 throw new EntityWithIDNotFoundException<Report>(reportId);
             }
-            report.Status = updateDTO.ReportStatus;
+            report.Status = reportStatus;
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<ReportReadDTO>(report);

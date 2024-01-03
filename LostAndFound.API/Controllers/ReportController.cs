@@ -102,7 +102,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all reports by userId (only Active)
+        /// Get all reports by userId
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -119,7 +119,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all posts by userId (only Active)
+        /// Get all posts by itemId
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
@@ -136,7 +136,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Update Post Status
+        /// Update Report Status
         /// </summary>
         /// <remarks></remarks>
         /// <param name="reportId"></param>
@@ -146,12 +146,12 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReportReadDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        public async Task<IActionResult> UpdateReportStatus(int reportId, ReportStatusUpdateDTO updateDTO)
+        public async Task<IActionResult> UpdateReportStatus(int reportId, ReportStatus reportStatus)
         {
-            var result = await _reportService.UpdateReportStatusAsync(reportId, updateDTO);
+            var result = await _reportService.UpdateReportStatusAsync(reportId, reportStatus);
 
             //Noti
-            if (updateDTO.ReportStatus == Core.Enums.ReportStatus.RESOLVED)
+            if (reportStatus == Core.Enums.ReportStatus.RESOLVED)
             {
                 await NotificationExtensions
                 .Notify(_userDeviceService, _notificationService, result.UserId, "Your Report about Item with ID " + result.ItemId + " has been Resolved!",

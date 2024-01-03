@@ -24,6 +24,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Report> reports = _context.Reports
                 .Include(r => r.User)
                 .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .AsSplitQuery();
@@ -91,6 +96,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Reports
                 .Include(r => r.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.ReportMedias)
+                .ThenInclude(rm => rm.Media)
                 .FirstOrDefaultAsync(r => r.Id == reportId);
         }
 
@@ -98,6 +111,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Reports
                 .Include(r => r.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.ReportMedias)
+                .ThenInclude(rm => rm.Media)
                 .FirstOrDefaultAsync(r => r.UserId == userId && r.ItemId == itemId);
         }
 
@@ -105,6 +126,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var result = _context.Reports
                 .Include(r => r.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.ReportMedias)
+                .ThenInclude(rm => rm.Media)
                 .Where(r => r.UserId == userId);
 
             return await Task.FromResult(result.ToList());
@@ -114,6 +143,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var result = _context.Reports
                 .Include(r => r.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.ReportMedias)
+                .ThenInclude(rm => rm.Media)
                 .Where(r => r.ItemId == itemId);
 
             return await Task.FromResult(result.ToList());

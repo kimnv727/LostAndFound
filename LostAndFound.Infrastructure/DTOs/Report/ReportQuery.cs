@@ -23,8 +23,8 @@ namespace LostAndFound.Infrastructure.DTOs.Report
         }
         [DefaultValue(ReportStatusQuery.All)]
         public ReportStatusQuery ReportStatus { get; set; }
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
         public string OrderBy { get; set; } = "CreatedDate Desc";
     }
 }

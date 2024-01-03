@@ -1,4 +1,5 @@
 ﻿using LostAndFound.Core.Entities;
+using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Report;
 using System;
@@ -12,7 +13,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
     public interface IReportService
     {
         Task<ReportReadDTO> CreateReportAsync(string userId, ReportWriteDTO writeDTO);
-        Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatusUpdateDTO updateDTO);
+        Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatus reportStatus);
         Task<PaginatedResponse<ReportReadDTO>> QueryReports(ReportQuery query);
         Task<ReportReadDTO> GetReportById(int id);
         Task<ReportReadDTO> GetReportByUserAndItemId(string userId, int itemId);

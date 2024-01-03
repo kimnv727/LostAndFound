@@ -148,6 +148,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<TransferRecord> receipts = _context.TransferRecords
                 .Include(r => r.Item)
                     .ThenInclude(i => i.Category)
+                        .ThenInclude(c => c.CategoryGroup)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.Location)
                 .Include(r => r.Item)

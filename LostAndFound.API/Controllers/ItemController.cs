@@ -84,6 +84,20 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
+        /// Query recently returned Items with pagination 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("query-returned")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<ItemReadDTO>>))]
+        public async Task<IActionResult> QueryRecentlyReturnedItem([FromQuery] ItemQueryWithStatus query)
+        {
+            var paginatedItemDTO = await _itemService.QueryRecentlyReturnedItemAsync(query);
+
+            return ResponseFactory.PaginatedOk(paginatedItemDTO);
+        }
+
+        /// <summary>
         /// Query Items with pagination 
         /// </summary>
         /// <returns></returns>

@@ -1,6 +1,6 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Infrastructure.DTOs.Common;
-using LostAndFound.Infrastructure.DTOs.ViolationReport;
+using LostAndFound.Infrastructure.DTOs.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,12 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
 {
     public interface IReportService
     {
-        Task<ReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId);
-
-        Task<PaginatedResponse<ReportReadDTO>> QueryViolationReport(ReportQuery query);
-
+        Task<ReportReadDTO> CreateReportAsync(string userId, ReportWriteDTO writeDTO);
+        Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatusUpdateDTO updateDTO);
+        Task<PaginatedResponse<ReportReadDTO>> QueryReports(ReportQuery query);
         Task<ReportReadDTO> GetReportById(int id);
+        Task<ReportReadDTO> GetReportByUserAndItemId(string userId, int itemId);
+        Task<PaginatedResponse<ReportReadDTO>> GetReportByUserId(string userId);
+        Task<PaginatedResponse<ReportReadDTO>> GetReportByItemId(int itemId);
     }
 }

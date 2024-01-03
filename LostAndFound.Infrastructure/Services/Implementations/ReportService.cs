@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using LostAndFound.Core.Entities;
+using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Item;
 using LostAndFound.Core.Exceptions.ViolationReport;
 using LostAndFound.Infrastructure.DTOs.Common;
-using LostAndFound.Infrastructure.DTOs.ViolationReport;
+using LostAndFound.Infrastructure.DTOs.Report;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
@@ -17,76 +19,129 @@ namespace LostAndFound.Infrastructure.Services.Implementations
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IReportRepository _violationReportRepository;
-        private readonly IUserViolationReportRepository _userViolationReportRepository;
+        private readonly IReportRepository _reportRepository;
+        private readonly IItemRepository _itemRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IReportMediaService _reportMediaService;
 
-        public ReportService(IMapper mapper, IUnitOfWork unitOfWork, 
-            IReportRepository violationReportRepository, 
-            IUserViolationReportRepository userViolationReportRepository)
+        public ReportService(IMapper mapper, IUnitOfWork unitOfWork, IReportRepository reportRepository,
+            IUserRepository userRepository, IItemRepository itemRepository, IReportMediaService reportMediaService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _violationReportRepository = violationReportRepository;
-            _userViolationReportRepository = userViolationReportRepository;
+            _reportRepository = reportRepository;
+            _userRepository = userRepository;
+            _itemRepository = itemRepository;
+            _reportMediaService = reportMediaService;
         }
 
-        public async Task<ReportReadDTO> CreateReportAsync(CreateReportDTO report, string userId)
+        public async Task<ReportReadDTO> CreateReportAsync(string userId, ReportWriteDTO writeDTO)
         {
-            try
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
             {
-                if (userId.Equals(report.ReportedUserId))
-                    throw new CreateReportException();
-
-                var r = _mapper.Map<Report>(report.ViolationReport);
-                r.Status = Core.Enums.ReportStatus.PENDING;
-
-                await _violationReportRepository.AddAsync(r);
-                await _unitOfWork.CommitAsync();
-
-                var reportId = await _violationReportRepository.GetLastestCreatedReportIdAsync();
-
-                await _userViolationReportRepository.AddAsync(
-                    new UserReport
-                    {
-                        UserId = userId,
-                        ReportId = reportId,
-                        Type = Core.Enums.ReportType.SENT,
-                    });
-                await _userViolationReportRepository.AddAsync(
-                    new UserReport
-                    {
-                        UserId = report.ReportedUserId,
-                        ReportId = reportId,
-                        Type = Core.Enums.ReportType.RECEIVED,
-                    });
-                await _unitOfWork.CommitAsync();
-                return _mapper.Map<ReportReadDTO>
-                    (await _violationReportRepository.GetReportByIdAsync(reportId));
-            } catch (Exception ex)
-            {
-                _violationReportRepository.Delete(
-                    await _violationReportRepository.GetLastestCreatedReportAsync());
-                await _unitOfWork.CommitAsync();
-                throw new CreateReportException();
+                throw new EntityWithIDNotFoundException<User>(userId);
             }
+
+            //Get Item
+            var item = await _itemRepository.FindItemByIdAsync(writeDTO.ItemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(writeDTO.ItemId);
+            }
+            if(item.ItemStatus != Core.Enums.ItemStatus.RETURNED)
+            {
+                throw new ItemNotYetReturnedException();
+            }
+
+            //Map Report
+            var report = _mapper.Map<Report>(writeDTO);
+            report.Status = Core.Enums.ReportStatus.PENDING;
+            report.UserId = userId;
+            //Add Report
+            await _reportRepository.AddAsync(report);
+            await _unitOfWork.CommitAsync();
+
+            //AddMedia
+            await _reportMediaService.UploadReportMedias(userId, report.Id, writeDTO.Medias);
+            await _unitOfWork.CommitAsync();
+
+            var result = _mapper.Map<ReportReadDTO>(report);
+
+            return result;
         }
 
-        public async Task<PaginatedResponse<ReportReadDTO>> QueryViolationReport
-            (ReportQuery query)
+        public async Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatusUpdateDTO updateDTO)
         {
-            return PaginatedResponse<ReportReadDTO>
-                .FromEnumerableWithMapping(await _violationReportRepository.QueryAsync(query)
-                , query, _mapper);
+            var report = await _reportRepository.GetReportByIdAsync(reportId);
+            if (report == null)
+            {
+                throw new EntityWithIDNotFoundException<Report>(reportId);
+            }
+            report.Status = updateDTO.ReportStatus;
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<ReportReadDTO>(report);
         }
 
-        public async Task<ReportReadDTO> GetReportById(int id)
+        public async Task<PaginatedResponse<ReportReadDTO>> QueryReports(ReportQuery query)
         {
-            var report = await _violationReportRepository.GetReportByIdAsync(id);
+            var reports = await _reportRepository.QueryAsync(query);
+
+            return PaginatedResponse<ReportReadDTO>.FromEnumerableWithMapping(reports, query, _mapper);
+        }
+
+        public async Task<ReportReadDTO> GetReportById(int reportId)
+        {
+            var report = await _reportRepository.GetReportByIdAsync(reportId);
 
             if (report == null)
+            {
+                throw new EntityWithIDNotFoundException<Report>(reportId);
+            }
+
+            return _mapper.Map<ReportReadDTO>(report);
+        }
+
+        public async Task<ReportReadDTO> GetReportByUserAndItemId(string userId, int itemId)
+        {
+            var report = await _reportRepository.GetReportByUserAndItemIdAsync(userId, itemId);
+
+            if (report == null)
+            {
                 throw new ReportNotFoundException();
-            var r = _mapper.Map<ReportReadDTO>(report);
-            return r;
+            }
+
+            return _mapper.Map<ReportReadDTO>(report);
+        }
+
+        public async Task<PaginatedResponse<ReportReadDTO>> GetReportByUserId(string userId)
+        {
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(userId);
+            }
+            //Get Reports
+            var reports = await _reportRepository.GetReportsByUserIdAsync(userId);
+
+            return _mapper.Map<PaginatedResponse<ReportReadDTO>>(reports);
+        }
+
+        public async Task<PaginatedResponse<ReportReadDTO>> GetReportByItemId(int itemId)
+        {
+            //Get Item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+            //Get Reports
+            var reports = await _reportRepository.GetReportsByItemIdAsync(itemId);
+
+            return _mapper.Map<PaginatedResponse<ReportReadDTO>>(reports);
         }
     }
 }

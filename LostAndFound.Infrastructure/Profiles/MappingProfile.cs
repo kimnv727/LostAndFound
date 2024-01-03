@@ -25,7 +25,8 @@ using LostAndFound.Infrastructure.DTOs.Storage;
 using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.DTOs.UserDevice;
 using LostAndFound.Infrastructure.DTOs.UserMedia;
-using LostAndFound.Infrastructure.DTOs.ViolationReport;
+using LostAndFound.Infrastructure.DTOs.Report;
+using LostAndFound.Infrastructure.DTOs.ReportMedia;
 
 namespace LostAndFound.Infrastructure.Profiles
 {
@@ -47,6 +48,9 @@ namespace LostAndFound.Infrastructure.Profiles
             //Item Media
             CreateMap<ItemMedia, ItemMediaReadDTO>();
             CreateMap<ItemMedia, ItemMediaLiteReadDTO>();
+
+            //Item Media
+            CreateMap<ReportMedia, ReportMediaReadDTO>();
 
             //User Media Mapping
             CreateMap<UserMediaWriteDTO, UserMedia>();
@@ -91,7 +95,6 @@ namespace LostAndFound.Infrastructure.Profiles
             //Violation Report Mapping
             CreateMap<ReportWriteDTO, Report>();
             CreateMap<Report, ReportReadDTO>();
-            CreateMap<UserReport, UserReportDetailDTO>();
             
             //Post Mapping
             CreateMap<Post, PostReadDTO>();

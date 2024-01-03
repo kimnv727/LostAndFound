@@ -194,6 +194,10 @@ namespace LostAndFound.API.Services
                                     {
                                         //Closed because no more participants left
                                         giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
+                                        List<GiveawayParticipant> giveawayParticipants = result.GiveawayParticipants.ToList();
+                                        giveawayParticipants.FirstOrDefault(gp => gp.IsActive == true && gp.IsWinner == true
+                                        && gp.IsChosenAsWinner == true).IsWinner = false;
+                                        await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
                                     }
 
                                 }

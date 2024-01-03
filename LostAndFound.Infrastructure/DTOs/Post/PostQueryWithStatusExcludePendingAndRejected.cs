@@ -29,8 +29,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public PostStatusQuery PostStatus { get; set; }
         public int?[] PostCategory { get; set; }
         public int?[] PostLocation { get; set; }
-        public string? LostDateFrom { get; set; }
-        public string? LostDateTo { get; set; }
+        public DateTime? LostDateFrom { get; set; }
+        public DateTime? LostDateTo { get; set; }
         public int CampusId { get; set; }
         /*[DefaultValue(CampusLocationQuery.ALL)]
         public CampusLocationQuery CampusLocation { get; set; }

@@ -25,8 +25,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public int FlagCount { get; set; }
         public int?[] PostCategory { get; set; }
         public int?[] PostLocation { get; set; }
-        public string? LostDateFrom { get; set; }
-        public string? LostDateTo { get; set; }
+        public DateTime? LostDateFrom { get; set; }
+        public DateTime? LostDateTo { get; set; }
         public int CampusId { get; set; }
         public string SearchText { get; set; }
         public string OrderBy { get; set; } = "CreatedDate Desc";

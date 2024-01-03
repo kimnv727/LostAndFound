@@ -1,77 +1,122 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.Data;
-using LostAndFound.Infrastructure.DTOs.ViolationReport;
+using LostAndFound.Infrastructure.DTOs.Report;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Implementations
 {
-    public class ReportRepository : GenericRepository<Report>, 
-        IReportRepository
+    public class ReportRepository : GenericRepository<Report>, IReportRepository
     {
         public ReportRepository(LostAndFoundDbContext context) : base(context)
         {
         }
 
-        public async Task<Report> GetLastestCreatedReportAsync()
+        public async Task<IEnumerable<Report>> QueryAsync (ReportQuery query, bool trackChanges = false)
         {
-            return await _context.Reports.LastOrDefaultAsync();
-        }
+            IQueryable<Report> reports = _context.Reports
+                .Include(r => r.User)
+                .Include(r => r.Item)
+                .Include(r => r.ReportMedias)
+                .ThenInclude(rm => rm.Media)
+                .AsSplitQuery();
 
-        public async Task<Int32> GetLastestCreatedReportIdAsync()
-        {
-            return await _context.Reports.CountAsync();
-        }
-
-        public async Task<IEnumerable<Report>> QueryAsync
-            (ReportQuery query, bool trackChanges = false)
-        {
-            IQueryable<Report> violations = _context.Reports
-                .Include(vr => vr.UserReports)
-                .ThenInclude(uvr => uvr.User).AsSplitQuery();
-
-            if (trackChanges)
-                violations.AsNoTracking();
-
-            if (!string.IsNullOrWhiteSpace(query.SearchText))
-                violations = violations.Where(vr => vr.Title.Contains(query.SearchText));
-
-            if (Enum.IsDefined(query.Category))
+            if (!trackChanges)
             {
-                if (query.Category == ViolationQueryCategory.USER_VIOLATION)
-                    violations = violations
-                        .Where(vr => vr.Category == ReportCategory.USER_VIOLATION);
-
-                if (query.Category == ViolationQueryCategory.MANAGER_VIOLATION)
-                    violations = violations
-                        .Where(vr => vr.Category == ReportCategory.MANAGER_VIOLATION);
+                reports = reports.AsNoTracking(); 
             }
 
-            if (Enum.IsDefined(query.Status))
+            if (!string.IsNullOrWhiteSpace(query.UserId))
             {
-                if (query.Status == ViolationQueryStatus.PENDING)
-                    violations = violations
-                        .Where(vr => vr.Status == ReportStatus.PENDING);
-
-                if (query.Status == ViolationQueryStatus.RESOLVED)
-                    violations = violations
-                        .Where(vr => vr.Status == ReportStatus.RESOLVED);
+                reports = reports.Where(r => r.UserId == query.UserId);
             }
 
-            return await Task.FromResult(violations.ToList());
+            if (!string.IsNullOrWhiteSpace(query.Title))
+            {
+                reports = reports.Where(r => r.Title.ToLower().Contains(query.Title.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Content))
+            {
+                reports = reports.Where(r => r.Content.ToLower().Contains(query.Content.ToLower()));
+            }
+
+            if (query.ItemId > 0)
+            {
+                reports = reports.Where(r => r.ItemId >= query.ItemId);
+            }
+
+            if (query.CampusId > 0)
+            {
+                reports = reports.Where(r => r.User.CampusId == query.CampusId);
+            }
+
+            if (Enum.IsDefined(query.ReportStatus))
+            {
+                if (query.ReportStatus == ReportQuery.ReportStatusQuery.PENDING)
+                {
+                    reports = reports.Where(r => r.Status == ReportStatus.PENDING);
+                }
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.RESOLVED)
+                {
+                    reports = reports.Where(r => r.Status == ReportStatus.RESOLVED);
+                }
+            }
+
+            if (query.DateFrom != null)
+            {
+                reports = reports.Where(r => r.CreatedDate >= query.DateFrom);
+            }
+            if (query.DateTo != null)
+            {
+                reports = reports.Where(r => r.CreatedDate <= query.DateTo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.OrderBy))
+            {
+                reports = reports.OrderBy(query.OrderBy);
+            }
+
+            return await Task.FromResult(reports.ToList());
         }
 
-        public async Task<Report> GetReportByIdAsync(int id)
+        public async Task<Report> GetReportByIdAsync(int reportId)
         {
             return await _context.Reports
-                .Include(vr => vr.UserReports)
-                .ThenInclude(uvr => uvr.User).SingleOrDefaultAsync(vr => vr.Id == id);
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Id == reportId);
+        }
+
+        public async Task<Report> GetReportByUserAndItemIdAsync(string userId, int itemId)
+        {
+            return await _context.Reports
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.UserId == userId && r.ItemId == itemId);
+        }
+
+        public async Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId)
+        {
+            var result = _context.Reports
+                .Include(r => r.User)
+                .Where(r => r.UserId == userId);
+
+            return await Task.FromResult(result.ToList());
+        }
+
+        public async Task<IEnumerable<Report>> GetReportsByItemIdAsync(int itemId)
+        {
+            var result = _context.Reports
+                .Include(r => r.User)
+                .Where(r => r.ItemId == itemId);
+
+            return await Task.FromResult(result.ToList());
         }
     }
 }

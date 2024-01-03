@@ -15,6 +15,7 @@ namespace LostAndFound.Core.Enums
         RecommendItem,
         RecommendPost,
         UserVerifyStatus,
-        Generic
+        Generic,
+        Report
     }
 }

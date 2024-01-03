@@ -140,13 +140,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 posts = posts.Where(p => p.PostContent.ToLower().Contains(query.PostContent.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            if (query.LostDateFrom != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+                posts = posts.Where(p => p.LostDateFrom >= query.LostDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            if (query.LostDateTo != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+                posts = posts.Where(p => p.LostDateTo <= query.LostDateTo);
             }
 
             if (query.CampusId > 0)
@@ -267,13 +267,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            if (query.LostDateFrom != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+                posts = posts.Where(p => p.LostDateFrom >= query.LostDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            if (query.LostDateTo != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+                posts = posts.Where(p => p.LostDateTo <= query.LostDateTo);
             }
 
             if (query.CampusId > 0)
@@ -387,13 +387,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            if (query.LostDateFrom != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+                posts = posts.Where(p => p.LostDateFrom >= query.LostDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            if (query.LostDateTo != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+                posts = posts.Where(p => p.LostDateTo <= query.LostDateTo);
             }
 
             if (query.CampusId > 0)
@@ -508,13 +508,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(query.LostDateFrom))
+            if (query.LostDateFrom != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateFrom) >= 0);
+                posts = posts.Where(p => p.LostDateFrom >= query.LostDateFrom);
             }
-            if (!string.IsNullOrWhiteSpace(query.LostDateTo))
+            if (query.LostDateTo != null)
             {
-                posts = posts.Where(p => p.LostDateFrom.CompareTo(query.LostDateTo) <= 0);
+                posts = posts.Where(p => p.LostDateTo <= query.LostDateTo);
             }
 
             if (query.FlagCount > 0)

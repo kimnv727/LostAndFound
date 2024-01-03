@@ -1,5 +1,5 @@
 ﻿using LostAndFound.Core.Entities;
-using LostAndFound.Infrastructure.DTOs.ViolationReport;
+using LostAndFound.Infrastructure.DTOs.Report;
 using LostAndFound.Infrastructure.Repositories.Interfaces.Common;
 using System;
 using System.Collections.Generic;
@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.Infrastructure.Repositories.Interfaces
 {
-    public interface IReportRepository : IAddAsync<Report>, IDelete<Report>
+    public interface IReportRepository :
+        IGetAllAsync<Report>,
+        IAddAsync<Report>,
+        IUpdate<Report>,
+        IDelete<Report>
     {
-        Task<Int32> GetLastestCreatedReportIdAsync();
-
-        Task<Report> GetLastestCreatedReportAsync();
-
-        Task<IEnumerable<Report>> QueryAsync
-            (ReportQuery query, bool trackChanges = false);
-
-        Task<Report> GetReportByIdAsync(int id);
+        Task<IEnumerable<Report>> QueryAsync(ReportQuery query, bool trackChanges = false);
+        Task<Report> GetReportByIdAsync(int reportId);
+        Task<Report> GetReportByUserAndItemIdAsync(string userId, int itemId);
+        Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId);
+        Task<IEnumerable<Report>> GetReportsByItemIdAsync(int itemId);
     }
 }

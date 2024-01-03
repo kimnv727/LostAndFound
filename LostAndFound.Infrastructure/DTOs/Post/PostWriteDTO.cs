@@ -18,8 +18,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
 
         public string? PostLocation { get; set; }
         public string? PostCategory { get; set; }
-        public string? LostDateFrom { get; set; }
-        public string? LostDateTo { get; set; }
+        public DateTime? LostDateFrom { get; set; }
+        public DateTime? LostDateTo { get; set; }
 
         [Required]
         public IFormFile[] Medias { get; set; }

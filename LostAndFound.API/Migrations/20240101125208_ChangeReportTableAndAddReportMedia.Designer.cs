@@ -4,14 +4,16 @@ using LostAndFound.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LostAndFound.API.Migrations
 {
     [DbContext(typeof(LostAndFoundDbContext))]
-    partial class LostAndFoundDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240101125208_ChangeReportTableAndAddReportMedia")]
+    partial class ChangeReportTableAndAddReportMedia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -535,11 +537,11 @@ namespace LostAndFound.API.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LostDateFrom")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("LostDateFrom")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LostDateTo")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("LostDateTo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostContent")
                         .IsRequired()
@@ -1182,13 +1184,13 @@ namespace LostAndFound.API.Migrations
             modelBuilder.Entity("LostAndFound.Core.Entities.Report", b =>
                 {
                     b.HasOne("LostAndFound.Core.Entities.Item", "Item")
-                        .WithMany("Reports")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LostAndFound.Core.Entities.User", "User")
-                        .WithMany("Reports")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Item");
@@ -1338,8 +1340,6 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("ItemMedias");
 
                     b.Navigation("Receipts");
-
-                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("LostAndFound.Core.Entities.Location", b =>
@@ -1393,8 +1393,6 @@ namespace LostAndFound.API.Migrations
                     b.Navigation("PostBookmarks");
 
                     b.Navigation("PostFlags");
-
-                    b.Navigation("Reports");
 
                     b.Navigation("Storages");
 

@@ -30,5 +30,6 @@ namespace LostAndFound.Core.Entities
         public ICollection<UserMedia> UserMedias { get; set; }
         public ICollection<PostMedia> PostMedias { get; set; }
         public ICollection<ItemMedia> ItemMedias { get; set; }
+        public ICollection<ReportMedia> ReportMedias { get; set; }
     }
 }

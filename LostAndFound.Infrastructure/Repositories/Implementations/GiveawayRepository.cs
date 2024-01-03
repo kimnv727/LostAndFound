@@ -72,7 +72,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 giveaways = giveaways.AsNoTracking();
             }
 
-            if (query.ItemCategoryGroupId > 0)
+            /*if (query.ItemCategoryGroupId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.Category.CategoryGroupId == query.ItemCategoryGroupId);
             }
@@ -80,6 +80,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ItemCategoryId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.CategoryId == query.ItemCategoryId);
+            }*/
+
+            if (query.ItemCategoryGroupId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryGroupId.Contains(g.Item.Category.CategoryGroupId));
+            }
+
+            if (query.ItemCategoryId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryId.Contains(g.Item.CategoryId));
             }
 
             if (query.StartAt != null)
@@ -123,7 +133,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 giveaways = giveaways.AsNoTracking();
             }
 
-            if (query.ItemCategoryGroupId > 0)
+            /*if (query.ItemCategoryGroupId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.Category.CategoryGroupId == query.ItemCategoryGroupId);
             }
@@ -131,6 +141,16 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.ItemCategoryId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.CategoryId == query.ItemCategoryId);
+            }*/
+
+            if (query.ItemCategoryGroupId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryGroupId.Contains(g.Item.Category.CategoryGroupId));
+            }
+
+            if (query.ItemCategoryId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryId.Contains(g.Item.CategoryId));
             }
 
             if (query.StartAt != null)
@@ -198,14 +218,24 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 giveaways = giveaways.AsNoTracking();
             }
 
-            if (query.ItemCategoryGroupId > 0)
+            /*if (query.ItemCategoryGroupId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.Category.CategoryGroupId == query.ItemCategoryGroupId);
             }
-
+            
             if (query.ItemCategoryId > 0)
             {
                 giveaways = giveaways.Where(g => g.Item.CategoryId == query.ItemCategoryId);
+            }*/
+
+            if (query.ItemCategoryGroupId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryGroupId.Contains(g.Item.Category.CategoryGroupId));
+            }
+
+            if (query.ItemCategoryId != null)
+            {
+                giveaways = giveaways.Where(g => query.ItemCategoryId.Contains(g.Item.CategoryId));
             }
 
             if (Enum.IsDefined(query.GiveawayStatus))

@@ -37,8 +37,8 @@ namespace LostAndFound.Infrastructure.Data
         public virtual DbSet<UserMedia> UserMedias { get; set; }
         public virtual DbSet<PostMedia> PostMedias { get; set; }
         public virtual DbSet<ItemMedia> ItemMedias { get; set; }
+        public virtual DbSet<ReportMedia> ReportMedias { get; set; }
         //Violation report table
-        public virtual DbSet<UserReport> UserReports { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         //Item table
         public virtual DbSet<Item> Items { get; set; }
@@ -84,7 +84,7 @@ namespace LostAndFound.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserReport>().HasKey(uvr => new { uvr.UserId, uvr.ReportId });
+            modelBuilder.Entity<ReportMedia>().HasKey(rm => new { rm.ReportId, rm.MediaId });
             modelBuilder.Entity<UserMedia>().HasKey(um => new { um.UserId, um.MediaId });
             modelBuilder.Entity<ItemMedia>().HasKey(im => new { im.ItemId, im.MediaId });
             modelBuilder.Entity<PostMedia>().HasKey(pm => new { pm.PostId, pm.MediaId });

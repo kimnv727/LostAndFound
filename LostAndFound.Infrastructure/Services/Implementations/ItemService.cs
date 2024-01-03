@@ -66,6 +66,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var items = await _itemRepository.QueryItemAsync(query);
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
+
+        public async Task<PaginatedResponse<ItemReadDTO>> QueryRecentlyReturnedItemAsync(ItemQueryWithStatus query)
+        {
+            var items = await _itemRepository.QueryItemAsync(query);
+            return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
+        }
+
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemIgnorePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query)
         {
             var items = await _itemRepository.QueryItemExcludePendingRejectedAsync(query);

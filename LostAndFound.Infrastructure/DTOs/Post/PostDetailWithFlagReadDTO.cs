@@ -19,8 +19,8 @@ namespace LostAndFound.Infrastructure.DTOs.Post
         public string Title { get; set; }
 
         public string PostContent { get; set; }
-        public string? LostDateFrom { get; set; }
-        public string? LostDateTo { get; set; }
+        public DateTime? LostDateFrom { get; set; }
+        public DateTime? LostDateTo { get; set; }
 
         public PostStatus PostStatus { get; set; }
         public int[]? PostLocationIdList => this.Locations.Select(l => l.Id).ToArray();

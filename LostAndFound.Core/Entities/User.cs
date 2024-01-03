@@ -38,5 +38,6 @@ namespace LostAndFound.Core.Entities
         public ICollection<CommentFlag> CommentFlags { get; set; }
         public ICollection<UserDevice> UserDevices { get; set; }
         public ICollection<GiveawayParticipant> GiveawayParticipants { get; set; }
+        public ICollection<Report> Reports { get; set; }
     }
 }

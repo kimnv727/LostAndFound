@@ -361,5 +361,22 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(result);
         }
+
+        /// <summary>
+        /// Get current logged in user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("current-user")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<UserDetailsReadDTO[]>))]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            string stringId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userService.GetUserAsync(stringId);
+
+            return ResponseFactory.Ok(result);
+        }
     }
 }

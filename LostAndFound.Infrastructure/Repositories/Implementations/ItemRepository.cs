@@ -735,7 +735,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(s => s.User)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Where(i => categories.Contains(i.CategoryId) && locations.Contains(i.LocationId))
+                            .Where(i => i.ItemStatus == ItemStatus.ACTIVE 
+                            && categories.Contains(i.CategoryId) && locations.Contains(i.LocationId) && i.FoundUserId != userId)
+                            .Take(12)
                             .AsSplitQuery();
 
                     return await Task.FromResult(items.ToList());
@@ -754,7 +756,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(s => s.User)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Where(i => categories.Contains(i.CategoryId))
+                            .Where(i => i.ItemStatus == ItemStatus.ACTIVE && categories.Contains(i.CategoryId) && i.FoundUserId != userId)
                             .AsSplitQuery();
 
                     return await Task.FromResult(items.ToList());
@@ -773,7 +775,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(s => s.User)
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
-                            .Where(i => locations.Contains(i.LocationId))
+                            .Where(i => i.ItemStatus == ItemStatus.ACTIVE && locations.Contains(i.LocationId) && i.FoundUserId != userId)
                             .AsSplitQuery();
 
                     return await Task.FromResult(items.ToList());

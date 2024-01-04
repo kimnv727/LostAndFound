@@ -262,7 +262,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Cabinet)
                             .ThenInclude(c => c.Storage)
                             .ThenInclude(s => s.User)
-                            .Where(i => i.Receipts.FirstOrDefault(r => (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
+                            .Where(i => i.ItemStatus == ItemStatus.RETURNED && i.Receipts.FirstOrDefault(r => 
+                            (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
                             && r.IsActive == true).CreatedDate.AddDays(3) >= DateTime.Now)
                             .AsSplitQuery();
 
@@ -757,6 +758,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Where(i => i.ItemStatus == ItemStatus.ACTIVE && categories.Contains(i.CategoryId) && i.FoundUserId != userId)
+                            .Take(12)
                             .AsSplitQuery();
 
                     return await Task.FromResult(items.ToList());
@@ -776,6 +778,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                             .ThenInclude(im => im.Media)
                             .Where(i => i.ItemStatus == ItemStatus.ACTIVE && locations.Contains(i.LocationId) && i.FoundUserId != userId)
+                            .Take(12)
                             .AsSplitQuery();
 
                     return await Task.FromResult(items.ToList());

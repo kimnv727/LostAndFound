@@ -45,6 +45,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.Campus)
                 .Include(s => s.Cabinets)
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .Include(s => s.User)
                 .OrderBy(s => s.Location);
 
@@ -59,6 +67,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .OrderBy(s => s.Location);
 
             return await Task.FromResult(storages.ToList());
@@ -87,6 +103,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .FirstOrDefaultAsync(s => s.Id == id && s.IsActive == true);
         }
 
@@ -96,6 +120,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.Campus)
                 .Include(s => s.Cabinets)
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
@@ -107,6 +139,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.User)
                 .Include(s => s.Cabinets)
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .Where(s => s.IsActive == true)
                 .OrderBy(s => s.Location);
 
@@ -120,6 +160,14 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(s => s.User)
                 .Include(s => s.Cabinets.Where(c => c.IsActive == true))
                 .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Category)
+                .Include(s => s.Cabinets.Where(c => c.IsActive == true))
+                .ThenInclude(c => c.Items)
+                .ThenInclude(i => i.Location)
                 .AsSplitQuery();
 
             if (!trackChanges)

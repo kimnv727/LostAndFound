@@ -29,6 +29,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             return await _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -58,6 +59,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -119,6 +121,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -204,6 +207,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             IQueryable<Giveaway> giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -287,6 +291,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -303,6 +308,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)
@@ -319,6 +325,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         {
             var giveaways = _context.Giveaways
                 .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
                 .Include(g => g.Item)
                 .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                 .ThenInclude(im => im.Media)

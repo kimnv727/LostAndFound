@@ -24,9 +24,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IEmailSendingService _emailSendingService;
         private readonly FirebaseAuthClient _firebaseAuth;
         private readonly ICampusRepository _campusRepository;
+        private readonly IItemRepository _itemRepository;
 
         public UserService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasherService, 
-            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth, ICampusRepository campusRepository)
+            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth, ICampusRepository campusRepository, IItemRepository itemRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -35,6 +36,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _emailSendingService = emailSendingService;
             _firebaseAuth = firebaseAuth;
             _campusRepository = campusRepository;
+            _itemRepository = itemRepository;
         }
 
         public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query)
@@ -148,6 +150,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 if (user.Phone != updateDTO.Phone)
                 {
                     throw new PhoneNumberAlreadyUsedException();
+                }
+            }
+
+            //check if user change Campus
+            if(user.CampusId != updateDTO.CampusId)
+            {
+                //If yes ->  Disabled all Item that not in storage
+                var currentItems = await _itemRepository.GetAllActiveItemsNotInStorageOfMember(id);
+                foreach(var i in currentItems)
+                {
+                    if(i.Location.CampusId == user.CampusId)
+                    {
+                        i.ItemStatus = ItemStatus.CLOSED;
+                        await _unitOfWork.CommitAsync();
+                    }
                 }
             }
             

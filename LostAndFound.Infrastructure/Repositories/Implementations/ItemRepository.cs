@@ -705,6 +705,31 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
+        public async Task<IEnumerable<Item>> GetAllActiveItemsNotInStorageOfMember(string userId)
+        {
+            var items = _context.Items
+                            .Include(i => i.User)
+                            .ThenInclude(u => u.Campus)
+                            .Include(i => i.Category)
+                            .Include(i => i.Location)
+                            .ThenInclude(l => l.Campus)
+                            .Include(i => i.ItemClaims)
+                            .Include(i => i.Cabinet)
+                            .ThenInclude(c => c.Storage)
+                            .ThenInclude(s => s.User)
+                            .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                            .ThenInclude(im => im.Media)
+                            .AsSplitQuery();
+
+
+            items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE && i.FoundUserId == userId && i.IsInStorage == false);
+
+            //Sort by claim date desceding 
+            items = items.OrderByDescending(i => i.CreatedDate);
+
+            return await Task.FromResult(items.ToList());
+        }
+
         public async Task<IEnumerable<Item>> GetRecommendItemsByUserId(string userId)
         {
             var posts = _context.Posts.Where(p => p.PostUserId == userId && p.PostStatus != PostStatus.CLOSED

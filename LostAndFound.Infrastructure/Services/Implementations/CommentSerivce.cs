@@ -185,7 +185,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             replyComment.IsActive = true;
             replyComment.PostId = comment.PostId;
             replyComment.CommentUserId = userId;
-            replyComment.CommentPath = comment.CommentPath + "/" + comment.Id;
+
             //Create Comment
             await _commentRepository.AddAsync(replyComment);
             await _unitOfWork.CommitAsync();

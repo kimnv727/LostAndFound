@@ -17,7 +17,6 @@ namespace LostAndFound.Core.Entities
         public int PostId { get; set; }
         [Required]
         public string CommentContent { get; set; }
-        public string CommentPath{ get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }

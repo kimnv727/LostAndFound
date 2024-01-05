@@ -10,5 +10,6 @@ namespace LostAndFound.Core.Enums
     {
         PENDING,
         RESOLVED,
+        REJECTED
     }
 }

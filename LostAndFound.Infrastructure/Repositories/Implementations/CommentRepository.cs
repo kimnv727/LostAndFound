@@ -85,12 +85,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(query.CommentContent))
             {
                 comments = comments.Where(c => c.CommentContent.ToLower().Contains(query.CommentContent.ToLower()));
-            }
-            
-            if (!string.IsNullOrWhiteSpace(query.CommentPath))
-            {
-                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
-            }
+            }     
 
             if (query.FromDate != null)
             {
@@ -134,11 +129,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(query.CommentContent))
             {
                 comments = comments.Where(c => c.CommentContent.ToLower().Contains(query.CommentContent.ToLower()));
-            }
-            
-            if (!string.IsNullOrWhiteSpace(query.CommentPath))
-            {
-                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
             }
             
             if (query.FromDate != null)
@@ -185,11 +175,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(query.CommentContent))
             {
                 comments = comments.Where(c => c.CommentContent.ToLower().Contains(query.CommentContent.ToLower()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.CommentPath))
-            {
-                comments = comments.Where(c => c.CommentPath.Trim().Contains(query.CommentPath.Trim()));
             }
 
             if (query.FromDate != null)

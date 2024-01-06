@@ -268,7 +268,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Where(i => i.ItemStatus == ItemStatus.RETURNED 
                             && i.Receipts.FirstOrDefault(r => 
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
-                            && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now.ToVNTime())
+                            && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now)
                             .AsSplitQuery();
 
             if (!trackChanges)

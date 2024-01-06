@@ -115,7 +115,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Report>> CountTodayReportByUserIdAsync(string userId)
         {
             var result = _context.Reports
-                .Where(r => r.UserId == userId && r.CreatedDate.Date == DateTime.Now.ToVNTime().Date);
+                .Where(r => r.UserId == userId && r.CreatedDate.Date == DateTime.Now.Date);
             return await Task.FromResult(result.ToList());
         }
 

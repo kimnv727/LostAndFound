@@ -249,7 +249,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
-        public async Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(ItemReturnedQuery query, bool trackChanges = false)
+        public async Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(string userId, ItemReturnedQuery query, bool trackChanges = false)
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
@@ -265,10 +265,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(s => s.User)
                             .Include(i => i.Receipts)
                             .ThenInclude(r => r.Media)
-                            .Where(i => i.ItemStatus == ItemStatus.RETURNED 
+                            .Where(i => i.ItemStatus == ItemStatus.RETURNED && i.FoundUserId != userId
                             && i.Receipts.FirstOrDefault(r => 
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
-                            && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now)
+                            && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now 
+                            && i.Receipts.FirstOrDefault(r =>
+                            (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
+                            && r.IsActive == true).ReceiverId != userId)
                             .AsSplitQuery();
 
             if (!trackChanges)

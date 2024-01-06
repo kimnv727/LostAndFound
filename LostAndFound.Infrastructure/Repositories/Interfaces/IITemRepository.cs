@@ -17,7 +17,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         public Task<Item> FindItemByIdAsync(int ItemId);
         public Task<Item> FindItemByNameAsync(string Name);
         public Task<IEnumerable<Item>> QueryItemAsync(ItemQueryWithStatus query, bool trackChanges = false);
-        public Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(ItemReturnedQuery query, bool trackChanges = false);
+        public Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(string userId, ItemReturnedQuery query, bool trackChanges = false);
         public Task<IEnumerable<Item>> QueryItemExcludePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query, bool trackChanges = false);
         public Task<IEnumerable<Item>> QueryItemExcludePendingRejectedWithFlagAsync(ItemQueryWithFlag query, bool trackChanges = false);
         public Task<IEnumerable<Item>> GetItemsWithClaimsForMember(string userId);

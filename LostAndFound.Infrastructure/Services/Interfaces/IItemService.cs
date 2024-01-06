@@ -19,7 +19,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<ItemDetailReadDTO> FindItemByIdAsync(int itemId);
         Task<ItemReadDTO> FindItemByNameAsync(string name);
         Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query);
-        Task<PaginatedResponse<ItemReadDTO>> QueryRecentlyReturnedItemAsync(ItemReturnedQuery query);
+        Task<PaginatedResponse<ItemReadDTO>> QueryRecentlyReturnedItemAsync(string userId, ItemReturnedQuery query);
         Task<PaginatedResponse<ItemReadDTO>> QueryItemIgnorePendingRejectedAsync(ItemQueryIgnoreStatusExcludePendingRejected query);
         Task<PaginatedResponse<ItemDetailWithFlagReadDTO>> QueryItemIgnorePendingRejectedWithFlagAsync(ItemQueryWithFlag query);
         //Task<DTOs.Common.PaginatedResponse<ItemReadDTO>> QueryItemIgnoreStatusAsync(ItemQuery query);

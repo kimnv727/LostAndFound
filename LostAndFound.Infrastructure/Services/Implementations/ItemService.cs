@@ -67,9 +67,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
 
-        public async Task<PaginatedResponse<ItemReadDTO>> QueryRecentlyReturnedItemAsync(ItemReturnedQuery query)
+        public async Task<PaginatedResponse<ItemReadDTO>> QueryRecentlyReturnedItemAsync(string userId, ItemReturnedQuery query)
         {
-            var items = await _itemRepository.QueryRecentlyReturnedItemAsync(query);
+            var items = await _itemRepository.QueryRecentlyReturnedItemAsync(userId, query);
             return PaginatedResponse<ItemReadDTO>.FromEnumerableWithMapping(items, query, _mapper);
         }
 

@@ -30,7 +30,8 @@ namespace LostAndFound.API.Authentication
         private readonly IUserRepository _userRepository;
         private readonly IUserMediaRepository _userMediaRepository;
         private readonly IEmailSendingService _emailSendingService;
-        public FirebaseAuthService(FirebaseAuthClient firebaseAuth, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IUserMediaRepository userMediaRepository, IEmailSendingService emailSendingService)
+        public FirebaseAuthService(FirebaseAuthClient firebaseAuth, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, 
+            IUserMediaRepository userMediaRepository, IEmailSendingService emailSendingService)
         {
             _firebaseAuth = firebaseAuth;
             _mapper = mapper;
@@ -50,7 +51,7 @@ namespace LostAndFound.API.Authentication
                     var userCredentials =
                         await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
 
-                    _emailSendingService.SendMailToRegister("kimnvse150529@fpt.edu.vn", "sex?");
+                    _emailSendingService.SendMailToRegister("kimnvse150529@fpt.edu.vn");
                         
                     if (userCredentials != null)
                     {
@@ -205,7 +206,7 @@ namespace LostAndFound.API.Authentication
                         CreatedDate = DateTime.Now.ToVNTime(),
                         UserMedias = userMedias
                     };
-                    
+                    _emailSendingService.SendMailToRegister(email);
                     await _userRepository.AddAsync(newUser);
                     await _unitOfWork.CommitAsync();
                     

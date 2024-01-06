@@ -219,7 +219,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             _mapper.Map(updatePasswordDTO, user);
             await _unitOfWork.CommitAsync();
-            _emailSendingService.SendMailInformSuccessPasswordChange(user.Email);
             return _mapper.Map<UserDetailsReadDTO>(user);
         }
 
@@ -233,7 +232,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             string pass = Guid.NewGuid().ToString("d").Substring(1, 16);
             user.Password = _passwordHasherService.HashPassword(pass);
             await _unitOfWork.CommitAsync();
-            _emailSendingService.SendMailToRequestPasswordReset(user.Email, pass);
         }
 
         public async Task<UserDetailsReadDTO> ChangeUserStatusAsync(string id)

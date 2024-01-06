@@ -151,7 +151,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
             if (query.CampusId > 0)
             {
-                posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                //posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                posts = posts.Where(p => p.Locations.First().CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -279,7 +280,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.CampusId > 0)
             {
                 //posts = posts.Where(p => p.User.CampusId == query.CampusId);
-                posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                //posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                posts = posts.Where(p => p.Locations.First().CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -400,7 +402,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.CampusId > 0)
             {
                 //posts = posts.Where(p => p.User.CampusId == query.CampusId);
-                posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                //posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                posts = posts.Where(p => p.Locations.First().CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {
@@ -527,7 +530,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.CampusId > 0)
             {
                 //posts = posts.Where(p => p.User.CampusId == query.CampusId);
-                posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                //posts = posts.Where(p => p.Locations != null ? p.Locations.First().CampusId == query.CampusId : p.User.CampusId == query.CampusId);
+                posts = posts.Where(p => p.Locations.First().CampusId == query.CampusId);
             }
             if (!string.IsNullOrWhiteSpace(query.SearchText))
             {

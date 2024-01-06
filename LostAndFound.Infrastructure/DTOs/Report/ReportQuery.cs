@@ -19,7 +19,8 @@ namespace LostAndFound.Infrastructure.DTOs.Report
         {
             All,
             PENDING,
-            RESOLVED
+            RESOLVED, 
+            REJECTED 
         }
         [DefaultValue(ReportStatusQuery.All)]
         public ReportStatusQuery ReportStatus { get; set; }

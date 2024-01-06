@@ -1,5 +1,6 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Report;
 using LostAndFound.Infrastructure.Repositories.Implementations.Common;
@@ -73,6 +74,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     reports = reports.Where(r => r.Status == ReportStatus.RESOLVED);
                 }
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.REJECTED)
+                {
+                    reports = reports.Where(r => r.Status == ReportStatus.REJECTED);
+                }
             }
 
             if (query.DateFrom != null)
@@ -105,6 +110,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .FirstOrDefaultAsync(r => r.Id == reportId);
+        }
+
+        public async Task<IEnumerable<Report>> CountTodayReportByUserIdAsync(string userId)
+        {
+            var result = _context.Reports
+                .Where(r => r.UserId == userId && r.CreatedDate.Date == DateTime.Now.ToVNTime().Date);
+            return await Task.FromResult(result.ToList());
         }
 
         public async Task<Report> GetReportByUserAndItemIdAsync(string userId, int itemId)

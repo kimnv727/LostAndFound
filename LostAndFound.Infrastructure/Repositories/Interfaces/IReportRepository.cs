@@ -15,6 +15,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
     {
         Task<IEnumerable<Report>> QueryAsync(ReportQuery query, bool trackChanges = false);
         Task<Report> GetReportByIdAsync(int reportId);
+        Task<IEnumerable<Report>> CountTodayReportByUserIdAsync(string userId);
         Task<Report> GetReportByUserAndItemIdAsync(string userId, int itemId);
         Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId);
         Task<IEnumerable<Report>> GetReportsByItemIdAsync(int itemId);

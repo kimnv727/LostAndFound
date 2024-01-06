@@ -2,6 +2,7 @@
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.Data;
 using LostAndFound.Infrastructure.DTOs.Item;
 using LostAndFound.Infrastructure.DTOs.ItemClaim;
@@ -248,7 +249,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(items.ToList());
         }
 
-        public async Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(ItemQueryWithStatus query, bool trackChanges = false)
+        public async Task<IEnumerable<Item>> QueryRecentlyReturnedItemAsync(ItemReturnedQuery query, bool trackChanges = false)
         {
             IQueryable<Item> items = _context.Items
                             .Include(i => i.User)
@@ -262,10 +263,12 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Cabinet)
                             .ThenInclude(c => c.Storage)
                             .ThenInclude(s => s.User)
+                            .Include(i => i.Receipts)
+                            .ThenInclude(r => r.Media)
                             .Where(i => i.ItemStatus == ItemStatus.RETURNED 
                             && i.Receipts.FirstOrDefault(r => 
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
-                            && r.IsActive == true).CreatedDate.AddDays(3) >= DateTime.Now)
+                            && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now.ToVNTime())
                             .AsSplitQuery();
 
             if (!trackChanges)
@@ -317,36 +320,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => query.CategoryId.Contains(i.CategoryId));
             }
-            if (Enum.IsDefined(query.ItemStatus))
-            {
-                switch (query.ItemStatus)
-                {
-
-                    case ItemQueryWithStatus.ItemStatusQuery.ALL:
-                        break;
-                    case ItemQueryWithStatus.ItemStatusQuery.PENDING:
-                        items = items.Where(i => i.ItemStatus == ItemStatus.PENDING);
-                        break;
-                    case ItemQueryWithStatus.ItemStatusQuery.ACTIVE:
-                        items = items.Where(i => i.ItemStatus == ItemStatus.ACTIVE);
-                        break;
-                    case ItemQueryWithStatus.ItemStatusQuery.RETURNED:
-                        items = items.Where(i => i.ItemStatus == ItemStatus.RETURNED);
-                        break;
-                    case ItemQueryWithStatus.ItemStatusQuery.CLOSED:
-                        items = items.Where(i => i.ItemStatus == ItemStatus.CLOSED);
-                        break;
-                    case ItemQueryWithStatus.ItemStatusQuery.REJECTED:
-                        items = items.Where(i => i.ItemStatus == ItemStatus.REJECTED);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            /*if (query.FoundDate > DateTime.MinValue)
-            {
-                items = items.Where(i => i.FoundDate == query.FoundDate).OrderBy(i => i.FoundDate);
-            }*/
             if (!string.IsNullOrWhiteSpace(query.FoundDateFrom))
             {
                 items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateFrom) >= 0);
@@ -355,29 +328,6 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.FoundDate.CompareTo(query.FoundDateTo) <= 0);
             }
-            /*if (Enum.IsDefined(query.CampusLocation))
-            {
-                switch (query.CampusLocation)
-                {
-
-                    case ItemQueryWithStatus.CampusLocationQuery.ALL:
-                        break;
-                    case ItemQueryWithStatus.CampusLocationQuery.HO_CHI_MINH:
-                        items = items.Where(i => i.Location.Campus.CampusLocation == CampusLocation.HO_CHI_MINH);
-                        break;
-                    case ItemQueryWithStatus.CampusLocationQuery.DA_NANG:
-                        items = items.Where(i => i.Location.Campus.CampusLocation == CampusLocation.DA_NANG);
-                        break;
-                    case ItemQueryWithStatus.CampusLocationQuery.CAN_THO:
-                        items = items.Where(i => i.Location.Campus.CampusLocation == CampusLocation.CAN_THO);
-                        break;
-                    case ItemQueryWithStatus.CampusLocationQuery.HA_NOI:
-                        items = items.Where(i => i.Location.Campus.CampusLocation == CampusLocation.HA_NOI);
-                        break;
-                    default:
-                        break;
-                }
-            }*/
             if (query.CampusId > 0)
             {
                 items = items.Where(i => i.Location.CampusId == query.CampusId);
@@ -390,7 +340,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             {
                 items = items.Where(i => i.CreatedDate == query.CreatedDate).OrderBy(i => i.CreatedDate);
             }
-
+            if (query.ReturnedDateFrom > DateTime.MinValue)
+            {
+                items = items.Where(i => i.Receipts.FirstOrDefault(r =>
+                            (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
+                            && r.IsActive == true).CreatedDate >= query.ReturnedDateFrom);
+            }
+            if (query.ReturnedDateTo > DateTime.MinValue)
+            {
+                items = items.Where(i => i.Receipts.FirstOrDefault(r =>
+                            (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
+                            && r.IsActive == true).CreatedDate <= query.ReturnedDateTo);
+            }
 
             return await Task.FromResult(items.ToList());
         }

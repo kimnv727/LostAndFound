@@ -1,6 +1,7 @@
 ﻿using LostAndFound.API.Extensions;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Notification;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
@@ -57,7 +58,7 @@ namespace LostAndFound.API.Services
                     {
                         try
                         {
-                            if (DateTime.Now >= giveaway.StartAt && giveaway.GiveawayStatus == GiveawayStatus.NOT_STARTED)
+                            if (DateTime.Now.ToVNTime() >= giveaway.StartAt && giveaway.GiveawayStatus == GiveawayStatus.NOT_STARTED)
                             {
                                 giveaway.GiveawayStatus = GiveawayStatus.ONGOING;
                             }
@@ -75,7 +76,7 @@ namespace LostAndFound.API.Services
                     {
                         try
                         {
-                            if (DateTime.Now >= giveaway.EndAt && giveaway.GiveawayStatus == GiveawayStatus.ONGOING)
+                            if (DateTime.Now.ToVNTime() >= giveaway.EndAt && giveaway.GiveawayStatus == GiveawayStatus.ONGOING)
                             {
                                 
                                 if(giveaway.GiveawayParticipants.Where(gp => gp.IsActive == true && gp.IsChosenAsWinner == false)
@@ -156,7 +157,7 @@ namespace LostAndFound.API.Services
                             //check to see if its time to reroll yet?
                             var result = await giveawayRepository.FindGiveawayIncludeParticipantsAsync(giveaway.Id);
                             var chosenCount = result.GiveawayParticipants.Where(gp => gp.IsActive && gp.IsChosenAsWinner).Count();
-                            if (DateTime.Now >= ((DateTime)result.EndAt).AddDays(3 * chosenCount))
+                            if (DateTime.Now.ToVNTime() >= ((DateTime)result.EndAt).AddDays(3 * chosenCount))
                             {
                                 if (giveaway.Item.ItemStatus != ItemStatus.GAVEAWAY)
                                 {

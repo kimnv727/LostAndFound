@@ -38,7 +38,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(i => i.User)
                 .ThenInclude(i => i.Campus)
                 .Include(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
-                .ThenInclude(im => im.Media);
+                .ThenInclude(im => im.Media)
+                .Include(i => i.Receipts)
+                .ThenInclude(r => r.Media);
 
             return await Task.FromResult(items.ToList());
         }

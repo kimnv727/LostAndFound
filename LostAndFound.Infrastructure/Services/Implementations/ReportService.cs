@@ -45,6 +45,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<User>(userId);
             }
 
+            //Get number of Report
+            var todayReport = await _reportRepository.CountTodayReportByUserIdAsync(userId);
+            if (todayReport.Count() > 3)
+            {
+                throw new CreateReportPastLimitException();
+            }
+
             //Get Item
             var item = await _itemRepository.FindItemByIdAsync(writeDTO.ItemId);
             if (item == null)

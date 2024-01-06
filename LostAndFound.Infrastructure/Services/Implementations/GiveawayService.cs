@@ -6,6 +6,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.Giveaway;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Giveaway;
 using LostAndFound.Infrastructure.DTOs.Item;
@@ -210,7 +211,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //Map Giveaway
             var giveaway = _mapper.Map<Giveaway>(giveawayWriteDTO);
 
-            if(giveaway.StartAt <= DateTime.Now)
+            if(giveaway.StartAt <= DateTime.Now.ToVNTime())
             {
                 giveaway.GiveawayStatus = GiveawayStatus.ONGOING;
             }

@@ -1,5 +1,6 @@
 ﻿using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
+using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -49,7 +50,7 @@ namespace LostAndFound.API.Services
                         try
                         {
                             //4 months -> outdated
-                            if (DateTime.Now >= post.CreatedDate.AddDays(120))
+                            if (DateTime.Now.ToVNTime() >= post.CreatedDate.AddDays(120))
                             {
                                 post.PostStatus = PostStatus.EXPIRED;
                             }

@@ -51,6 +51,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new CreateReportPastLimitException();
             }
+            var itemReport = await _reportRepository.GetReportByUserAndItemIdAsync(userId, writeDTO.ItemId);
+            if (itemReport.Count() > 3)
+            {
+                throw new CreateReportPastLimitForThisItemException();
+            }
 
             //Get Item
             var item = await _itemRepository.FindItemByIdAsync(writeDTO.ItemId);
@@ -114,16 +119,25 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<ReportReadDTO>(report);
         }
 
-        public async Task<ReportReadDTO> GetReportByUserAndItemId(string userId, int itemId)
+        public async Task<PaginatedResponse<ReportReadDTO>> GetReportByUserAndItemId(string userId, int itemId)
         {
-            var report = await _reportRepository.GetReportByUserAndItemIdAsync(userId, itemId);
-
-            if (report == null)
+            //Get User
+            var user = await _userRepository.FindUserByID(userId);
+            if (user == null)
             {
-                throw new ReportNotFoundException();
+                throw new EntityWithIDNotFoundException<User>(userId);
             }
 
-            return _mapper.Map<ReportReadDTO>(report);
+            //Get Item
+            var item = await _itemRepository.FindItemByIdAsync(itemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(itemId);
+            }
+            //Get Reports
+            var reports = await _reportRepository.GetReportByUserAndItemIdAsync(userId, itemId);
+
+            return _mapper.Map<PaginatedResponse<ReportReadDTO>>(reports);
         }
 
         public async Task<PaginatedResponse<ReportReadDTO>> GetReportByUserId(string userId)

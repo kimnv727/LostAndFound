@@ -16,7 +16,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<ReportReadDTO> UpdateReportStatusAsync(int reportId, ReportStatus reportStatus);
         Task<PaginatedResponse<ReportReadDTO>> QueryReports(ReportQuery query);
         Task<ReportReadDTO> GetReportById(int id);
-        Task<ReportReadDTO> GetReportByUserAndItemId(string userId, int itemId);
+        Task<PaginatedResponse<ReportReadDTO>> GetReportByUserAndItemId(string userId, int itemId);
         Task<PaginatedResponse<ReportReadDTO>> GetReportByUserId(string userId);
         Task<PaginatedResponse<ReportReadDTO>> GetReportByItemId(int itemId);
     }

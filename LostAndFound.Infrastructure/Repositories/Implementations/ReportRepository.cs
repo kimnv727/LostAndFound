@@ -119,9 +119,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(result.ToList());
         }
 
-        public async Task<Report> GetReportByUserAndItemIdAsync(string userId, int itemId)
+        public async Task<IEnumerable<Report>> GetReportByUserAndItemIdAsync(string userId, int itemId)
         {
-            return await _context.Reports
+            var result = _context.Reports
                 .Include(r => r.User)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
@@ -131,7 +131,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
-                .FirstOrDefaultAsync(r => r.UserId == userId && r.ItemId == itemId);
+                .Where(r => r.UserId == userId && r.ItemId == itemId);
+
+            return await Task.FromResult(result.ToList());
         }
 
         public async Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId)

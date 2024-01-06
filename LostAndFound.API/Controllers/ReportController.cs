@@ -93,7 +93,7 @@ namespace LostAndFound.API.Controllers
         [HttpGet("get-by-user-and-item")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReportReadDTO[]>))]
         public async Task<IActionResult> GetReportByUserAndItemId(string userId, int itemId)
         {
             var result = await _reportService.GetReportByUserAndItemId(userId, itemId);
@@ -119,7 +119,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all posts by itemId
+        /// Get all reports by itemId
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>

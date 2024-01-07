@@ -22,6 +22,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(result.Count());
         }
 
+        public async Task<IEnumerable<GiveawayParticipant>> FindActiveGiveawayParticipantByUserIdAsync(string userId)
+        {
+            var result = _context.GiveawayParticipants.Where(gp => gp.UserId == userId && gp.Giveaway.GiveawayStatus == Core.Enums.GiveawayStatus.ONGOING 
+            && gp.IsActive == true);
+            return await Task.FromResult(result.ToList());
+        }
+
         public async Task<IEnumerable<User>> FindUsersParticipateByGiveawayIdAsync(int giveawayId)
         {
             IQueryable<GiveawayParticipant> giveawayParticipants = _context.GiveawayParticipants.Where(gp => gp.GiveawayId == giveawayId);

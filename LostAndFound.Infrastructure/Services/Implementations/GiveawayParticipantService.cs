@@ -6,6 +6,7 @@ using AutoMapper;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.Giveaway;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.GiveawayParticipant;
 using LostAndFound.Infrastructure.DTOs.User;
@@ -104,6 +105,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (giveaway.GiveawayStatus != GiveawayStatus.ONGOING)
             {
                 throw new Exception("This Giveaway is not available currently");
+            }
+            //Check Max Limit
+            var participateCount = await _giveawayParticipantRepository.FindActiveGiveawayParticipantByUserIdAsync(userId);
+            if (participateCount.Count() > 5)
+            {
+                throw new MaxParticipateLimit();
             }
             //check Giveaway time -> if pass then deny and closed
             if (giveaway.EndAt >= DateTime.Now.ToVNTime())

@@ -95,6 +95,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             }
 
+            //Check 10 Active Claim
+            var activeClaims = await _itemClaimRepository.GetAllActiveClaimsByUserIdAsync(userId);
+            if(activeClaims.Count() > 5)
+            {
+                throw new MaxClaimLimitException();
+            }
+
             var check = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId);
             //If Claim record exists & status == true ==> User already claimed it
             if (check != null && check.IsActive == true)

@@ -12,6 +12,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IDelete<GiveawayParticipant>
     {
         Task<int> CountGiveawayParticipantsAsync(int giveawayId);
+        Task<IEnumerable<GiveawayParticipant>> FindActiveGiveawayParticipantByUserIdAsync(string userId);
         Task<GiveawayParticipant> FindGiveawayParticipantAsync(int giveawayId, string userId);
         Task<IEnumerable<User>> FindUsersParticipateByGiveawayIdAsync(int giveawayId);
         Task<GiveawayParticipant> RandomizeGiveawayWinnerAsync(int giveawayId);

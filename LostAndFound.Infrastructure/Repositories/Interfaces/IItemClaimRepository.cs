@@ -16,8 +16,8 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         IDelete<ItemClaim>
     {
         public Task<IEnumerable<ItemClaim>> QueryItemClaimsAsync(ItemClaimQuery query, bool trackChanges = false);
-
         public Task<IEnumerable<ItemClaim>> GetAllClaimsByUserIdAsync(string userId);
+        public Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByUserIdAsync(string userId);
         public Task<IEnumerable<ItemClaim>> GetAllClaimsByItemIdAsync(int itemId);
         public Task<ItemClaim> FindClaimByItemIdAndUserId(int itemId, string userId);
         public Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByItemIdAsync(int itemId);

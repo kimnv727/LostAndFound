@@ -31,6 +31,18 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .ToList());
         }
 
+        public async Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByUserIdAsync(string userId)
+        {
+            return await Task.FromResult(
+                _context.ItemClaims
+                .AsSplitQuery()
+                .Include(ic => ic.User)
+                .Include(ic => ic.Item)
+                .Where(ic => ic.UserId == userId && ic.IsActive == true && ic.Item.ItemStatus == ItemStatus.ACTIVE)
+                .OrderByDescending(i => i.ClaimDate)
+                .ToList());
+        }
+
         public async Task<IEnumerable<ItemClaim>> GetAllActiveClaimsByItemIdAsync(int itemId)
         {
             var claims = _context.ItemClaims

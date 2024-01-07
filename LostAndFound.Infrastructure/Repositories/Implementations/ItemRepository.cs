@@ -696,8 +696,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> GetRecommendItemsByUserId(string userId)
         {
-            var posts = _context.Posts.Where(p => p.PostUserId == userId && p.PostStatus != PostStatus.CLOSED
-            && p.PostStatus != PostStatus.DELETED && p.PostStatus != PostStatus.PENDING).Take(5).ToList();
+            var posts = _context.Posts
+                .Include(p => p.Categories)
+                .Include(p => p.Locations)
+                .Where(p => p.PostUserId == userId && p.PostStatus != PostStatus.CLOSED
+                && p.PostStatus != PostStatus.DELETED)
+                .Take(5)
+                .ToList();
 
             if(posts.Count() > 0)
             {

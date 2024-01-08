@@ -55,7 +55,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(readDTO.ItemFound > 0)
             {
                 readDTO.ItemReturn.Amount = newItemCreatedList.Where(i => i.ItemStatus == Core.Enums.ItemStatus.RETURNED).Count();
-                readDTO.ItemReturn.Percentage = readDTO.ItemReturn.Amount / readDTO.ItemFound;
+                readDTO.ItemReturn.Percentage = newItemCreatedList.Where(i => i.ItemStatus == Core.Enums.ItemStatus.RETURNED).Count() / newItemCreatedList.Count();
             }
             else
             {

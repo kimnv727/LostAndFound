@@ -230,6 +230,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //closed giveaway
             giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
             giveaway.Item.ItemStatus = ItemStatus.GAVEAWAY;
+            //item
+            item.IsInStorage = false;
+
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 

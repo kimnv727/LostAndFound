@@ -113,7 +113,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new MaxParticipateLimit();
             }
             //check Giveaway time -> if pass then deny and closed
-            if (giveaway.EndAt >= DateTime.Now.ToVNTime())
+            if (giveaway.EndAt <= DateTime.Now.ToVNTime())
             {
                 giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
                 await _unitOfWork.CommitAsync();

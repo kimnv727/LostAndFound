@@ -1,5 +1,6 @@
 ﻿using LostAndFound.Core.Enums;
 using LostAndFound.Infrastructure.DTOs.Item;
+using LostAndFound.Infrastructure.DTOs.Receipt;
 using LostAndFound.Infrastructure.DTOs.ReportMedia;
 using LostAndFound.Infrastructure.DTOs.User;
 using System;
@@ -19,13 +20,11 @@ namespace LostAndFound.Infrastructure.DTOs.Report
         public string Content { get; set; }
         public string UserId { get; set; }
         public int ItemId { get; set; }
+        public string? ReportComment { get; set; }
         public DateTime CreatedDate { get; set; }
         public ReportStatus Status { get; set; }
         public UserReadDTO User { get; set; }
         public ItemReadDTO Item { get; set; }
         public ICollection<ReportMediaReadDTO> ReportMedias { get; set; }
-
-        
-
     }
 }

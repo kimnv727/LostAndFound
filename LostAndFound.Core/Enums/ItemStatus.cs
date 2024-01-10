@@ -9,7 +9,8 @@ namespace LostAndFound.Core.Enums
         REJECTED,
         DELETED,
         EXPIRED, 
-        GAVEAWAY
+        GAVEAWAY,
+        ONHOLD
         /*
              pending: item chờ admin duyệt
              active: chờ người claim hoặc báo tìm đc

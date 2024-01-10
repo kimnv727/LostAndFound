@@ -226,6 +226,9 @@ namespace LostAndFound.API.Authentication
 
                     return _mapper.Map<UserDetailAuthenticateReadDTO>(newUser);
                 }
+
+                //send email welcome new User
+                _emailSendingService.SendMailToRegister(email);
             }
         }
 

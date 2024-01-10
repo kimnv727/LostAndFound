@@ -251,5 +251,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             return _mapper.Map<List<ItemReadDTO>>(items);
         }
+
+        public async Task<IEnumerable<GiveawayReadDTO>> GetRecentNotStartedGiveawaysAsync()
+        {
+            var giveaways = await _giveawayRepository.GetRecentNotStartedGiveaways();
+
+            return _mapper.Map<List<GiveawayReadDTO>>(giveaways);
+        }
     }
 }

@@ -214,5 +214,61 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             }
         }
+
+        public void SendMailToVerifySuccess(string receiverEmail)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Your request to verify LostAndFound account has been accepted";
+
+                string filePath = "MailTemplates//VerifySuccess.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[newusername]", receiverEmail);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailToVerifyFail(string receiverEmail)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Your request to verify LostAndFound account has been rejected";
+
+                string filePath = "MailTemplates//VerifyFail.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[newusername]", receiverEmail);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
     }
 }

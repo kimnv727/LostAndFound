@@ -9,5 +9,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         void SendMailWhenItemBan(string receiverEmail, string itemName);
         void SendMailGiveawayWinner(string receiverEmail, string itemName);
         void SendMailGiveawayReroll(string receiverEmail, string itemName);
+        void SendMailToVerifySuccess(string receiverEmail);
+        void SendMailToVerifyFail(string receiverEmail);
     }
 }

@@ -283,6 +283,17 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             user.VerifyStatus = updateDto.VerifyStatus;
             await _unitOfWork.CommitAsync();
+
+            if(updateDto.VerifyStatus == UserVerifyStatus.VERIFIED)
+            {
+                //send email -> already verified
+                _emailSendingService.SendMailToVerifySuccess(user.Email);
+            }
+            else if(updateDto.VerifyStatus == UserVerifyStatus.NOT_VERIFIED)
+            {
+                //send email not verified
+                _emailSendingService.SendMailToVerifyFail(user.Email);
+            }
             
             return _mapper.Map<UserDetailsReadDTO>(user);
         }

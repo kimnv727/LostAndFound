@@ -97,6 +97,25 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             report.Status = reportStatus;
             await _unitOfWork.CommitAsync();
 
+            //send email?
+
+            return _mapper.Map<ReportReadDTO>(report);
+        }
+
+        public async Task<ReportReadDTO> UpdateReportStatusWithCommentAsync(int reportId, ReportStatusUpdateDTO updateDTO)
+        {
+            var report = await _reportRepository.GetReportByIdAsync(reportId);
+            if (report == null)
+            {
+                throw new EntityWithIDNotFoundException<Report>(reportId);
+            }
+            report.Status = updateDTO.ReportStatus;
+            if(updateDTO.ReportStatus == ReportStatus.FAILED)
+            {
+                report.ReportComment = updateDTO.ReportComment;
+            }
+            await _unitOfWork.CommitAsync();
+
             return _mapper.Map<ReportReadDTO>(report);
         }
 

@@ -251,5 +251,22 @@ namespace LostAndFound.API.Controllers
 
             return ResponseFactory.Ok(items);
         }
+
+        /// <summary>
+        /// Get Recent Not - Started Giveaway
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-recent-not-started-giveaway")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiPaginatedOkResponse<IEnumerable<GiveawayReadDTO>>))]
+        public async Task<IActionResult> GetRecentNotStartedGiveaway()
+        {
+            var giveaways = await _giveawayService.GetRecentNotStartedGiveawaysAsync();
+
+            return ResponseFactory.Ok(giveaways);
+        }
     }
 }

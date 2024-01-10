@@ -29,11 +29,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMediaService _mediaService;
         private readonly IMediaRepository _mediaRepository;
         private readonly IGiveawayRepository _giveawayRepository;
+        private readonly IReportRepository _reportRepository;
         private readonly AwsCredentials _awsCredentials;
 
         public ReceiptService(IReceiptRepository receiptRepository, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, 
             IItemRepository itemRepository, IMediaService mediaService, AwsCredentials awsCredentials, IMediaRepository mediaRepository,
-            IGiveawayRepository giveawayRepository)
+            IGiveawayRepository giveawayRepository, IReportRepository reportRepository)
         {
             _receiptRepository = receiptRepository;
             _mapper = mapper;
@@ -44,6 +45,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _awsCredentials = awsCredentials;
             _mediaRepository = mediaRepository;
             _giveawayRepository = giveawayRepository;
+            _reportRepository = reportRepository;
         }
 
         public async Task<PaginatedResponse<TransferRecordReadDTO>> QueryReceiptAsync(TransferRecordQuery query)
@@ -232,6 +234,61 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             giveaway.Item.ItemStatus = ItemStatus.GAVEAWAY;
             //item
             item.IsInStorage = false;
+
+            await _receiptRepository.AddAsync(receipt);
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<TransferRecordReadDTO>(receipt);
+        }
+
+        public async Task<TransferRecordReadDTO> CreateReceiptForOnHoldItemAsync(string currentUserId, TransferRecordOnholdItemCreateDTO receiptCreateDTO, IFormFile image)
+        {
+            //Check null for receiver,sender & item 
+            var sender = await _userRepository.FindUserByID(receiptCreateDTO.SenderId);
+            if (sender == null)
+            {
+                throw new EntityWithIDNotFoundException<User>(receiptCreateDTO.SenderId);
+            }
+
+            //check Report 
+            var report = await _reportRepository.GetReportByIdAsync(receiptCreateDTO.ReportId);
+            if (report == null)
+            {
+                throw new EntityWithIDNotFoundException<Report>(receiptCreateDTO.ReportId);
+            }
+
+            //check Item
+            var item = await _itemRepository.FindItemByIdAsync(report.ItemId);
+            if (item == null)
+            {
+                throw new EntityWithIDNotFoundException<Item>(report.ItemId);
+            }
+
+            var result = await _mediaService.UploadFileAsync(image, _awsCredentials);
+
+            //Map ReceiptCreateDTO to ReceiptWriteDTO which has ReceiptImage
+            TransferRecordWriteDTO receiptWriteDTO = new TransferRecordWriteDTO()
+            {
+                ReceiverId = currentUserId,
+                SenderId = receiptCreateDTO.SenderId,
+                ItemId = item.Id,
+                ReceiptType = ReceiptType.IN_STORAGE,
+                Media = new MediaWriteDTO()
+                {
+                    Name = image.FileName,
+                    Description = "Receipt image for giving away item Id = " + item.Id,
+                    Url = result.Url,
+                }
+            };
+            //change item status to onhold + in storage + cabinet
+            item.ItemStatus = ItemStatus.ONHOLD;
+            item.IsInStorage = true;
+            item.CabinetId = receiptCreateDTO.CabinetId;
+
+            var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
+            receipt.IsActive = true;
+
+            //send email to the user B to go up
 
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();

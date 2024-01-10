@@ -9,7 +9,9 @@ namespace LostAndFound.Core.Enums
     public enum ReportStatus
     {
         PENDING,
-        RESOLVED,
-        REJECTED
+        SOLVING,
+        SOLVED,
+        DENIED,
+        FAILED
     }
 }

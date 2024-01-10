@@ -338,6 +338,23 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(giveaways.ToList());
         }
 
+        public async Task<IEnumerable<Giveaway>> GetRecentNotStartedGiveaways()
+        {
+            var giveaways = _context.Giveaways
+                .Include(g => g.GiveawayParticipants.Where(gp => gp.IsActive == true))
+                .ThenInclude(gp => gp.User)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                .ThenInclude(im => im.Media)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Cabinet)
+                .Include(g => g.Item)
+                .ThenInclude(i => i.Category)
+                .Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED && (DateTime.Now.AddDays(10) >= g.StartAt));
+
+            return await Task.FromResult(giveaways.ToList());
+        }
+
         public async Task PushNotificationForGiveawayResult(PushNotification notification)
         {
             string baseUrl = "https://lostandfound.io.vn/api/notifications/push";

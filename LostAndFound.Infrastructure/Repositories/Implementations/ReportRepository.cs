@@ -30,6 +30,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(r => r.CreatedDate).FirstOrDefault())
+                        .ThenInclude(r => r.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .AsSplitQuery();
@@ -70,13 +73,21 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 {
                     reports = reports.Where(r => r.Status == ReportStatus.PENDING);
                 }
-                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.RESOLVED)
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.SOLVING)
                 {
-                    reports = reports.Where(r => r.Status == ReportStatus.RESOLVED);
+                    reports = reports.Where(r => r.Status == ReportStatus.SOLVING);
                 }
-                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.REJECTED)
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.SOLVED)
                 {
-                    reports = reports.Where(r => r.Status == ReportStatus.REJECTED);
+                    reports = reports.Where(r => r.Status == ReportStatus.SOLVED);
+                }
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.DENIED)
+                {
+                    reports = reports.Where(r => r.Status == ReportStatus.DENIED);
+                }
+                else if (query.ReportStatus == ReportQuery.ReportStatusQuery.FAILED)
+                {
+                    reports = reports.Where(r => r.Status == ReportStatus.FAILED);
                 }
             }
 
@@ -107,6 +118,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(r => r.CreatedDate).FirstOrDefault())
+                        .ThenInclude(r => r.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .FirstOrDefaultAsync(r => r.Id == reportId);
@@ -129,6 +143,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(r => r.CreatedDate).FirstOrDefault())
+                        .ThenInclude(r => r.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.UserId == userId && r.ItemId == itemId);
@@ -146,6 +163,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(r => r.CreatedDate).FirstOrDefault())
+                        .ThenInclude(r => r.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.UserId == userId);
@@ -163,6 +183,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(r => r.CreatedDate).FirstOrDefault())
+                        .ThenInclude(r => r.Media)
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.ItemId == itemId);

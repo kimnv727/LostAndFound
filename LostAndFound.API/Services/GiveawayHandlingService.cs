@@ -35,7 +35,7 @@ namespace LostAndFound.API.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            _timer = new Timer(GiveawayHandlingAsync, null, TimeSpan.Zero, TimeSpan.FromMinutes(2));
             _logger!.LogInformation("Timer for giveaway status check started.");
             return Task.CompletedTask;
         }
@@ -47,6 +47,7 @@ namespace LostAndFound.API.Services
                 try
                 {
                     _logger!.LogInformation("Checking giveaway status.");
+                    var emailService = scope.ServiceProvider.GetRequiredService<IEmailSendingService>();
                     var giveawayRepository = scope.ServiceProvider.GetRequiredService<IGiveawayRepository>();
                     var giveawayParticipantRepository = scope.ServiceProvider.GetRequiredService<IGiveawayParticipantRepository>();
                     List<Giveaway> giveaways = (await giveawayRepository.GetAllOngoingGiveaways()).ToList();
@@ -126,7 +127,8 @@ namespace LostAndFound.API.Services
                                         NotificationType = NotificationType.GiveawayResult
                                     };
                                     await giveawayRepository.PushNotificationForGiveawayResult(noti);
-                                    //also send mail
+                                //also send mail
+                                emailService.SendMailGiveawayWinner(gp.UserId, fg.Item.Name);
                                 }
                                 else
                                 {
@@ -171,6 +173,7 @@ namespace LostAndFound.API.Services
                                             if (gp.IsChosenAsWinner == true && gp.IsWinner == true)
                                             {
                                                 gp.IsWinner = false;
+                                                emailService.SendMailGiveawayReroll(gp.UserId, giveaway.Item.Name);
                                             }
                                             if (gp.UserId == winner.UserId)
                                             {
@@ -187,6 +190,8 @@ namespace LostAndFound.API.Services
                                                 };
                                                 await giveawayRepository.PushNotificationForGiveawayResult(noti);
                                                 //also send mail
+                                                
+                                                emailService.SendMailGiveawayWinner(gp.UserId, giveaway.Item.Name);
                                             }
                                         }
                                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
@@ -196,9 +201,12 @@ namespace LostAndFound.API.Services
                                         //Closed because no more participants left
                                         giveaway.GiveawayStatus = GiveawayStatus.CLOSED;
                                         List<GiveawayParticipant> giveawayParticipants = result.GiveawayParticipants.ToList();
+                                        var currentWinner = giveawayParticipants.FirstOrDefault(gp => gp.IsActive == true && gp.IsWinner == true
+                                        && gp.IsChosenAsWinner == true);
                                         giveawayParticipants.FirstOrDefault(gp => gp.IsActive == true && gp.IsWinner == true
                                         && gp.IsChosenAsWinner == true).IsWinner = false;
                                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
+                                        emailService.SendMailGiveawayReroll(currentWinner.UserId, giveaway.Item.Name);
                                     }
 
                                 }

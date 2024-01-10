@@ -855,7 +855,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         public async Task<IEnumerable<Item>> GetAllActiveItems()
         {
             var items = _context.Items
-                .Where(i => i.ItemStatus == ItemStatus.ACTIVE);
+                .Where(i => i.ItemStatus == ItemStatus.ACTIVE
+                //Also get those Item with OnHold status
+                || i.ItemStatus == ItemStatus.ONHOLD);
 
             return await Task.FromResult(items.ToList());
         }

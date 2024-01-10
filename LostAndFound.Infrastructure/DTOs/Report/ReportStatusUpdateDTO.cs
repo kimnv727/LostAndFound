@@ -10,7 +10,8 @@ namespace LostAndFound.Infrastructure.DTOs.Report
 {
     public class ReportStatusUpdateDTO
     {
-        [DefaultValue(ReportStatus.RESOLVED)]
+        [DefaultValue(ReportStatus.FAILED)]
         public ReportStatus ReportStatus { get; set; }
+        public string? ReportComment { get; set; }
     }
 }

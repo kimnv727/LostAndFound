@@ -151,11 +151,37 @@ namespace LostAndFound.API.Controllers
             var result = await _reportService.UpdateReportStatusAsync(reportId, reportStatus);
 
             //Noti
-            if (reportStatus == Core.Enums.ReportStatus.RESOLVED)
+            if (reportStatus == Core.Enums.ReportStatus.SOLVED)
             {
                 await NotificationExtensions
                 .Notify(_userDeviceService, _notificationService, result.UserId, "Your Report about Item with ID " + result.ItemId + " has been Resolved!",
                 "Your Report about Item with ID " + result.ItemId + " has been Resolved! Please wait for our Email for more Details!", NotificationType.Report);
+            }
+
+            return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// Update Report Status with Comment
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        [HttpPatch("status-with-comment/{reportId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<ReportReadDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> UpdateReportStatusWithComment(int reportId, [FromForm] ReportStatusUpdateDTO updateDTO)
+        {
+            var result = await _reportService.UpdateReportStatusWithCommentAsync(reportId, updateDTO);
+
+            //Noti
+            if (updateDTO.ReportStatus == Core.Enums.ReportStatus.FAILED)
+            {
+                await NotificationExtensions
+                .Notify(_userDeviceService, _notificationService, result.UserId, "Your Report about Item with ID " + result.ItemId + " is failed to resolved!",
+                "Your Report about Item with ID " + result.ItemId + " is failed to resolved! Please wait for our Email for more Details!", NotificationType.Report);
             }
 
             return ResponseFactory.Ok(result);

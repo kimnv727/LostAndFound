@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         Task<GiveawayReadDTO> CreateGiveawayAsync(GiveawayWriteDTO giveawayWriteDTO);
         Task<GiveawayReadDTO> UpdateGiveawayDetailsAsync(int giveawayId, GiveawayUpdateDTO giveawayUpdateDTO);
         Task<IEnumerable<ItemReadDTO>> ListItemsSuitableForGiveawayAsync();
+        Task<IEnumerable<GiveawayReadDTO>> GetRecentNotStartedGiveawaysAsync();
     }
 }

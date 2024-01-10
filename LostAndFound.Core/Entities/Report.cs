@@ -19,6 +19,7 @@ namespace LostAndFound.Core.Entities
         public string UserId { get; set; }
         [ForeignKey("Item")]
         public int ItemId { get; set; }
+        public string? ReportComment { get; set; }
         public DateTime CreatedDate { get; set; }
         public ReportStatus Status { get; set; }
         public virtual User User { get; set; }

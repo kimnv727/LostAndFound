@@ -124,6 +124,22 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
 
+        public async Task<IEnumerable<TransferRecord>> GetReceiptsByUserIdAsync(string userId)
+        {
+            return await _context.TransferRecords
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemClaims.Where(ic => ic.ClaimStatus == ClaimStatus.ACCEPTED))
+                        .ThenInclude(ic => ic.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
+                        .ThenInclude(im => im.Media)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.User)
+                .Include(r => r.Media)
+                .Where(r => (r.ReceiverId ==  userId || r.SenderId == userId))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<TransferRecord>> GetAllWithItemIdAsync(int itemId)
         {
 

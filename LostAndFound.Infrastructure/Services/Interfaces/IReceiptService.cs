@@ -22,5 +22,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task<IEnumerable<TransferRecordReadDTO>> GetAllReceiptsByItemIdAsync(int itemId);
         public Task<TransferRecordReadDTO> RevokeReceipt(int receiptId);
         public Task<TransferRecordReadDTO> CreateReceiptForOnHoldItemAsync(string currentUserId, TransferRecordOnholdItemCreateDTO receiptCreateDTO, IFormFile image);
+        public Task<IEnumerable<TransferRecordReadDTO>> GetReceiptsByUserIdAsync(string userId);
     }
 }

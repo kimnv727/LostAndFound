@@ -163,9 +163,26 @@ namespace LostAndFound.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadDTO[]>))]
-        public async Task<IActionResult> GetAllCabinetsByStorageId(int itemId)
+        public async Task<IActionResult> GetAllReceiptsByItemId(int itemId)
         {
             var result = await _receiptService.GetAllReceiptsByItemIdAsync(itemId);
+
+            return ResponseFactory.Ok(result);
+        }
+
+        /// <summary>
+        /// Get all receipt by itemId 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-all-by-user")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadDTO[]>))]
+        public async Task<IActionResult> GetAllReceiptsByUserId()
+        {
+            string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _receiptService.GetReceiptsByUserIdAsync(userId);
 
             return ResponseFactory.Ok(result);
         }

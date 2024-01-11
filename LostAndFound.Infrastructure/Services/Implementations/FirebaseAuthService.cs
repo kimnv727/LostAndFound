@@ -206,7 +206,7 @@ namespace LostAndFound.API.Authentication
                         CreatedDate = DateTime.Now.ToVNTime(),
                         UserMedias = userMedias
                     };
-                    _emailSendingService.SendMailToRegister(email);
+                    //_emailSendingService.SendMailToRegister(email);
                     await _userRepository.AddAsync(newUser);
                     await _unitOfWork.CommitAsync();
                     

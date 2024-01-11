@@ -42,7 +42,7 @@ namespace LostAndFound.Infrastructure.DTOs.Item
 
         public ICollection<ItemMediaLiteReadDTO> ItemMedias { get; set; }
         public ICollection<ItemClaimReadDTO> ItemClaims { get; set; }
-        public ICollection<TransferRecordReadDTO> Receipts { get; set; }
+        public ICollection<TransferRecordReadWithoutItemDTO> Receipts { get; set; }
         public LocationReadDTO Location { get; set; }
         public CabinetWithoutItemReadDTO Cabinet { get; set; }
     }

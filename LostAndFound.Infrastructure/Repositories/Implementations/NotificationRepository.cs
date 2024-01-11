@@ -38,7 +38,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
         
         public async Task<IEnumerable<Notification>> FindAllNotificationsOfUserAsync(string userId)
         {
-            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId && n.NotificationType != Core.Enums.NotificationType.Chat);
+            IQueryable<Notification> notifications = _context.Notifications.Where(n => n.UserId == userId && n.NotificationType != Core.Enums.NotificationType.Chat).OrderByDescending(n => n.CreatedDate);
 
             return await Task.FromResult(notifications.ToList());
         }

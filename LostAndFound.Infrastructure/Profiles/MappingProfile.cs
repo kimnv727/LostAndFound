@@ -171,6 +171,7 @@ namespace LostAndFound.Infrastructure.Profiles
             CreateMap<TransferRecord, TransferRecordReadDTO>();
             CreateMap<TransferRecordWriteDTO, TransferRecord>();
             CreateMap<TransferRecordGiveawayCreateDTO, TransferRecord>();
+            CreateMap<TransferRecord, TransferRecordReadWithoutItemDTO>();
         }
     }
 }

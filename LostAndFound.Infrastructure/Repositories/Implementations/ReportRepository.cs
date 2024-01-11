@@ -31,8 +31,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
-                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate).Take(1))
-                        .ThenInclude(r => r.Media)
+                    .ThenInclude(i => i.Receipts
+                    .Where(receipt => receipt.IsActive == true)
+                    .OrderByDescending(receipt => receipt.CreatedDate)
+                    .Take(1)
+                    .Select(receipt => new
+                    {
+                        receipt.ReceiptImage,
+                        receipt.ReceiptType,
+                        receipt.ReceiverId,
+                        receipt.SenderId,
+                        receipt.CreatedDate,
+                        Media = receipt.Media
+                    }))
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .AsSplitQuery();
@@ -119,8 +130,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
-                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate).Take(1))
-                        .ThenInclude(r => r.Media)
+                    .ThenInclude(i => i.Receipts
+                    .Where(receipt => receipt.IsActive == true)
+                    .OrderByDescending(receipt => receipt.CreatedDate)
+                    .Take(1)
+                    .Select(receipt => new
+                     {
+                        receipt.ReceiptImage,
+                        receipt.ReceiptType,
+                        receipt.ReceiverId,
+                        receipt.SenderId,
+                        receipt.CreatedDate,
+                        Media = receipt.Media 
+                       }))
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .FirstOrDefaultAsync(r => r.Id == reportId);
@@ -144,8 +166,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
-                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate).Take(1))
-                        .ThenInclude(r => r.Media)
+                    .ThenInclude(i => i.Receipts
+                    .Where(receipt => receipt.IsActive == true)
+                    .OrderByDescending(receipt => receipt.CreatedDate)
+                    .Take(1)
+                    .Select(receipt => new
+                    {
+                        receipt.ReceiptImage,
+                        receipt.ReceiptType,
+                        receipt.ReceiverId,
+                        receipt.SenderId,
+                        receipt.CreatedDate,
+                        Media = receipt.Media
+                    }))
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.UserId == userId && r.ItemId == itemId);
@@ -164,8 +197,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
-                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate).Take(1))
-                        .ThenInclude(r => r.Media)
+                    .ThenInclude(i => i.Receipts
+                    .Where(receipt => receipt.IsActive == true)
+                    .OrderByDescending(receipt => receipt.CreatedDate)
+                    .Take(1)
+                    .Select(receipt => new
+                    {
+                        receipt.ReceiptImage,
+                        receipt.ReceiptType,
+                        receipt.ReceiverId,
+                        receipt.SenderId,
+                        receipt.CreatedDate,
+                        Media = receipt.Media
+                    }))
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.UserId == userId);
@@ -184,8 +228,19 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     .ThenInclude(i => i.ItemMedias.Where(im => im.Media.IsActive == true && im.Media.DeletedDate == null))
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
-                    .ThenInclude(i => i.Receipts.Where(r => r.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate).Take(1))
-                        .ThenInclude(r => r.Media)
+                    .ThenInclude(i => i.Receipts
+                    .Where(receipt => receipt.IsActive == true)
+                    .OrderByDescending(receipt => receipt.CreatedDate)
+                    .Take(1)
+                    .Select(receipt => new
+                    {
+                        receipt.ReceiptImage,
+                        receipt.ReceiptType,
+                        receipt.ReceiverId,
+                        receipt.SenderId,
+                        receipt.CreatedDate,
+                        Media = receipt.Media
+                    }))
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .Where(r => r.ItemId == itemId);

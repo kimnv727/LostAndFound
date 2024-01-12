@@ -2,6 +2,7 @@
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
+using LostAndFound.Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace LostAndFound.API.Services
 {
-    public class ItemOutdatedCheckService : IHostedService, IDisposable
+    public class ReportCheckHandlingService : IHostedService, IDisposable
     {
         public IServiceProvider Services { get; }
-        private readonly ILogger<ItemOutdatedCheckService>? _logger;
+        private readonly ILogger<ReportCheckHandlingService>? _logger;
         private Timer _timer = null!;
-        public ItemOutdatedCheckService(ILogger<ItemOutdatedCheckService> logger, IServiceProvider services)
+        public ReportCheckHandlingService(ILogger<ReportCheckHandlingService> logger, IServiceProvider services)
         {
             _logger = logger;
             Services = services;
@@ -32,7 +33,7 @@ namespace LostAndFound.API.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(CheckItemStatusAsync, null, TimeSpan.Zero, TimeSpan.FromDays(1));
-            _logger!.LogInformation("Timer for item status check started.");
+            _logger!.LogInformation("Timer for report check started.");
             return Task.CompletedTask;
         }
 
@@ -42,17 +43,25 @@ namespace LostAndFound.API.Services
             {
                 try
                 {
-                    _logger!.LogInformation("Checking item status.");
-                    var itemRepository = scope.ServiceProvider.GetRequiredService<IItemRepository>();
-                    List<Item> items = (await itemRepository.GetAllActiveItems()).ToList();
-                    foreach (var item in items)
+                    _logger!.LogInformation("Checking report.");
+                    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                    var reportRepository = scope.ServiceProvider.GetRequiredService<IReportRepository>();
+                    List<Report> reports = (await reportRepository.GetAllSolvingReportAsync()).ToList();
+                    foreach (var report in reports)
                     {
                         try
                         {
-                            //4 months -> outdated
-                            if (DateTime.Now.ToVNTime() >= item.CreatedDate.AddDays(120))
+                            if(report.UpdatedDate != null)
                             {
-                                item.ItemStatus = ItemStatus.EXPIRED;
+                                if (DateTime.Now.ToVNTime() >= report.UpdatedDate?.AddDays(14))
+                                {
+                                    report.Status = ReportStatus.FAILED;
+                                    report.ReportComment = "Report cannot be solved because the reported User with name " 
+                                        + report.Item.ItemClaims.First().User.FullName
+                                        + " did not cooperate.";
+                                    //Ban User & send email
+                                    await userService.ChangeUserStatusAsync(report.Item.ItemClaims.First().User.Id);
+                                }
                             }
                         }
                         catch
@@ -61,11 +70,11 @@ namespace LostAndFound.API.Services
                             continue;
                         }
                     }
-                    await itemRepository.UpdateItemRange(items.ToArray());
+                    await reportRepository.UpdateReportRange(reports.ToArray());
                 }
                 catch (Exception e)
                 {
-                    _logger!.LogInformation("Item status check operation was not successful.");
+                    _logger!.LogInformation("Report check operation was not successful.");
                     _logger!.LogError(e, string.Empty, Array.Empty<int>());
                 }
             }
@@ -74,7 +83,7 @@ namespace LostAndFound.API.Services
         Task IHostedService.StopAsync(CancellationToken cancellationToken)
         {
             _timer.Change(Timeout.Infinite, 0);
-            _logger!.LogInformation("Timer for item status check stopped.");
+            _logger!.LogInformation("Timer for report check stopped.");
             return Task.CompletedTask;
         }
     }

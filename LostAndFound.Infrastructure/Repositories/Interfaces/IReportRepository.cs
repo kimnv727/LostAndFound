@@ -19,5 +19,7 @@ namespace LostAndFound.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Report>> GetReportByUserAndItemIdAsync(string userId, int itemId);
         Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId);
         Task<IEnumerable<Report>> GetReportsByItemIdAsync(int itemId);
+        Task<IEnumerable<Report>> GetAllSolvingReportAsync();
+        public Task UpdateReportRange(Report[] reports);
     }
 }

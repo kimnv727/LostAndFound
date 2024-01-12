@@ -34,6 +34,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .AsSplitQuery();
 
@@ -105,6 +109,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .ToListAsync();
         }
@@ -120,6 +128,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
@@ -135,6 +147,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .Where(r => (r.ReceiverId ==  userId || r.SenderId == userId))
                 .ToListAsync();
@@ -152,6 +168,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .Where(r => r.ItemId == itemId).OrderBy(r => r.CreatedDate);
 
@@ -175,6 +195,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                         .ThenInclude(im => im.Media)
                 .Include(r => r.Item)
                     .ThenInclude(i => i.User)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Location)
+                .Include(r => r.Item)
+                    .ThenInclude(i => i.Category)
                 .Include(r => r.Media)
                 .Where(r => r.CreatedDate.Month == month && r.CreatedDate.Year == year 
                 && (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER))

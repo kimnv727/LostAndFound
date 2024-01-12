@@ -60,10 +60,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //map result
             var response = new CommentFlagCountReadDTO()
             {
-                WrongInformationCount = 0,
+                FalseInformationCount = 0,
                 SpamCount = 0,
-                ViolatedUserCount = 0,
-                OthersCount = 0,
+                ViolatedUserPoliciesCount = 0,
                 TotalCount = 0
             };
             //Count
@@ -71,20 +70,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 switch (flag.CommentFlagReason)
                 {
-                    case CommentFlagReason.WrongInformation:
-                        response.WrongInformationCount++;
+                    case CommentFlagReason.FALSE_INFORMATION:
+                        response.FalseInformationCount++;
                         response.TotalCount++;
                         break;
-                    case CommentFlagReason.Spam:
+                    case CommentFlagReason.SPAM:
                         response.SpamCount++;
                         response.TotalCount++;
                         break;
-                    case CommentFlagReason.ViolatedUser:
-                        response.ViolatedUserCount++;
-                        response.TotalCount++;
-                        break;
-                    case CommentFlagReason.Others:
-                        response.OthersCount++;
+                    case CommentFlagReason.VIOLATED_USER_POLICIES:
+                        response.ViolatedUserPoliciesCount++;
                         response.TotalCount++;
                         break;
                     default:

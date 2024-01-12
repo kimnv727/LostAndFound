@@ -81,11 +81,13 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(userId, roles);
 
             var receipt = await _receiptService.CreateReceiptAsync(receiptCreateDTO, image);
-            //return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
-            return ResponseFactory.CreatedAt(nameof(GetReceiptByIdAsync),
+
+            var result = await _receiptService.FindReceiptByIdAsync(receipt.Id);
+            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(result));
+            /*return ResponseFactory.CreatedAt(nameof(GetReceiptByIdAsync),
                                             nameof(ReceiptController),
                                             new { receiptId = receipt.Id },
-                                            receipt);
+                                            receipt);*/
 
         }
 

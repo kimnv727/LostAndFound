@@ -9,15 +9,13 @@ namespace LostAndFound.Infrastructure.DTOs.CommentFlag
 {
     public class CommentFlagCountReadDTO
     {
-        [JsonProperty(PropertyName = "Wrong Information")]
-        public int WrongInformationCount { get; set; }
-        [JsonProperty(PropertyName = "Violated User")]
-        public int ViolatedUserCount { get; set; }
-        [JsonProperty(PropertyName = "Spam")]
+        [JsonProperty(PropertyName = "falseInformation")]
+        public int FalseInformationCount { get; set; }
+        [JsonProperty(PropertyName = "violatedUserPolicies")]
+        public int ViolatedUserPoliciesCount { get; set; }
+        [JsonProperty(PropertyName = "spam")]
         public int SpamCount { get; set; }
-        [JsonProperty(PropertyName = "Others")]
-        public int OthersCount { get; set; }
-        [JsonProperty(PropertyName = "Total Count")]
+        [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount { get; set; }
     }
 }

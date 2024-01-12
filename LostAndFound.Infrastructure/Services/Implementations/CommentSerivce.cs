@@ -225,10 +225,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             foreach (var c in comments)
             {
                 var r = _mapper.Map<CommentDetailReadWithFlagDTO>(c);
-                r.WrongInformationCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.WrongInformation && f.IsActive == true).Count();
-                r.SpamCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.Spam && f.IsActive == true).Count();
-                r.ViolatedUserCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.ViolatedUser && f.IsActive == true).Count();
-                r.OthersCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.Others && f.IsActive == true).Count();
+                r.FalseInformationCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.FALSE_INFORMATION && f.IsActive == true).Count();
+                r.SpamCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.SPAM && f.IsActive == true).Count();
+                r.ViolatedUserPoliciesCount = c.CommentFlags.Where(f => f.CommentFlagReason == CommentFlagReason.VIOLATED_USER_POLICIES && f.IsActive == true).Count();
                 r.TotalCount = c.CommentFlags.Where(f => f.IsActive == true).Count();
                 result.Add(r);
             }

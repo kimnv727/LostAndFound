@@ -20,14 +20,12 @@ namespace LostAndFound.Infrastructure.DTOs.Comment
         public DateTime? DeletedDate { get; set; }
         public UserReadDTO User { get; set; }
 
-        [JsonProperty(PropertyName = "wrongInformation")]
-        public int WrongInformationCount { get; set; }
-        [JsonProperty(PropertyName = "violatedUser")]
-        public int ViolatedUserCount { get; set; }
+        [JsonProperty(PropertyName = "falseInformation")]
+        public int FalseInformationCount { get; set; }
+        [JsonProperty(PropertyName = "violatedUserPolicies")]
+        public int ViolatedUserPoliciesCount { get; set; }
         [JsonProperty(PropertyName = "spam")]
         public int SpamCount { get; set; }
-        [JsonProperty(PropertyName = "others")]
-        public int OthersCount { get; set; }
         [JsonProperty(PropertyName = "totalCount")]
         public int TotalCount { get; set; }
     }

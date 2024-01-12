@@ -33,7 +33,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .Include(r => r.Item)
                     .ThenInclude(i => i.Receipts
                     .Where(receipt => receipt.IsActive == true).OrderByDescending(receipt => receipt.CreatedDate))
-                    .ThenInclude(r => r.Media)
+                    .ThenInclude(r => r.Media)  
                 .Include(r => r.ReportMedias)
                 .ThenInclude(rm => rm.Media)
                 .AsSplitQuery();

@@ -63,7 +63,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
         }
 
-        public async Task<TransferRecordReadDTO> FindReceiptByIdAsync(int receiptId)
+        public async Task<TransferRecordReadWithUserDTO> FindReceiptByIdAsync(int receiptId)
         {
             var receipt = await _receiptRepository.GetReceiptByIdAsync(receiptId);
             if (receipt == null)
@@ -71,7 +71,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<TransferRecord>(receiptId);
             }
 
-            return _mapper.Map<TransferRecordReadDTO>(receipt);
+            /*return _mapper.Map<TransferRecordReadDTO>(receipt);*/
+            //Get Receipts
+            var result = _mapper.Map<TransferRecordReadWithUserDTO>(receipt);
+            result.ReceiverUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(result.ReceiverId));
+            result.SenderUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(result.SenderId));
+
+            return result;
         }
 
         public async Task DeleteReceiptAsync(int receiptId)
@@ -151,7 +157,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<TransferRecordReadDTO>(receipt);
         }
 
-        public async Task<IEnumerable<TransferRecordReadDTO>> GetAllReceiptsByItemIdAsync(int itemId)
+        public async Task<IEnumerable<TransferRecordReadWithUserDTO>> GetAllReceiptsByItemIdAsync(int itemId)
         {
             //Get Item
             var item = await _itemRepository.FindItemByIdAsync(itemId);
@@ -159,10 +165,21 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Item>(itemId);
             }
-            //Get Receipts
+            /*//Get Receipts
             var receipts = await _receiptRepository.GetAllWithItemIdAsync(itemId);
 
-            return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
+            return _mapper.Map<List<TransferRecordReadDTO>>(receipts);*/
+
+            //Get Receipts
+            var receipts = await _receiptRepository.GetAllWithItemIdAsync(itemId);
+            var result = _mapper.Map<List<TransferRecordReadWithUserDTO>>(receipts);
+            foreach (var r in result)
+            {
+                r.ReceiverUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(r.ReceiverId));
+                r.SenderUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(r.SenderId));
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<TransferRecordReadWithUserDTO>> GetReceiptsByUserIdAsync(string userId)

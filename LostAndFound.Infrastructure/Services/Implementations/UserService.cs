@@ -250,6 +250,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (user.IsActive == true)
             {
                 user.IsActive = false;
+                _emailSendingService.SendMailWhenUserBan(user.Email);
             }
 
             else

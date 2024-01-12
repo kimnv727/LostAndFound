@@ -40,11 +40,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IMediaService _mediaService;
         private readonly IReceiptRepository _receiptRepository;
         private readonly AwsCredentials _awsCredentials;
+        private readonly IEmailSendingService _emailSendingService;
 
         public ItemService(IMapper mapper, IUnitOfWork unitOfWork, IItemRepository itemRepository, IUserRepository userRepository,
             ICategoryRepository categoryRepository, ICategoryGroupRepository categoryGroupRepository, IItemMediaService itemMediaService,
             ICabinetRepository cabinetRepository, IItemClaimRepository itemClaimRepository, IPostRepository postRepository,
-            IMediaService mediaService, AwsCredentials awsCredentials, IReceiptRepository receiptRepository)
+            IMediaService mediaService, AwsCredentials awsCredentials, IReceiptRepository receiptRepository, IEmailSendingService emailSendingService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -59,6 +60,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _mediaService = mediaService;
             _awsCredentials = awsCredentials;
             _receiptRepository = receiptRepository;
+            _emailSendingService = emailSendingService;
         }
 
         public async Task<PaginatedResponse<ItemReadDTO>> QueryItemAsync(ItemQueryWithStatus query)
@@ -171,6 +173,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             _itemRepository.Delete(item);
             await _unitOfWork.CommitAsync();
+            _emailSendingService.SendMailWhenItemBan(item.User.Email, item.Name);
         }
 
         public async Task<ItemDetailReadDTO> FindItemByIdAsync(int itemId)
@@ -246,6 +249,20 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             item.ItemStatus = itemStatus;
             await _unitOfWork.CommitAsync();
+
+            if(itemStatus == ItemStatus.DELETED)
+            {
+                _emailSendingService.SendMailWhenItemBan(item.User.Email, item.Name);
+            }
+            if (itemStatus == ItemStatus.ACTIVE)
+            {
+                _emailSendingService.SendMailItemApprove(item.User.Email, item.Name);
+            }
+            if (itemStatus == ItemStatus.REJECTED)
+            {
+                _emailSendingService.SendMailItemReject(item.User.Email, item.Name);
+            }
+
             return _mapper.Map<ItemReadDTO>(item);
         }
 

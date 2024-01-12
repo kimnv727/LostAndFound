@@ -171,7 +171,7 @@ namespace LostAndFound.API.Controllers
         }
 
         /// <summary>
-        /// Get all receipt by itemId 
+        /// Get all receipt by userId 
         /// </summary>
         /// <returns></returns>
         [HttpGet("get-all-by-user")]

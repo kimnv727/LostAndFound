@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LostAndFound.Core.Entities
 {
-    public class Report : ICreatedEntity
+    public class Report : IAuditedEntity
     {
         [Key]
         public int Id { get; set; }
@@ -21,6 +21,7 @@ namespace LostAndFound.Core.Entities
         public int ItemId { get; set; }
         public string? ReportComment { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public ReportStatus Status { get; set; }
         public virtual User User { get; set; }
         public virtual Item Item { get; set; }

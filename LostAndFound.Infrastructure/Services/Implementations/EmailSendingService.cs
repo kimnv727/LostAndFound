@@ -20,7 +20,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
-                mail.Subject = "Register";
+                mail.Subject = "Register Notice";
 
                 string filePath = "MailTemplates//SignUp.html";
                 StreamReader str = new StreamReader(filePath);
@@ -48,7 +48,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
-                mail.Subject = "Reset Password";
+                mail.Subject = "Reset Password Notice";
 
                 string filePath = "MailTemplates//ResetPassword.html";
                 StreamReader str = new StreamReader(filePath);
@@ -192,7 +192,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
-                mail.Subject = "Giveaway Winner Notice";
+                mail.Subject = "Giveaway Notice";
 
                 string filePath = "MailTemplates//GiveawayReroll.html";
                 StreamReader str = new StreamReader(filePath);
@@ -221,7 +221,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
-                mail.Subject = "Your request to verify LostAndFound account has been accepted";
+                mail.Subject = "Account Verify Notice";
 
                 string filePath = "MailTemplates//VerifySuccess.html";
                 StreamReader str = new StreamReader(filePath);
@@ -249,13 +249,216 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
                 mail.To.Add(receiverEmail);
-                mail.Subject = "Your request to verify LostAndFound account has been rejected";
+                mail.Subject = "Account Verify Notice";
 
                 string filePath = "MailTemplates//VerifyFail.html";
                 StreamReader str = new StreamReader(filePath);
                 string mailText = str.ReadToEnd();
                 str.Close();
                 mailText = mailText.Replace("[newusername]", receiverEmail);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailItemApprove(string receiverEmail, string itemName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Approve Item Notice";
+
+                string filePath = "MailTemplates//ApproveItem.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[itemName]", itemName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailItemReject(string receiverEmail, string itemName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Reject Item Notice";
+
+                string filePath = "MailTemplates//RejectItem.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[itemName]", itemName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailPostApprove(string receiverEmail, string postName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Approve Post Notice";
+
+                string filePath = "MailTemplates//ApprovePost.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[postName]", postName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailPostReject(string receiverEmail, string postName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Reject Post Notice";
+
+                string filePath = "MailTemplates//RejectPost.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[postName]", postName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailReportA(string receiverEmail, string itemName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Report Notice";
+
+                string filePath = "MailTemplates//ReportA.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[itemName]", itemName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailReportBSuccess(string receiverEmail, string itemName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Report Notice";
+
+                string filePath = "MailTemplates//ReportBSuccess.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[itemName]", itemName);
+
+                mail.Body = mailText;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential(_emailServiceConfigDto.EmailSender,
+                        _emailServiceConfigDto.EmailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+        }
+
+        public void SendMailReportBFail(string receiverEmail, string itemName)
+        {
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(_emailServiceConfigDto.EmailSender);
+                mail.To.Add(receiverEmail);
+                mail.Subject = "Report Notice";
+
+                string filePath = "MailTemplates//ReportBFail.html";
+                StreamReader str = new StreamReader(filePath);
+                string mailText = str.ReadToEnd();
+                str.Close();
+                mailText = mailText.Replace("[username]", receiverEmail);
+                mailText = mailText.Replace("[itemName]", itemName);
 
                 mail.Body = mailText;
                 mail.IsBodyHtml = true;

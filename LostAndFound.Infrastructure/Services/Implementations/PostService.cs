@@ -61,6 +61,19 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             post.PostStatus = postStatus;
             await _unitOfWork.CommitAsync();
+
+            if (postStatus == PostStatus.DELETED)
+            {
+                _emailSendingService.SendMailWhenPostBan(post.User.Email, post.Title);
+            }
+            if (postStatus == PostStatus.ACTIVE)
+            {
+                _emailSendingService.SendMailPostApprove(post.User.Email, post.Title);
+            }
+            if (postStatus == PostStatus.REJECTED)
+            {
+                _emailSendingService.SendMailPostReject(post.User.Email, post.Title);
+            }
         }
 
         public async Task DeletePostAsync(int postId)
@@ -74,6 +87,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             _postRepository.Delete(post);
             await _unitOfWork.CommitAsync();
+
+            _emailSendingService.SendMailWhenPostBan(post.User.Email, post.Title);
         }
 
         public async Task<PostDetailWithCommentsReadDTO> GetPostByIdAsync(int postId)

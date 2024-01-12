@@ -8,6 +8,7 @@ using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Location;
 using LostAndFound.Infrastructure.DTOs.Media;
 using LostAndFound.Infrastructure.DTOs.Receipt;
+using LostAndFound.Infrastructure.DTOs.User;
 using LostAndFound.Infrastructure.Repositories.Interfaces;
 using LostAndFound.Infrastructure.Services.Interfaces;
 using LostAndFound.Infrastructure.UnitOfWork;
@@ -139,6 +140,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             receipt.IsActive = true;
             await _receiptRepository.AddAsync(receipt);
+
+            if(item.ItemStatus == ItemStatus.ONHOLD)
+            {
+                item.ItemStatus = ItemStatus.RETURNED;
+            }
+
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<TransferRecordReadDTO>(receipt);
@@ -158,7 +165,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
         }
 
-        public async Task<IEnumerable<TransferRecordReadDTO>> GetReceiptsByUserIdAsync(string userId)
+        public async Task<IEnumerable<TransferRecordReadWithUserDTO>> GetReceiptsByUserIdAsync(string userId)
         {
             //Check null for user
             var user = await _userRepository.FindUserByID(userId);
@@ -168,8 +175,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             //Get Receipts
             var receipts = await _receiptRepository.GetReceiptsByUserIdAsync(userId);
+            var result = _mapper.Map<List<TransferRecordReadWithUserDTO>>(receipts);
+            foreach (var r in result)
+            {
+                r.ReceiverUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(r.ReceiverId));
+                r.SenderUser = _mapper.Map<UserReadDTO>(await _userRepository.FindUserByID(r.SenderId));
+            }
 
-            return _mapper.Map<List<TransferRecordReadDTO>>(receipts);
+            return result;
         }
 
         public async Task<TransferRecordReadDTO> RevokeReceipt(int receiptId)

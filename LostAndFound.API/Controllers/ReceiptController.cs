@@ -178,7 +178,7 @@ namespace LostAndFound.API.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiUnauthorizedResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadDTO[]>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadWithUserDTO[]>))]
         public async Task<IActionResult> GetAllReceiptsByUserId()
         {
             string userId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;

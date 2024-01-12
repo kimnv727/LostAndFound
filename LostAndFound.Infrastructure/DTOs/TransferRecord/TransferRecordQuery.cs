@@ -34,7 +34,8 @@ namespace LostAndFound.Infrastructure.DTOs.Receipt
             IN_STORAGE,
             RETURN_OUT_STORAGE,
             RETURN_USER_TO_USER,
-            GIVEAWAY_OUT_STORAGE
+            GIVEAWAY_OUT_STORAGE,
+            REPORT_OUT_STORAGE
         }
 
 

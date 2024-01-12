@@ -81,7 +81,12 @@ namespace LostAndFound.API.Controllers
             await _firebaseAuthService.CheckUserRoles(userId, roles);
 
             var receipt = await _receiptService.CreateReceiptAsync(receiptCreateDTO, image);
-            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
+            //return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(receipt));
+            return ResponseFactory.CreatedAt(nameof(GetReceiptByIdAsync),
+                                            nameof(ReceiptController),
+                                            new { receiptId = receipt.Id },
+                                            receipt);
+
         }
 
         /// <summary>

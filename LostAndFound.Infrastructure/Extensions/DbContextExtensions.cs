@@ -717,7 +717,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 #region Add Categories
                 Category laptop = new Category()
                 {
-                    Name = "Laptops",
+                    Name = "Laptop",
                     Description = "On top of your lap",
                     IsSensitive = true,
                     Value = ItemValue.High,
@@ -739,7 +739,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Category phone = new Category()
                 {
-                    Name = "Phones",
+                    Name = "Phone",
                     Description = "Smartphone, feature phones alike",
                     IsSensitive = true,
                     Value = ItemValue.High,
@@ -750,7 +750,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Category wallets = new Category()
                 {
-                    Name = "Wallets",
+                    Name = "Wallet",
                     Description = "Can contain money, and various identifier items",
                     IsSensitive = true,
                     Value = ItemValue.High,
@@ -794,7 +794,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Category keyboards = new Category()
                 {
-                    Name = "Keyboards",
+                    Name = "Keyboard",
                     Description = "Membrance keyboard, mechanical keyboards and more",
                     IsSensitive = false,
                     Value = ItemValue.High,
@@ -805,7 +805,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Category mouses = new Category()
                 {
-                    Name = "Mouses",
+                    Name = "Mouse",
                     Description = "Mouses for PC and that",
                     IsSensitive = false,
                     Value = ItemValue.High,

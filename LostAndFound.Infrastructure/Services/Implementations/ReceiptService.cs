@@ -151,7 +151,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 item.ItemStatus = ItemStatus.RETURNED;
             }
-
+            
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<TransferRecordReadDTO>(receipt);

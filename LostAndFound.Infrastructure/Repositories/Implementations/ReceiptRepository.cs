@@ -82,6 +82,9 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                     case ReceiptTypeQuery.GIVEAWAY_OUT_STORAGE:
                         receipts = receipts.Where(r => r.ReceiptType == ReceiptType.GIVEAWAY_OUT_STORAGE);
                         break;
+                    case ReceiptTypeQuery.REPORT_OUT_STORAGE:
+                        receipts = receipts.Where(r => r.ReceiptType == ReceiptType.REPORT_OUT_STORAGE);
+                        break;
                 }
             }
 

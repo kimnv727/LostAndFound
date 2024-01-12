@@ -59,16 +59,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             //map result
             var response = new PostFlagCountReadDTO()
             {
-                WrongInformationCount = 0,
+                FalseInformationCount = 0,
                 SpamCount = 0,
-                ViolatedUserCount = 0,
-                OthersCount = 0,
+                ViolatedUserPoliciesCount = 0,
                 TotalCount = 0
             };
             //Count
-            response.WrongInformationCount = result.Where(r => r.PostFlagReason == PostFlagReason.FALSE_INFORMATION).Count();
+            response.FalseInformationCount = result.Where(r => r.PostFlagReason == PostFlagReason.FALSE_INFORMATION).Count();
             response.SpamCount = result.Where(r => r.PostFlagReason == PostFlagReason.SPAM).Count();
-            response.ViolatedUserCount = result.Where(r => r.PostFlagReason == PostFlagReason.VIOLATED_USER_POLICIES).Count();
+            response.ViolatedUserPoliciesCount = result.Where(r => r.PostFlagReason == PostFlagReason.VIOLATED_USER_POLICIES).Count();
             //response.OthersCount = result.Where(r => r.PostFlagReason == PostFlagReason.Others).Count();
             response.TotalCount = result.Count();
             /*foreach (var flag in result)

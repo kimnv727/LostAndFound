@@ -146,9 +146,9 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             foreach (var p in posts)
             {
                 var r = _mapper.Map<PostDetailWithFlagReadDTO>(p);
-                r.WrongInformationCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.FALSE_INFORMATION && p.IsActive == true).Count();
+                r.FalseInformationCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.FALSE_INFORMATION && p.IsActive == true).Count();
                 r.SpamCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.SPAM && p.IsActive == true).Count();
-                r.ViolatedUserCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.VIOLATED_USER_POLICIES && p.IsActive == true).Count();
+                r.ViolatedUserPoliciesCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.VIOLATED_USER_POLICIES && p.IsActive == true).Count();
                 //r.OthersCount = p.PostFlags.Where(p => p.PostFlagReason == PostFlagReason.Others && p.IsActive == true).Count();
                 r.TotalCount = p.PostFlags.Where(p => p.IsActive == true).Count();
                 result.Add(r);

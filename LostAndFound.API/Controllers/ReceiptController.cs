@@ -71,7 +71,7 @@ namespace LostAndFound.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiOkResponse<TransferRecordReadWithUserDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
         public async Task<IActionResult> CreateReceiptAsync([FromForm] TransferRecordCreateDTO receiptCreateDTO, [Required] IFormFile image)
@@ -83,7 +83,7 @@ namespace LostAndFound.API.Controllers
             var receipt = await _receiptService.CreateReceiptAsync(receiptCreateDTO, image);
 
             var result = await _receiptService.FindReceiptByIdAsync(receipt.Id);
-            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadDTO>(result));
+            return ResponseFactory.Ok(_mapper.Map<TransferRecordReadWithUserDTO>(result));
             /*return ResponseFactory.CreatedAt(nameof(GetReceiptByIdAsync),
                                             nameof(ReceiptController),
                                             new { receiptId = receipt.Id },

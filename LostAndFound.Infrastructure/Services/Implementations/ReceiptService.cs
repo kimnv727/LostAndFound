@@ -32,10 +32,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IGiveawayRepository _giveawayRepository;
         private readonly IReportRepository _reportRepository;
         private readonly AwsCredentials _awsCredentials;
+        private readonly IEmailSendingService _emailSendingService;
 
         public ReceiptService(IReceiptRepository receiptRepository, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, 
             IItemRepository itemRepository, IMediaService mediaService, AwsCredentials awsCredentials, IMediaRepository mediaRepository,
-            IGiveawayRepository giveawayRepository, IReportRepository reportRepository)
+            IGiveawayRepository giveawayRepository, IReportRepository reportRepository, IEmailSendingService emailSendingService)
         {
             _receiptRepository = receiptRepository;
             _mapper = mapper;
@@ -47,6 +48,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _mediaRepository = mediaRepository;
             _giveawayRepository = giveawayRepository;
             _reportRepository = reportRepository;
+            _emailSendingService = emailSendingService;
         }
 
         public async Task<PaginatedResponse<TransferRecordReadDTO>> QueryReceiptAsync(TransferRecordQuery query)
@@ -333,6 +335,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             receipt.IsActive = true;
 
             //send email to the user B to go up
+            _emailSendingService.SendMailReportBSuccess(report.UserId, report.Item.Name);
 
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();

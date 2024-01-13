@@ -490,6 +490,22 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task RevokeDenyAClaimAsync(int itemId, string userId)
+        {
+            //Check userId & check if item exists
+            var user = await _userRepository.FindUserByID(userId) ?? throw new EntityWithIDNotFoundException<User>(userId);
+            var item = await _itemRepository.FindItemByIdAsync(itemId) ?? throw new EntityWithIDNotFoundException<Item>(itemId);
+            //Check Claim
+            var claim = await _itemClaimRepository.FindClaimByItemIdAndUserId(itemId, userId) ?? throw new EntityNotFoundException<ItemClaim>();
+            //set claim to pending
+            if(claim.ClaimStatus == ClaimStatus.DENIED)
+            {
+                claim.ClaimStatus = ClaimStatus.PENDING;
+            }
+            
+            await _unitOfWork.CommitAsync();
+        }
+
         public async Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO)
         {
             //Check if user exist

@@ -18,5 +18,6 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         void SendMailReportA(string receiverEmail, string itemName);
         void SendMailReportBSuccess(string receiverEmail, string itemName);
         void SendMailReportBFail(string receiverEmail, string itemName);
+        void SendMailReportDenied(string receiverEmail, string itemName);
     }
 }

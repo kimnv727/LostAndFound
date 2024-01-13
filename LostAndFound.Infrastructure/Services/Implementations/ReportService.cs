@@ -24,9 +24,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly IItemRepository _itemRepository;
         private readonly IUserRepository _userRepository;
         private readonly IReportMediaService _reportMediaService;
+        private readonly IEmailSendingService _emailSendingService;
 
         public ReportService(IMapper mapper, IUnitOfWork unitOfWork, IReportRepository reportRepository,
-            IUserRepository userRepository, IItemRepository itemRepository, IReportMediaService reportMediaService)
+            IUserRepository userRepository, IItemRepository itemRepository, IReportMediaService reportMediaService,
+            IEmailSendingService emailSendingService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -34,6 +36,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _userRepository = userRepository;
             _itemRepository = itemRepository;
             _reportMediaService = reportMediaService;
+            _emailSendingService = emailSendingService;
         }
 
         public async Task<ReportReadDTO> CreateReportAsync(string userId, ReportWriteDTO writeDTO)
@@ -97,7 +100,16 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             report.Status = reportStatus;
             await _unitOfWork.CommitAsync();
 
-            //send email?
+            if(reportStatus == ReportStatus.SOLVING)
+            {
+                //send email A 
+                _emailSendingService.SendMailReportA(report.Item.ItemClaims.First().User.Id, report.Item.Name);
+            }
+            if (reportStatus == ReportStatus.DENIED)
+            {
+                //send email A 
+                _emailSendingService.SendMailReportDenied(report.UserId, report.Item.Name);
+            }
 
             return _mapper.Map<ReportReadDTO>(report);
         }
@@ -113,6 +125,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(updateDTO.ReportStatus == ReportStatus.FAILED)
             {
                 report.ReportComment = updateDTO.ReportComment;
+                //send email
+                _emailSendingService.SendMailReportBFail(report.UserId, report.Item.Name);
             }
             await _unitOfWork.CommitAsync();
 

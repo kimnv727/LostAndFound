@@ -633,8 +633,36 @@ namespace LostAndFound.API.Controllers
             var item = await _itemService.FindItemByIdAsync(makeClaimDTO.ItemId);
             //Noti
             await NotificationExtensions
-            .NotifyChatToUser(_userDeviceService, _notificationService, makeClaimDTO.UserId, "Your Claim has been Denied!",
+            .NotifyItemClaimedToUser(_userDeviceService, _notificationService, makeClaimDTO.UserId, "Your Claim has been Denied!",
             "Your claim on Item " + item.Name + " has been Denied!");
+
+            return ResponseFactory.NoContent();
+        }
+
+        /// <summary>
+        /// Revoke Deny a claim
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("revoke-deny")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiBadRequestResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiNotFoundResponse))]
+        public async Task<IActionResult> RevokeDenyAClaimAsync([FromForm] MakeClaimDTO makeClaimDTO)
+        {
+            string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
+            if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
+            {
+                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
+            }
+            else throw new ItemFounderNotMatchException();
+
+            //Get Item for Noti
+            var item = await _itemService.FindItemByIdAsync(makeClaimDTO.ItemId);
+            //Noti
+            await NotificationExtensions
+            .NotifyItemClaimedToUser(_userDeviceService, _notificationService, makeClaimDTO.UserId, "Your Claim has been changed back to Pending!",
+            "Your claim on Item " + item.Name + " has been changed back to Pending!");
 
             return ResponseFactory.NoContent();
         }

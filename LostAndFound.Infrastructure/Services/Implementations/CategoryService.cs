@@ -133,6 +133,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Category>(categoryId);
             }
+            //Check name
+            var categoryCheck = await _categoryRepository.FindCategoryByNameAsync(categoryWriteDTO.Name);
+            if (categoryCheck != null)
+            {
+                if(categoryCheck.Id != categoryId)
+                {
+                    throw new CategoryNameAlreadyUsedException();
+                }
+            }
 
             _mapper.Map(categoryWriteDTO, category);
             await _unitOfWork.CommitAsync();

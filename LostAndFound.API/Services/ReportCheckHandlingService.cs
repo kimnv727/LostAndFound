@@ -46,6 +46,7 @@ namespace LostAndFound.API.Services
                     _logger!.LogInformation("Checking report.");
                     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
                     var reportRepository = scope.ServiceProvider.GetRequiredService<IReportRepository>();
+                    var emailSendingService = scope.ServiceProvider.GetRequiredService<IEmailSendingService>();
                     List<Report> reports = (await reportRepository.GetAllSolvingReportAsync()).ToList();
                     foreach (var report in reports)
                     {
@@ -53,7 +54,7 @@ namespace LostAndFound.API.Services
                         {
                             if(report.UpdatedDate != null)
                             {
-                                if (DateTime.Now.ToVNTime() >= report.UpdatedDate?.AddDays(14))
+                                if (DateTime.Now.ToVNTime() >= report.UpdatedDate?.AddDays(14) && report.Status == ReportStatus.SOLVING)
                                 {
                                     report.Status = ReportStatus.FAILED;
                                     report.ReportComment = "Report cannot be solved because the reported User with name " 
@@ -61,6 +62,8 @@ namespace LostAndFound.API.Services
                                         + " did not cooperate.";
                                     //Ban User & send email
                                     await userService.ChangeUserStatusAsync(report.Item.ItemClaims.First().User.Id);
+                                    //Send email fail to B
+                                    emailSendingService.SendMailReportBFail(report.UserId, report.Item.Name);
                                 }
                             }
                         }

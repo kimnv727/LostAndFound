@@ -266,10 +266,10 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .Include(i => i.Receipts)
                             .ThenInclude(r => r.Media)
                             .Where(i => i.ItemStatus == ItemStatus.RETURNED && i.FoundUserId != userId
-                            && i.Receipts.FirstOrDefault(r => 
+                            && i.Receipts.OrderByDescending(r => r.CreatedDate).FirstOrDefault(r => 
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
                             && r.IsActive == true).CreatedDate.AddDays(7) >= DateTime.Now 
-                            && i.Receipts.FirstOrDefault(r =>
+                            && i.Receipts.OrderByDescending(r => r.CreatedDate).FirstOrDefault(r =>
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
                             && r.IsActive == true).ReceiverId != userId)
                             .AsSplitQuery();
@@ -345,13 +345,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             }
             if (query.ReturnedDateFrom > DateTime.MinValue)
             {
-                items = items.Where(i => i.Receipts.FirstOrDefault(r =>
+                items = items.Where(i => i.Receipts.OrderByDescending(r => r.CreatedDate).FirstOrDefault(r =>
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
                             && r.IsActive == true).CreatedDate >= query.ReturnedDateFrom);
             }
             if (query.ReturnedDateTo > DateTime.MinValue)
             {
-                items = items.Where(i => i.Receipts.FirstOrDefault(r =>
+                items = items.Where(i => i.Receipts.OrderByDescending(r => r.CreatedDate).FirstOrDefault(r =>
                             (r.ReceiptType == ReceiptType.RETURN_OUT_STORAGE || r.ReceiptType == ReceiptType.RETURN_USER_TO_USER)
                             && r.IsActive == true).CreatedDate <= query.ReturnedDateTo);
             }

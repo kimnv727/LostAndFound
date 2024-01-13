@@ -82,6 +82,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<CategoryGroup>(categoryGroupId);
             }
+            //Check name
+            var categoryCheck = await _categoryGroupRepository.FindCategoryGroupByNameAsync(categoryGroupWriteDTO.Name);
+            if (categoryCheck != null)
+            {
+                if (categoryCheck.Id != categoryGroupId)
+                {
+                    throw new CategoryGroupNameAlreadyUsedException();
+                }
+            }
 
             _mapper.Map(categoryGroupWriteDTO, categoryGroup);
             await _unitOfWork.CommitAsync();

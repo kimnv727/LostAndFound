@@ -41,6 +41,7 @@ namespace LostAndFound.Infrastructure.Services.Interfaces
         public Task AcceptAClaimAsync(int itemId, string userId);
         public Task<TransferRecordReadDTO> AcceptAClaimAndCreateReceiptAsync(int itemId, string receiverId, IFormFile receiptMedia);
         public Task DenyAClaimAsync(int itemId, string userId);
+        public Task RevokeDenyAClaimAsync(int itemId, string userId);
         public Task<ItemReadWithReceiptDTO> ReceiveAnItemIntoStorageAsync(string userId, ItemIntoStorageWithReceiptWriteDTO writeDTO);
         public Task<ItemReadWithReceiptDTO> TransferAnItemIntoStorageAsync(string userId, ItemUpdateTransferToStorageDTO updateDTO);
     }

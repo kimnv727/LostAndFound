@@ -262,7 +262,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     FirstName = "Storage Manager",
                     LastName = "Account",
                     Gender = Gender.Female,
-                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "StorageManager",
                     CampusId = 1,
@@ -899,7 +899,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Item item1 = new Item()
                     {
                         Name = "Macbook Air",
-                        Description = "I lost my macbook air please help me find it",
+                        Description = "Minh de quen cai macbook air mau trang va bi mat, mong moi nguoi giup do minh, neu co thay thi hay lien lac voi minh.",
                         LocationId = 1,
                         CategoryId = 1,
                         CreatedDate = DateTime.Now.ToVNTime(),
@@ -932,7 +932,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Item item2 = new Item()
                     {
                         Name = "Canon DSLR",
-                        Description = "Help me find my DSLR, some roadman stole it from me and yeeted it somewhere",
+                        Description = "Giup minh tim lai chiec DSLR minh de lac mat sau hoat dong cau lac bo, xin moi nguoi giup do.",
                         LocationId = 26,
                         CategoryId = 2,
                         CreatedDate = DateTime.Now.ToVNTime(),

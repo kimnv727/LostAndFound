@@ -103,12 +103,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(reportStatus == ReportStatus.SOLVING)
             {
                 //send email A 
-                _emailSendingService.SendMailReportA(report.Item.ItemClaims.First().User.Id, report.Item.Name);
+                _emailSendingService.SendMailReportA(report.Item.ItemClaims.First().User.Email, report.Item.Name);
             }
             if (reportStatus == ReportStatus.DENIED)
             {
                 //send email A 
-                _emailSendingService.SendMailReportDenied(report.UserId, report.Item.Name);
+                _emailSendingService.SendMailReportDenied(report.User.Email, report.Item.Name);
             }
 
             return _mapper.Map<ReportReadDTO>(report);
@@ -126,7 +126,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 report.ReportComment = updateDTO.ReportComment;
                 //send email
-                _emailSendingService.SendMailReportBFail(report.UserId, report.Item.Name);
+                _emailSendingService.SendMailReportBFail(report.User.Email, report.Item.Name);
             }
             await _unitOfWork.CommitAsync();
 

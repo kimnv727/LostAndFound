@@ -63,7 +63,7 @@ namespace LostAndFound.API.Services
                                     //Ban User & send email
                                     await userService.ChangeUserStatusAsync(report.Item.ItemClaims.First().User.Id);
                                     //Send email fail to B
-                                    emailSendingService.SendMailReportBFail(report.UserId, report.Item.Name);
+                                    emailSendingService.SendMailReportBFail(report.User.Email, report.Item.Name);
                                 }
                             }
                         }

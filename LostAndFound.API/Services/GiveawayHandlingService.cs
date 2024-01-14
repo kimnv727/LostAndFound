@@ -128,7 +128,7 @@ namespace LostAndFound.API.Services
                                     };
                                     await giveawayRepository.PushNotificationForGiveawayResult(noti);
                                 //also send mail
-                                emailService.SendMailGiveawayWinner(gp.UserId, fg.Item.Name);
+                                emailService.SendMailGiveawayWinner(gp.User.Email, fg.Item.Name);
                                 }
                                 else
                                 {
@@ -191,7 +191,7 @@ namespace LostAndFound.API.Services
                                                 await giveawayRepository.PushNotificationForGiveawayResult(noti);
                                                 //also send mail
                                                 
-                                                emailService.SendMailGiveawayWinner(gp.UserId, giveaway.Item.Name);
+                                                emailService.SendMailGiveawayWinner(gp.User.Email, giveaway.Item.Name);
                                             }
                                         }
                                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
@@ -206,7 +206,7 @@ namespace LostAndFound.API.Services
                                         giveawayParticipants.FirstOrDefault(gp => gp.IsActive == true && gp.IsWinner == true
                                         && gp.IsChosenAsWinner == true).IsWinner = false;
                                         await giveawayParticipantRepository.UpdateGiveawayParticipantRange(giveawayParticipants.ToArray());
-                                        emailService.SendMailGiveawayReroll(currentWinner.UserId, giveaway.Item.Name);
+                                        emailService.SendMailGiveawayReroll(currentWinner.User.Email, giveaway.Item.Name);
                                     }
 
                                 }

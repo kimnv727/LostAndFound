@@ -335,7 +335,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             receipt.IsActive = true;
 
             //send email to the user B to go up
-            _emailSendingService.SendMailReportBSuccess(report.UserId, report.Item.Name);
+            _emailSendingService.SendMailReportBSuccess(report.User.Email, report.Item.Name);
 
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();

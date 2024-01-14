@@ -56,8 +56,8 @@ namespace LostAndFound.Infrastructure.Extensions
                 #region Add Campuses
                 Campus campus = new Campus
                 {
-                    Name = "FPT HCM Campus",
-                    Address = "FPT HCM Campus",
+                    Name = "FPT Ho Chi Minh Campus",
+                    Address = "FPT Ho Chi Minh Campus",
                     //CampusLocation = CampusLocation.HO_CHI_MINH
                 };
                 context.Campuses.Add(campus);

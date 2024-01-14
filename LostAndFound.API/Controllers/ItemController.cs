@@ -653,7 +653,7 @@ namespace LostAndFound.API.Controllers
             string currentUserId = User.Claims.First(clm => clm.Type == ClaimTypes.NameIdentifier).Value;
             if (await _itemService.CheckItemFounderAsync(makeClaimDTO.ItemId, currentUserId))
             {
-                await _itemService.DenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
+                await _itemService.RevokeDenyAClaimAsync(makeClaimDTO.ItemId, makeClaimDTO.UserId);
             }
             else throw new ItemFounderNotMatchException();
 

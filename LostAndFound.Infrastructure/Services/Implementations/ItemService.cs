@@ -94,7 +94,10 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 r.WrongCount = i.ItemFlags.Where(f => f.ItemFlagReason == ItemFlagReason.WRONG && f.IsActive == true).Count();
                 r.InapproriateCount = i.ItemFlags.Where(f => f.ItemFlagReason == ItemFlagReason.INAPPROPRIATE && f.IsActive == true).Count();
                 r.TotalCount = i.ItemFlags.Where(f => f.IsActive == true).Count();
-                result.Add(r);
+                if(r.TotalCount > 0)
+                {
+                    result.Add(r);
+                }         
             }
 
             return PaginatedResponse<ItemDetailWithFlagReadDTO>.FromEnumerableWithMapping(result, query, _mapper);

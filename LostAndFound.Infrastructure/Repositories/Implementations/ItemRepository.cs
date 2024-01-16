@@ -508,7 +508,8 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                             .ThenInclude(im => im.Media)
                             .Include(i => i.ItemClaims)
                             .Include(i => i.ItemFlags)
-                            .Where(i => i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED && i.ItemFlags.Count() > 0)
+                            .Where(i => i.ItemStatus != ItemStatus.PENDING && i.ItemStatus != ItemStatus.REJECTED 
+                            && i.ItemFlags.Where(ifg => ifg.IsActive == true).Count() > 0)
                             .AsSplitQuery();
 
             if (!trackChanges)

@@ -1034,6 +1034,17 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Categories.Add(keychain);
                 context.SaveChanges();
+
+                Category foodContainer = new Category()
+                {
+                    Name = "Food Container",
+                    Description = "Food Container",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 7,
+                };
+                context.Categories.Add(foodContainer);
+                context.SaveChanges();
                 #endregion
 
                 #region Add Storages

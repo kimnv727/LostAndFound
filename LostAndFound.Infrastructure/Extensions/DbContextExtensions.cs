@@ -1163,9 +1163,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                         ItemStatus = ItemStatus.ACTIVE,
                         IsInStorage = true,
-                        //TODO: fix
                         FoundDate = "2023-11-10|Slot 3",
-                        //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias2,
                     };
                     context.Items.Add(item2);

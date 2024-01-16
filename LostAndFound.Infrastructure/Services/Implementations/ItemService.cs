@@ -614,7 +614,8 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             item.ItemStatus = ItemStatus.ACTIVE;
             item.IsInStorage = true;
             item.CabinetId = updateDTO.CabinetId;
-
+            //Change foundUserId into storage manager too
+            item.FoundUserId = cabinet.Storage.MainStorageManagerId;
             await _unitOfWork.CommitAsync();
 
             //Create Receipt

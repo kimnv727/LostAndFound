@@ -7,6 +7,7 @@ using F23.StringSimilarity;
 using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Category;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -164,6 +165,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<User>(userId);
             }
+            //check verified
+            if (user.VerifyStatus != UserVerifyStatus.VERIFIED)
+            {
+                throw new UserNotVerifiedException();
+            }
+
             //Map Post
             var post = _mapper.Map<Post>(postWriteDTO);
             post.PostUserId = userId;

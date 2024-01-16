@@ -143,6 +143,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await Task.FromResult(result.ToList());
         }
 
+        public async Task<IEnumerable<Report>> CountSolvingReportByItemIdAsync(int itemId)
+        {
+            var result = _context.Reports
+                .Where(r => r.ItemId == itemId && r.Status == ReportStatus.SOLVING);
+            return await Task.FromResult(result.ToList());
+        }
+
         public async Task<IEnumerable<Report>> GetReportByUserAndItemIdAsync(string userId, int itemId)
         {
             var result = _context.Reports

@@ -96,6 +96,8 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Add Users
+
+                    #region Admin
                 List<UserMedia> userMedias1 = new List<UserMedia>();
                 UserMedia userMedia1 = new UserMedia()
                 {
@@ -104,7 +106,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfAdmin.png",
                         Description = "Avatar of Admin Account",
                         URL = "https://files.catbox.moe/05jiq7.png?fbclid=IwAR0d2x-q19sCGIvjAoZVqwt5xzEtHe72ONjqWTs-RkLdTx4fEI2ERIL7oOM",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -125,12 +127,14 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "ADMIN",
                     CampusId = 1,
                     RoleId = 1,
-                    CreatedDate = DateTime.Now.ToVNTime(),
+                    CreatedDate = new DateTime(2023, 1, 1),
                     UserMedias = userMedias1
                 };
                 context.Users.Add(adminUser);
                 context.SaveChanges();
+                #endregion
 
+                    #region Manager
                 List<UserMedia> userMedias2 = new List<UserMedia>();
                 UserMedia userMedia2 = new UserMedia()
                 {
@@ -139,7 +143,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfManager1.png",
                         Description = "Avatar of Manager1 Account",
                         URL = "https://pbs.twimg.com/media/FuaR5ktaIAEYzQy?format=jpg&name=medium",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -150,7 +154,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "FrontCCIDOfManager1.png",
                         Description = "Front CCID of Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
@@ -161,7 +165,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "BackCCIDOfManager2.png",
                         Description = "Back CCID of Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
@@ -172,7 +176,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "StudentCardOfManager2.png",
                         Description = "Student Card of Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.STUDENT_CARD
                 };
@@ -196,12 +200,14 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "Manager1",
                     CampusId = 1,
                     RoleId = 2,
-                    CreatedDate = DateTime.Now.ToVNTime(),
+                    CreatedDate = new DateTime(2023, 1, 1),
                     UserMedias = userMedias2
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
+                #endregion
 
+                    #region Storage Manager
                 List<UserMedia> userMedias3 = new List<UserMedia>();
                 UserMedia userMedia3 = new UserMedia()
                 {
@@ -210,7 +216,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfStorageManager1.png",
                         Description = "Avatar of Storage Manager1 Account",
                         URL = "https://pbs.twimg.com/profile_images/1091963888021602305/9440xgqT_400x400.jpg",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -221,7 +227,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "FrontCCIDOfStorageManager1.png",
                         Description = "Front CCID of Storage Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
@@ -232,7 +238,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "BackCCIDOfStorageManager2.png",
                         Description = "Back CCID of Storage Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
@@ -243,7 +249,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "StudentCardOfManager2.png",
                         Description = "Student Card of Manager Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 1, 1),
                     },
                     MediaType = UserMediaType.STUDENT_CARD
                 };
@@ -267,12 +273,14 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "StorageManager",
                     CampusId = 1,
                     RoleId = 3,
-                    CreatedDate = DateTime.Now.ToVNTime(),
+                    CreatedDate = new DateTime(2023, 1, 1),
                     UserMedias = userMedias3
                 };
                 context.Users.Add(user2);
                 context.SaveChanges();
+                #endregion
 
+                    #region Member - Kim fpt
                 List<UserMedia> userMedias4 = new List<UserMedia>();
                 UserMedia userMedia4 = new UserMedia()
                 {
@@ -332,8 +340,8 @@ namespace LostAndFound.Infrastructure.Extensions
                     IsActive = true,
                     FirstName = "Nguyen Van Kim",
                     LastName = "(K15 HCM)",
-                    Gender = Gender.Female,
-                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
                     SchoolId = "USER",
                     CampusId = 1,
@@ -343,7 +351,154 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Users.Add(user3);
                 context.SaveChanges();
+                #endregion
 
+                    #region Member - CongThanh (for deny verified)
+                List<UserMedia> userMediasCT = new List<UserMedia>();
+                UserMedia userMediaCT = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfCT.png",
+                        Description = "Avatar of CT Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocKPaqlljRt6bLPk-9rwcyVAoKAPc7znmNKt6ErIpM5w=s96-c",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                UserMedia userMediaCCIDCT = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "FrontCCIDOfCT.png",
+                        Description = "Front CCID of CT Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
+                };
+                UserMedia userMediaCCIDCT2 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "BackCCIDOfCT.png",
+                        Description = "Back CCID of CT Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
+                };
+                UserMedia userMediaStudentCT = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "StudentCardOfCT.png",
+                        Description = "Back CCID of CT Account",
+                        URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    },
+                    MediaType = UserMediaType.STUDENT_CARD
+                };
+                userMediasCT.Add(userMediaCT);
+                userMediasCT.Add(userMediaCCIDCT);
+                userMediasCT.Add(userMediaCCIDCT2);
+                userMediasCT.Add(userMediaStudentCT);
+
+                User userCT = new User()
+                {
+                    Id = "EHJGxqTLgVaaFW3BTsE3BI0lIgm2",
+                    Email = "ct4862101@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocKPaqlljRt6bLPk-9rwcyVAoKAPc7znmNKt6ErIpM5w=s96-c",
+                    IsActive = true,
+                    FirstName = "Cong",
+                    LastName = "Thanh",
+                    Gender = Gender.Female,
+                    VerifyStatus = UserVerifyStatus.WAITING_VERIFIED,
+                    Phone = "0101010101",
+                    SchoolId = "CT123456",
+                    CampusId = 1,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2024, 1, 10),
+                    UserMedias = userMediasCT
+                };
+                context.Users.Add(userCT);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - Bao fpt
+                List<UserMedia> userMediasBao = new List<UserMedia>();
+                UserMedia userMediaBao = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfBao.png",
+                        Description = "Avatar of Bao Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocK19tliPY9j0kh7IRX4FJ_D-FgOGgUIE2Z-Vl_ihK4S=s96-c",
+                        CreatedDate = new DateTime(2023, 12, 15),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasBao.Add(userMediaBao);
+
+                User userBao = new User()
+                {
+                    Id = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    Email = "baongse150657@fpt.edu.vn",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocK19tliPY9j0kh7IRX4FJ_D-FgOGgUIE2Z-Vl_ihK4S=s96-c",
+                    IsActive = true,
+                    FirstName = "Nguyen Gia Bao",
+                    LastName = "(K15 HCM)",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0934979633",
+                    SchoolId = "SE150657",
+                    CampusId = 1,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 12, 15),
+                    UserMedias = userMediasBao
+                };
+                context.Users.Add(userBao);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - Duc fpt
+                List<UserMedia> userMediasDuc = new List<UserMedia>();
+                UserMedia userMediaDuc = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfDuc.png",
+                        Description = "Avatar of Duc Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocLx7B9iEfEgeNY_bU-SLnsxQXS620nJoR_T90OSeraA=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 17),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasDuc.Add(userMediaDuc);
+
+                User userDuc = new User()
+                {
+                    Id = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    Email = "duchmde150269@fpt.edu.vn",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocLx7B9iEfEgeNY_bU-SLnsxQXS620nJoR_T90OSeraA=s96-c",
+                    IsActive = true,
+                    FirstName = "Huynh Minh Duc",
+                    LastName = "(K15 DN)",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908777888",
+                    SchoolId = "DE150269",
+                    CampusId = 1,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 17),
+                    UserMedias = userMediasDuc
+                };
+                context.Users.Add(userDuc);
+                context.SaveChanges();
+                #endregion
 
                 #endregion
 
@@ -413,7 +568,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 305", Floor = 3, IsActive = true });
                     #endregion
 
-                #region NVH
+                    #region NVH
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 506 (NVH)", Floor = 5, IsActive = true });
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 507 (NVH)", Floor = 5, IsActive = true });
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 508 (NVH)", Floor = 5, IsActive = true });
@@ -868,12 +1023,80 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Categories.Add(helmet);
                 context.SaveChanges();
+
+                Category keychain = new Category()
+                {
+                    Name = "Key Chain",
+                    Description = "Key Chain",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 4,
+                };
+                context.Categories.Add(keychain);
+                context.SaveChanges();
+                #endregion
+
+                #region Add Storages
+                Storage storage1 = new Storage
+                {
+                    CampusId = 1,
+                    Location = "Copper Drum Lobby",
+                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Storages.Add(storage1);
+                context.SaveChanges();
+                Storage storage2 = new Storage
+                {
+                    CampusId = 1,
+                    Location = "Back Gate",
+                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Storages.Add(storage2);
+                context.SaveChanges();
+                #endregion
+
+                #region Add Cabinets
+                List<Cabinet> cabinets1 = new List<Cabinet>();
+                cabinets1.Add(new Cabinet() { Name = "A1", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A2", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A3", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A4", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A5", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A6", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A7", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A8", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A9", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets1.Add(new Cabinet() { Name = "A10", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
+                foreach (var c in cabinets1)
+                {
+                    context.Cabinets.Add(c);
+                    context.SaveChanges();
+                }
+
+                List<Cabinet> cabinets2 = new List<Cabinet>();
+                cabinets2.Add(new Cabinet() { Name = "B1", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B2", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B3", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B4", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B5", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B6", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B7", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B8", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B9", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                cabinets2.Add(new Cabinet() { Name = "B10", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
+                foreach (var c in cabinets2)
+                {
+                    context.Cabinets.Add(c);
+                    context.SaveChanges();
+                }
                 #endregion
 
                 #region Add Items
 
-                    #region Item 1
-                    List<ItemMedia> medias1 = new List<ItemMedia>();
+                #region Item 1
+                List<ItemMedia> medias1 = new List<ItemMedia>();
                     ItemMedia itemMedia1 = new ItemMedia()
                     {
                         Media = new Media()
@@ -881,7 +1104,7 @@ namespace LostAndFound.Infrastructure.Extensions
                             Name = "Item1.png",
                             Description="Item 1 Image",
                             URL= "https://haloshop.vn/image/cache/catalog/products/apple/macbook/macbook-pro-2020-13-inch-chip-m1-gray-00-700x700.jpg",
-                            CreatedDate = DateTime.Now.ToVNTime(),
+                            CreatedDate = new DateTime(2023, 10, 11),
                         }
                     };
                     ItemMedia itemMedia2nd1 = new ItemMedia()
@@ -891,18 +1114,19 @@ namespace LostAndFound.Infrastructure.Extensions
                             Name = "Item1.png",
                             Description = "Item 1 2nd Image",
                             URL = "https://cdn.tgdd.vn/Products/Images/44/231244/grey-1-org.jpg",
-                            CreatedDate = DateTime.Now.ToVNTime(),
+                            CreatedDate = new DateTime(2023, 10, 11),
                         }
                     };
+                    medias1.Add(itemMedia1);
                     medias1.Add(itemMedia2nd1);
 
                     Item item1 = new Item()
                     {
                         Name = "Macbook Air",
-                        Description = "Minh de quen cai macbook air mau trang va bi mat, mong moi nguoi giup do minh, neu co thay thi hay lien lac voi minh.",
-                        LocationId = 1,
+                        Description = "Minh co tim thay mot macbook air mau trang sau gio hoc slot 1",
+                        LocationId = 8,
                         CategoryId = 1,
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 10, 11),
                         FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                         ItemStatus = ItemStatus.PENDING,
                         IsInStorage = false,
@@ -915,7 +1139,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     context.SaveChanges();
                     #endregion
 
-                    #region Item 2
+                #region Item 2
                     List<ItemMedia> medias2 = new List<ItemMedia>();
                     ItemMedia itemMedia2 = new ItemMedia()
                     {
@@ -924,7 +1148,7 @@ namespace LostAndFound.Infrastructure.Extensions
                             Name = "Item2.png",
                             Description = "Item 2 Image",
                             URL = "https://zshop.vn/blogs/wp-content/uploads/2022/07/Canon_EOS_R7_hands-on_angled_hands-768x576.jpeg",
-                            CreatedDate = DateTime.Now.ToVNTime(),
+                            CreatedDate = new DateTime(2023, 11, 11),
                         }
                     };
                     medias2.Add(itemMedia2);
@@ -932,20 +1156,186 @@ namespace LostAndFound.Infrastructure.Extensions
                     Item item2 = new Item()
                     {
                         Name = "Canon DSLR",
-                        Description = "Giup minh tim lai chiec DSLR minh de lac mat sau hoat dong cau lac bo, xin moi nguoi giup do.",
+                        Description = "Minh co lum duoc mot chiec DSLR sau hoat dong cau lac bo.",
                         LocationId = 26,
                         CategoryId = 2,
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 11, 11),
                         FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                         ItemStatus = ItemStatus.ACTIVE,
                         IsInStorage = true,
                         //TODO: fix
-                        FoundDate = "2023-11-11|Slot 3",
+                        FoundDate = "2023-11-10|Slot 3",
                         //FoundDate = DateTime.Now.ToVNTime(),
                         ItemMedias = medias2,
                     };
                     context.Items.Add(item2);
                     context.SaveChanges();
+                #endregion
+
+                #region Item 3 - Expired for Ongoing Giveaway
+                List<ItemMedia> medias3 = new List<ItemMedia>();
+                ItemMedia itemMedia3 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item3.png",
+                        Description = "Item 3 Image",
+                        URL = "https://quaviet365.vn/huc/fitting-570-425-100/20230810/moc-khoa-2-20230810150640183.jpg",
+                        CreatedDate = new DateTime(2023, 6, 12),
+                    }
+                };
+                medias3.Add(itemMedia3);
+
+                Item item3 = new Item()
+                {
+                    Name = "Moc khoa hinh chibi",
+                    Description = "Minh co lum duoc mot moc khoa hinh chibi.",
+                    LocationId = 10,
+                    CategoryId = 15,
+                    CreatedDate = new DateTime(2023, 6, 12),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.EXPIRED,
+                    IsInStorage = true,
+                    CabinetId = 3,
+                    FoundDate = "2023-6-11|Slot 3",
+                    ItemMedias = medias3,
+                };
+                context.Items.Add(item3);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 4 - Expired for Reward Giveaway
+                List<ItemMedia> medias4 = new List<ItemMedia>();
+                ItemMedia itemMedia4 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item4.png",
+                        Description = "Item 4 Image",
+                        URL = "https://down-vn.img.susercontent.com/file/vn-11134201-7r98o-ln72ji12v848ee",
+                        CreatedDate = new DateTime(2023, 7, 16),
+                    }
+                };
+                medias4.Add(itemMedia4);
+
+                Item item4 = new Item()
+                {
+                    Name = "Binh nuoc giu nhiet Lock & Lock",
+                    Description = "Minh co lum duoc mot Binh nuoc giu nhiet Lock & Lock o Passio.",
+                    LocationId = 2,
+                    CategoryId = 13,
+                    CreatedDate = new DateTime(2023, 7, 16),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.EXPIRED,
+                    IsInStorage = true,
+                    CabinetId = 4,
+                    FoundDate = "2023-7-15|Slot 2",
+                    ItemMedias = medias4,
+                };
+                context.Items.Add(item4);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 5 - Expired for Not Started Giveaway
+                List<ItemMedia> medias5 = new List<ItemMedia>();
+                ItemMedia itemMedia5 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item5.png",
+                        Description = "Item 5 Image",
+                        URL = "https://quatangthuonghieu.vn/wp-content/uploads/2019/09/non-bao-hiem-80-1.jpg",
+                        CreatedDate = new DateTime(2023, 7, 22),
+                    }
+                };
+                medias5.Add(itemMedia5);
+
+                Item item5 = new Item()
+                {
+                    Name = "Non bao hiem mau hong",
+                    Description = "Minh co lum duoc mot non bao hiem mau hong vao slot 4.",
+                    LocationId = 5,
+                    CategoryId = 14,
+                    CreatedDate = new DateTime(2023, 7, 22),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.EXPIRED,
+                    IsInStorage = true,
+                    CabinetId = 5,
+                    FoundDate = "2023-7-21|Slot 4",
+                    ItemMedias = medias5,
+                };
+                context.Items.Add(item5);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 6 - Recently Returned for Report
+                List<ItemMedia> medias6 = new List<ItemMedia>();
+                ItemMedia itemMedia6 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item6.png",
+                        Description = "Item 6 Image",
+                        URL = "https://hanoicomputercdn.com/media/product/37667_mouse_dell_ms116_usb_black_1.jpg",
+                        CreatedDate = new DateTime(2024, 1, 15),
+                    }
+                };
+                medias6.Add(itemMedia6);
+
+                Item item6 = new Item()
+                {
+                    Name = "Chuot may tinh Dell mau den",
+                    Description = "Minh co lum duoc mot con chuot may tinh Dell mau den.",
+                    LocationId = 6,
+                    CategoryId = 9,
+                    CreatedDate = new DateTime(2024, 1, 15),
+                    FoundUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    ItemStatus = ItemStatus.RETURNED,
+                    IsInStorage = true,
+                    CabinetId = 5,
+                    FoundDate = "2024-1-14|Slot 1",
+                    ItemMedias = medias6,
+                };
+                context.Items.Add(item6);
+                context.SaveChanges();
+                #endregion
+
+                #region Claim for Item 6 and already Accepted - acc Duc
+                ItemClaim itemClaim1 = new ItemClaim()
+                {
+                    ItemId = 6,
+                    UserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    IsActive = true,
+                    ClaimStatus = ClaimStatus.ACCEPTED,
+                    ClaimDate = DateTime.Now.ToVNTime()
+                };
+                context.ItemClaims.Add(itemClaim1);
+                context.SaveChanges();
+                #endregion
+
+                #region Receipt for return Item 6 - Placeholder pic atm
+                Media mediaForRecord1 = new Media()
+                {
+                    Name = "Record1.png",
+                    Description = "Record 1 Image",
+                    URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK9LWLIlSp4HJH4Xkm6VJYQGys7e70FSr5vWl8GL9YcuS_6JNn9J6RBJeZbpdnwHbJpAY&usqp=CAU",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Medias.Add(mediaForRecord1);
+                context.SaveChanges();
+                TransferRecord record1 = new TransferRecord()
+                {
+                    ItemId = 6,
+                    ReceiverId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    SenderId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    IsActive = true,
+                    Media = mediaForRecord1,
+                    ReceiptImage = mediaForRecord1.Id,
+                    ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.TransferRecords.Add(record1);
+                context.SaveChanges();
                 #endregion
 
                 #endregion
@@ -993,7 +1383,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
-                #region Post 2
+                    #region Post 2
                 List<PostMedia> postMedias2 = new List<PostMedia>();
                 PostMedia postMedia2 = new PostMedia()
                 {
@@ -1035,61 +1425,48 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 #endregion
 
-                #region Add Storages
-                Storage storage1 = new Storage
+                #region Giveaway
+
+                #region Giveaway 1 - Ongoing
+                Giveaway giveaway1 = new Giveaway()
                 {
-                    CampusId = 1,
-                    Location = "Copper Drum Lobby",
-                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
-                    CreatedDate = DateTime.Now.ToVNTime()
+                    ItemId = 3,
+                    StartAt = new DateTime(2024, 1, 15),
+                    EndAt = new DateTime(2024, 1, 22),
+                    GiveawayStatus = GiveawayStatus.ONGOING,
+                    CreatedDate = new DateTime(2024, 1, 14)
                 };
-                context.Storages.Add(storage1);
-                context.SaveChanges();
-                Storage storage2 = new Storage
-                {
-                    CampusId = 1,
-                    Location = "Back Gate",
-                    MainStorageManagerId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
-                    CreatedDate = DateTime.Now.ToVNTime()
-                };
-                context.Storages.Add(storage2);
+                context.Giveaways.Add(giveaway1);
                 context.SaveChanges();
                 #endregion
 
-                #region Add Cabinets
-                List<Cabinet> cabinets1 = new List<Cabinet>();
-                cabinets1.Add(new Cabinet() { Name = "A1", StorageId = 1, CreatedDate= DateTime.Now.ToVNTime()});
-                cabinets1.Add(new Cabinet() { Name = "A2", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A3", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A4", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A5", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A6", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A7", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A8", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A9", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets1.Add(new Cabinet() { Name = "A10", StorageId = 1, CreatedDate = DateTime.Now.ToVNTime() });
-                foreach (var c in cabinets1)
+                #region Giveaway 2 - Reward
+                Giveaway giveaway2 = new Giveaway()
                 {
-                    context.Cabinets.Add(c);
-                    context.SaveChanges();
-                }
+                    ItemId = 4,
+                    StartAt = new DateTime(2024, 1, 18),
+                    EndAt = new DateTime(2024, 1, 20),
+                    GiveawayStatus = GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS,
+                    CreatedDate = new DateTime(2024, 1, 12)
+                };
+                context.Giveaways.Add(giveaway2);
+                context.SaveChanges();
+                #endregion
 
-                List<Cabinet> cabinets2 = new List<Cabinet>();
-                cabinets2.Add(new Cabinet() { Name = "B1", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B2", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B3", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B4", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B5", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B6", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B7", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B8", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B9", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                cabinets2.Add(new Cabinet() { Name = "B10", StorageId = 2, CreatedDate = DateTime.Now.ToVNTime() });
-                foreach (var c in cabinets2)
+                #region Participant for Giveaway 2
+                GiveawayParticipant gp1 = new GiveawayParticipant()
                 {
-                    context.Cabinets.Add(c);
-                    context.SaveChanges();
-                }
+                    GiveawayId = 2,
+                    UserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    IsActive = true,
+                    IsChosenAsWinner = true,
+                    IsWinner = true,
+                    CreatedDate = new DateTime(2024, 1, 19)
+                };
+                context.GiveawayParticipants.Add(gp1);
+                context.SaveChanges();
+                #endregion
+
                 #endregion
 
                 #region Misc

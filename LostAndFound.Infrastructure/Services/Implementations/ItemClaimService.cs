@@ -5,6 +5,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.ItemClaim;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Extensions;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Common;
@@ -76,6 +77,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (user == null)
             {
                 throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            //check verified
+            if (user.VerifyStatus != UserVerifyStatus.VERIFIED)
+            {
+                throw new UserNotVerifiedException();
             }
 
             var item = await _itemRepository.FindItemByIdAsync(itemId);

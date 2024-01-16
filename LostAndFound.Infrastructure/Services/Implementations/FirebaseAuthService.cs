@@ -51,7 +51,7 @@ namespace LostAndFound.API.Authentication
                     var userCredentials =
                         await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
 
-                    _emailSendingService.SendMailToRegister("kimnvse150529@fpt.edu.vn");
+                    //_emailSendingService.SendMailToRegister("kimnvse150529@fpt.edu.vn");
                         
                     if (userCredentials != null)
                     {
@@ -100,6 +100,11 @@ namespace LostAndFound.API.Authentication
                 if(user.CampusId != campusId)
                 {
                     throw new WrongCampusException();
+                }
+                //check if user role
+                if(user.RoleId != 4)
+                {
+                    throw new NotAMemberException();
                 }
 
                 return _mapper.Map<UserDetailAuthenticateReadDTO>(user);

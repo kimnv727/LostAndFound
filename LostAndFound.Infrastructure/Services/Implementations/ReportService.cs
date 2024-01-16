@@ -3,6 +3,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.Item;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Core.Exceptions.ViolationReport;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Report;
@@ -46,6 +47,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if (user == null)
             {
                 throw new EntityWithIDNotFoundException<User>(userId);
+            }
+
+            //check verified
+            if(user.VerifyStatus != UserVerifyStatus.VERIFIED)
+            {
+                throw new UserNotVerifiedException();
             }
 
             //Get number of Report
@@ -97,11 +104,25 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<Report>(reportId);
             }
+
+            if (reportStatus == ReportStatus.SOLVING)
+            {
+                //check how many solving report currently
+                var count = await _reportRepository.CountSolvingReportByItemIdAsync(report.ItemId);
+                if (count != null)
+                {
+                    if (count.Count() > 1)
+                    {
+                        throw new OnlyOneSolvingReportAtATimeException();
+                    }
+                }
+            }
+
             report.Status = reportStatus;
             await _unitOfWork.CommitAsync();
 
             if(reportStatus == ReportStatus.SOLVING)
-            {
+            {                
                 //send email A 
                 _emailSendingService.SendMailReportA(report.Item.ItemClaims.First().User.Email, report.Item.Name);
             }

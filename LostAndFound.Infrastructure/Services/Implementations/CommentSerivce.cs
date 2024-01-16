@@ -6,6 +6,7 @@ using LostAndFound.Core.Entities;
 using LostAndFound.Core.Enums;
 using LostAndFound.Core.Exceptions.Common;
 using LostAndFound.Core.Exceptions.Post;
+using LostAndFound.Core.Exceptions.User;
 using LostAndFound.Infrastructure.DTOs.Comment;
 using LostAndFound.Infrastructure.DTOs.Common;
 using LostAndFound.Infrastructure.DTOs.Post;
@@ -141,6 +142,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new EntityWithIDNotFoundException<User>(userId);
             }
+
+            //check verified
+            if (user.VerifyStatus != UserVerifyStatus.VERIFIED)
+            {
+                throw new UserNotVerifiedException();
+            }
+
             //Get Post
             var post = await _postRepository.FindPostByIdAsync(postId);
             if (post == null)

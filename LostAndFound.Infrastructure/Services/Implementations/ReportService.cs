@@ -57,12 +57,12 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             //Get number of Report
             var todayReport = await _reportRepository.CountTodayReportByUserIdAsync(userId);
-            if (todayReport.Count() > 3)
+            if (todayReport.Count() >= 3)
             {
                 throw new CreateReportPastLimitException();
             }
             var itemReport = await _reportRepository.GetReportByUserAndItemIdAsync(userId, writeDTO.ItemId);
-            if (itemReport.Count() > 3)
+            if (itemReport.Count() >= 3)
             {
                 throw new CreateReportPastLimitForThisItemException();
             }

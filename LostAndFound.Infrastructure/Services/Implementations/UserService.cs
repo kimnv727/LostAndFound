@@ -25,9 +25,11 @@ namespace LostAndFound.Infrastructure.Services.Implementations
         private readonly FirebaseAuthClient _firebaseAuth;
         private readonly ICampusRepository _campusRepository;
         private readonly IItemRepository _itemRepository;
+        private readonly IItemClaimRepository _itemClaimRepository;
 
         public UserService(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasherService, 
-            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth, ICampusRepository campusRepository, IItemRepository itemRepository)
+            IEmailSendingService emailSendingService, FirebaseAuthClient firebaseAuth, ICampusRepository campusRepository, 
+            IItemRepository itemRepository, IItemClaimRepository itemClaimRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -37,6 +39,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             _firebaseAuth = firebaseAuth;
             _campusRepository = campusRepository;
             _itemRepository = itemRepository;
+            _itemClaimRepository = itemClaimRepository;
         }
 
         public async Task<PaginatedResponse<UserDetailsReadDTO>> GetAllUsersAsync(UserQuery query)
@@ -165,6 +168,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                         i.ItemStatus = ItemStatus.CLOSED;
                         await _unitOfWork.CommitAsync();
                     }
+                }
+                //Then Disabled all Claims
+                var activeClaims = await _itemClaimRepository.GetAllActiveClaimsByUserIdAsync(id);
+                foreach (var i in activeClaims)
+                {
+                    i.IsActive = false;
+                    await _unitOfWork.CommitAsync();
                 }
             }
             

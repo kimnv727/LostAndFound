@@ -38,7 +38,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
                 .AsSplitQuery()
                 .Include(ic => ic.User)
                 .Include(ic => ic.Item)
-                .Where(ic => ic.UserId == userId && ic.IsActive == true && ic.Item.ItemStatus == ItemStatus.ACTIVE)
+                .Where(ic => ic.UserId == userId && ic.IsActive == true && ic.ClaimStatus != ClaimStatus.DENIED && ic.Item.ItemStatus == ItemStatus.ACTIVE)
                 .OrderByDescending(i => i.ClaimDate)
                 .ToList());
         }

@@ -1740,6 +1740,17 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Categories.Add(batteryBank);
                 context.SaveChanges();
+
+                Category hat = new Category()
+                {
+                    Name = "Hat",
+                    Description = "Hats, caps, etc...",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 6,
+                };
+                context.Categories.Add(hat);
+                context.SaveChanges();
                 #endregion
 
                 #region Add Storages
@@ -2042,8 +2053,6 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #endregion
-
-                //Check location again down from here
 
                 #region Item 7 - Active
                 List<ItemMedia> medias7 = new List<ItemMedia>();
@@ -2631,7 +2640,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 #region Add Posts
 
-                #region Post 1
+                    #region Post 1 - Active
                 List<PostMedia> postMedias1 = new List<PostMedia>();
                 PostMedia postMedia1 = new PostMedia()
                 {
@@ -2640,7 +2649,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "Post1.png",
                         Description = "Post 1 Image",
                         URL = "https://fungift.vn/wp-content/uploads/2020/07/nha-cung-cap-binh-nuoc-uy-tin-1.jpg",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 12, 17),
                     }
                 };
                 postMedias1.Add(postMedia1);
@@ -2655,14 +2664,12 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 Post post1 = new Post()
                 {
-                    Title = "Mat 1 binh nuoc the thao mau xam",
-                    PostContent = "Em co lam rot mot binh nuoc the thao mau xam. Moi nguoi ai nhat duoc xin hay lien he em a.",
+                    Title = "Mất 1 bình nước thể thao màu xám",
+                    PostContent = "Em co làm rớt một bình nước thể thao màu xám. Mọi người ai nhặt được xin hãy liên hệ em ạ.",
                     PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                     LostDateFrom = new DateTime(2023, 12, 17),
                     LostDateTo = null,
-                    //PostLocation = "|5|6|",
-                    //PostCategory = "|13|",
-                    CreatedDate = DateTime.Now.ToVNTime(),
+                    CreatedDate = new DateTime(2023, 12, 17),
                     PostStatus = PostStatus.ACTIVE,
                     PostMedias = postMedias1,
                     Locations = postLoca1,
@@ -2672,7 +2679,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
-                    #region Post 2
+                    #region Post 2 - Pending
                 List<PostMedia> postMedias2 = new List<PostMedia>();
                 PostMedia postMedia2 = new PostMedia()
                 {
@@ -2694,13 +2701,11 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 Post post2 = new Post()
                 {
-                    Title = "Mat 1 con chuot logitach mau do",
-                    PostContent = "Sang nay em co lam mat con chuot logitach mau do. Moi nguoi ai nhat duoc xin hay lien he em a.",
+                    Title = "Mất 1 con chuột logitech màu đỏ",
+                    PostContent = "Sáng nay em có làm mất con chuot logitech màu đỏ. Mọi người có ai nhặt được xin hãy liên hệ em ạ.",
                     PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
-                    LostDateFrom = new DateTime(2023, 12, 16),
+                    LostDateFrom = new DateTime(2023, 12, 20),
                     LostDateTo = null,
-                    //PostLocation = "|10|",
-                    //PostCategory = "|9|",
                     CreatedDate = DateTime.Now.ToVNTime(),
                     PostStatus = PostStatus.PENDING,
                     PostMedias = postMedias2,
@@ -2709,6 +2714,198 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
 
                 context.Posts.Add(post2);
+                context.SaveChanges();
+                #endregion
+
+                    #region Post 3 - Pending
+                List<PostMedia> postMedias3 = new List<PostMedia>();
+                PostMedia postMedia3 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post3.png",
+                        Description = "Post 3 Image",
+                        URL = "https://pos.nvncdn.com/0d9756-7239/ps/20210319_2ryhyt5bbx6aGgDOeG7LXcqQ.jpg",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    }
+                };
+                postMedias3.Add(postMedia3);
+
+                ICollection<Location> postLoca3 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 2),
+                    context.Locations.FirstOrDefault(l => l.Id == 3)
+                };
+                ICollection<Category> postCate3 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 15)
+                };
+                Post post3 = new Post()
+                {
+                    Title = "Mất 1 móc khóa hình gấu",
+                    PostContent = "Mình có đánh mất 1 móc khóa hình gấu màu xanh như trên hình, đâu đó gần phòng 1 và Passio. Ai có nhặt được xin hãy liên hệ với mình.",
+                    PostUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    LostDateFrom = new DateTime(2023, 12, 20),
+                    LostDateTo = null,
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    PostStatus = PostStatus.PENDING,
+                    PostMedias = postMedias3,
+                    Locations = postLoca3,
+                    Categories = postCate3
+                };
+
+                context.Posts.Add(post3);
+                context.SaveChanges();
+                #endregion
+
+                    #region Post 4 - Pending
+                List<PostMedia> postMedias4 = new List<PostMedia>();
+                PostMedia postMedia4 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post4.png",
+                        Description = "Post 4 Image",
+                        URL = "https://quatanggams.com/wp-content/uploads/2021/08/binh-gi%E1%BB%AF-nhi%E1%BB%87t-67.jpg",
+                        CreatedDate = DateTime.Now.ToVNTime(),
+                    }
+                };
+                postMedias4.Add(postMedia4);
+
+                ICollection<Location> postLoca4 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 28),
+                    context.Locations.FirstOrDefault(l => l.Id == 29)
+                };
+                ICollection<Category> postCate4 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 13)
+                };
+                Post post4 = new Post()
+                {
+                    Title = "Mất bình giữ nhiệt màu đen",
+                    PostContent = "Mình làm mất 1 bình nước màu đen dạnh như trên hình, chắc là ở khu vực ăn gần 7-11. Ai có nhặt được xin hãy liên hệ mình nha. Mình xin cảm ơn.",
+                    PostUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    LostDateFrom = new DateTime(2023, 12, 19),
+                    LostDateTo = null,
+                    CreatedDate = DateTime.Now.ToVNTime(),
+                    PostStatus = PostStatus.PENDING,
+                    PostMedias = postMedias4,
+                    Locations = postLoca4,
+                    Categories = postCate4
+                };
+
+                context.Posts.Add(post4);
+                context.SaveChanges();
+                #endregion
+
+                    #region Post 5 - Active
+                List<PostMedia> postMedias5 = new List<PostMedia>();
+                PostMedia postMedia5 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post5.png",
+                        Description = "Post 5 Image",
+                        URL = "https://cdn.tgdd.vn/Products/Images/57/146850/10000mah-lightning-xmobile-lj-jp90s-nhom-xam-thumb-600x600.jpg",
+                        CreatedDate = new DateTime(2023, 12, 14),
+                    }
+                };
+                postMedias5.Add(postMedia5);
+
+                ICollection<Location> postLoca5 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 91)
+                };
+                ICollection<Category> postCate5 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 18)
+                };
+
+                Post post5 = new Post()
+                {
+                    Title = "Làm mất một cục sạc dự phòng ở thư viện",
+                    PostContent = "Mình có làm mất một cục sạc dự phòng xmobile màu xám y trên hình. Mọi người có ai nhìn thấy ko ạ?",
+                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    LostDateFrom = new DateTime(2023, 12, 14),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2023, 12, 15),
+                    PostStatus = PostStatus.ACTIVE,
+                    PostMedias = postMedias5,
+                    Locations = postLoca5,
+                    Categories = postCate5
+                };
+                context.Posts.Add(post5);
+                context.SaveChanges();
+                #endregion
+
+                    #region Post 6 - Active
+                List<PostMedia> postMedias6 = new List<PostMedia>();
+                PostMedia postMedia6 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post6.png",
+                        Description = "Post 6 Image",
+                        URL = "https://vietnamphuot.com/uploads/source/san-pham/hinh-san-pham-moi-ky-them/3.png",
+                        CreatedDate = new DateTime(2024, 1, 12),
+                    }
+                };
+                postMedias6.Add(postMedia6);
+
+                ICollection<Location> postLoca6 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 20)
+                };
+                ICollection<Category> postCate6 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 14)
+                };
+
+                Post post6 = new Post()
+                {
+                    Title = "Nón bảo hiểm màu vàng",
+                    PostContent = "Mình có làm mất một nón bảo hiểm màu vàng tựa hình, mất gần khu vực sảnh Trống Đồng. Mọi người có ai nhìn thấy thì xin hãy liên hệ mình.",
+                    PostUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    LostDateFrom = new DateTime(2024, 1, 11),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2024, 1, 12),
+                    PostStatus = PostStatus.ACTIVE,
+                    PostMedias = postMedias6,
+                    Locations = postLoca6,
+                    Categories = postCate6
+                };
+                context.Posts.Add(post6);
+                context.SaveChanges();
+                #endregion
+
+                    #region Post 7 - Active
+                List<PostMedia> postMedias7 = new List<PostMedia>();
+                PostMedia postMedia7 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post7.png",
+                        Description = "Post 7 Image",
+                        URL = "https://pub-b30d4c98c76a47fcb3455c5fbb3ee778.r2.dev/2023/06/N%C3%93N-L%C6%AF%E1%BB%A0I-TRAI-TR%E1%BA%BA-EM-S%E1%BB%90-30-4.jpg",
+                        CreatedDate = new DateTime(2024, 1, 18),
+                    }
+                };
+                postMedias7.Add(postMedia7);
+
+                ICollection<Location> postLoca7 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 135)
+                };
+                ICollection<Category> postCate7 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 19)
+                };
+
+                Post post7 = new Post()
+                {
+                    Title = "Nón kết",
+                    PostContent = "Mình có làm mất một cái nón kết có tai gấu như hình, chăc là để quên ở thư viện lầu 2. Mọi người có ai nhìn thấy thì xin hãy liên hệ mình. Mình xin cảm ơn.",
+                    PostUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    LostDateFrom = new DateTime(2024, 1, 17),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2024, 1, 18),
+                    PostStatus = PostStatus.ACTIVE,
+                    PostMedias = postMedias7,
+                    Locations = postLoca7,
+                    Categories = postCate7
+                };
+                context.Posts.Add(post7);
                 context.SaveChanges();
                 #endregion
 

@@ -104,7 +104,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             //Check 5 Active Claim
             var activeClaims = await _itemClaimRepository.GetAllActiveClaimsByUserIdAsync(userId);
-            if(activeClaims.Count() > 5)
+            if(activeClaims.Count() >= 5)
             {
                 throw new MaxClaimLimitException();
             }

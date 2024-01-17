@@ -365,7 +365,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Media = new Media()
                     {
-                        Name = "AvatarOfStorageManagerCT.png",
+                        Name = "AvatarOfStorageManagerMCT.png",
                         Description = "Avatar of Storage Manager Can Tho Account",
                         URL = "https://lost-n-found-capstone.s3.ap-northeast-1.amazonaws.com/upload/5e02add5-d6ee-439f-87ce-d6a4f03551c1.png",
                         CreatedDate = new DateTime(2023, 1, 1),
@@ -391,7 +391,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     CampusId = 4,
                     RoleId = 3,
                     CreatedDate = new DateTime(2023, 1, 1),
-                    UserMedias = userMediasDN
+                    UserMedias = userMediasMCT
                 };
                 context.Users.Add(userStorageManagerMCT);
                 context.SaveChanges();
@@ -619,11 +619,11 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 #endregion
 
-                #region Add Locations
+                #region Add Locations - Ho Chi Minh
                 List<Location> locations = new List<Location>();
 
                     #region Floor Ground
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Back gate", Floor = 0, IsActive = true }); 
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Cổng sau", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Passio", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 001", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 004", Floor = 0, IsActive = true }); 
@@ -642,16 +642,15 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 017", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 018", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 019", Floor = 0, IsActive = true });
-
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Trống Đồng Lobby", Floor = 0, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Main Gate", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Sảnh Trống Đồng", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Công chính", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 020", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 021", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 022", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 023", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 024", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 025", Floor = 0, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Eating Area", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Khu vực ăn uống", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "7Eleven", Floor = 0, IsActive = true });
                     
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 028", Floor = 0, IsActive = true });    
@@ -664,6 +663,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 035", Floor = 0, IsActive = true });      
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 036", Floor = 0, IsActive = true });    
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 037", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Thư viện", Floor = 0, IsActive = true });
 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 038", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 039", Floor = 0, IsActive = true });
@@ -677,9 +677,6 @@ namespace LostAndFound.Infrastructure.Extensions
 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB01", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB02", Floor = 0, IsActive = true });
-
-
-
                 #endregion
 
                   #region Floor 1
@@ -719,18 +716,20 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 134", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 135", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 137", Floor = 1, IsActive = true });
-
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB11", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB12", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB13", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room LB15", Floor = 1, IsActive = true });
-                    #endregion
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Thư viện - Lầu 1", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Sảnh Gương", Floor = 1, IsActive = true });
+                #endregion
 
-                    #region Floor 2
+                #region Floor 2
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 201", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 202", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 203", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 204", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 205", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 206", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 207", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 208", Floor = 2, IsActive = true });
@@ -761,18 +760,20 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 233", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 234", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 235", Floor = 2, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Laha cafe", Floor = 2, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Garden", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Laha Cafe", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Vườn", Floor = 2, IsActive = true });
 
-                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB21", Floor = 1, IsActive = true });
-                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB22", Floor = 1, IsActive = true });
-                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB23", Floor = 1, IsActive = true });
-                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB24", Floor = 1, IsActive = true });
-                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB25", Floor = 1, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB21", Floor = 2, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB22", Floor = 2, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB23", Floor = 2, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB24", Floor = 2, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB25", Floor = 2, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Thư viện - Lầu 2", Floor = 2, IsActive = true });
                 #endregion
 
                 #region Floor 3
-                locations.Add(new Location() { CampusId = 1, LocationName = "LUK", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "LUK", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 301", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 301", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 302", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 303", Floor = 3, IsActive = true });
@@ -847,7 +848,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 }
                 #endregion
 
-                #region Add Locations 2
+                #region Add Locations  - Da Nang
                 List<Location> locations2 = new List<Location>();
 
                 #region Floor Ground
@@ -920,7 +921,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 }
                 #endregion
 
-                #region Add Locations 3
+                #region Add Locations - Ha Noi
                 List<Location> locations3 = new List<Location>();
 
                 #region Floor Ground
@@ -993,7 +994,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 }
                 #endregion
 
-                #region Add Locations 4
+                #region Add Locations - Can Tho
                 List<Location> locations4 = new List<Location>();
 
                 #region Floor Ground
@@ -1300,6 +1301,28 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Categories.Add(foodContainer);
                 context.SaveChanges();
+
+                Category shoes = new Category()
+                {
+                    Name = "Shoes",
+                    Description = "Shoes",
+                    IsSensitive = false,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 6,
+                };
+                context.Categories.Add(shoes);
+                context.SaveChanges();
+
+                Category batteryBank = new Category()
+                {
+                    Name = "Battery Bank",
+                    Description = "Battery Bank",
+                    IsSensitive = false,
+                    Value = ItemValue.High,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(batteryBank);
+                context.SaveChanges();
                 #endregion
 
                 #region Add Storages
@@ -1361,7 +1384,7 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 #region Add Items
 
-                #region Item 1
+                #region Item 1 - Pending
                 List<ItemMedia> medias1 = new List<ItemMedia>();
                     ItemMedia itemMedia1 = new ItemMedia()
                     {
@@ -1405,7 +1428,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     context.SaveChanges();
                     #endregion
 
-                #region Item 2
+                #region Item 2 - Active
                     List<ItemMedia> medias2 = new List<ItemMedia>();
                     ItemMedia itemMedia2 = new ItemMedia()
                     {
@@ -1562,9 +1585,8 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Items.Add(item6);
                 context.SaveChanges();
-                #endregion
 
-                #region Claim for Item 6 and already Accepted - acc Duc
+                    #region Claim for Item 6 and already Accepted - acc Duc
                 ItemClaim itemClaim1 = new ItemClaim()
                 {
                     ItemId = 6,
@@ -1577,7 +1599,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
-                #region Receipt for return Item 6 - Placeholder pic atm
+                    #region Receipt for return Item 6 - Placeholder pic atm
                 Media mediaForRecord1 = new Media()
                 {
                     Name = "Record1.png",
@@ -1599,6 +1621,592 @@ namespace LostAndFound.Infrastructure.Extensions
                     CreatedDate = DateTime.Now.ToVNTime()
                 };
                 context.TransferRecords.Add(record1);
+                context.SaveChanges();
+                #endregion
+
+                #endregion
+
+                //Check location again down from here
+
+                #region Item 7 - Active
+                List<ItemMedia> medias7 = new List<ItemMedia>();
+                ItemMedia itemMedia7 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item7.png",
+                        Description = "Item 7 Image",
+                        URL = "https://quatangmunus.com/wp-content/uploads/2022/06/binh-giu-nhiet-inox-500ml-khac-logo-khac-ten-3.jpg?fbclid=IwAR3inQkxo_TKjCDbVG4qPBygqgDOSyHXAcLoOCqdmcTja8SmypjUEZWYsmQ",
+                        CreatedDate = new DateTime(2023, 12, 28),
+                    }
+                };
+                medias7.Add(itemMedia7);
+
+                Item item7 = new Item()
+                {
+                    Name = "Bình nước màu đen",
+                    Description = "Bình nước màu đen nhặt được ở thư viện",
+                    LocationId = 40,
+                    CategoryId = 13,
+                    CreatedDate = new DateTime(2023, 12, 28),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2023-12-27|Slot 2",
+                    ItemMedias = medias7,
+                };
+                context.Items.Add(item7);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 8 - Active
+                List<ItemMedia> medias8 = new List<ItemMedia>();
+                ItemMedia itemMedia8 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item8.png",
+                        Description = "Item 8 Image",
+                        URL = "https://mubaohiemdochanoi.com/wp-content/uploads/2020/05/IMG_2158-scaled.jpg?fbclid=IwAR2xXjQbe7KR5ZDVay1STO9yXzSD_VTVbAJGzZ4UMoZHkW7FIAjwsZ1YHN0",
+                        CreatedDate = new DateTime(2024, 1, 9),
+                    }
+                };
+                medias8.Add(itemMedia8);
+
+                Item item8 = new Item()
+                {
+                    Name = "Mũ bảo hiểm vịt",
+                    Description = "Mũ bảo hiểm vịt mình nhặt được sáng hôm qua sau giờ học C.",
+                    LocationId = 46,
+                    CategoryId = 14,
+                    CreatedDate = new DateTime(2024, 1, 9),
+                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-8|Slot 1",
+                    ItemMedias = medias8,
+                };
+                context.Items.Add(item8);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 9 - Active
+                List<ItemMedia> medias9 = new List<ItemMedia>();
+                ItemMedia itemMedia9 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item9.png",
+                        Description = "Item 9 Image",
+                        URL = "https://vitinhthuduc.com/wp-content/uploads/2020/08/chuot-gaming-logitech-g102-den-1-2-600x600.jpg?fbclid=IwAR3GXT1dr4f4gaEkfpL9Ul2ZrV3uEzUrFqIkLEp43hyTITHIg0czbJ3khIg",
+                        CreatedDate = new DateTime(2024, 1, 12),
+                    }
+                };
+                medias9.Add(itemMedia9);
+
+                Item item9 = new Item()
+                {
+                    Name = "Con chuột g102",
+                    Description = "Mình có nhặt được con chuột g102 sau slot 3",
+                    LocationId = 13,
+                    CategoryId = 9,
+                    CreatedDate = new DateTime(2024, 1, 12),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = true,
+                    CabinetId = 2,
+                    FoundDate = "2024-1-11|Slot 3",
+                    ItemMedias = medias9,
+                };
+                context.Items.Add(item9);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 10 - Pending
+                List<ItemMedia> medias10 = new List<ItemMedia>();
+                ItemMedia itemMedia10 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item10.png",
+                        Description = "Item 10 Image",
+                        URL = "https://vitinhthuduc.com/wp-content/uploads/2020/08/chuot-gaming-logitech-g102-den-1-2-600x600.jpg?fbclid=IwAR3GXT1dr4f4gaEkfpL9Ul2ZrV3uEzUrFqIkLEp43hyTITHIg0czbJ3khIg",
+                        CreatedDate = new DateTime(2024, 1, 18),
+                    }
+                };
+                medias10.Add(itemMedia10);
+
+                Item item10 = new Item()
+                {
+                    Name = "Con chuột Fuhlen g90",
+                    Description = "Mình có nhặt được con chuột Fuhlen g90 sau giờ học JP slot 1",
+                    LocationId = 3,
+                    CategoryId = 9,
+                    CreatedDate = new DateTime(2024, 1, 18),
+                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    ItemStatus = ItemStatus.PENDING,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-17|Slot 1",
+                    ItemMedias = medias10,
+                };
+                context.Items.Add(item10);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 11 - Active
+                List<ItemMedia> medias11 = new List<ItemMedia>();
+                ItemMedia itemMedia11 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item11.png",
+                        Description = "Item 11 Image",
+                        URL = "https://doidev.com/hanh-trinh-toi-ban-phim-40-phan-tram/featured-image.png?fbclid=IwAR2IBz5XwHJ2t2MsEo3JrFXrv4vIQQSyHG7BkMpS6QQNwulMbDr5bpNfaAY",
+                        CreatedDate = new DateTime(2023, 12, 12),
+                    }
+                };
+                medias11.Add(itemMedia11);
+
+                Item item11 = new Item()
+                {
+                    Name = "Một Keyboard TU 40",
+                    Description = "Nhặt được con TU 40 ở sảng gương",
+                    LocationId = 92,
+                    CategoryId = 8,
+                    CreatedDate = new DateTime(2023, 12, 12),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2023-12-11|Slot 2",
+                    ItemMedias = medias11,
+                };
+                context.Items.Add(item11);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 12 - Active
+                List<ItemMedia> medias12 = new List<ItemMedia>();
+                ItemMedia itemMedia12 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item12.png",
+                        Description = "Item 12 Image",
+                        URL = "https://drake.vn/image/catalog/H%C3%ACnh%20content/gi%C3%A0y-vans-classic-%C4%91en-tr%E1%BA%AFng/giay-vans-classic-den-trang-04.jpg?fbclid=IwAR2BYXBe0kXboeMX4xYGzmmkxx4ZJMxrT_Kny0vbE10MhMCoZ7uQ4jp6REg",
+                        CreatedDate = new DateTime(2023, 12, 7),
+                    }
+                };
+                medias12.Add(itemMedia12);
+
+                Item item12 = new Item()
+                {
+                    Name = "Giày vans classic",
+                    Description = "Giày vans classic bạn nèo để quên ở góc sân võ gần 7 11",
+                    LocationId = 29,
+                    CategoryId = 16,
+                    CreatedDate = new DateTime(2023, 12, 7),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2023-12-6|Slot 4",
+                    ItemMedias = medias12,
+                };
+                context.Items.Add(item12);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 13 - Active
+                List<ItemMedia> medias13 = new List<ItemMedia>();
+                ItemMedia itemMedia13 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item13.png",
+                        Description = "Item 13 Image",
+                        URL = "https://i.ebayimg.com/images/g/K58AAOSw6eNiROsI/s-l1200.webp?fbclid=IwAR0HgrtaX-sLJpeKIAvCHwN8mVLB6X2WZi7Pu_w2dYsocizpR8VDUSfq8-U",
+                        CreatedDate = new DateTime(2023, 12, 8),
+                    }
+                };
+                medias13.Add(itemMedia13);
+
+                Item item13 = new Item()
+                {
+                    Name = "Móc khóa",
+                    Description = "Nhặt đc móc khoá ở phòng 304 như trên",
+                    LocationId = 141,
+                    CategoryId = 15,
+                    CreatedDate = new DateTime(2023, 12, 8),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = true,
+                    CabinetId = 4,
+                    FoundDate = "2023-12-7|Slot 2",
+                    ItemMedias = medias13,
+                };
+                context.Items.Add(item13);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 14 - Active
+                List<ItemMedia> medias14 = new List<ItemMedia>();
+                ItemMedia itemMedia14 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item14.png",
+                        Description = "Item 14 Image",
+                        URL = "https://photo2.tinhte.vn/data/attachment-files/2023/02/6337730_tinhte-sony-WH-CH720N-WH-CH520-1.jpg",
+                        CreatedDate = new DateTime(2023, 12, 7),
+                    }
+                };
+                medias14.Add(itemMedia14);
+
+                Item item14 = new Item()
+                {
+                    Name = "Tai nghe Sony",
+                    Description = "Tai nghe sony nhặt đc ở passio",
+                    LocationId = 2,
+                    CategoryId = 16,
+                    CreatedDate = new DateTime(2023, 12, 7),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = true,
+                    CabinetId = 13,
+                    FoundDate = "2023-12-6|Slot 3",
+                    ItemMedias = medias14,
+                };
+                context.Items.Add(item14);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 15 - Returned
+                List<ItemMedia> medias15 = new List<ItemMedia>();
+                ItemMedia itemMedia15 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item15.png",
+                        Description = "Item 15 Image",
+                        URL = "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.15752-9/416855104_1476741529886451_6316510726122041621_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeG_ujCut6JWDpZWS7xkZrlOLe6ut-LjHEEt7q634uMcQR-SJGFlcFO4ndzHCb7SRSLIH35RoBUegirQnOTowB_H&_nc_ohc=mvCKhsXtoKEAX-klhpI&_nc_ht=scontent.fsgn2-4.fna&oh=03_AdTiWyKhQfOSwF9afah20eejpTdT3aD0SAgWHAkl2X_3-w&oe=65CEAB71",
+                        CreatedDate = new DateTime(2024, 1, 18),
+                    }
+                };
+                medias15.Add(itemMedia15);
+
+                Item item15 = new Item()
+                {
+                    Name = "Cục sạc dự phòng innostyle",
+                    Description = "Cục sạc dự phòng innostyle ở phòng 610 NVH",
+                    LocationId = 189,
+                    CategoryId = 18,
+                    CreatedDate = new DateTime(2024, 1, 18),
+                    FoundUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    ItemStatus = ItemStatus.RETURNED,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-17|Slot 2",
+                    ItemMedias = medias15,
+                };
+                context.Items.Add(item15);
+                context.SaveChanges();
+
+                #region Claim for Item 15 and already Accepted
+                ItemClaim itemClaim3 = new ItemClaim()
+                {
+                    ItemId = 15,
+                    UserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    IsActive = true,
+                    ClaimStatus = ClaimStatus.ACCEPTED,
+                    ClaimDate = DateTime.Now.ToVNTime()
+                };
+                context.ItemClaims.Add(itemClaim3);
+                context.SaveChanges();
+                #endregion
+
+                #region Receipt for return Item 15
+                Media mediaForRecord3 = new Media()
+                {
+                    Name = "Record3.png",
+                    Description = "Record 3 Image",
+                    URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/413363089_793157422635095_3924483416130034774_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeFnKhf-mSaKEcjVLL2d6Vxm9fiS_i_ohdL1-JL-L-iF0v1T-qj7UcYRd6cZmuEqE0mzpQa3Rcon0Acvx-w79y4a&_nc_ohc=590N_xKx834AX-ilKo4&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdTnzGaq2liGd0A1kFeS-imXT3d1wG-13Xx5iuO5mXFn7g&oe=65CEDF88",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Medias.Add(mediaForRecord3);
+                context.SaveChanges();
+                TransferRecord record3 = new TransferRecord()
+                {
+                    ItemId = 15,
+                    ReceiverId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    SenderId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    IsActive = true,
+                    Media = mediaForRecord3,
+                    ReceiptImage = mediaForRecord3.Id,
+                    ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.TransferRecords.Add(record3);
+                context.SaveChanges();
+                #endregion
+                #endregion
+
+                #region Item 16 - Active
+                List<ItemMedia> medias16 = new List<ItemMedia>();
+                ItemMedia itemMedia16 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item16.png",
+                        Description = "Item 16 Image",
+                        URL = "https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.15752-9/413339632_7265316573518304_8455023781168175953_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeFWUlah4Q_Xy75-X1WKr_UH3YY0uidezKrdhjS6J17MqpMRwoXmXE4CxcUTgTlJOfz52db57zCj-hhVUnOcC0l8&_nc_ohc=IMbldPVyigEAX-qc9jc&_nc_ht=scontent.fsgn2-4.fna&oh=03_AdSmvB6g54cSVHxsF-A_hMb8ZU5UNT2eS0awNunJu0737Q&oe=65CEAECE",
+                        CreatedDate = new DateTime(2024, 1, 16),
+                    }
+                };
+                medias16.Add(itemMedia16);
+
+                Item item16 = new Item()
+                {
+                    Name = "Nón bảo hiểm",
+                    Description = "Nón bảo hiểm màu xanh như hình",
+                    LocationId = 115,
+                    CategoryId = 14,
+                    CreatedDate = new DateTime(2024, 1, 16),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-15|Slot 4",
+                    ItemMedias = medias16,
+                };
+                context.Items.Add(item16);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 17 - Returned
+                List<ItemMedia> medias17 = new List<ItemMedia>();
+                ItemMedia itemMedia17 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item17.png",
+                        Description = "Item 17 Image",
+                        URL = "https://scontent.fsgn2-6.fna.fbcdn.net/v/t1.15752-9/413236327_1447432029461811_1002979382111272395_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeEyJ0ZUHPzmFvrkLzvygc0lHrVwWcQhKVUetXBZxCEpVZBPsM99O15qNoEXrqQh6n7-ebkAqZBKt1AzHG-oYoXK&_nc_ohc=pOUNeA3D33kAX-WRlA-&_nc_ht=scontent.fsgn2-6.fna&oh=03_AdTGxWLkqy2xQsmAhOPrvQEprWNAghjzEw7mTChydJbHSg&oe=65CEE869",
+                        CreatedDate = new DateTime(2023, 12, 12),
+                    }
+                };
+                medias17.Add(itemMedia17);
+
+                Item item17 = new Item()
+                {
+                    Name = "Tai nghe",
+                    Description = "Tai nghe mình không rõ hãng nhặt ở thư viện lầu trệt",
+                    LocationId = 40,
+                    CategoryId = 16,
+                    CreatedDate = new DateTime(2023, 12, 12),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.RETURNED,
+                    IsInStorage = false,
+                    FoundDate = "2023-12-11|Slot 4",
+                    ItemMedias = medias17,
+                };
+                context.Items.Add(item17);
+                context.SaveChanges();
+
+                #region Claim for Item 17 and already Accepted
+                ItemClaim itemClaim2 = new ItemClaim()
+                {
+                    ItemId = 17,
+                    UserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    IsActive = true,
+                    ClaimStatus = ClaimStatus.ACCEPTED,
+                    ClaimDate = DateTime.Now.ToVNTime()
+                };
+                context.ItemClaims.Add(itemClaim2);
+                context.SaveChanges();
+                #endregion
+
+                #region Receipt for return Item 17
+                Media mediaForRecord2 = new Media()
+                {
+                    Name = "Record2.png",
+                    Description = "Record 2 Image",
+                    URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/413363089_793157422635095_3924483416130034774_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeFnKhf-mSaKEcjVLL2d6Vxm9fiS_i_ohdL1-JL-L-iF0v1T-qj7UcYRd6cZmuEqE0mzpQa3Rcon0Acvx-w79y4a&_nc_ohc=590N_xKx834AX-ilKo4&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdTnzGaq2liGd0A1kFeS-imXT3d1wG-13Xx5iuO5mXFn7g&oe=65CEDF88",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Medias.Add(mediaForRecord2);
+                context.SaveChanges();
+                TransferRecord record2 = new TransferRecord()
+                {
+                    ItemId = 17,
+                    ReceiverId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    SenderId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    IsActive = true,
+                    Media = mediaForRecord2,
+                    ReceiptImage = mediaForRecord2.Id,
+                    ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.TransferRecords.Add(record2);
+                context.SaveChanges();
+                #endregion
+                #endregion
+
+                #region Item 18 - Returned
+                List<ItemMedia> medias18 = new List<ItemMedia>();
+                ItemMedia itemMedia18 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item18.png",
+                        Description = "Item 18 Image",
+                        URL = "https://scontent.fsgn2-10.fna.fbcdn.net/v/t1.15752-9/415560703_1775236586256217_3380856414123943667_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeHNJ3Ur5IskVhkL-StTdUt6MZcuehrcwzcxly56GtzDNx8P85HsasS7zwczUeiYGs9zoGJPJKmWDY9q_UOxJ_AA&_nc_ohc=fO7Z7co4rtwAX-4x1gQ&_nc_ht=scontent.fsgn2-10.fna&oh=03_AdRTY1swEkXcX3D0rKRXlxhrGE8h6nnJxaq87wEio2AqNA&oe=65CECC6F",
+                        CreatedDate = new DateTime(2024, 1, 19),
+                    }
+                };
+                medias18.Add(itemMedia18);
+
+                Item item18 = new Item()
+                {
+                    Name = "Con chuột logitech",
+                    Description = "Con chuột logitech màu trắng ở phòng 118 slot 2",
+                    LocationId = 68,
+                    CategoryId = 9,
+                    CreatedDate = new DateTime(2024, 1, 19),
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    ItemStatus = ItemStatus.RETURNED,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-18|Slot 2",
+                    ItemMedias = medias18,
+                };
+                context.Items.Add(item18);
+                context.SaveChanges();
+
+                #region Claim for Item 18 and already Accepted
+                ItemClaim itemClaim4 = new ItemClaim()
+                {
+                    ItemId = 18,
+                    UserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    IsActive = true,
+                    ClaimStatus = ClaimStatus.ACCEPTED,
+                    ClaimDate = DateTime.Now.ToVNTime()
+                };
+                context.ItemClaims.Add(itemClaim4);
+                context.SaveChanges();
+                #endregion
+
+                #region Receipt for return Item 18
+                Media mediaForRecord4 = new Media()
+                {
+                    Name = "Record4.png",
+                    Description = "Record 4 Image",
+                    URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/417102539_1570929106780066_2520527715214085024_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeElL49jgbcmrIvmhkAqHg8DxBevy8Mbrl3EF6_LwxuuXdlZZunXVfYsBilBBK8ZJQr3AgD3keZ5U9t11oJR-JUO&_nc_ohc=0WFWao4vZMkAX8nYrVV&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdRljvQeRrm2j8cntEz2-w5cK8sCLUYN7cfYKsi2VKELSA&oe=65CEE359",
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.Medias.Add(mediaForRecord4);
+                context.SaveChanges();
+                TransferRecord record4 = new TransferRecord()
+                {
+                    ItemId = 18,
+                    ReceiverId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    SenderId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
+                    IsActive = true,
+                    Media = mediaForRecord4,
+                    ReceiptImage = mediaForRecord4.Id,
+                    ReceiptType = ReceiptType.RETURN_OUT_STORAGE,
+                    CreatedDate = DateTime.Now.ToVNTime()
+                };
+                context.TransferRecords.Add(record4);
+                context.SaveChanges();
+                #endregion
+                #endregion
+
+                #region Item 19 - Pending
+                List<ItemMedia> medias19 = new List<ItemMedia>();
+                ItemMedia itemMedia19 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item19.png",
+                        Description = "Item 19 Image",
+                        URL = "https://scontent.fsgn2-6.fna.fbcdn.net/v/t1.15752-9/413219019_1538859273320529_669637415336899313_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeHS3RYsUyS4LpMmKU829vlRiLCKFrZO3jyIsIoWtk7ePAV3O3HG4FiaBxerA8pTVIBKBdIrSl5TR0WwcyLi_nsx&_nc_ohc=yumI20K4KXoAX-8tvvO&_nc_ht=scontent.fsgn2-6.fna&oh=03_AdThvf-hDg22RQnN9I-xUodzDoD5q2zsajRmbuyMBn_eQw&oe=65CEE67F",
+                        CreatedDate = new DateTime(2024, 1, 19),
+                    }
+                };
+                medias19.Add(itemMedia19);
+
+                Item item19 = new Item()
+                {
+                    Name = "Bình nước màu trắng",
+                    Description = "Bình nước màu trắng nhặt được ở thư viện nhìn như hình trên",
+                    LocationId = 40,
+                    CategoryId = 13,
+                    CreatedDate = new DateTime(2024, 1, 19),
+                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    ItemStatus = ItemStatus.PENDING,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-18|Slot 2",
+                    ItemMedias = medias19,
+                };
+                context.Items.Add(item19);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 20 - Pending
+                List<ItemMedia> medias20 = new List<ItemMedia>();
+                ItemMedia itemMedia20 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item20.png",
+                        Description = "Item 20 Image",
+                        URL = "https://scontent.fsgn2-11.fna.fbcdn.net/v/t1.15752-9/416819861_658154179672942_9220396349327377323_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeH47pKydKIYwHGr4R9harowmrK5f0dRj0Oasrl_R1GPQ_hkZsW-Ns4PKHmelAK-DVdb8Q4MTS3pmdL1J6dvMy3S&_nc_ohc=ooNL3Wih1LUAX-BX6My&_nc_ht=scontent.fsgn2-11.fna&oh=03_AdTXqSHsaNaPZbZvbDWyKCJuwLWOreXEATKIjo1SRIDQHA&oe=65CED922",
+                        CreatedDate = new DateTime(2024, 1, 19),
+                    }
+                };
+                medias20.Add(itemMedia20);
+
+                Item item20 = new Item()
+                {
+                    Name = "Cục sạc Dell",
+                    Description = "Nhặt được 1 củ sạc dell ở phòng 609 (NVH)",
+                    LocationId = 188,
+                    CategoryId = 6,
+                    CreatedDate = new DateTime(2024, 1, 19),
+                    FoundUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    ItemStatus = ItemStatus.PENDING,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-18|Slot 3",
+                    ItemMedias = medias20,
+                };
+                context.Items.Add(item20);
+                context.SaveChanges();
+                #endregion
+
+                #region Item 21 - Pending
+                List<ItemMedia> medias21 = new List<ItemMedia>();
+                ItemMedia itemMedia21 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item21.png",
+                        Description = "Item 21 Image",
+                        URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/415655255_2667110776777487_1873587805609691576_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeFk_4mxTImUeVePL4qtmpsnqQj5k6ZjXi6pCPmTpmNeLkAAuYIyhsHZkmDmnSfMnZmfG37ZkIXEFkdoRkpFaMBt&_nc_ohc=oKtFUM0cfXMAX-zfKv0&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdSge8S3kmRvHHBs_vd-uhDcPcDRY_6N9VT_bS8JyMJ9rw&oe=65CEEA2D",
+                        CreatedDate = new DateTime(2024, 1, 20),
+                    }
+                };
+                medias21.Add(itemMedia21);
+
+                Item item21 = new Item()
+                {
+                    Name = "Cục sạc Acer",
+                    Description = "Nhặt được 1 củ sạc Acer ở phòng 610 (NVH)",
+                    LocationId = 189,
+                    CategoryId = 6,
+                    CreatedDate = new DateTime(2024, 1, 20),
+                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    ItemStatus = ItemStatus.PENDING,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-19|Slot 1",
+                    ItemMedias = medias21,
+                };
+                context.Items.Add(item21);
                 context.SaveChanges();
                 #endregion
 

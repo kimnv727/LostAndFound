@@ -152,6 +152,15 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             if(item.ItemStatus == ItemStatus.ONHOLD)
             {
                 item.ItemStatus = ItemStatus.RETURNED;
+                item.IsInStorage = false;
+                item.Cabinet = null;
+            }
+
+            if(receiptCreateDTO.ReceiptType == ReceiptType.RETURN_OUT_STORAGE)
+            {
+                item.ItemStatus = ItemStatus.RETURNED;
+                item.IsInStorage = false;
+                item.Cabinet = null;
             }
             
             await _unitOfWork.CommitAsync();
@@ -280,7 +289,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             giveaway.Item.ItemStatus = ItemStatus.GAVEAWAY;
             //item
             item.IsInStorage = false;
-
+            item.Cabinet = null;
             await _receiptRepository.AddAsync(receipt);
             await _unitOfWork.CommitAsync();
 

@@ -50,8 +50,6 @@ namespace LostAndFound.API.Authentication
                 {
                     var userCredentials =
                         await _firebaseAuth.SignInWithEmailAndPasswordAsync(loginRequest.Email, loginRequest.Password);
-
-                    //_emailSendingService.SendMailToRegister("kimnvse150529@fpt.edu.vn");
                         
                     if (userCredentials != null)
                     {
@@ -96,6 +94,11 @@ namespace LostAndFound.API.Authentication
             var user = await _userRepository.FindUserByID(uid);
             if (user != null)
             {
+                //check if account disabled or not
+                if(user.IsActive == false)
+                {
+                    throw new AccountBannedException();
+                }
                 //check if user has same campus
                 if(user.CampusId != campusId)
                 {

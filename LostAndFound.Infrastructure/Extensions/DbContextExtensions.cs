@@ -284,7 +284,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                 #region Storage Manager Da Nang
-                /*List<UserMedia> userMediasDN = new List<UserMedia>();
+                List<UserMedia> userMediasDN = new List<UserMedia>();
                 UserMedia userMediaDN = new UserMedia()
                 {
                     Media = new Media()
@@ -300,9 +300,8 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User userStorageManagerDN = new User()
                 {
-                    //Fix ID + Email
-                    Id = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
-                    Email = "gglcolab001@gmail.com",
+                    Id = "IcirGzmBXDOQkykowgLY4wNsc0J3",
+                    Email = "gglcolab003@gmail.com",
                     //123456
                     Password = "$2a$08$Yj7OEnhnl0omzpYtwkmQS.rorYR/VMv7/FD8CNO2z0yi9CgjHwtP6",
                     Avatar = "https://lost-n-found-capstone.s3.ap-northeast-1.amazonaws.com/upload/5e02add5-d6ee-439f-87ce-d6a4f03551c1.png",
@@ -339,9 +338,8 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User userStorageManagerHN = new User()
                 {
-                    //Fix ID + Email
-                    Id = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
-                    Email = "gglcolab001@gmail.com",
+                    Id = "ghB2VLvzNpXFGlbBKwTdb8s2xpH3",
+                    Email = "gglcolab004@gmail.com",
                     //123456
                     Password = "$2a$08$Yj7OEnhnl0omzpYtwkmQS.rorYR/VMv7/FD8CNO2z0yi9CgjHwtP6",
                     Avatar = "https://lost-n-found-capstone.s3.ap-northeast-1.amazonaws.com/upload/5e02add5-d6ee-439f-87ce-d6a4f03551c1.png",
@@ -378,26 +376,25 @@ namespace LostAndFound.Infrastructure.Extensions
 
                 User userStorageManagerMCT = new User()
                 {
-                    //Fix ID + Email
-                    Id = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
-                    Email = "gglcolab001@gmail.com",
+                    Id = "TPvSNc5digT1WgV048VqI2Cho1w1",
+                    Email = "gglcolab005@gmail.com",
                     //123456
                     Password = "$2a$08$Yj7OEnhnl0omzpYtwkmQS.rorYR/VMv7/FD8CNO2z0yi9CgjHwtP6",
                     Avatar = "https://lost-n-found-capstone.s3.ap-northeast-1.amazonaws.com/upload/5e02add5-d6ee-439f-87ce-d6a4f03551c1.png",
                     IsActive = true,
-                    FirstName = "Ha Noi Storage Manager",
+                    FirstName = "Can Tho Storage Manager",
                     LastName = "Account",
                     Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
-                    Phone = "0933000777",
-                    SchoolId = "StorageManagerDaNang",
+                    Phone = "0933000999",
+                    SchoolId = "StorageManagerCanTho",
                     CampusId = 4,
                     RoleId = 3,
                     CreatedDate = new DateTime(2023, 1, 1),
                     UserMedias = userMediasDN
                 };
                 context.Users.Add(userStorageManagerMCT);
-                context.SaveChanges();*/
+                context.SaveChanges();
                 #endregion
 
                 #region Member - Kim fpt

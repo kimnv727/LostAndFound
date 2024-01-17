@@ -623,8 +623,9 @@ namespace LostAndFound.Infrastructure.Extensions
                 List<Location> locations = new List<Location>();
 
                     #region Floor Ground
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Back Gate", Floor = 0, IsActive = true }); 
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Back gate", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Passio", Floor = 0, IsActive = true }); 
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 001", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 004", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 005", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 006", Floor = 0, IsActive = true }); 
@@ -639,7 +640,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 015", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 016", Floor = 0, IsActive = true }); 
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 017", Floor = 0, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Copper Drum Lobby", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 018", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 019", Floor = 0, IsActive = true });
+
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Trống Đồng Lobby", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Main Gate", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 020", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 021", Floor = 0, IsActive = true });
@@ -649,9 +653,36 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 025", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Eating Area", Floor = 0, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "7Eleven", Floor = 0, IsActive = true });
-                    #endregion
+                    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 028", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 029", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 030", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 031", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 032", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 033", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 034", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 035", Floor = 0, IsActive = true });      
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 036", Floor = 0, IsActive = true });    
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 037", Floor = 0, IsActive = true });
 
-                    #region Floor 1
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 038", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 039", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 040", Floor = 0, IsActive = true });
+
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 041", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 042", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 043", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 044", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 045", Floor = 0, IsActive = true });
+
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB01", Floor = 0, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB02", Floor = 0, IsActive = true });
+
+
+
+                #endregion
+
+                  #region Floor 1
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 101", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 102", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 103", Floor = 1, IsActive = true });
@@ -667,6 +698,32 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 113", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 114", Floor = 1, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 115", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 116", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 117", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 118", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 119", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 120", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 121", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 122", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 123", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 124", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 125", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 126", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 127", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 128", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 129", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 130", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 131", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 132", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 133", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 134", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 135", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 137", Floor = 1, IsActive = true });
+
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB11", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB12", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB13", Floor = 1, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room LB15", Floor = 1, IsActive = true });
                     #endregion
 
                     #region Floor 2
@@ -674,18 +731,99 @@ namespace LostAndFound.Infrastructure.Extensions
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 202", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 203", Floor = 2, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 204", Floor = 2, IsActive = true });
-                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 205", Floor = 2, IsActive = true });
-                    #endregion
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 206", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 207", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 208", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 209", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 210", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 211", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 212", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 213", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 214", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 215", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 216", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 217", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 218", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 219", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 220", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 221", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 222", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 223", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 224", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 225", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 226", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 227", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 228", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 229", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 230", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 231", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 232", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 233", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 234", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 235", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Laha cafe", Floor = 2, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Garden", Floor = 2, IsActive = true });
 
-                    #region Floor 3
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB21", Floor = 1, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB22", Floor = 1, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB23", Floor = 1, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB24", Floor = 1, IsActive = true });
+                locations.Add(new Location() { CampusId = 1, LocationName = "Room LB25", Floor = 1, IsActive = true });
+                #endregion
+
+                #region Floor 3
+                locations.Add(new Location() { CampusId = 1, LocationName = "LUK", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 301", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 302", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 303", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 304", Floor = 3, IsActive = true });
                     locations.Add(new Location() { CampusId = 1, LocationName = "Room 305", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 306", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 307", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 305", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 308", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 310", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 311", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 312", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 313", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 314", Floor = 3, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 315", Floor = 3, IsActive = true });
+
+                    #endregion
+                
+                    #region Floor 4
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Hall A", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Hall B", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Garden", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 404", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 406", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 407", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 408", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 409", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 410", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 412", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 413", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 414", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 415", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 418", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 419", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 420", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 421", Floor = 4, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 422", Floor = 4, IsActive = true });
+                #endregion
+
+                    #region Floor 5
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Vovinam", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 502", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 503", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 504", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 505", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 508", Floor = 5, IsActive = true });
+                    locations.Add(new Location() { CampusId = 1, LocationName = "Room 509", Floor = 5, IsActive = true });
+                    
                     #endregion
 
-                    #region NVH
+                #region NVH
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 506 (NVH)", Floor = 5, IsActive = true });
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 507 (NVH)", Floor = 5, IsActive = true });
                 locations.Add(new Location() { CampusId = 1, LocationName = "Room 508 (NVH)", Floor = 5, IsActive = true });

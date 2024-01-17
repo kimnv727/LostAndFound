@@ -9,7 +9,7 @@ namespace LostAndFound.Core.Exceptions.ItemClaim
 {
     public class MaxClaimLimitException : HandledException
     {
-        public MaxClaimLimitException() : base(400, "You can only have 5 active Claims at a time! Please Unclaim some to proceed!")
+        public MaxClaimLimitException() : base(403, "You can only have 5 active Claims at a time! Please Unclaim some to proceed!")
         {
         }
     }

@@ -102,7 +102,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 }
             }
 
-            //Check 10 Active Claim
+            //Check 5 Active Claim
             var activeClaims = await _itemClaimRepository.GetAllActiveClaimsByUserIdAsync(userId);
             if(activeClaims.Count() > 5)
             {

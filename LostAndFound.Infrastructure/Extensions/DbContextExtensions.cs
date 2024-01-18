@@ -397,7 +397,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
-                #region Member - Kim fpt
+                    #region Member - Kim fpt
                 List<UserMedia> userMedias4 = new List<UserMedia>();
                 UserMedia userMedia4 = new UserMedia()
                 {
@@ -460,7 +460,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Gender = Gender.Male,
                     VerifyStatus = UserVerifyStatus.VERIFIED,
                     Phone = "0909090909",
-                    SchoolId = "USER",
+                    SchoolId = "SE150530",
                     CampusId = 1,
                     RoleId = 4,
                     CreatedDate = DateTime.Now.ToVNTime(),
@@ -615,6 +615,265 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Users.Add(userDuc);
                 context.SaveChanges();
+                #endregion
+
+                    #region Member - Tuan fpt
+                List<UserMedia> userMediasTuan = new List<UserMedia>();
+                UserMedia userMediaTuan = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfTuan.png",
+                        Description = "Avatar of Tuan Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocKFZ3NKp6fbgnaSfXQGLOZh9G05Ev2td32nVNFNSna2Wg=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 17),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasTuan.Add(userMediaTuan);
+
+                User userTuan = new User()
+                {
+                    Id = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
+                    Email = "tuantmse151155@fpt.edu.vn",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocKFZ3NKp6fbgnaSfXQGLOZh9G05Ev2td32nVNFNSna2Wg=s96-c",
+                    IsActive = true,
+                    FirstName = "Truong Minh Tuan",
+                    LastName = "(K15 HCM)",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555777",
+                    SchoolId = "SE151155",
+                    CampusId = 1,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 17),
+                    UserMedias = userMediasTuan
+                };
+                context.Users.Add(userTuan);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - hmd2011
+                List<UserMedia> userMediasfl166 = new List<UserMedia>();
+                UserMedia userMediafl166 = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfFL166.png",
+                        Description = "Avatar of Fl166 Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocJ4nFJ6G9EuT5L2DRw2-FvM8PBjhmv3zmVoLCy8p72V=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 17),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasfl166.Add(userMediafl166);
+
+                User userfl166 = new User()
+                {
+                    Id = "JE1zs8rfgIeG1525FnQMNcJBZlq1",
+                    Email = "huynhmduc2001@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocJ4nFJ6G9EuT5L2DRw2-FvM8PBjhmv3zmVoLCy8p72V=s96-c",
+                    IsActive = true,
+                    FirstName = "Huynh",
+                    LastName = "Minh Duc",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555789",
+                    SchoolId = "SE15555",
+                    CampusId = 2,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 17),
+                    UserMedias = userMediasfl166
+                };
+                context.Users.Add(userfl166);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - gbvnsg
+                List<UserMedia> userMediasGb = new List<UserMedia>();
+                UserMedia userMediaGb = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfGb.png",
+                        Description = "Avatar of Gb Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocLxNFhMvgzRNTDy75bhYOMA_GXN3LjqwDh8PTnH2dfU=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 16),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasGb.Add(userMediaGb);
+
+                User userGb = new User()
+                {
+                    Id = "94c65V3GpAcHToz6nzaKQEyWic43",
+                    Email = "giabaovnsg@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocLxNFhMvgzRNTDy75bhYOMA_GXN3LjqwDh8PTnH2dfU=s96-c",
+                    IsActive = true,
+                    FirstName = "Truong",
+                    LastName = "Gia Bao",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555789",
+                    SchoolId = "SE15555",
+                    CampusId = 2,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 16),
+                    UserMedias = userMediasGb
+                };
+                context.Users.Add(userGb);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - algb
+                List<UserMedia> userMediasalgb = new List<UserMedia>();
+                UserMedia userMediaalgb = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfAlGb.png",
+                        Description = "Avatar of AlGb Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocIRHp3HNf5NCc7d5V640pCF16Ou05uAuvgfYMI1Ia1I=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 16),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasalgb.Add(userMediaalgb);
+
+                User userAlGb = new User()
+                {
+                    Id = "DMa42Aypj1bp4hftKBw5hLhwtmZ2",
+                    Email = "algiabao@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocIRHp3HNf5NCc7d5V640pCF16Ou05uAuvgfYMI1Ia1I=s96-c",
+                    IsActive = true,
+                    FirstName = "Truong Nguyen",
+                    LastName = "Gia Bao",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555987",
+                    SchoolId = "SE133333",
+                    CampusId = 3,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 16),
+                    UserMedias = userMediasalgb
+                };
+                context.Users.Add(userAlGb);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - vinhc
+                List<UserMedia> userMediasvc = new List<UserMedia>();
+                UserMedia userMediavc = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfVc.png",
+                        Description = "Avatar of Vc Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocJCAt1BtISND6ULUQ3xPlCo6nPwOQZb-xqSagneLj0m-Q=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 15),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasvc.Add(userMediavc);
+
+                User uservc = new User()
+                {
+                    Id = "f4T9ZVmro2c8BInPdnLRV8B2ALj1",
+                    Email = "nguyncvinh129@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocJCAt1BtISND6ULUQ3xPlCo6nPwOQZb-xqSagneLj0m-Q=s96-c",
+                    IsActive = true,
+                    FirstName = "Nguyen",
+                    LastName = "Chi Vinh",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555987",
+                    SchoolId = "SE122334",
+                    CampusId = 3,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 15),
+                    UserMedias = userMediasvc
+                };
+                context.Users.Add(uservc);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - vinhd
+                List<UserMedia> userMediasvd = new List<UserMedia>();
+                UserMedia userMediavd = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfVd.png",
+                        Description = "Avatar of Vd Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocIBV4SpSsUad1kLwKIY-699_LfiqGLvApsFcg_2pvdd=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 15),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasvd.Add(userMediavd);
+
+                User uservd = new User()
+                {
+                    Id = "Etv2IJ1sNehp99tD8Xo2DD4Eu1u2",
+                    Email = "nguyendvinh129@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocIBV4SpSsUad1kLwKIY-699_LfiqGLvApsFcg_2pvdd=s96-c",
+                    IsActive = true,
+                    FirstName = "Nguyen",
+                    LastName = "Dai Vinh",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555988",
+                    SchoolId = "SE122335",
+                    CampusId = 4,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 15),
+                    UserMedias = userMediasvd
+                };
+                context.Users.Add(uservd);
+                context.SaveChanges();
+                #endregion
+
+                    #region Member - ds
+                /*List<UserMedia> userMediasds = new List<UserMedia>();
+                UserMedia userMediads = new UserMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "AvatarOfDs.png",
+                        Description = "Avatar of Ds Account",
+                        URL = "https://lh3.googleusercontent.com/a/ACg8ocIBV4SpSsUad1kLwKIY-699_LfiqGLvApsFcg_2pvdd=s96-c",
+                        CreatedDate = new DateTime(2023, 10, 15),
+                    },
+                    MediaType = UserMediaType.AVATAR
+                };
+                userMediasds.Add(userMediads);
+
+                User userds = new User()
+                {
+                    Id = "a2nyiQ9BrlQKBbgfsyiJ8lFag7y1",
+                    Email = "notdarksensbtw@gmail.com",
+                    Password = "",
+                    Avatar = "https://lh3.googleusercontent.com/a/ACg8ocIBV4SpSsUad1kLwKIY-699_LfiqGLvApsFcg_2pvdd=s96-c",
+                    IsActive = true,
+                    FirstName = "Minh",
+                    LastName = "Tuan",
+                    Gender = Gender.Male,
+                    VerifyStatus = UserVerifyStatus.VERIFIED,
+                    Phone = "0908555978",
+                    SchoolId = "SE122337",
+                    CampusId = 4,
+                    RoleId = 4,
+                    CreatedDate = new DateTime(2023, 10, 15),
+                    UserMedias = userMediasds
+                };
+                context.Users.Add(userds);
+                context.SaveChanges();*/
                 #endregion
 
                 #endregion
@@ -1546,7 +1805,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 Category laptop = new Category()
                 {
                     Name = "Laptop",
-                    Description = "On top of your lap",
+                    Description = "Laptops, Macbooks and a like",
                     IsSensitive = true,
                     Value = ItemValue.High,
                     CategoryGroupId = 1,
@@ -1557,7 +1816,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 Category camera = new Category()
                 {
                     Name = "Camera",
-                    Description = "Records and take pictures",
+                    Description = "Cameras of all brand",
                     IsSensitive = true,
                     Value = ItemValue.High,
                     CategoryGroupId = 1,
@@ -1590,7 +1849,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 Category glasses = new Category()
                 {
                     Name = "Glasses",
-                    Description = "Glasses that you wear init?",
+                    Description = "Glasses that you wear.",
                     IsSensitive = false,
                     Value = ItemValue.Low,
                     CategoryGroupId = 4,
@@ -1751,6 +2010,17 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Categories.Add(hat);
                 context.SaveChanges();
+
+                Category watch = new Category()
+                {
+                    Name = "Watch",
+                    Description = "Watches, Smart watches, etc...",
+                    IsSensitive = false,
+                    Value = ItemValue.Low,
+                    CategoryGroupId = 2,
+                };
+                context.Categories.Add(watch);
+                context.SaveChanges();
                 #endregion
 
                 #region Add Storages
@@ -1844,7 +2114,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         LocationId = 8,
                         CategoryId = 1,
                         CreatedDate = new DateTime(2023, 10, 11),
-                        FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                        FoundUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                         ItemStatus = ItemStatus.PENDING,
                         IsInStorage = false,
                         //TODO: fix
@@ -2106,7 +2376,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     LocationId = 46,
                     CategoryId = 14,
                     CreatedDate = new DateTime(2024, 1, 9),
-                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    FoundUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     ItemStatus = ItemStatus.ACTIVE,
                     IsInStorage = false,
                     FoundDate = "2024-1-8|Slot 1",
@@ -2169,7 +2439,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     LocationId = 3,
                     CategoryId = 9,
                     CreatedDate = new DateTime(2024, 1, 18),
-                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    FoundUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     ItemStatus = ItemStatus.PENDING,
                     IsInStorage = false,
                     FoundDate = "2024-1-17|Slot 1",
@@ -2339,7 +2609,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 ItemClaim itemClaim3 = new ItemClaim()
                 {
                     ItemId = 15,
-                    UserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    UserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     IsActive = true,
                     ClaimStatus = ClaimStatus.ACCEPTED,
                     ClaimDate = DateTime.Now.ToVNTime()
@@ -2361,7 +2631,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 TransferRecord record3 = new TransferRecord()
                 {
                     ItemId = 15,
-                    ReceiverId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    ReceiverId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     SenderId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
                     IsActive = true,
                     Media = mediaForRecord3,
@@ -2564,7 +2834,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     LocationId = 40,
                     CategoryId = 13,
                     CreatedDate = new DateTime(2024, 1, 19),
-                    FoundUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    FoundUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     ItemStatus = ItemStatus.PENDING,
                     IsInStorage = false,
                     FoundDate = "2024-1-18|Slot 2",
@@ -2636,6 +2906,104 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
+                #region Item 22 - Returned and already Reported (Bao found - Duc Claim - Tuan report false - Vinh report correct) - placeholder receipt 
+                List<ItemMedia> medias22 = new List<ItemMedia>();
+                ItemMedia itemMedia22 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item22.png",
+                        Description = "Item 22 Image",
+                        URL = "https://scontent.fsgn8-3.fna.fbcdn.net/v/t1.15752-9/419536099_398873939333411_4830164814220225730_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeHn7Ed0uLUS7YsAnciqR2r0xVQh00jcgTjFVCHTSNyBOHxnADc5hq9wPKgWnOHg_5n4IS5OYTmxYrQI56HaJnZL&_nc_ohc=iogqBcnxRS4AX9vUifh&_nc_ht=scontent.fsgn8-3.fna&oh=03_AdReR9y4nlwqh38W-XcPoEnfCXQUKaWI9evpfSEqfQtf6w&oe=65D060B6",
+                        CreatedDate = new DateTime(2024, 1, 16),
+                    }
+                };
+                medias21.Add(itemMedia22);
+
+                Item item22 = new Item()
+                {
+                    Name = "Cục sạc Baseus",
+                    Description = "Nhặt được 1 củ sạc Baseus như hình ở phòng 137 sau slot 2",
+                    LocationId = 86,
+                    CategoryId = 6,
+                    CreatedDate = new DateTime(2024, 1, 16),
+                    FoundUserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    ItemStatus = ItemStatus.RETURNED,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-15|Slot 2",
+                    ItemMedias = medias22,
+                };
+                context.Items.Add(item22);
+                context.SaveChanges();
+
+                #region Claim for Item 22 and already Accepted
+                ItemClaim itemClaim5 = new ItemClaim()
+                {
+                    ItemId = 22,
+                    UserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    IsActive = true,
+                    ClaimStatus = ClaimStatus.ACCEPTED,
+                    ClaimDate = new DateTime(2024, 1, 19)
+                };
+                context.ItemClaims.Add(itemClaim5);
+                context.SaveChanges();
+                #endregion
+
+                #region Receipt for return Item 22
+                Media mediaForRecord5 = new Media()
+                {
+                    Name = "Record5.png",
+                    Description = "Record 5 Image",
+                    URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/417102539_1570929106780066_2520527715214085024_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeElL49jgbcmrIvmhkAqHg8DxBevy8Mbrl3EF6_LwxuuXdlZZunXVfYsBilBBK8ZJQr3AgD3keZ5U9t11oJR-JUO&_nc_ohc=0WFWao4vZMkAX8nYrVV&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdRljvQeRrm2j8cntEz2-w5cK8sCLUYN7cfYKsi2VKELSA&oe=65CEE359",
+                    CreatedDate = new DateTime(2024, 1, 19)
+                };
+                context.Medias.Add(mediaForRecord5);
+                context.SaveChanges();
+                TransferRecord record5 = new TransferRecord()
+                {
+                    ItemId = 22,
+                    ReceiverId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    SenderId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    IsActive = true,
+                    Media = mediaForRecord5,
+                    ReceiptImage = mediaForRecord5.Id,
+                    ReceiptType = ReceiptType.RETURN_USER_TO_USER,
+                    CreatedDate = new DateTime(2024, 1, 19)
+                };
+                context.TransferRecords.Add(record5);
+                context.SaveChanges();
+                #endregion
+
+                #region Tuan report this with false info 
+                List<ReportMedia> reportMedias1 = new List<ReportMedia>();
+                ReportMedia reportMedia1 = new ReportMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Report1.png",
+                        Description = "Report 1 Image",
+                        URL = "https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.15752-9/417102539_1570929106780066_2520527715214085024_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=8cd0a2&_nc_eui2=AeElL49jgbcmrIvmhkAqHg8DxBevy8Mbrl3EF6_LwxuuXdlZZunXVfYsBilBBK8ZJQr3AgD3keZ5U9t11oJR-JUO&_nc_ohc=0WFWao4vZMkAX8nYrVV&_nc_ht=scontent.fsgn2-7.fna&oh=03_AdRljvQeRrm2j8cntEz2-w5cK8sCLUYN7cfYKsi2VKELSA&oe=65CEE359",
+                        CreatedDate = new DateTime(2024, 1, 20)
+                    }
+                };
+                reportMedias1.Add(reportMedia1);
+                Report report1 = new Report()
+                {
+                    ItemId = 22,
+                    UserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
+                    Title = "Món đồ này của mình mới đúng",
+                    Content = "Món đồ này của mình mới đúng",
+                    ReportMedias = reportMedias1,
+                    ReportComment = "",
+                    CreatedDate = new DateTime(2024, 1, 21),
+                    Status = ReportStatus.PENDING
+                };
+                context.Reports.Add(report1);
+                context.SaveChanges();
+                #endregion
+
+                #endregion
+
                 #endregion
 
                 #region Add Posts
@@ -2666,7 +3034,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Title = "Mất 1 bình nước thể thao màu xám",
                     PostContent = "Em co làm rớt một bình nước thể thao màu xám. Mọi người ai nhặt được xin hãy liên hệ em ạ.",
-                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    PostUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     LostDateFrom = new DateTime(2023, 12, 17),
                     LostDateTo = null,
                     CreatedDate = new DateTime(2023, 12, 17),
@@ -2703,7 +3071,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Title = "Mất 1 con chuột logitech màu đỏ",
                     PostContent = "Sáng nay em có làm mất con chuot logitech màu đỏ. Mọi người có ai nhặt được xin hãy liên hệ em ạ.",
-                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    PostUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     LostDateFrom = new DateTime(2023, 12, 20),
                     LostDateTo = null,
                     CreatedDate = DateTime.Now.ToVNTime(),
@@ -2820,7 +3188,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 {
                     Title = "Làm mất một cục sạc dự phòng ở thư viện",
                     PostContent = "Mình có làm mất một cục sạc dự phòng xmobile màu xám y trên hình. Mọi người có ai nhìn thấy ko ạ?",
-                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    PostUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
                     LostDateFrom = new DateTime(2023, 12, 14),
                     LostDateTo = null,
                     CreatedDate = new DateTime(2023, 12, 15),
@@ -2909,6 +3277,121 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
+                #region Post 8 - Active
+                List<PostMedia> postMedias8 = new List<PostMedia>();
+                PostMedia postMedia8 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post8.png",
+                        Description = "Post 8 Image",
+                        URL = "https://scontent.fsgn8-3.fna.fbcdn.net/v/t1.15752-9/416986105_1547204719437002_3394993134448936240_n.png?stp=dst-png_p403x403&_nc_cat=110&ccb=1-7&_nc_sid=510075&_nc_eui2=AeFsvno318sJ5if9joRFsAZyGgdC6y3DfOUaB0LrLcN85SGW6BihULlhr7TbR8GmKRdUA9qi59pXVxy_dpwmnO-r&_nc_ohc=2X-9_r72Or0AX_Q_sme&_nc_ht=scontent.fsgn8-3.fna&oh=03_AdQxznU8LyCDadD_vI5WSkYavcaScEjezwPSWdFwUrqQwA&oe=65D0689D",
+                        CreatedDate = new DateTime(2024, 1, 11),
+                    }
+                };
+                postMedias8.Add(postMedia8);
+
+                ICollection<Location> postLoca8 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 28),
+                    context.Locations.FirstOrDefault(l => l.Id == 29)
+                };
+                ICollection<Category> postCate8 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 16)
+                };
+
+                Post post8 = new Post()
+                {
+                    Title = "Hộp đồ ăn",
+                    PostContent = "Có bạn nào tình thương mến thương nhặt được cái hộp đựng dồ ăn của mình hog, nay mình lú quá dọn đồ sao quên luôn hộp đựng đồ ăn ở khu vực ăn uống gần 7 11 :(( Nó na ná cái hình sau.",
+                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    LostDateFrom = new DateTime(2024, 1, 10),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2024, 1, 11),
+                    PostStatus = PostStatus.ACTIVE,
+                    PostMedias = postMedias8,
+                    Locations = postLoca8,
+                    Categories = postCate8
+                };
+                context.Posts.Add(post8);
+                context.SaveChanges();
+                #endregion
+
+                #region Post 9 - Pending
+                List<PostMedia> postMedias9 = new List<PostMedia>();
+                PostMedia postMedia9 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post9.png",
+                        Description = "Post 9 Image",
+                        URL = "https://scontent.fsgn8-3.fna.fbcdn.net/v/t1.15752-9/416986105_1547204719437002_3394993134448936240_n.png?stp=dst-png_p403x403&_nc_cat=110&ccb=1-7&_nc_sid=510075&_nc_eui2=AeFsvno318sJ5if9joRFsAZyGgdC6y3DfOUaB0LrLcN85SGW6BihULlhr7TbR8GmKRdUA9qi59pXVxy_dpwmnO-r&_nc_ohc=2X-9_r72Or0AX_Q_sme&_nc_ht=scontent.fsgn8-3.fna&oh=03_AdQxznU8LyCDadD_vI5WSkYavcaScEjezwPSWdFwUrqQwA&oe=65D0689D",
+                        CreatedDate = new DateTime(2024, 1, 10),
+                    }
+                };
+                postMedias9.Add(postMedia9);
+
+                ICollection<Location> postLoca9 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 171)
+                };
+                ICollection<Category> postCate9 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 19)
+                };
+
+                Post post9 = new Post()
+                {
+                    Title = "Đồng hồ đeo tay",
+                    PostContent = "Sáng này học võ mình có tháo đồng hồ ra để học, mà ko hiểu sao về thì ko thấy đâu, ko biết có rớt ở đâu trên sân học võ lầu 5 ko :(( Có bạn nào nhặt đc ko ạ",
+                    PostUserId = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
+                    LostDateFrom = new DateTime(2024, 1, 9),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2024, 1, 10),
+                    PostStatus = PostStatus.PENDING,
+                    PostMedias = postMedias9,
+                    Locations = postLoca9,
+                    Categories = postCate9
+                };
+                context.Posts.Add(post9);
+                context.SaveChanges();
+                #endregion
+
+                #region Post 10 - Active
+                List<PostMedia> postMedias10 = new List<PostMedia>();
+                PostMedia postMedia10 = new PostMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Post10.png",
+                        Description = "Post 10 Image",
+                        URL = "https://scontent.fsgn8-3.fna.fbcdn.net/v/t1.15752-9/416986105_1547204719437002_3394993134448936240_n.png?stp=dst-png_p403x403&_nc_cat=110&ccb=1-7&_nc_sid=510075&_nc_eui2=AeFsvno318sJ5if9joRFsAZyGgdC6y3DfOUaB0LrLcN85SGW6BihULlhr7TbR8GmKRdUA9qi59pXVxy_dpwmnO-r&_nc_ohc=2X-9_r72Or0AX_Q_sme&_nc_ht=scontent.fsgn8-3.fna&oh=03_AdQxznU8LyCDadD_vI5WSkYavcaScEjezwPSWdFwUrqQwA&oe=65D0689D",
+                        CreatedDate = new DateTime(2024, 1, 19),
+                    }
+                };
+                postMedias10.Add(postMedia10);
+
+                ICollection<Location> postLoca10 = new List<Location> {
+                    context.Locations.FirstOrDefault(l => l.Id == 103)
+                };
+                ICollection<Category> postCate10 = new List<Category> {
+                    context.Categories.FirstOrDefault(c => c.Id == 7)
+                };
+
+                Post post10 = new Post()
+                {
+                    Title = "Tai nghe ko dây",
+                    PostContent = "Có bạn đáng iu nào nhặt được cái tai nghe như hình mình để quên ở phòng 211 sau tiết .NET của cô Vân hog :((( dọn đồ vào quên luôn cái tai nghe về nhà mới thấy.",
+                    PostUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    LostDateFrom = new DateTime(2024, 1, 18),
+                    LostDateTo = null,
+                    CreatedDate = new DateTime(2024, 1, 19),
+                    PostStatus = PostStatus.ACTIVE,
+                    PostMedias = postMedias10,
+                    Locations = postLoca10,
+                    Categories = postCate10
+                };
+                context.Posts.Add(post10);
+                context.SaveChanges();
+                #endregion
+
                 #endregion
 
                 #region Giveaway
@@ -2923,6 +3406,20 @@ namespace LostAndFound.Infrastructure.Extensions
                     CreatedDate = new DateTime(2024, 1, 14)
                 };
                 context.Giveaways.Add(giveaway1);
+                context.SaveChanges();
+                #endregion
+
+                #region Participant for Giveaway 1
+                GiveawayParticipant gp2 = new GiveawayParticipant()
+                {
+                    GiveawayId = 1,
+                    UserId = "2CPF2ND0KGXalizaooAJLhY8CPl2",
+                    IsActive = true,
+                    IsChosenAsWinner = false,
+                    IsWinner = false,
+                    CreatedDate = new DateTime(2024, 1, 19)
+                };
+                context.GiveawayParticipants.Add(gp2);
                 context.SaveChanges();
                 #endregion
 

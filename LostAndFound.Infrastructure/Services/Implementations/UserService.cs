@@ -256,6 +256,14 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             {
                 throw new AdminModificationException();
             }
+            if (user.Role.Name == "Manager")
+            {
+                throw new AdminModificationException();
+            }
+            if (user.Role.Name == "Storage Manager")
+            {
+                throw new AdminModificationException();
+            }
 
             if (user.IsActive == true)
             {

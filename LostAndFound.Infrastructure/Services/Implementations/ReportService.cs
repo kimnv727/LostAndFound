@@ -128,7 +128,7 @@ namespace LostAndFound.Infrastructure.Services.Implementations
             }
             if (reportStatus == ReportStatus.DENIED)
             {
-                //send email A 
+                //send email B Denied
                 _emailSendingService.SendMailReportDenied(report.User.Email, report.Item.Name);
             }
 

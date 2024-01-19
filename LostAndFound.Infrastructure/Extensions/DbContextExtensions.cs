@@ -766,7 +766,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 #endregion
 
                     #region Member - vinhc
-                List<UserMedia> userMediasvc = new List<UserMedia>();
+               /* List<UserMedia> userMediasvc = new List<UserMedia>();
                 UserMedia userMediavc = new UserMedia()
                 {
                     Media = new Media()
@@ -799,7 +799,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     UserMedias = userMediasvc
                 };
                 context.Users.Add(uservc);
-                context.SaveChanges();
+                context.SaveChanges();*/
                 #endregion
 
                     #region Member - vinhd

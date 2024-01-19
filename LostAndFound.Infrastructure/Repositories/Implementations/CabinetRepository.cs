@@ -24,6 +24,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .Where(c => c.StorageId == storageId && c.IsActive == true).OrderBy(c => c.Name);
 
             return await Task.FromResult(cabinets.ToList());
@@ -34,6 +35,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .Where(c => c.StorageId == storageId).OrderBy(c => c.Name);
 
             return await Task.FromResult(cabinets.ToList());
@@ -44,6 +46,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .FirstOrDefaultAsync(c => c.Id == id && c.IsActive == true);
         }
 
@@ -52,6 +55,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             return await _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -60,6 +64,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .Where(c => c.IsActive == true)
                 .OrderBy(c => c.Name);
 
@@ -71,6 +76,7 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             IQueryable<Cabinet> cabinets = _context.Cabinets
                 .Include(c => c.Items)
                 .Include(c => c.Storage)
+                .ThenInclude(s => s.Campus)
                 .AsSplitQuery();
 
             if (!trackChanges)
@@ -91,6 +97,11 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
             if (query.StorageId > 0)
             {
                 cabinets = cabinets.Where(c => c.StorageId == query.StorageId);
+            }
+
+            if (query.CampusId > 0)
+            {
+                cabinets = cabinets.Where(c => c.Storage.CampusId == query.CampusId);
             }
 
             if (Enum.IsDefined(query.IsActive))

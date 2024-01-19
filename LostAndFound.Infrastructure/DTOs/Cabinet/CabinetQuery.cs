@@ -13,6 +13,7 @@ namespace LostAndFound.Infrastructure.DTOs.Cabinet
         public int Id { get; set; }
         public string Name { get; set; }
         public int StorageId { get; set; }
+        public int CampusId { get; set; }
         public enum ActiveStatus
         {
             All,

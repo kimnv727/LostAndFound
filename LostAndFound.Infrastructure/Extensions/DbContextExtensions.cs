@@ -2998,7 +2998,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         CreatedDate = new DateTime(2024, 1, 16),
                     }
                 };
-                medias21.Add(itemMedia22);
+                medias22.Add(itemMedia22);
 
                 Item item22 = new Item()
                 {

@@ -2423,9 +2423,10 @@ namespace LostAndFound.Infrastructure.Extensions
                     LocationId = 40,
                     CategoryId = 13,
                     CreatedDate = new DateTime(2023, 5, 28),
-                    FoundUserId = "nY5n19jbQIX5ncSA1UiwpNFiMXh1",
+                    FoundUserId = "jDlpStSQWiQsG2F7yDEqOTGka0x2",
                     ItemStatus = ItemStatus.EXPIRED,
-                    IsInStorage = false,
+                    IsInStorage = true,
+                    CabinetId = 8,
                     FoundDate = "2023-5-27|Slot 2",
                     ItemMedias = medias7,
                 };

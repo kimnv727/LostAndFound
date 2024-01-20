@@ -389,7 +389,13 @@ namespace LostAndFound.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Item>> GetAllItemsSuitableForGiveaway()
         {
-            var itemsAlreadyInGiveawayId = _context.Giveaways.Where(g => g.GiveawayStatus != GiveawayStatus.DISABLED).Select(g => g.ItemId).ToList();
+            var itemsAlreadyInGiveawayId = _context.Giveaways
+                .Include(g => g.GiveawayParticipants)
+                .Where(g => g.GiveawayStatus == GiveawayStatus.NOT_STARTED || g.GiveawayStatus == GiveawayStatus.ONGOING || 
+            g.GiveawayStatus == GiveawayStatus.REWARD_DISTRIBUTION_IN_PROGRESS
+            || (g.GiveawayStatus == GiveawayStatus.CLOSED 
+            && g.GiveawayParticipants.Where(gp => gp.IsWinner == true && gp.IsChosenAsWinner == true && gp.IsActive == true).Count() > 0) 
+            ).Select(g => g.ItemId).ToList();
 
             var items = _context.Items
                 .Include(i => i.User)

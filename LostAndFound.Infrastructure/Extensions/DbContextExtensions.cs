@@ -405,7 +405,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     {
                         Name = "AvatarOfUser1.png",
                         Description = "Avatar of User 1 Account",
-                        URL = "https://pbs.twimg.com/media/F_-LOp5bAAAaR_O?format=jpg&name=large",
+                        URL = "https://pm1.aminoapps.com/6692/44d4439e41984a06e5b5e60da2a7402de44106c8_hq.jpg?fbclid=IwAR3ftAv6xQ_qjwlnwmqQFO4t1O5DZiKrnicgLrVLZzo5GQ0sTiO-5DJimIQ",
                         CreatedDate = DateTime.Now.ToVNTime(),
                     },
                     MediaType = UserMediaType.AVATAR
@@ -453,7 +453,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     Id = "LHFJkI0EzeN1pnfkfFuScgNvixj1",
                     Email = "kimnvse150529@fpt.edu.vn",
                     Password = "",
-                    Avatar = "https://pbs.twimg.com/media/F_-LOp5bAAAaR_O?format=jpg&name=large",
+                    Avatar = "https://pm1.aminoapps.com/6692/44d4439e41984a06e5b5e60da2a7402de44106c8_hq.jpg?fbclid=IwAR3ftAv6xQ_qjwlnwmqQFO4t1O5DZiKrnicgLrVLZzo5GQ0sTiO-5DJimIQ",
                     IsActive = true,
                     FirstName = "Nguyen Van Kim",
                     LastName = "(K15 HCM)",

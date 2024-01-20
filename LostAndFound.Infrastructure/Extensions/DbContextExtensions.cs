@@ -406,7 +406,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfUser1.png",
                         Description = "Avatar of User 1 Account",
                         URL = "https://pm1.aminoapps.com/6692/44d4439e41984a06e5b5e60da2a7402de44106c8_hq.jpg?fbclid=IwAR3ftAv6xQ_qjwlnwmqQFO4t1O5DZiKrnicgLrVLZzo5GQ0sTiO-5DJimIQ",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 6, 1),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -417,7 +417,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "FrontCCIDOfUser1.png",
                         Description = "Front CCID of User Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 6, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_FRONT
                 };
@@ -428,7 +428,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "BackCCIDOfUser2.png",
                         Description = "Back CCID of User Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 6, 1),
                     },
                     MediaType = UserMediaType.IDENTIFICATION_CARD_BACK
                 };
@@ -439,7 +439,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "StudentCardOfUser.png",
                         Description = "Back CCID of User Account",
                         URL = "https://images2.thanhnien.vn/528068263637045248/2023/11/27/doi-ten-the-can-cuoc-1701048226664995346108.jpg?fbclid=IwAR0r3WvuGg5qP_xfg4syETEinAGryrvWyxeRXGIYE4WUajJQoOeMOGMFfm4",
-                        CreatedDate = DateTime.Now.ToVNTime(),
+                        CreatedDate = new DateTime(2023, 6, 1),
                     },
                     MediaType = UserMediaType.STUDENT_CARD
                 };
@@ -463,7 +463,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "SE150530",
                     CampusId = 1,
                     RoleId = 4,
-                    CreatedDate = DateTime.Now.ToVNTime(),
+                    CreatedDate = new DateTime(2023, 6, 1),
                     UserMedias = userMedias4
                 };
                 context.Users.Add(user3);
@@ -552,7 +552,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfBao.png",
                         Description = "Avatar of Bao Account",
                         URL = "https://lh3.googleusercontent.com/a/ACg8ocK19tliPY9j0kh7IRX4FJ_D-FgOGgUIE2Z-Vl_ihK4S=s96-c",
-                        CreatedDate = new DateTime(2023, 12, 15),
+                        CreatedDate = new DateTime(2023, 6, 1),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -573,7 +573,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "SE150657",
                     CampusId = 1,
                     RoleId = 4,
-                    CreatedDate = new DateTime(2023, 12, 15),
+                    CreatedDate = new DateTime(2023, 6, 1),
                     UserMedias = userMediasBao
                 };
                 context.Users.Add(userBao);
@@ -589,7 +589,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfDuc.png",
                         Description = "Avatar of Duc Account",
                         URL = "https://lh3.googleusercontent.com/a/ACg8ocLx7B9iEfEgeNY_bU-SLnsxQXS620nJoR_T90OSeraA=s96-c",
-                        CreatedDate = new DateTime(2023, 10, 17),
+                        CreatedDate = new DateTime(2023, 6, 3),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -610,7 +610,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "DE150269",
                     CampusId = 1,
                     RoleId = 4,
-                    CreatedDate = new DateTime(2023, 10, 17),
+                    CreatedDate = new DateTime(2023, 6, 3),
                     UserMedias = userMediasDuc
                 };
                 context.Users.Add(userDuc);
@@ -626,7 +626,7 @@ namespace LostAndFound.Infrastructure.Extensions
                         Name = "AvatarOfTuan.png",
                         Description = "Avatar of Tuan Account",
                         URL = "https://lh3.googleusercontent.com/a/ACg8ocKFZ3NKp6fbgnaSfXQGLOZh9G05Ev2td32nVNFNSna2Wg=s96-c",
-                        CreatedDate = new DateTime(2023, 10, 17),
+                        CreatedDate = new DateTime(2023, 6, 2),
                     },
                     MediaType = UserMediaType.AVATAR
                 };
@@ -647,7 +647,7 @@ namespace LostAndFound.Infrastructure.Extensions
                     SchoolId = "SE151155",
                     CampusId = 1,
                     RoleId = 4,
-                    CreatedDate = new DateTime(2023, 10, 17),
+                    CreatedDate = new DateTime(2023, 6, 2),
                     UserMedias = userMediasTuan
                 };
                 context.Users.Add(userTuan);

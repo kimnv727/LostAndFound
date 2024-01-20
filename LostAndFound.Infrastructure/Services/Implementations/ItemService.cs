@@ -614,12 +614,6 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                 throw new EntityWithIDNotFoundException<Cabinet>(updateDTO.CabinetId);
             }
 
-            item.ItemStatus = ItemStatus.ACTIVE;
-            item.IsInStorage = true;
-            item.CabinetId = updateDTO.CabinetId;
-            //Change foundUserId into storage manager too
-            item.FoundUserId = cabinet.Storage.MainStorageManagerId;
-            await _unitOfWork.CommitAsync();
 
             //Create Receipt
             var result = await _mediaService.UploadFileAsync(updateDTO.ReceiptMedia, _awsCredentials);
@@ -641,6 +635,13 @@ namespace LostAndFound.Infrastructure.Services.Implementations
 
             var receipt = _mapper.Map<TransferRecord>(receiptWriteDTO);
             await _receiptRepository.AddAsync(receipt);
+            await _unitOfWork.CommitAsync();
+
+            item.ItemStatus = ItemStatus.ACTIVE;
+            item.IsInStorage = true;
+            item.CabinetId = updateDTO.CabinetId;
+            //Change foundUserId into storage manager too
+            item.FoundUserId = cabinet.Storage.MainStorageManagerId;
             await _unitOfWork.CommitAsync();
 
             var returnResult = _mapper.Map<ItemReadWithReceiptDTO>(item);

@@ -3054,7 +3054,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
-                #region Tuan report this with false info 
+                /*#region Tuan report this with false info 
                 List<ReportMedia> reportMedias1 = new List<ReportMedia>();
                 ReportMedia reportMedia1 = new ReportMedia()
                 {
@@ -3080,7 +3080,7 @@ namespace LostAndFound.Infrastructure.Extensions
                 };
                 context.Reports.Add(report1);
                 context.SaveChanges();
-                #endregion
+                #endregion*/
 
                 #endregion
 

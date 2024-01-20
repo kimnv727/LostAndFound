@@ -117,6 +117,19 @@ namespace LostAndFound.Infrastructure.Services.Implementations
                     }
                 }
             }
+            if(reportStatus == ReportStatus.SOLVED)
+            {
+                //check other pending & solving of this item and change to deny
+                var checkReports = await _reportRepository.GetReportsByItemIdAsync(report.ItemId);
+                foreach(var cr in checkReports)
+                {
+                    if(cr.Id != reportId && cr.Status == ReportStatus.PENDING)
+                    {
+                        cr.Status = ReportStatus.DENIED;
+                        await _unitOfWork.CommitAsync();
+                    }
+                }
+            }
 
             report.Status = reportStatus;
             await _unitOfWork.CommitAsync();

@@ -3273,6 +3273,37 @@ namespace LostAndFound.Infrastructure.Extensions
                 context.SaveChanges();
                 #endregion
 
+                #region Item 29 - Active - Ho Chi Minh
+                List<ItemMedia> medias29 = new List<ItemMedia>();
+                ItemMedia itemMedia29 = new ItemMedia()
+                {
+                    Media = new Media()
+                    {
+                        Name = "Item29.png",
+                        Description = "Item 29 Image",
+                        URL = "https://cdn.tgdd.vn/comment/43276415/image9HX28.jpg?fbclid=IwAR3NERshoVJTS9ssPg3p9Mh2_wpVL3NuPgN6pBqKWHXSK74DRVm4QW5I3Hs",
+                        CreatedDate = new DateTime(2024, 1, 16),
+                    }
+                };
+                medias29.Add(itemMedia29);
+
+                Item item29 = new Item()
+                {
+                    Name = "Pin sạc dự phòng Xmobile",
+                    Description = "Pin sạc dự phòng 10.000 mAh Lightning 10W Xmobile nhặt được ở thư viện nhìn như hình trên",
+                    LocationId = 40,
+                    CategoryId = 18,
+                    CreatedDate = new DateTime(2024, 1, 16),
+                    FoundUserId = "3GH7xz1x3JT7dQPeDzNJIxeLzLa2",
+                    ItemStatus = ItemStatus.ACTIVE,
+                    IsInStorage = false,
+                    FoundDate = "2024-1-15|Slot 2",
+                    ItemMedias = medias29,
+                };
+                context.Items.Add(item29);
+                context.SaveChanges();
+                #endregion
+
                 #endregion
 
                 #region Add Posts

@@ -44,6 +44,7 @@ namespace LostAndFound.API.Services
                 {
                     _logger!.LogInformation("Checking item status.");
                     var itemRepository = scope.ServiceProvider.GetRequiredService<IItemRepository>();
+                    var reportRepository = scope.ServiceProvider.GetRequiredService<IReportRepository>();
                     List<Item> items = (await itemRepository.GetAllActiveItems()).ToList();
                     foreach (var item in items)
                     {
@@ -53,6 +54,22 @@ namespace LostAndFound.API.Services
                             if (DateTime.Now.ToVNTime() >= item.CreatedDate.AddDays(120))
                             {
                                 item.ItemStatus = ItemStatus.EXPIRED;
+                                //find report related
+                                var itemReports = (await reportRepository.GetReportsByItemIdAsync(item.Id)).ToList();
+                                if(itemReports != null)
+                                {
+                                    if(itemReports.Count() > 0)
+                                    {
+                                        foreach (var ir in itemReports)
+                                        {
+                                            if (ir.Status == ReportStatus.PENDING || ir.Status == ReportStatus.SOLVING)
+                                            {
+                                                ir.Status = ReportStatus.FAILED;
+                                            }
+                                        }
+                                        await reportRepository.UpdateReportRange(itemReports.ToArray());
+                                    }
+                                }
                             }
                         }
                         catch

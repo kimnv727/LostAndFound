@@ -43,7 +43,7 @@ namespace LostAndFound.API.Extensions
                 }
                 message = message.Substring(0, message.Length - 2);
             }
-            message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "https://lnf-user.web.app/";
+            message = message + " \n" + "𝐅𝐨𝐫 𝐦𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥: " + "";
 
             string privacyValue = "EVERYONE";
             if (post.PostMedias.Count > 0)
@@ -74,7 +74,7 @@ namespace LostAndFound.API.Extensions
             else
             {
                 //get link
-                var link = "https://lnf-user.web.app/";
+                var link = "";
 
                 using (var httpClient = new HttpClient())
                 {

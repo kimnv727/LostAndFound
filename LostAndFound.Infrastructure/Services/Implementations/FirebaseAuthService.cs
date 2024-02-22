@@ -243,7 +243,7 @@ namespace LostAndFound.API.Authentication
         public async Task<string> GetAccessTokenWithRefreshToken(string refreshToken)
         {
             string baseUrl = "https://securetoken.googleapis.com/v1/token?key=";
-            string key = "AIzaSyDj7Wa-uQkY9jO4NQP5s6MwvQJMO_b2PkA";
+            string key = "";
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders
